@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:jwelery_app/api/api_service.dart';
 import 'package:jwelery_app/views/pages/search_page.dart';
 
 class CustomSearchBar extends StatelessWidget implements PreferredSizeWidget{
   const CustomSearchBar({super.key});
 
+  
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -27,6 +29,7 @@ class CustomSearchBar extends StatelessWidget implements PreferredSizeWidget{
             Text(
                 "Search by category, product & more...",
             style: TextStyle(
+              color: Color(0xFF4F3267),
               fontSize: 12.0
             ),)
           ],
@@ -34,7 +37,9 @@ class CustomSearchBar extends StatelessWidget implements PreferredSizeWidget{
         ),
       ),
 
-      onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SearchPage()))
+      onTap: (){
+        
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SearchPage()));}
     );
 
       }

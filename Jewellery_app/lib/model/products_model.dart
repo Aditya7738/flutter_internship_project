@@ -1,5 +1,5 @@
-class ProductModel {
-    ProductModel({
+class ProductsModel {
+    ProductsModel({
         required this.id,
         required this.name,
         required this.slug,
@@ -128,8 +128,8 @@ class ProductModel {
     final int? parentId;
     final String? purchaseNote;
     final List<Category> categories;
-    final List<dynamic> tags;
-    final List<Image> images;
+    final List<Category> tags;
+    final List<ProductImage> images;
     final List<Attribute> attributes;
     final List<dynamic> defaultAttributes;
     final List<dynamic> variations;
@@ -142,11 +142,11 @@ class ProductModel {
     final bool? hasOptions;
     final String? postPassword;
     final List<dynamic> subcategory;
-    final List<ProductModelCollection> collections;
+    final List<ProductsModelCollection> collections;
     final Links? links;
 
-    factory ProductModel.fromJson(Map<String, dynamic> json){ 
-        return ProductModel(
+    factory ProductsModel.fromJson(Map<String, dynamic> json){ 
+        return ProductsModel(
             id: json["id"],
             name: json["name"],
             slug: json["slug"],
@@ -202,8 +202,8 @@ class ProductModel {
             parentId: json["parent_id"],
             purchaseNote: json["purchase_note"],
             categories: json["categories"] == null ? [] : List<Category>.from(json["categories"]!.map((x) => Category.fromJson(x))),
-            tags: json["tags"] == null ? [] : List<dynamic>.from(json["tags"]!.map((x) => x)),
-            images: json["images"] == null ? [] : List<Image>.from(json["images"]!.map((x) => Image.fromJson(x))),
+            tags: json["tags"] == null ? [] : List<Category>.from(json["tags"]!.map((x) => Category.fromJson(x))),
+            images: json["images"] == null ? [] : List<ProductImage>.from(json["images"]!.map((x) => ProductImage.fromJson(x))),
             attributes: json["attributes"] == null ? [] : List<Attribute>.from(json["attributes"]!.map((x) => Attribute.fromJson(x))),
             defaultAttributes: json["default_attributes"] == null ? [] : List<dynamic>.from(json["default_attributes"]!.map((x) => x)),
             variations: json["variations"] == null ? [] : List<dynamic>.from(json["variations"]!.map((x) => x)),
@@ -216,7 +216,7 @@ class ProductModel {
             hasOptions: json["has_options"],
             postPassword: json["post_password"],
             subcategory: json["subcategory"] == null ? [] : List<dynamic>.from(json["subcategory"]!.map((x) => x)),
-            collections: json["collections"] == null ? [] : List<ProductModelCollection>.from(json["collections"]!.map((x) => ProductModelCollection.fromJson(x))),
+            collections: json["collections"] == null ? [] : List<ProductsModelCollection>.from(json["collections"]!.map((x) => ProductsModelCollection.fromJson(x))),
             links: json["_links"] == null ? null : Links.fromJson(json["_links"]),
         );
     }
@@ -276,22 +276,22 @@ class ProductModel {
         "cross_sell_ids": crossSellIds.map((x) => x).toList(),
         "parent_id": parentId,
         "purchase_note": purchaseNote,
-        "categories": categories.map((x) => x.toJson()).toList(),
-        "tags": tags.map((x) => x).toList(),
-        "images": images.map((x) => x.toJson()).toList(),
-        "attributes": attributes.map((x) => x.toJson()).toList(),
+        "categories": categories.map((x) => x?.toJson()).toList(),
+        "tags": tags.map((x) => x.toJson()).toList(),
+        "images": images.map((x) => x?.toJson()).toList(),
+        "attributes": attributes.map((x) => x?.toJson()).toList(),
         "default_attributes": defaultAttributes.map((x) => x).toList(),
         "variations": variations.map((x) => x).toList(),
         "grouped_products": groupedProducts.map((x) => x).toList(),
         "menu_order": menuOrder,
         "price_html": priceHtml,
         "related_ids": relatedIds.map((x) => x).toList(),
-        "meta_data": metaData.map((x) => x.toJson()).toList(),
+        "meta_data": metaData.map((x) => x?.toJson()).toList(),
         "stock_status": stockStatus,
         "has_options": hasOptions,
         "post_password": postPassword,
         "subcategory": subcategory.map((x) => x).toList(),
-        "collections": collections.map((x) => x.toJson()).toList(),
+        "collections": collections.map((x) => x?.toJson()).toList(),
         "_links": links?.toJson(),
     };
 
@@ -367,8 +367,8 @@ class Category {
 
 }
 
-class ProductModelCollection {
-    ProductModelCollection({
+class ProductsModelCollection {
+    ProductsModelCollection({
         required this.termId,
         required this.name,
         required this.slug,
@@ -392,8 +392,8 @@ class ProductModelCollection {
     final int? count;
     final String? filter;
 
-    factory ProductModelCollection.fromJson(Map<String, dynamic> json){ 
-        return ProductModelCollection(
+    factory ProductsModelCollection.fromJson(Map<String, dynamic> json){ 
+        return ProductsModelCollection(
             termId: json["term_id"],
             name: json["name"],
             slug: json["slug"],
@@ -449,8 +449,8 @@ class Dimensions {
 
 }
 
-class Image {
-    Image({
+class ProductImage {
+    ProductImage({
         required this.id,
         required this.dateCreated,
         required this.dateCreatedGmt,
@@ -470,8 +470,8 @@ class Image {
     final String? name;
     final String? alt;
 
-    factory Image.fromJson(Map<String, dynamic> json){ 
-        return Image(
+    factory ProductImage.fromJson(Map<String, dynamic> json){ 
+        return ProductImage(
             id: json["id"],
             dateCreated: DateTime.tryParse(json["date_created"] ?? ""),
             dateCreatedGmt: DateTime.tryParse(json["date_created_gmt"] ?? ""),
@@ -513,8 +513,8 @@ class Links {
     }
 
     Map<String, dynamic> toJson() => {
-        "self": self.map((x) => x.toJson()).toList(),
-        "collection": collection.map((x) => x.toJson()).toList(),
+        "self": self.map((x) => x?.toJson()).toList(),
+        "collection": collection.map((x) => x?.toJson()).toList(),
     };
 
 }
@@ -547,7 +547,7 @@ class MetaDatum {
 
     final int? id;
     final String? key;
-    final dynamic value;
+    final dynamic? value;
 
     factory MetaDatum.fromJson(Map<String, dynamic> json){ 
         return MetaDatum(
@@ -615,6 +615,7 @@ class FluffyValue {
         required this.seoKeywords,
         required this.min,
         required this.max,
+        required this.the1,
         required this.metal,
         required this.breakup,
         required this.master,
@@ -634,7 +635,6 @@ class FluffyValue {
         required this.making,
         required this.diamondBreakup,
         required this.diamondRates,
-        required this.the1,
         required this.gemstone,
         required this.gemstoneBreakup,
         required this.gemstoneRates,
@@ -642,9 +642,10 @@ class FluffyValue {
 
     final String? seoDescription;
     final String? seoTitle;
-    final dynamic seoKeywords;
+    final dynamic? seoKeywords;
     final String? min;
     final String? max;
+    final Value1? the1;
     final Metal? metal;
     final Breakup? breakup;
     final Master? master;
@@ -664,7 +665,6 @@ class FluffyValue {
     final Making? making;
     final Map<String, int> diamondBreakup;
     final Map<String, int> diamondRates;
-    final Value1? the1;
     final Gemstone? gemstone;
     final GemstoneBreakupClass? gemstoneBreakup;
     final GemstoneBreakupClass? gemstoneRates;
@@ -676,6 +676,7 @@ class FluffyValue {
             seoKeywords: json["seo_keywords"],
             min: json["min"],
             max: json["max"],
+            the1: json["1"] == null ? null : Value1.fromJson(json["1"]),
             metal: json["metal"] == null ? null : Metal.fromJson(json["metal"]),
             breakup: json["breakup"] == null ? null : Breakup.fromJson(json["breakup"]),
             master: json["master"] == null ? null : Master.fromJson(json["master"]),
@@ -695,7 +696,6 @@ class FluffyValue {
             making: json["making"] == null ? null : Making.fromJson(json["making"]),
             diamondBreakup: Map.from(json["diamondBreakup"]).map((k, v) => MapEntry<String, int>(k, v)),
             diamondRates: Map.from(json["diamondRates"]).map((k, v) => MapEntry<String, int>(k, v)),
-            the1: json["1"] == null ? null : Value1.fromJson(json["1"]),
             gemstone: json["gemstone"] == null ? null : Gemstone.fromJson(json["gemstone"]),
             gemstoneBreakup: json["gemstoneBreakup"] == null ? null : GemstoneBreakupClass.fromJson(json["gemstoneBreakup"]),
             gemstoneRates: json["gemstoneRates"] == null ? null : GemstoneBreakupClass.fromJson(json["gemstoneRates"]),
@@ -708,6 +708,7 @@ class FluffyValue {
         "seo_keywords": seoKeywords,
         "min": min,
         "max": max,
+        "1": the1?.toJson(),
         "metal": metal?.toJson(),
         "breakup": breakup?.toJson(),
         "master": master?.toJson(),
@@ -727,7 +728,6 @@ class FluffyValue {
         "making": making?.toJson(),
         "diamondBreakup": Map.from(diamondBreakup).map((k, v) => MapEntry<String, dynamic>(k, v)),
         "diamondRates": Map.from(diamondRates).map((k, v) => MapEntry<String, dynamic>(k, v)),
-        "1": the1?.toJson(),
         "gemstone": gemstone?.toJson(),
         "gemstoneBreakup": gemstoneBreakup?.toJson(),
         "gemstoneRates": gemstoneRates?.toJson(),
@@ -972,7 +972,7 @@ class GoldClass {
     });
 
     final String? goldPurity;
-    final dynamic rate;
+    final dynamic? rate;
     final String? goldGross;
     final String? goldNet;
     final int? amount;
@@ -1053,21 +1053,53 @@ class MetalRates {
 
 class Value1 {
     Value1({
+        required this.diamondType,
+        required this.diamondQuality,
+        required this.diamondShape,
+        required this.diamondSieve,
+        required this.diamondCut,
+        required this.diamondPieces,
+        required this.diamondWeight,
+        required this.diamondRate,
         required this.colorstoneWeight,
         required this.colorstonePieces,
     });
 
+    final String? diamondType;
+    final String? diamondQuality;
+    final String? diamondShape;
+    final String? diamondSieve;
+    final String? diamondCut;
+    final String? diamondPieces;
+    final String? diamondWeight;
+    final String? diamondRate;
     final String? colorstoneWeight;
     final String? colorstonePieces;
 
     factory Value1.fromJson(Map<String, dynamic> json){ 
         return Value1(
+            diamondType: json["diamond_type"],
+            diamondQuality: json["diamond_quality"],
+            diamondShape: json["diamond_shape"],
+            diamondSieve: json["diamond_sieve"],
+            diamondCut: json["diamond_cut"],
+            diamondPieces: json["diamond_pieces"],
+            diamondWeight: json["diamond_weight"],
+            diamondRate: json["diamond_rate"],
             colorstoneWeight: json["colorstone_weight"],
             colorstonePieces: json["colorstone_pieces"],
         );
     }
 
     Map<String, dynamic> toJson() => {
+        "diamond_type": diamondType,
+        "diamond_quality": diamondQuality,
+        "diamond_shape": diamondShape,
+        "diamond_sieve": diamondSieve,
+        "diamond_cut": diamondCut,
+        "diamond_pieces": diamondPieces,
+        "diamond_weight": diamondWeight,
+        "diamond_rate": diamondRate,
         "colorstone_weight": colorstoneWeight,
         "colorstone_pieces": colorstonePieces,
     };

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jwelery_app/views/pages/cart_page.dart';
 import 'package:jwelery_app/views/pages/home_screen.dart';
 
 import 'constants/strings.dart';
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const HomeScreen(),
+      home: CartPage(),
       debugShowCheckedModeBanner: false,
     );
   }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:jwelery_app/model/category_model.dart';
-import 'package:jwelery_app/views/pages/product_list.dart';
+import 'package:jwelery_app/views/pages/product_page.dart';
 
 class FeatureWidget extends StatefulWidget {
   final bool isLoading;
@@ -32,15 +32,11 @@ class _FeatureWidgetState extends State<FeatureWidget> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => ProductList(id: categoriesModel.id)));
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => ProductPage(id: categoriesModel.id)));
       },
         child: Padding(
       padding: const EdgeInsets.symmetric(horizontal: 2.0),
-      child: localLoading
-          ? const CircularProgressIndicator(
-              color: Colors.black,
-            )
-          : Column(
+      child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Card(
@@ -50,8 +46,22 @@ class _FeatureWidgetState extends State<FeatureWidget> {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(25.0),
                     child: Image.network(
-                      fit: BoxFit.fill,
                       categoriesModel.image?.src ?? defaultImageUrl,
+                      loadingBuilder: (context, child, loadingProgress) {
+                        if(loadingProgress == null){
+                          return child;
+                        }
+                        return Container(
+                          alignment: Alignment.center,
+                         width: 95.0,
+                      height: 92.0,
+                          child: CircularProgressIndicator(
+                            color: Colors.black,
+                          ),
+                        );
+                      },
+                      fit: BoxFit.fill,
+                      
                       width: 95.0,
                       height: 92.0,
                     ),

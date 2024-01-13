@@ -1,69 +1,93 @@
 import 'package:flutter/material.dart';
+import 'package:jwelery_app/model/products_of_category.dart';
 
 class ProductGridListItem extends StatefulWidget {
-  const ProductGridListItem({super.key});
+  final ProductOfCategoryModel productOfCategoryModel;
+  const ProductGridListItem({super.key, required this.productOfCategoryModel});
 
   @override
   State<ProductGridListItem> createState() => _ProductGridListItemState();
 }
 
 class _ProductGridListItemState extends State<ProductGridListItem> {
+  late final ProductOfCategoryModel productOfCategoryModel;
+
+  final defaultImageUrl =
+      "https://cdn.shopify.com/s/files/1/0985/9548/products/Orissa_jewellery_Silver_Filigree_OD012h_1_1000x1000.JPG?v=1550653176";
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    productOfCategoryModel = widget.productOfCategoryModel;
+  }
+
   @override
   Widget build(BuildContext context) {
     var icon = Icons.favorite_border_outlined;
 
     return Container(
-      alignment: Alignment.topLeft,
-              
+        alignment: Alignment.topLeft,
         child: Column(
-      children: [
-        Stack(
           children: [
-            Image.network(src),
-            Container(
-              alignment: Alignment.topRight,
-              margin: EdgeInsets.only(right: 5.0, top: 5.0),
-              width: 7.0,
-              height: 7.0,
-              child: GestureDetector(
-                child: Icon(
-                  icon,
-                  color: Color(0xFFCC868A),
-                  size: 5.0,
-                ),
-                onTap: () {
-                  setState(() {
-                    icon = Icons.favorite;
-                  });
-                },
-              ),
-            ),
-            Container(
-                alignment: Alignment.bottomLeft,
-                width: 20.0,
-                height: 5.0,
-                child: Container(
-                  decoration: BoxDecoration(
-                      shape: BoxShape.rectangle,
-                      borderRadius: BorderRadius.circular(10.0),
-                      color: Colors.black),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(),
-                      Icon(
-                        Icons.star,
-                        color: Colors.yellow,
-                      )
-                    ],
+            Stack(
+              children: [
+                Image.network(
+                    productOfCategoryModel.images.isEmpty ? defaultImageUrl :  productOfCategoryModel.images[0].src ?? defaultImageUrl),
+                Container(
+                  alignment: Alignment.topRight,
+                  margin: const EdgeInsets.only(right: 5.0, top: 5.0),
+                  width: 7.0,
+                  height: 7.0,
+                  child: GestureDetector(
+                    child: Icon(
+                      icon,
+                      color: const Color(0xFFCC868A),
+                      size: 5.0,
+                    ),
+                    onTap: () {
+                      setState(() {
+                        icon = Icons.favorite;
+                      });
+                    },
                   ),
-                ))
+                ),
+                Container(
+                    alignment: Alignment.bottomLeft,
+                    width: 20.0,
+                    height: 5.0,
+                    margin: const EdgeInsets.only(left: 5.0, bottom: 5.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                          shape: BoxShape.rectangle,
+                          borderRadius: BorderRadius.circular(10.0),
+                          color: Colors.black),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(productOfCategoryModel.averageRating ?? "3.5"),
+                          const Icon(
+                            Icons.star,
+                            color: Colors.yellow,
+                          )
+                        ],
+                      ),
+                    ))
+              ],
+            ),
+            Text(productOfCategoryModel.name ?? "Jewellery"),
+            Row(children: [
+              Text(
+                productOfCategoryModel.regularPrice ?? "10,000",
+                style: const TextStyle(decoration: TextDecoration.lineThrough),
+              ),
+              const SizedBox(
+                width: 5.0,
+              ),
+              Text(productOfCategoryModel.salePrice ?? "8,000"),
+            ])
           ],
-        ),
-        Text(productName),
-        Text(price)
-      ],
-    )
-    );
+        ));
   }
+
 }

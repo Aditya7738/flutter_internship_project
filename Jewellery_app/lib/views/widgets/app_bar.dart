@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:jwelery_app/views/pages/cart_page.dart';
 import 'package:jwelery_app/views/widgets/custom_searchbar.dart';
-
+import 'package:badges/badges.dart' as badges;
 
 class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   final IconData menuIcon;
@@ -37,13 +38,12 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
               height: 80,
             )
           : const TextField(
-
               showCursor: true,
               maxLines: 1,
               autofocus: true,
               cursorColor: Colors.grey,
               decoration: InputDecoration(
-                fillColor: Colors.grey,
+                  fillColor: Colors.grey,
                   icon: Icon(
                     Icons.search_rounded,
                     color: Colors.grey,
@@ -51,14 +51,13 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
                   ),
                   hintText: "Search",
                   hintStyle: TextStyle(
-                      color: Colors.grey,
+                    color: Colors.grey,
                   )),
             ),
 
-
       backgroundColor: Colors.white,
       actions: isNeededForHome
-          ? [
+          ? <Widget>[
               const CircleAvatar(
                 radius: 12.0,
 
@@ -78,29 +77,30 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
                 icon: const Icon(Icons.favorite_sharp, color: Colors.black),
               ),
               SizedBox(
-                height: 65.0,
-                width: 50.0,
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    IconButton(
-                      onPressed: () {
-                        print("CART CLICKED");
-                      },
-                      icon: const Icon(Icons.shopping_cart),
-                      color: Colors.black,
-                    ),
-                    const Positioned(
-                        bottom: 15.0,
-                        right: 9.0,
-                        child: Icon(
-                          Icons.add_circle,
-                          size: 15.0,
-                          color: Colors.purple,
-                        )),
-                  ],
+                height: 40.0,
+                width: 32.0,
+                child: badges.Badge(
+                  badgeStyle: const badges.BadgeStyle(
+                    badgeColor: Colors.purple
+                  ),
+                  badgeContent: const Text('3', style: TextStyle(color: Colors.white),),
+                  child: IconButton(
+                    onPressed: () {
+                      print("CART CLICKED");
+                    },
+                    icon: GestureDetector(
+                      child: const Icon(Icons.shopping_cart),
+                      onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => CartPage())),),
+                    color: Colors.black,
+                  ),
+                  
                 ),
-              )
+              ),
+              const SizedBox(
+                width: 12,
+              ),
+
             ]
           : [
               // const TextField(
@@ -116,6 +116,7 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
               //   ),
               // ),
               const Icon(Icons.mic_none_rounded),
+              const SizedBox(width: 5.0,)
             ],
 
       bottom: !isNeededForHome ? null : const CustomSearchBar(),
