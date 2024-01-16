@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 class DateHelper{
 
   static String getCurrentDateInWords(){
-    final now = DateTime.now().add(Duration(days: 5));
+    final now = DateTime.now().add(const Duration(days: 5));
     final dayFormat = DateFormat('dd');
     final monthFormat = DateFormat('MMM');
     final yearFormat = DateFormat('yyyy');

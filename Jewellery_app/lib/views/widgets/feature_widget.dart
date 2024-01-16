@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:jwelery_app/constants/strings.dart';
 
 import 'package:jwelery_app/model/category_model.dart';
+import 'package:jwelery_app/model/products_model.dart';
 import 'package:jwelery_app/views/pages/product_page.dart';
 
 class FeatureWidget extends StatefulWidget {
   final bool isLoading;
-  final CategoriesModel categoriesModel;
-  //List<CategoriesModel> listOfCategories = [];
+   final CategoriesModel categoriesModel;
+ 
 
   const FeatureWidget(
-      {super.key, required this.categoriesModel, required this.isLoading});
+      {super.key,
+       required this.categoriesModel, 
+ 
+       required this.isLoading});
 
   @override
   State<FeatureWidget> createState() => _FeatureWidgetState();
@@ -17,22 +22,27 @@ class FeatureWidget extends StatefulWidget {
 
 class _FeatureWidgetState extends State<FeatureWidget> {
   bool localLoading = true;
-  final defaultImageUrl =
+    late CategoriesModel categoriesModel;
+
+    final defaultImageUrl =
       "https://cdn.shopify.com/s/files/1/0985/9548/products/Orissa_jewellery_Silver_Filigree_OD012h_1_1000x1000.JPG?v=1550653176";
-  late CategoriesModel categoriesModel;
 
   @override
   void initState() {
     super.initState();
     localLoading = widget.isLoading;
-    categoriesModel = widget.categoriesModel;
+     categoriesModel = widget.categoriesModel;
+   
   }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => ProductPage(id: categoriesModel.id)));
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => ProductPage(id: 
+        categoriesModel.id
+
+        )));
       },
         child: Padding(
       padding: const EdgeInsets.symmetric(horizontal: 2.0),
@@ -47,6 +57,7 @@ class _FeatureWidgetState extends State<FeatureWidget> {
                     borderRadius: BorderRadius.circular(25.0),
                     child: Image.network(
                       categoriesModel.image?.src ?? defaultImageUrl,
+                  
                       loadingBuilder: (context, child, loadingProgress) {
                         if(loadingProgress == null){
                           return child;
@@ -55,7 +66,7 @@ class _FeatureWidgetState extends State<FeatureWidget> {
                           alignment: Alignment.center,
                          width: 95.0,
                       height: 92.0,
-                          child: CircularProgressIndicator(
+                          child: const CircularProgressIndicator(
                             color: Colors.black,
                           ),
                         );
@@ -74,6 +85,7 @@ class _FeatureWidgetState extends State<FeatureWidget> {
                   padding: const EdgeInsets.all(2.0),
                   child: Text(
                     categoriesModel.name ?? "Jewellery",
+           
                     style: const TextStyle(fontSize: 10.0),
                   ),
                 ),

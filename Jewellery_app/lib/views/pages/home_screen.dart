@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:jwelery_app/api/api_service.dart';
-import 'package:jwelery_app/model/category_model.dart';
 import 'package:jwelery_app/model/navigation_model.dart';
+import 'package:jwelery_app/providers/cart_provider.dart';
+import 'package:jwelery_app/providers/wishlist_provider.dart';
 import 'package:jwelery_app/views/widgets/app_bar.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:jwelery_app/views/widgets/button_widget.dart';
 import 'package:jwelery_app/views/widgets/feature_widget.dart';
 import 'package:jwelery_app/views/widgets/pincode_widget.dart';
+import 'package:provider/provider.dart';
 
 import '../widgets/nav_drawer.dart';
 
@@ -20,6 +22,9 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  final ScrollController _scrollController = ScrollController();
+
   List<String> images = [
     "https://newspaperads.ads2publish.com/wp-content/uploads/2020/11/fuzion-queentessential-extravagance-finest-diamond-jewelry-ad-toi-ahmedabad-6-11-2020.jpg",
     "https://i.pinimg.com/564x/43/68/b2/4368b2a77dceb87086c8752ce87c7728.jpg",
@@ -32,23 +37,58 @@ class _HomeScreenState extends State<HomeScreen> {
 
   int currentIndex = 0;
 
-  List<CategoriesModel> listOfCategories = [];
+  // List<CategoriesModel> listOfCategories = [];
 
   bool isLoading = true;
+
+  bool isNewCategoryLoading = false;
+ 
 
   @override
   void initState() {
     super.initState();
+    getDataFromProvider();
     carouselController = CarouselController();
     getRequest();
+    _scrollController.addListener(() async {
+      print(
+          "CONDITION ${_scrollController.position.pixels == _scrollController.position.maxScrollExtent}");
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        print("REACHED END OF LIST");
+
+        loadMoreData();
+      }
+    });
+  }
+
+  void loadMoreData() async {
+    setState(() {
+      isNewCategoryLoading = true;
+    });
+
+    // Fetch more data (e.g., using ApiService)
+    await ApiService.showNextPageOfCategories();
+
+    setState(() {
+      isNewCategoryLoading = false;
+    });
+  }
+
+  void getDataFromProvider() async {
+    print("Callig shared prefs");
+
+    Provider.of<CartProvider>(context, listen: false).getSharedPrefs();
+    Provider.of<WishlistProvider>(context, listen: false).getWishListSharedPrefs();
+    print("call wishlist shared prefs");
   }
 
   Future<void> getRequest() async {
-    final response = await ApiService.fetchCategories();
+    await ApiService.fetchCategories(1);
 
     setState(() {
       isLoading = false;
-      listOfCategories = response;
+      
     });
   }
 
@@ -127,6 +167,8 @@ class _HomeScreenState extends State<HomeScreen> {
             }
           },
           isNeededForHome: true,
+          isNeededForProductPage : false
+          
         ),
         body: SingleChildScrollView(
           child: Column(
@@ -135,20 +177,32 @@ class _HomeScreenState extends State<HomeScreen> {
                 margin: const EdgeInsets.symmetric(
                     horizontal: 10.0, vertical: 10.0),
                 height: MediaQuery.of(context).size.height / 6,
-                child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: listOfCategories.length,
-                    itemBuilder: (context, index) {
-                      return FeatureWidget(
-                        categoriesModel: listOfCategories[index],
-                        isLoading: isLoading,
-                      );
-                    }),
+                child: Scrollbar(
+                  child: ListView.builder(
+                      controller: _scrollController,
+                      scrollDirection: Axis.horizontal,
+                      itemCount: ApiService.listOfCategory.length +
+                          (isNewCategoryLoading ? 1 : 0),
+                      itemBuilder: (context, index) {
+                        if (index <
+                            ApiService.listOfCategory.length) {
+                          return FeatureWidget(
+                            categoriesModel: ApiService.listOfCategory[index],
+                            isLoading: isLoading,
+                          );
+                        } else {
+                        return const Center(
+                            child: CircularProgressIndicator(
+                          color: Color(0xffCC868A),
+                        ));
+                      }
+                      }),
+                ),
               ),
-              Padding(
+              const Padding(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-                child: const PincodeWidget(),
+                    EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+                child: PincodeWidget(),
               ),
 
               CarouselSlider(
@@ -174,7 +228,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 alignment: Alignment.center,
                                 width: MediaQuery.of(context).size.width,
                                 height: 92.0,
-                                child: CircularProgressIndicator(
+                                child: const CircularProgressIndicator(
                                   color: Colors.black,
                                 ),
                               );

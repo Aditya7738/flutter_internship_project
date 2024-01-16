@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:jwelery_app/api/api_service.dart';
 import 'package:jwelery_app/views/pages/search_page.dart';
 
 class CustomSearchBar extends StatelessWidget implements PreferredSizeWidget{

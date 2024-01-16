@@ -12,7 +12,7 @@ class CategoriesModel {
         required this.links,
     });
 
-    final int? id;
+    final int id;
     final String? name;
     final String? slug;
     final int? parent;

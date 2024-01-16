@@ -1,18 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:jwelery_app/providers/cart_provider.dart';
+import 'package:jwelery_app/providers/wishlist_provider.dart';
 import 'package:jwelery_app/views/pages/cart_page.dart';
+import 'package:jwelery_app/views/pages/wishlist_page.dart';
 import 'package:jwelery_app/views/widgets/custom_searchbar.dart';
 import 'package:badges/badges.dart' as badges;
+import 'package:provider/provider.dart';
 
 class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   final IconData menuIcon;
   final VoidCallback? onPressed;
   final bool isNeededForHome;
+  final bool isNeededForProductPage;
 
   const AppBarWidget(
       {super.key,
       required this.menuIcon,
       required this.onPressed,
-      required this.isNeededForHome});
+      required this.isNeededForHome,
+      required this.isNeededForProductPage});
 
   @override
   Widget build(BuildContext context) {
@@ -70,37 +76,57 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
               const SizedBox(
                 width: 10,
               ),
-              IconButton(
-                onPressed: () {
-                  print("FAVOURITE CLICKED");
-                },
-                icon: const Icon(Icons.favorite_sharp, color: Colors.black),
-              ),
               SizedBox(
                 height: 40.0,
                 width: 32.0,
                 child: badges.Badge(
-                  badgeStyle: const badges.BadgeStyle(
-                    badgeColor: Colors.purple
-                  ),
-                  badgeContent: const Text('3', style: TextStyle(color: Colors.white),),
+                  badgeStyle:
+                      const badges.BadgeStyle(badgeColor: Colors.purple),
+                  badgeContent: Consumer<WishlistProvider>(
+                      builder: (context, value, child) {
+                        print("LENGTH OF FAV: ${value.favProductIds}");
+                    return Text(
+                      value.favProductIds.length.toString(),
+                      style: const TextStyle(color: Colors.white),
+                    );
+                  }),
                   child: IconButton(
                     onPressed: () {
-                      print("CART CLICKED");
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const WishListPage()));
                     },
-                    icon: GestureDetector(
-                      child: const Icon(Icons.shopping_cart),
-                      onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => CartPage())),),
-                    color: Colors.black,
+                    icon: const Icon(Icons.favorite_sharp, color: Colors.black),
                   ),
-                  
                 ),
               ),
               const SizedBox(
                 width: 12,
               ),
-
+              SizedBox(
+                height: 40.0,
+                width: 32.0,
+                child: badges.Badge(
+                  badgeStyle:
+                      const badges.BadgeStyle(badgeColor: Colors.purple),
+                  badgeContent: Consumer<CartProvider>(
+                      builder: (context, value, child) => Text(
+                            value.cart.length.toString(),
+                            style: const TextStyle(color: Colors.white),
+                          )),
+                  child: IconButton(
+                    onPressed: () {
+                      print("CART CLICKED");
+                      Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) => CartPage()));
+                    },
+                    icon: const Icon(Icons.shopping_cart),
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+              const SizedBox(
+                width: 12,
+              ),
             ]
           : [
               // const TextField(
@@ -116,10 +142,14 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
               //   ),
               // ),
               const Icon(Icons.mic_none_rounded),
-              const SizedBox(width: 5.0,)
+              const SizedBox(
+                width: 5.0,
+              )
             ],
 
-      bottom: !isNeededForHome ? null : const CustomSearchBar(),
+      bottom: !isNeededForHome || isNeededForProductPage
+          ? null
+          : const CustomSearchBar(),
       elevation: 5.0,
     );
   }

@@ -1,46 +1,53 @@
 import 'package:flutter/material.dart';
 import 'package:jwelery_app/constants/strings.dart';
+import 'package:jwelery_app/helpers/date_helper.dart';
+import 'package:jwelery_app/model/cart_product_model.dart';
 import 'package:jwelery_app/model/choice_model.dart';
+import 'package:jwelery_app/model/products_model.dart';
 import 'package:jwelery_app/model/products_of_category.dart';
+import 'package:jwelery_app/providers/cart_provider.dart';
+import 'package:jwelery_app/providers/wishlist_provider.dart';
 import 'package:jwelery_app/views/pages/cart_page.dart';
 import 'package:jwelery_app/views/widgets/app_bar.dart';
 import 'package:jwelery_app/views/widgets/button_widget.dart';
 import 'package:jwelery_app/views/widgets/choice_widget.dart';
 import 'package:jwelery_app/views/widgets/label_widget.dart';
-import 'package:jwelery_app/views/widgets/pincode_widget.dart';
-import 'package:jwelery_app/views/widgets/product_breakup_list_item.dart';
 import 'package:jwelery_app/views/widgets/whole_carousel_slider.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
+import 'package:provider/provider.dart';
 
 class ProductDetailsPage extends StatefulWidget {
-  final ProductOfCategoryModel productOfCategoryModel;
+  final ProductsModel productsModel;
+  
 
-  const ProductDetailsPage({super.key, required this.productOfCategoryModel});
+  const ProductDetailsPage({super.key, required this.productsModel});
 
   @override
   State<ProductDetailsPage> createState() => _ProductDetailsPageState();
 }
 
 class _ProductDetailsPageState extends State<ProductDetailsPage> {
-  late ProductOfCategoryModel productOfCategoryModel;
-  bool isFavourite = false;
-  bool backordersAllowed = false;
 
+  late ProductsModel productsModel;
+ 
+  bool backordersAllowed = false;
+ 
   @override
   void initState() {
     super.initState();
-    productOfCategoryModel = widget.productOfCategoryModel;
-    backordersAllowed = productOfCategoryModel.backordersAllowed ?? false;
+    productsModel = widget.productsModel;
+    backordersAllowed = productsModel.backordersAllowed ?? false;
+    
   }
+  
 
-  void toggleFavourite() {
-    setState(() {
-      isFavourite = !isFavourite; // Toggle the state of the heart icon
-    });
-  }
+ 
 
   @override
   Widget build(BuildContext context) {
+    final cartProvider = Provider.of<CartProvider>(context);
+    final wishListProvider = Provider.of<WishlistProvider>(context);
+
     List<ChoiceModel> listOfChoiceModel = <ChoiceModel>[];
     listOfChoiceModel.add(ChoiceModel(
       label: "Select Metal",
@@ -74,21 +81,15 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
 
     return Scaffold(
       appBar: AppBarWidget(
-        menuIcon: Icons.menu,
-        onPressed: () {
-          // if(scaffoldKey.currentState!.isDrawerOpen){
-          //   scaffoldKey.currentState!.closeDrawer();
-          // }else{
-          //   scaffoldKey.currentState!.openDrawer();
-          // }
-        },
-        isNeededForHome: true,
-      ),
+          menuIcon: Icons.menu,
+          onPressed: () {},
+          isNeededForHome: true,
+          isNeededForProductPage: false),
       body: Scrollbar(
         child: SingleChildScrollView(
             child: Column(children: [
           WholeCarouselSlider(
-              listOfProductImage: productOfCategoryModel.images),
+              listOfProductImage: productsModel.images),
           const SizedBox(
             height: 10.0,
           ),
@@ -101,14 +102,23 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                     Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          productOfCategoryModel.salePrice == ""
-                              ? HtmlWidget(
-                                  productOfCategoryModel.priceHtml ??
-                                      "<b>${productOfCategoryModel.regularPrice}</b>",
-                                  textStyle: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20.0,
-                                  ),
+                          productsModel.salePrice == ""
+                              ? Row(
+                                  children: [
+                                    Image.asset(
+                                      "assets/images/rupee.png",
+                                      width: 19.0,
+                                      height: 17.0,
+                                    ),
+                                    Text(
+                                      productsModel.regularPrice ??
+                                          "20,000",
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 17.0,
+                                      ),
+                                    )
+                                  ],
                                 )
                               : Row(
                                   children: [
@@ -118,9 +128,9 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                       height: 20.0,
                                     ),
                                     Text(
-                                      productOfCategoryModel.salePrice == ""
+                                      productsModel.salePrice == ""
                                           ? "10,000"
-                                          : productOfCategoryModel.salePrice ??
+                                          : productsModel.salePrice ??
                                               "10,000",
                                       style: const TextStyle(
                                           fontSize: 20.0,
@@ -130,7 +140,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                       width: 5.0,
                                     ),
                                     Text(
-                                      productOfCategoryModel.regularPrice ??
+                                      productsModel.regularPrice ??
                                           "15,000",
                                       style: const TextStyle(
                                           decoration:
@@ -140,7 +150,8 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                 ),
                           IconButton(
                               icon: Icon(
-                                isFavourite
+                                wishListProvider.favProductIds
+                                        .contains(productsModel.id)
                                     ? Icons.favorite
                                     : Icons.favorite_border_outlined,
                                 color: Colors.red,
@@ -148,7 +159,16 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                               ),
                               onPressed: () {
                                 print("PRESSED");
-                                toggleFavourite();
+                                if (wishListProvider.favProductIds
+                                    .contains(productsModel.id)) {
+                                  wishListProvider.removeFromWishlist(
+                                      productsModel.id!);
+                                  print("Product is removed from wishlist");
+                                } else {
+                                  wishListProvider
+                                      .addToWishlist(productsModel.id!);
+                                  print("Product is added to wishlist");
+                                }
                               }),
                         ]),
                     const SizedBox(
@@ -201,15 +221,11 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                       label: Strings.description_label,
                     ),
 
-                    HtmlWidget(productOfCategoryModel.description ??
+                    HtmlWidget(productsModel.description ??
                         Strings.product_description),
                     const SizedBox(
                       height: 10.0,
                     ),
-                    // const Text(
-                    //   Strings.delivery_detail_label,
-                    //   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),
-                    // ),
 
                     Row(
                       children: [
@@ -220,7 +236,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         const SizedBox(
                           width: 10.0,
                         ),
-                        Text(productOfCategoryModel.sku ?? "12007AN"),
+                        Text(productsModel.sku ?? "12007AN"),
                         const SizedBox(
                           width: 30.0,
                         ),
@@ -231,8 +247,8 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         const SizedBox(
                           width: 10.0,
                         ),
-                        Text(productOfCategoryModel.categories[0].name ??
-                            "Jewellery")
+                        Text(productsModel.categories != null ?
+                        productsModel.categories![0].name ?? "Jewellery" : "Jewellery")
                       ],
                     ),
                     const SizedBox(
@@ -246,48 +262,57 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                     const SizedBox(
                       height: 5.0,
                     ),
-                    productOfCategoryModel.tags.isEmpty
-                        ? Text("Jewellery")
+                    productsModel.tags == null
+                        ? const Text("Jewellery")
                         : SizedBox(
                             height: 20.0,
                             width: MediaQuery.of(context).size.width,
                             child: ListView.builder(
-                              itemCount: productOfCategoryModel.tags.length,
+                              itemCount: productsModel.tags?.length,
                               itemBuilder: (context, index) {
                                 return Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 10.0),
                                   child: Text(
-                                      productOfCategoryModel.tags[index].name ??
+                                      productsModel.tags?[index].name ??
                                           "Category"),
                                 );
                               },
                               scrollDirection: Axis.horizontal,
                             ),
                           ),
-                    // const SizedBox(
-                    //   height: 20.0,
-                    // ),
-                    // //const PincodeWidget(),
-                    // const LabelWidget(
-                    //   label: "BREAKUP",
-                    //   fontSize: 18.0,
-                    // ),
-                    // const SizedBox(
-                    //   height: 10.0,
-                    // ),
-                    // ProductBreakupListItem(label: "PRODUCT DETAILS", backgroundColor: Color(0xffF5F5F5), labelColor: Color(0xffCC868A)),
+                   
                   ])),
         ])),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      floatingActionButton: const SizedBox(
+      floatingActionButton: SizedBox(
         width: 160.0,
         child: ButtonWidget(
             imagePath: "assets/images/grocery_store.png",
             btnString: Strings.cart_btn_text,
-           // onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => CartPage(productId: productOfCategoryModel.id!)))
-            ),
+            onTap: () async {
+              print("CART PRESSED");
+              cartProvider.addToCartId(productsModel.id!);
+              print("CART IDS : ${cartProvider.cartProductIds}");
+
+
+              cartProvider.addToCart(CartProductModel(
+                  cartProductid: productsModel.id,
+                  price: productsModel.regularPrice ?? "20000",
+                  productName: productsModel.name ?? "Jewellery",
+                  quantity: "1",
+                  size: 5,
+                  deliveryDate: DateHelper.getCurrentDateInWords(),
+                  imageUrl: productsModel.images.isEmpty
+                      ? Strings.defaultImageUrl
+                      : productsModel.images[0].src ??
+                          Strings.defaultImageUrl));
+
+              print("Product is added to cart");
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => CartPage()));
+            }),
       ),
     );
   }

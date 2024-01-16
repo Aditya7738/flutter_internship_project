@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:jwelery_app/views/pages/cart_page.dart';
+import 'package:jwelery_app/providers/cart_provider.dart';
+import 'package:jwelery_app/providers/wishlist_provider.dart';
 import 'package:jwelery_app/views/pages/home_screen.dart';
-
+import 'package:provider/provider.dart';
 import 'constants/strings.dart';
 
 void main() {
@@ -14,23 +15,20 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: Strings.app_name,
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => CartProvider()),
+        ChangeNotifierProvider(create: (context) => WishlistProvider()),
+      ],
+      child: MaterialApp(
+        title: Strings.app_name,
+        theme: ThemeData(
+          
+          primarySwatch: Colors.blue,
+        ),
+        home: const HomeScreen(),
+        debugShowCheckedModeBanner: false,
       ),
-      home: CartPage(),
-      debugShowCheckedModeBanner: false,
     );
   }
 }
-

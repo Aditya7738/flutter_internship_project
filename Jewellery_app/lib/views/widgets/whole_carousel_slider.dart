@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:jwelery_app/constants/strings.dart';
+import 'package:jwelery_app/model/products_model.dart';
 import 'package:jwelery_app/model/products_of_category.dart';
 
 class WholeCarouselSlider extends StatefulWidget {
-  final List<CategoryWiseProductImage> listOfProductImage;
+  final List<ProductImage> listOfProductImage;
   const WholeCarouselSlider({super.key, required this.listOfProductImage});
 
   @override
@@ -14,7 +15,7 @@ class WholeCarouselSlider extends StatefulWidget {
 
 class _WholeCarouselSliderState extends State<WholeCarouselSlider> {
   CarouselController carouselController = CarouselController();
-  late List<CategoryWiseProductImage> listOfProductImage;
+  late List<ProductImage> listOfProductImage;
 
   List<String> urlList = [Strings.defaultImageUrl,Strings.defaultImageUrl];
   

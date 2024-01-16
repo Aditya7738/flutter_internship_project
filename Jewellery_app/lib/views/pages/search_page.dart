@@ -13,7 +13,7 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-  ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
   bool isLoading = false;
   bool isSearchBarUsed = false;
   bool isThereMoreProducts = true;
@@ -59,22 +59,7 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
-    // _scrollController.addListener(() async {
-    //   if (_scrollController.position.pixels ==
-    //       _scrollController.position.maxScrollExtent) {
-    //     print("REACHED END OF LIST");
 
-    //     setState(() {
-    //       isLoading = true;
-    //     });
-
-    //     isThereMoreProducts = await ApiService.showNextPagesProduct();
-
-    //     setState(() {
-    //       isLoading = false;
-    //     });
-    //   }
-    // });
 
     return Scaffold(
         appBar: AppBar(
@@ -158,7 +143,7 @@ class _SearchPageState extends State<SearchPage> {
                       color: Color(0xffCC868A),
                     ))
                   : isSearchFieldEmpty
-                      ? SizedBox()
+                      ? const SizedBox()
                       : Expanded(
                           child: Scrollbar(
                             child: ListView.builder(
@@ -175,7 +160,7 @@ class _SearchPageState extends State<SearchPage> {
                                         ApiService.listOfProductsModel[index];
                                     return GestureDetector(
                                       onTap: () {
-                                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => SearchProductDetailsPage(productsModel: productsModel)));
+                                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => ProductDetailsPage(productsModel: productsModel)));
                                       },
                                       child: Padding(
                                           padding: const EdgeInsets.symmetric(
@@ -243,7 +228,7 @@ class _SearchPageState extends State<SearchPage> {
                                                     crossAxisAlignment:
                                                         CrossAxisAlignment.start,
                                                     children: [
-                                                      Container(
+                                                      SizedBox(
                                                         width: MediaQuery.of(context).size.width/2 + 30,
                                                         child: Text(
                                                           ApiService

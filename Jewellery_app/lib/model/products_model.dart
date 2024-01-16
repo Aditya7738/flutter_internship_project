@@ -2,75 +2,75 @@ class ProductsModel {
     ProductsModel({
         required this.id,
         required this.name,
-        required this.slug,
-        required this.permalink,
-        required this.dateCreated,
-        required this.dateCreatedGmt,
-        required this.dateModified,
-        required this.dateModifiedGmt,
-        required this.type,
-        required this.status,
-        required this.featured,
-        required this.catalogVisibility,
-        required this.description,
-        required this.shortDescription,
-        required this.sku,
-        required this.price,
+         this.slug,
+         this.permalink,
+         this.dateCreated,
+         this.dateCreatedGmt,
+         this.dateModified,
+         this.dateModifiedGmt,
+         this.type,
+         this.status,
+         this.featured,
+         this.catalogVisibility,
+         this.description,
+         this.shortDescription,
+         this.sku,
+         this.price,
         required this.regularPrice,
-        required this.salePrice,
-        required this.dateOnSaleFrom,
-        required this.dateOnSaleFromGmt,
-        required this.dateOnSaleTo,
-        required this.dateOnSaleToGmt,
-        required this.onSale,
-        required this.purchasable,
-        required this.totalSales,
-        required this.virtual,
-        required this.downloadable,
-        required this.downloads,
-        required this.downloadLimit,
-        required this.downloadExpiry,
-        required this.externalUrl,
-        required this.buttonText,
-        required this.taxStatus,
-        required this.taxClass,
-        required this.manageStock,
-        required this.stockQuantity,
-        required this.backorders,
-        required this.backordersAllowed,
-        required this.backordered,
-        required this.lowStockAmount,
-        required this.soldIndividually,
-        required this.weight,
-        required this.dimensions,
-        required this.shippingRequired,
-        required this.shippingTaxable,
-        required this.shippingClass,
-        required this.shippingClassId,
-        required this.reviewsAllowed,
-        required this.averageRating,
-        required this.ratingCount,
-        required this.upsellIds,
-        required this.crossSellIds,
-        required this.parentId,
-        required this.purchaseNote,
-        required this.categories,
-        required this.tags,
+         this.salePrice,
+         this.dateOnSaleFrom,
+         this.dateOnSaleFromGmt,
+         this.dateOnSaleTo,
+         this.dateOnSaleToGmt,
+         this.onSale,
+         this.purchasable,
+         this.totalSales,
+         this.virtual,
+         this.downloadable,
+         this.downloads,
+         this.downloadLimit,
+         this.downloadExpiry,
+         this.externalUrl,
+         this.buttonText,
+         this.taxStatus,
+         this.taxClass,
+         this.manageStock,
+         this.stockQuantity,
+         this.backorders,
+         this.backordersAllowed,
+         this.backordered,
+         this.lowStockAmount,
+         this.soldIndividually,
+         this.weight,
+         this.dimensions,
+         this.shippingRequired,
+         this.shippingTaxable,
+         this.shippingClass,
+         this.shippingClassId,
+         this.reviewsAllowed,
+         this.averageRating,
+         this.ratingCount,
+         this.upsellIds,
+         this.crossSellIds,
+         this.parentId,
+         this.purchaseNote,
+         this.categories,
+         this.tags,
         required this.images,
-        required this.attributes,
-        required this.defaultAttributes,
-        required this.variations,
-        required this.groupedProducts,
-        required this.menuOrder,
-        required this.priceHtml,
-        required this.relatedIds,
-        required this.metaData,
-        required this.stockStatus,
-        required this.hasOptions,
-        required this.postPassword,
-        required this.subcategory,
-        required this.collections,
-        required this.links,
+         this.attributes,
+         this.defaultAttributes,
+         this.variations,
+         this.groupedProducts,
+         this.menuOrder,
+         this.priceHtml,
+         this.relatedIds,
+         this.metaData,
+         this.stockStatus,
+         this.hasOptions,
+         this.postPassword,
+         this.subcategory,
+         this.collections,
+         this.links,
     });
 
     final int? id;
@@ -100,7 +100,7 @@ class ProductsModel {
     final int? totalSales;
     final bool? virtual;
     final bool? downloadable;
-    final List<dynamic> downloads;
+    final List<dynamic>? downloads;
     final int? downloadLimit;
     final int? downloadExpiry;
     final String? externalUrl;
@@ -123,26 +123,26 @@ class ProductsModel {
     final bool? reviewsAllowed;
     final String? averageRating;
     final int? ratingCount;
-    final List<dynamic> upsellIds;
-    final List<dynamic> crossSellIds;
+    final List<dynamic>? upsellIds;
+    final List<dynamic>? crossSellIds;
     final int? parentId;
     final String? purchaseNote;
-    final List<Category> categories;
-    final List<Category> tags;
+    final List<Category>? categories;
+    final List<Category>? tags;
     final List<ProductImage> images;
-    final List<Attribute> attributes;
-    final List<dynamic> defaultAttributes;
-    final List<dynamic> variations;
-    final List<dynamic> groupedProducts;
+    final List<Attribute>? attributes;
+    final List<dynamic>? defaultAttributes;
+    final List<dynamic>? variations;
+    final List<dynamic>? groupedProducts;
     final int? menuOrder;
     final String? priceHtml;
-    final List<int> relatedIds;
-    final List<MetaDatum> metaData;
+    final List<int>? relatedIds;
+    final List<MetaDatum>? metaData;
     final String? stockStatus;
     final bool? hasOptions;
     final String? postPassword;
-    final List<dynamic> subcategory;
-    final List<ProductsModelCollection> collections;
+    final List<dynamic>? subcategory;
+    final List<ProductsModelCollection>? collections;
     final Links? links;
 
     factory ProductsModel.fromJson(Map<String, dynamic> json){ 
@@ -249,7 +249,7 @@ class ProductsModel {
         "total_sales": totalSales,
         "virtual": virtual,
         "downloadable": downloadable,
-        "downloads": downloads.map((x) => x).toList(),
+        "downloads": downloads?.map((x) => x).toList(),
         "download_limit": downloadLimit,
         "download_expiry": downloadExpiry,
         "external_url": externalUrl,
@@ -272,26 +272,26 @@ class ProductsModel {
         "reviews_allowed": reviewsAllowed,
         "average_rating": averageRating,
         "rating_count": ratingCount,
-        "upsell_ids": upsellIds.map((x) => x).toList(),
-        "cross_sell_ids": crossSellIds.map((x) => x).toList(),
+        "upsell_ids": upsellIds?.map((x) => x).toList(),
+        "cross_sell_ids": crossSellIds?.map((x) => x).toList(),
         "parent_id": parentId,
         "purchase_note": purchaseNote,
-        "categories": categories.map((x) => x?.toJson()).toList(),
-        "tags": tags.map((x) => x.toJson()).toList(),
-        "images": images.map((x) => x?.toJson()).toList(),
-        "attributes": attributes.map((x) => x?.toJson()).toList(),
-        "default_attributes": defaultAttributes.map((x) => x).toList(),
-        "variations": variations.map((x) => x).toList(),
-        "grouped_products": groupedProducts.map((x) => x).toList(),
+        "categories": categories?.map((x) => x.toJson()).toList(),
+        "tags": tags?.map((x) => x.toJson()).toList(),
+        "images": images?.map((x) => x.toJson()).toList(),
+        "attributes": attributes?.map((x) => x.toJson()).toList(),
+        "default_attributes": defaultAttributes?.map((x) => x).toList(),
+        "variations": variations?.map((x) => x).toList(),
+        "grouped_products": groupedProducts?.map((x) => x).toList(),
         "menu_order": menuOrder,
         "price_html": priceHtml,
-        "related_ids": relatedIds.map((x) => x).toList(),
-        "meta_data": metaData.map((x) => x?.toJson()).toList(),
+        "related_ids": relatedIds?.map((x) => x).toList(),
+        "meta_data": metaData?.map((x) => x.toJson()).toList(),
         "stock_status": stockStatus,
         "has_options": hasOptions,
         "post_password": postPassword,
-        "subcategory": subcategory.map((x) => x).toList(),
-        "collections": collections.map((x) => x?.toJson()).toList(),
+        "subcategory": subcategory?.map((x) => x).toList(),
+        "collections": collections?.map((x) => x.toJson()).toList(),
         "_links": links?.toJson(),
     };
 
@@ -513,8 +513,8 @@ class Links {
     }
 
     Map<String, dynamic> toJson() => {
-        "self": self.map((x) => x?.toJson()).toList(),
-        "collection": collection.map((x) => x?.toJson()).toList(),
+        "self": self.map((x) => x.toJson()).toList(),
+        "collection": collection.map((x) => x.toJson()).toList(),
     };
 
 }
@@ -547,7 +547,7 @@ class MetaDatum {
 
     final int? id;
     final String? key;
-    final dynamic? value;
+    final dynamic value;
 
     factory MetaDatum.fromJson(Map<String, dynamic> json){ 
         return MetaDatum(
@@ -642,7 +642,7 @@ class FluffyValue {
 
     final String? seoDescription;
     final String? seoTitle;
-    final dynamic? seoKeywords;
+    final dynamic seoKeywords;
     final String? min;
     final String? max;
     final Value1? the1;
@@ -651,7 +651,7 @@ class FluffyValue {
     final Master? master;
     final MetalBreakup? metalBreakup;
     final MetalRates? metalRates;
-    final List<dynamic> labourBreakup;
+    final List<dynamic>? labourBreakup;
     final Discount? discount;
     final int? totalDiscount;
     final int? totalPrice;
@@ -714,7 +714,7 @@ class FluffyValue {
         "master": master?.toJson(),
         "metalBreakup": metalBreakup?.toJson(),
         "metalRates": metalRates?.toJson(),
-        "labourBreakup": labourBreakup.map((x) => x).toList(),
+        "labourBreakup": labourBreakup?.map((x) => x).toList(),
         "discount": discount?.toJson(),
         "totalDiscount": totalDiscount,
         "totalPrice": totalPrice,
@@ -972,7 +972,7 @@ class GoldClass {
     });
 
     final String? goldPurity;
-    final dynamic? rate;
+    final dynamic rate;
     final String? goldGross;
     final String? goldNet;
     final int? amount;
@@ -1032,8 +1032,8 @@ class MetalRates {
     });
 
     final Map<String, dynamic> gold;
-    final List<dynamic> silver;
-    final List<dynamic> platinum;
+    final List<dynamic>? silver;
+    final List<dynamic>? platinum;
 
     factory MetalRates.fromJson(Map<String, dynamic> json){ 
         return MetalRates(
@@ -1045,8 +1045,8 @@ class MetalRates {
 
     Map<String, dynamic> toJson() => {
         "gold": Map.from(gold).map((k, v) => MapEntry<String, dynamic>(k, v)),
-        "silver": silver.map((x) => x).toList(),
-        "platinum": platinum.map((x) => x).toList(),
+        "silver": silver?.map((x) => x).toList(),
+        "platinum": platinum?.map((x) => x).toList(),
     };
 
 }

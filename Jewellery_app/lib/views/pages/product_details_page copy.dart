@@ -2,16 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:jwelery_app/constants/strings.dart';
 import 'package:jwelery_app/model/choice_model.dart';
 import 'package:jwelery_app/model/products_model.dart';
-import 'package:jwelery_app/model/products_of_category.dart';
-import 'package:jwelery_app/views/pages/cart_page.dart';
 import 'package:jwelery_app/views/widgets/app_bar.dart';
 import 'package:jwelery_app/views/widgets/button_widget.dart';
 import 'package:jwelery_app/views/widgets/choice_widget.dart';
 import 'package:jwelery_app/views/widgets/label_widget.dart';
-import 'package:jwelery_app/views/widgets/pincode_widget.dart';
-import 'package:jwelery_app/views/widgets/product_breakup_list_item.dart';
 import 'package:jwelery_app/views/widgets/whole_carousel_slider%20copy.dart';
-import 'package:jwelery_app/views/widgets/whole_carousel_slider.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 
 class SearchProductDetailsPage extends StatefulWidget {
@@ -74,6 +69,7 @@ class _ProductDetailsPageState extends State<SearchProductDetailsPage> {
           // }
         },
         isNeededForHome: true,
+        isNeededForProductPage: true
       ),
       body: Scrollbar(
         child: SingleChildScrollView(
@@ -92,7 +88,7 @@ class _ProductDetailsPageState extends State<SearchProductDetailsPage> {
                       ?
                       HtmlWidget(productsModel.priceHtml ??
                         "<b>${productsModel.regularPrice}</b>",
-                        textStyle: TextStyle(
+                        textStyle: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 20.0,
                         ),
@@ -142,9 +138,9 @@ class _ProductDetailsPageState extends State<SearchProductDetailsPage> {
                 ),
                
                 Container(
-                    color: Color(0xfff1f7eb),
+                    color: const Color(0xfff1f7eb),
                     padding:
-                        EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+                        const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
                     child: backordersAllowed
                         ? const LabelWidget(
                             label: "Available on backorder",
@@ -213,7 +209,9 @@ class _ProductDetailsPageState extends State<SearchProductDetailsPage> {
                     const SizedBox(
                       width: 10.0,
                     ),
-                    Text(productsModel.categories[0].name ?? "Jewellery")
+                    Text(productsModel.categories != null ? 
+                    productsModel.categories![0].name ?? "Jewellery" :
+                     "Jewellery")
                   ],
                 ),
                 const SizedBox(
@@ -226,19 +224,19 @@ class _ProductDetailsPageState extends State<SearchProductDetailsPage> {
                 const SizedBox(
                   height: 5.0,
                 ),
-                productsModel.tags.isEmpty
-                    ? Text("Jewellery")
+                productsModel.tags == null
+                    ? const Text("Jewellery")
                     : SizedBox(
                         height: 20.0,
                         width: MediaQuery.of(context).size.width,
                         child: ListView.builder(
-                          itemCount: productsModel.tags.length,
+                          itemCount: productsModel.tags!.length,
                           itemBuilder: (context, index) {
                             return Padding(
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 10.0),
                               child: Text(
-                                  productsModel.tags[index].name ??
+                                  productsModel.tags![index].name ??
                                       "Category"),
                             );
                           },
@@ -263,7 +261,7 @@ class _ProductDetailsPageState extends State<SearchProductDetailsPage> {
         ])),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      floatingActionButton: SizedBox(
+      floatingActionButton: const SizedBox(
         width: 160.0,
         child: ButtonWidget(
             imagePath: "assets/images/grocery_store.png",

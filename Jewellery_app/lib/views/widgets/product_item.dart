@@ -1,79 +1,91 @@
 import 'package:flutter/material.dart';
 import 'package:jwelery_app/constants/strings.dart';
+import 'package:jwelery_app/helpers/date_helper.dart';
+import 'package:jwelery_app/model/cart_product_model.dart';
+import 'package:jwelery_app/model/products_model.dart';
 import 'package:jwelery_app/model/products_of_category.dart';
+import 'package:jwelery_app/providers/cart_provider.dart';
+import 'package:provider/provider.dart';
+import 'package:jwelery_app/providers/wishlist_provider.dart';
 import 'package:jwelery_app/views/pages/product_details_page.dart';
-import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 
 class ProductItem extends StatefulWidget {
-  final ProductOfCategoryModel productOfCategoryModel;
-  const ProductItem({super.key, required this.productOfCategoryModel});
+  final ProductsModel productsModel;
+  const ProductItem({super.key, required this.productsModel});
 
   @override
   State<ProductItem> createState() => _ProductItemState();
 }
 
 class _ProductItemState extends State<ProductItem> {
-  late final ProductOfCategoryModel productOfCategoryModel;
-  bool isFavourite = false;
-  List<CategoryWiseProductImage> listOfProductImage = <CategoryWiseProductImage>[];
-  
+  late final ProductsModel productsModel;
+ 
+  List<ProductImage> listOfProductImage =
+      <ProductImage>[];
 
   @override
   void initState() {
- 
     super.initState();
-    productOfCategoryModel = widget.productOfCategoryModel;
-    
-  }
-
-  void toggleFavourite() {
-    setState(() {
-      isFavourite = !isFavourite; // Toggle the state of the heart icon
-    });
+    productsModel = widget.productsModel;
   }
 
   
 
   @override
   Widget build(BuildContext context) {
-    print(productOfCategoryModel.toJson());
+    final wishListProvider = Provider.of<WishlistProvider>(context);
+    final cartProvider = Provider.of<CartProvider>(context);
+
+    print(productsModel.toJson());
     return GestureDetector(
-      onTap: (){
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => ProductDetailsPage(productOfCategoryModel: productOfCategoryModel)));
+      onTap: () {
+        print("CATEGORY PRODUCT PRESSED");
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => ProductDetailsPage(
+                productsModel: productsModel)));
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Stack(
             children: [
-              Image.network(
-                productOfCategoryModel.images.isEmpty
-                    ? Strings.defaultImageUrl
-                    : productOfCategoryModel.images[0].src ?? Strings.defaultImageUrl,
-                loadingBuilder: (context, child, loadingProgress) {
-                  if (loadingProgress == null) {
-                    return child;
-                  }
-                  return SizedBox(
-                    width: (MediaQuery.of(context).size.width / 2) + 16.0,
-                    height: (MediaQuery.of(context).size.width / 2) + 10.0,
-                    child: const Center(
-                      child: CircularProgressIndicator(
-                        color: Colors.black,
-                      ),
+              productsModel.images.isEmpty ||
+                      productsModel.images[0].src == null
+                  ? Placeholder(
+                      fallbackHeight:
+                          (MediaQuery.of(context).size.width / 2) + 10.0,
+                    )
+                  : Image.network(
+                      productsModel.images.isEmpty
+                          ? Strings.defaultImageUrl
+                          : productsModel.images[0].src ??
+                              Strings.defaultImageUrl,
+                      loadingBuilder: (context, child, loadingProgress) {
+                        if (loadingProgress == null) {
+                          return child;
+                        }
+                        return SizedBox(
+                          width: (MediaQuery.of(context).size.width / 2) + 16.0,
+                          height:
+                              (MediaQuery.of(context).size.width / 2) + 10.0,
+                          child: const Center(
+                            child: CircularProgressIndicator(
+                              color: Colors.black,
+                            ),
+                          ),
+                        );
+                      },
+                      width: (MediaQuery.of(context).size.width / 2) + 16.0,
+                      height: (MediaQuery.of(context).size.width / 2) + 10.0,
+                      fit: BoxFit.fill,
                     ),
-                  );
-                },
-                width: (MediaQuery.of(context).size.width / 2) + 16.0,
-                height: (MediaQuery.of(context).size.width / 2) + 10.0,
-                fit: BoxFit.fill,
-              ),
               Positioned(
                 right: 5.0,
                 top: 5.0,
                 child: IconButton(
                     icon: Icon(
-                      isFavourite
+                      wishListProvider.favProductIds
+                              .contains(productsModel.id)
                           ? Icons.favorite
                           : Icons.favorite_border_outlined,
                       color: Colors.red,
@@ -81,7 +93,16 @@ class _ProductItemState extends State<ProductItem> {
                     ),
                     onPressed: () {
                       print("PRESSED");
-                      toggleFavourite();
+                      if (wishListProvider.favProductIds
+                          .contains(productsModel.id)) {
+                        wishListProvider
+                            .removeFromWishlist(productsModel.id!);
+                        print("Product is removed from wishlist");
+                      } else {
+                        wishListProvider
+                            .addToWishlist(productsModel.id!);
+                        print("Product is added to wishlist");
+                      }
                     }),
               ),
               Positioned(
@@ -102,7 +123,7 @@ class _ProductItemState extends State<ProductItem> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          productOfCategoryModel.averageRating ?? "3.5",
+                          productsModel.averageRating ?? "3.5",
                           style: const TextStyle(
                               color: Colors.black, fontWeight: FontWeight.bold),
                         ),
@@ -118,61 +139,117 @@ class _ProductItemState extends State<ProductItem> {
                   )))
             ],
           ),
-          Text(productOfCategoryModel.name ?? "Jewellery", style: TextStyle(
-                        
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: (MediaQuery.of(context).size.width / 2) - 50,
+                    child: Text(
+                      productsModel.name ?? "Jewellery",
+                      style: const TextStyle(
                         fontSize: 16.0,
-                      ),),
-          // Row(children: [
-          //   Image.asset(
-          //     "assets/images/rupee.png",
-          //     width: 20.0,
-          //     height: 20.0,
-          //   ),
-          //   Text(
-          //     productOfCategoryModel.regularPrice ?? "15,000",
-          //     style: const TextStyle(decoration: TextDecoration.lineThrough),
-          //   ),
-          //   const SizedBox(
-          //     width: 5.0,
-          //   ),
-          //   Text(productOfCategoryModel.salePrice == "" ? "10,000" : productOfCategoryModel.salePrice ?? "10,000",),
-          // ])
-          productOfCategoryModel.salePrice == ""
-                    ?
-                    HtmlWidget(productOfCategoryModel.priceHtml ??
-                      "<b>${productOfCategoryModel.regularPrice}</b>",
-                      textStyle: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 17.0,
                       ),
-                      )
-                      :
-                Row(
-                  children: [
-                    Image.asset(
-                      "assets/images/rupee.png",
-                      width: 20.0,
-                      height: 20.0,
+                      softWrap: true,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    
-                      
-                    Text(
-                      productOfCategoryModel.salePrice == ""
-                          ? "10,000"
-                          : productOfCategoryModel.salePrice ?? "10,000",
-                      style: const TextStyle(
-                          fontSize: 20.0, fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(
-                      width: 5.0,
-                    ),
-                    Text(
-                      productOfCategoryModel.regularPrice ?? "15,000",
-                      style: const TextStyle(
-                          decoration: TextDecoration.lineThrough),
-                    ),
-                  ],
-                ),
+                  ),
+                  productsModel.salePrice == ""
+                      ? Row(
+                          //mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Image.asset(
+                              "assets/images/rupee.png",
+                              width: 19.0,
+                              height: 17.0,
+                            ),
+                            Text(
+                              productsModel.regularPrice ?? "20,000",
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 17.0,
+                              ),
+                            )
+                          ],
+                        )
+                      : Row(
+                          children: [
+                            Image.asset(
+                              "assets/images/rupee.png",
+                              width: 19.0,
+                              height: 17.0,
+                            ),
+                            Text(
+                              productsModel.salePrice == ""
+                                  ? "10,000"
+                                  : productsModel.salePrice ??
+                                      "10,000",
+                              style: const TextStyle(
+                                  fontSize: 17.0, fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(
+                              width: 5.0,
+                            ),
+                            Text(
+                              productsModel.regularPrice ?? "15,000",
+                              style: const TextStyle(
+                                  decoration: TextDecoration.lineThrough),
+                            ),
+                          ],
+                        ),
+                ],
+              ),
+              Column(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      if (cartProvider.cartProductIds
+                          .contains(productsModel.id)) {
+                        cartProvider
+                            .removeFromCartId(productsModel.id!);
+      
+                        cartProvider.removeFromCart(CartProductModel(
+                            cartProductid: productsModel.id,
+                            price: productsModel.regularPrice,
+                            productName: productsModel.name,
+                            quantity: "1",
+                            size: 5,
+                            deliveryDate: DateHelper.getCurrentDateInWords(),
+                            imageUrl: productsModel.images.isEmpty
+                                ? Strings.defaultImageUrl
+                                : productsModel.images[0].src ??
+                                    Strings.defaultImageUrl));
+                      } else {
+                        cartProvider.addToCartId(productsModel.id!);
+                        cartProvider.addToCart(CartProductModel(
+                            cartProductid: productsModel.id,
+                            price:
+                                productsModel.regularPrice ?? "20000",
+                            productName:
+                                productsModel.name ?? "Jewellery",
+                            quantity: "1",
+                            size: 5,
+                            deliveryDate: DateHelper.getCurrentDateInWords(),
+                            imageUrl: productsModel.images.isEmpty
+                                ? Strings.defaultImageUrl
+                                : productsModel.images[0].src ??
+                                    Strings.defaultImageUrl));
+                      }
+                    },
+                    child: Padding(
+                        padding:
+                            const EdgeInsets.only(right: 10.0, bottom: 10.0),
+                        child: cartProvider.cartProductIds
+                                .contains(productsModel.id)
+                            ? Icon(Icons.shopping_cart)
+                            : Icon(Icons.add_shopping_cart_rounded)),
+                  ),
+                ],
+              )
+            ],
+          )
         ],
       ),
     );

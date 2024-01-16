@@ -16,6 +16,7 @@ class CategoriesPage extends StatelessWidget {
           Navigator.pop(context);
           print("HOME PAGE");
         }, isNeededForHome: true,
+        isNeededForProductPage: false
       ),
       body: const SlideDrawer(),
     );

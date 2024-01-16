@@ -1,4 +1,3 @@
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:jwelery_app/model/choice_model.dart';
@@ -32,21 +31,22 @@ class _ChoiceWidgetState extends State<ChoiceWidget> {
   }
 
   
+  
   @override
   Widget build(BuildContext context) {
 
     Widget rowddl = Row(
       children: [
-        
+
         LabelWidget(label: choiceModel.label, fontSize: 16.0,),
-        SizedBox(width: 10.0,),
+        const SizedBox(width: 10.0,),
         DropdownButton(
           value: selectedOption,
-          icon: Icon(Icons.keyboard_arrow_down_rounded),
+          icon: const Icon(Icons.keyboard_arrow_down_rounded),
           items: options.map((String option){
             return DropdownMenuItem(
-              child: Text(option),
               value: option,
+              child: Text(option),
               );
           }).toList(), 
           onChanged: (String? newValue){
@@ -60,14 +60,14 @@ class _ChoiceWidgetState extends State<ChoiceWidget> {
     Widget columnddl = Column(
       children: [
         LabelWidget(label: choiceModel.label, fontSize: 16.0,),
-        SizedBox(height: 15.0,),
+        const SizedBox(height: 15.0,),
         DropdownButton(
           value: selectedOption,
-          icon: Icon(Icons.keyboard_arrow_down_rounded),
+          icon: const Icon(Icons.keyboard_arrow_down_rounded),
           items: options.map((String option){
             return DropdownMenuItem(
-              child: Text(option),
               value: option,
+              child: Text(option),
               );
           }).toList(), 
           onChanged: (String? newValue){
