@@ -191,8 +191,9 @@ class _WishListPageState extends State<WishListPage> {
                                                     height: 17.0,
                                                   ),
                                                   Text(
-                                                    wishListItem.regularPrice ??
-                                                        "20,000",
+                                                    wishListItem.regularPrice != ""
+                                                              ? wishListItem.regularPrice ??  "20000"
+                                                              : "20000",
                                                     softWrap: true,
                                                     overflow:
                                                         TextOverflow.ellipsis,
@@ -211,9 +212,9 @@ class _WishListPageState extends State<WishListPage> {
                                                   cartProvider.addToCart(CartProductModel(
                                                       cartProductid:
                                                           wishListItem.id,
-                                                      price: wishListItem
-                                                              .regularPrice ??
-                                                          "20000",
+                                                      price: wishListItem.regularPrice != ""
+                                                              ? wishListItem.regularPrice ??  "20000"
+                                                              : "0.0",
                                                       productName:
                                                           wishListItem.name ??
                                                               "Jewellery",

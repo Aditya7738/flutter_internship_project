@@ -6,7 +6,8 @@ import 'package:jwelery_app/views/widgets/label_widget.dart';
 class ChoiceWidget extends StatefulWidget {
   final ChoiceModel choiceModel;
   final bool fromCart;
-  const ChoiceWidget({super.key, required this.choiceModel, required this.fromCart});
+  final bool? forProfile;
+  const ChoiceWidget({super.key, required this.choiceModel, required this.fromCart, this.forProfile});
 
   @override
   State<ChoiceWidget> createState() => _ChoiceWidgetState();
@@ -20,6 +21,8 @@ class _ChoiceWidgetState extends State<ChoiceWidget> {
   late String selectedOption;
 
   bool fromCart = false;
+
+  bool forProfile = false;
   @override
   void initState() {
     // TODO: implement initState
@@ -28,6 +31,8 @@ class _ChoiceWidgetState extends State<ChoiceWidget> {
     options = choiceModel.options;
     selectedOption = options[0];
     fromCart = widget.fromCart;
+    forProfile = widget.forProfile ?? false;
+
   }
 
   
@@ -35,10 +40,25 @@ class _ChoiceWidgetState extends State<ChoiceWidget> {
   @override
   Widget build(BuildContext context) {
 
+    Widget mobileDdl = DropdownButton(
+          value: selectedOption,
+          icon: const Icon(Icons.keyboard_arrow_down_rounded),
+          items: options.map((String option){
+            return DropdownMenuItem(
+              value: option,
+              child: Text(option),
+              );
+          }).toList(), 
+          onChanged: (String? newValue){
+            setState(() {
+              selectedOption = newValue!;
+            });
+          });
+
     Widget rowddl = Row(
       children: [
 
-        LabelWidget(label: choiceModel.label, fontSize: 16.0,),
+        LabelWidget(label: choiceModel.label ?? "", fontSize: 16.0,),
         const SizedBox(width: 10.0,),
         DropdownButton(
           value: selectedOption,
@@ -59,7 +79,7 @@ class _ChoiceWidgetState extends State<ChoiceWidget> {
 
     Widget columnddl = Column(
       children: [
-        LabelWidget(label: choiceModel.label, fontSize: 16.0,),
+        LabelWidget(label: choiceModel.label ?? "", fontSize: 16.0,),
         const SizedBox(height: 15.0,),
         DropdownButton(
           value: selectedOption,
@@ -80,6 +100,8 @@ class _ChoiceWidgetState extends State<ChoiceWidget> {
 
     if(fromCart){
       return rowddl;
+    }else if(forProfile){
+      return mobileDdl;
     }
       return columnddl;
     

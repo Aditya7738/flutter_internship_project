@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jwelery_app/constants/strings.dart';
 import 'package:jwelery_app/providers/cart_provider.dart';
 import 'package:jwelery_app/providers/wishlist_provider.dart';
 import 'package:jwelery_app/views/pages/cart_page.dart';
@@ -39,9 +40,9 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
       //leadingWidth: 15.0,
       title: isNeededForHome
           ? Image.network(
-              "https://i.pinimg.com/564x/c3/6c/0d/c36c0d93ad3cb8779d3cc95b0b37a1cf.jpg",
-              width: 70,
-              height: 80,
+              Strings.app_logo,
+               width: 150,
+            height: 80,
             )
           : const TextField(
               showCursor: true,

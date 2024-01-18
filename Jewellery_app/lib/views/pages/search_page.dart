@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jwelery_app/api/api_service.dart';
 import 'package:jwelery_app/constants/strings.dart';
 import 'package:jwelery_app/model/products_model.dart';
-import 'package:jwelery_app/views/pages/product_details_page%20copy.dart';
+
 import 'package:jwelery_app/views/pages/product_details_page.dart';
 
 class SearchPage extends StatefulWidget {
@@ -59,8 +59,6 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
-
-
     return Scaffold(
         appBar: AppBar(
           elevation: 5.0,
@@ -112,7 +110,7 @@ class _SearchPageState extends State<SearchPage> {
                     size: 30.0,
                   ),
                   fillColor: Colors.grey,
-                  hintText: "Search",
+                  hintText: "Search for jewelleries",
                   hintStyle: TextStyle(color: Colors.grey, fontSize: 18.0)),
             ),
           ),
@@ -160,7 +158,12 @@ class _SearchPageState extends State<SearchPage> {
                                         ApiService.listOfProductsModel[index];
                                     return GestureDetector(
                                       onTap: () {
-                                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => ProductDetailsPage(productsModel: productsModel)));
+                                        Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ProductDetailsPage(
+                                                        productsModel:
+                                                            productsModel)));
                                       },
                                       child: Padding(
                                           padding: const EdgeInsets.symmetric(
@@ -175,10 +178,12 @@ class _SearchPageState extends State<SearchPage> {
                                                       const EdgeInsets.all(8.0),
                                                   child: Card(
                                                     elevation: 0.0,
-                                                    shape: RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius.circular(
-                                                                25.0)),
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        25.0)),
                                                     child: ClipRRect(
                                                       borderRadius:
                                                           BorderRadius.circular(
@@ -201,13 +206,14 @@ class _SearchPageState extends State<SearchPage> {
                                                             return child;
                                                           }
                                                           return Container(
-                                                            alignment:
-                                                                Alignment.center,
+                                                            alignment: Alignment
+                                                                .center,
                                                             width: 95.0,
                                                             height: 92.0,
                                                             child:
                                                                 const CircularProgressIndicator(
-                                                              color: Colors.black,
+                                                              color:
+                                                                  Colors.black,
                                                             ),
                                                           );
                                                         },
@@ -226,10 +232,16 @@ class _SearchPageState extends State<SearchPage> {
                                                       const EdgeInsets.all(5.0),
                                                   child: Column(
                                                     crossAxisAlignment:
-                                                        CrossAxisAlignment.start,
+                                                        CrossAxisAlignment
+                                                            .start,
                                                     children: [
                                                       SizedBox(
-                                                        width: MediaQuery.of(context).size.width/2 + 30,
+                                                        width: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width /
+                                                                2 +
+                                                            30,
                                                         child: Text(
                                                           ApiService
                                                                   .listOfProductsModel[
@@ -237,8 +249,8 @@ class _SearchPageState extends State<SearchPage> {
                                                                   .name ??
                                                               "Jewellery",
                                                           softWrap: true,
-                                                          overflow:
-                                                              TextOverflow.ellipsis,
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
                                                         ),
                                                       ),
                                                       const SizedBox(
@@ -251,11 +263,9 @@ class _SearchPageState extends State<SearchPage> {
                                                             width: 20.0,
                                                             height: 20.0,
                                                           ),
-                                                          Text(ApiService
-                                                                  .listOfProductsModel[
-                                                                      index]
-                                                                  .regularPrice ??
-                                                              "20,000"),
+                                                          Text(ApiService.listOfProductsModel[index].regularPrice != ""
+                                                              ? ApiService.listOfProductsModel[index].regularPrice ??  "20000"
+                                                              : "20000")
                                                         ],
                                                       )
                                                     ],

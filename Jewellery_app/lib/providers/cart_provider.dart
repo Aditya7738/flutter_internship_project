@@ -8,10 +8,28 @@ class CartProvider with ChangeNotifier {
   //DBHelper dbHelper = DBHelper();
 
   List<CartProductModel> _cart = [];
+
+  // double _totalPrice = 0.0;
+  // double get totalPrice => _totalPrice;
+
   List<CartProductModel> get cart => _cart;
 
   List<int> _cartProductIds = <int>[];
   List<int> get cartProductIds => _cartProductIds;
+
+
+
+  double calculateTotalPrice() {
+    var totalPrice = 0.0;
+    for (int i = 0; i < _cart.length; i++) {
+      var price = double.parse(_cart[i].price ?? "20000");
+      var quantity = double.parse(_cart[i].quantity ?? "1");
+      totalPrice += price * quantity;
+    }
+    return totalPrice;
+    //_totalPrice = totalPrice;
+    
+  }
 
   void addToCartId(int id) {
     _cartProductIds.add(id);

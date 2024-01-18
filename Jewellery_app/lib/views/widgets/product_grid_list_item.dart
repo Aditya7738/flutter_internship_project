@@ -32,8 +32,9 @@ class _ProductGridListItemState extends State<ProductGridListItem> {
           children: [
             Stack(
               children: [
-                Image.network(
-                    productOfCategoryModel.images.isEmpty ? defaultImageUrl :  productOfCategoryModel.images[0].src ?? defaultImageUrl),
+                Image.network(productOfCategoryModel.images.isEmpty
+                    ? defaultImageUrl
+                    : productOfCategoryModel.images[0].src ?? defaultImageUrl),
                 Container(
                   alignment: Alignment.topRight,
                   margin: const EdgeInsets.only(right: 5.0, top: 5.0),
@@ -78,7 +79,9 @@ class _ProductGridListItemState extends State<ProductGridListItem> {
             Text(productOfCategoryModel.name ?? "Jewellery"),
             Row(children: [
               Text(
-                productOfCategoryModel.regularPrice ?? "10,000",
+                productOfCategoryModel.regularPrice != ""
+                    ? productOfCategoryModel.regularPrice ?? "20000"
+                    : "20000",
                 style: const TextStyle(decoration: TextDecoration.lineThrough),
               ),
               const SizedBox(
@@ -89,5 +92,4 @@ class _ProductGridListItemState extends State<ProductGridListItem> {
           ],
         ));
   }
-
 }

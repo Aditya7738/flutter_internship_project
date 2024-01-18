@@ -7,19 +7,25 @@ class BottomAppBarCart extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    // var cartProvider = Provider.of<CartProvider>(context, listen: false);
+    // cartProvider.calculateTotalPrice();
+
     return Expanded(
         child: Container(
       color: Colors.grey,
       child: Consumer<CartProvider>(
         builder: ((context, value, child) {
           var cartList = value.cart;
-          var totalPrice = 0.0;
+          //value.calculateTotalPrice();
+          // var totalPrice = 0.0;
           
-          for (int i = 0; i < cartList.length; i++) {
-            var price = double.parse(cartList[i].price ?? "20000");
-            var quantity = double.parse(cartList[i].quantity ?? "1");
-            totalPrice += price * quantity;
-          }
+          // for (int i = 0; i < cartList.length; i++) {
+          //   var price = double.parse(cartList[i].price ?? "20000");
+          //   var quantity = double.parse(cartList[i].quantity ?? "1");
+          //   totalPrice += price * quantity;
+          // }
+
+          // value.setTotalPrice(totalPrice);
 
           return Padding(
             padding: const EdgeInsets.all(8.0),
@@ -36,7 +42,7 @@ class BottomAppBarCart extends StatelessWidget implements PreferredSizeWidget {
                       width: 20.0,
                       height: 20.0,
                     ),
-                    Text("$totalPrice"),
+                    Text("${value.calculateTotalPrice()}"),
                   ],
                 )
               ],

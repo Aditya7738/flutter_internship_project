@@ -19,17 +19,14 @@ class ProductItem extends StatefulWidget {
 
 class _ProductItemState extends State<ProductItem> {
   late final ProductsModel productsModel;
- 
-  List<ProductImage> listOfProductImage =
-      <ProductImage>[];
+
+  List<ProductImage> listOfProductImage = <ProductImage>[];
 
   @override
   void initState() {
     super.initState();
     productsModel = widget.productsModel;
   }
-
-  
 
   @override
   Widget build(BuildContext context) {
@@ -41,8 +38,8 @@ class _ProductItemState extends State<ProductItem> {
       onTap: () {
         print("CATEGORY PRODUCT PRESSED");
         Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => ProductDetailsPage(
-                productsModel: productsModel)));
+            builder: (context) =>
+                ProductDetailsPage(productsModel: productsModel)));
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -84,8 +81,7 @@ class _ProductItemState extends State<ProductItem> {
                 top: 5.0,
                 child: IconButton(
                     icon: Icon(
-                      wishListProvider.favProductIds
-                              .contains(productsModel.id)
+                      wishListProvider.favProductIds.contains(productsModel.id)
                           ? Icons.favorite
                           : Icons.favorite_border_outlined,
                       color: Colors.red,
@@ -95,12 +91,10 @@ class _ProductItemState extends State<ProductItem> {
                       print("PRESSED");
                       if (wishListProvider.favProductIds
                           .contains(productsModel.id)) {
-                        wishListProvider
-                            .removeFromWishlist(productsModel.id!);
+                        wishListProvider.removeFromWishlist(productsModel.id!);
                         print("Product is removed from wishlist");
                       } else {
-                        wishListProvider
-                            .addToWishlist(productsModel.id!);
+                        wishListProvider.addToWishlist(productsModel.id!);
                         print("Product is added to wishlist");
                       }
                     }),
@@ -166,7 +160,9 @@ class _ProductItemState extends State<ProductItem> {
                               height: 17.0,
                             ),
                             Text(
-                              productsModel.regularPrice ?? "20,000",
+                              productsModel.regularPrice != ""
+                                  ? productsModel.regularPrice ?? "20000"
+                                  : "0.0",
                               style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 17.0,
@@ -184,8 +180,7 @@ class _ProductItemState extends State<ProductItem> {
                             Text(
                               productsModel.salePrice == ""
                                   ? "10,000"
-                                  : productsModel.salePrice ??
-                                      "10,000",
+                                  : productsModel.salePrice ?? "10,000",
                               style: const TextStyle(
                                   fontSize: 17.0, fontWeight: FontWeight.bold),
                             ),
@@ -193,7 +188,9 @@ class _ProductItemState extends State<ProductItem> {
                               width: 5.0,
                             ),
                             Text(
-                              productsModel.regularPrice ?? "15,000",
+                              productsModel.regularPrice != ""
+                                  ? productsModel.regularPrice ?? "20000"
+                                  : "0.0",
                               style: const TextStyle(
                                   decoration: TextDecoration.lineThrough),
                             ),
@@ -207,12 +204,13 @@ class _ProductItemState extends State<ProductItem> {
                     onTap: () {
                       if (cartProvider.cartProductIds
                           .contains(productsModel.id)) {
-                        cartProvider
-                            .removeFromCartId(productsModel.id!);
-      
+                        cartProvider.removeFromCartId(productsModel.id!);
+
                         cartProvider.removeFromCart(CartProductModel(
                             cartProductid: productsModel.id,
-                            price: productsModel.regularPrice,
+                            price: productsModel.regularPrice != ""
+                                ? productsModel.regularPrice ?? "20000"
+                                : "0.0",
                             productName: productsModel.name,
                             quantity: "1",
                             size: 5,
@@ -225,10 +223,10 @@ class _ProductItemState extends State<ProductItem> {
                         cartProvider.addToCartId(productsModel.id!);
                         cartProvider.addToCart(CartProductModel(
                             cartProductid: productsModel.id,
-                            price:
-                                productsModel.regularPrice ?? "20000",
-                            productName:
-                                productsModel.name ?? "Jewellery",
+                            price: productsModel.regularPrice != ""
+                                ? productsModel.regularPrice ?? "20000"
+                                : "0.0",
+                            productName: productsModel.name ?? "Jewellery",
                             quantity: "1",
                             size: 5,
                             deliveryDate: DateHelper.getCurrentDateInWords(),

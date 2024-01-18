@@ -18,7 +18,6 @@ import 'package:provider/provider.dart';
 
 class ProductDetailsPage extends StatefulWidget {
   final ProductsModel productsModel;
-  
 
   const ProductDetailsPage({super.key, required this.productsModel});
 
@@ -27,21 +26,16 @@ class ProductDetailsPage extends StatefulWidget {
 }
 
 class _ProductDetailsPageState extends State<ProductDetailsPage> {
-
   late ProductsModel productsModel;
- 
+
   bool backordersAllowed = false;
- 
+
   @override
   void initState() {
     super.initState();
     productsModel = widget.productsModel;
     backordersAllowed = productsModel.backordersAllowed ?? false;
-    
   }
-  
-
- 
 
   @override
   Widget build(BuildContext context) {
@@ -88,8 +82,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
       body: Scrollbar(
         child: SingleChildScrollView(
             child: Column(children: [
-          WholeCarouselSlider(
-              listOfProductImage: productsModel.images),
+          WholeCarouselSlider(listOfProductImage: productsModel.images),
           const SizedBox(
             height: 10.0,
           ),
@@ -111,8 +104,12 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                       height: 17.0,
                                     ),
                                     Text(
-                                      productsModel.regularPrice ??
-                                          "20,000",
+                                      productsModel.regularPrice != ""
+                                          ? productsModel.regularPrice ??
+                                              "20000"
+                                          : "0.0",
+                                      // productsModel.regularPrice ??
+                                      //     "20,000",
                                       style: const TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 17.0,
@@ -130,8 +127,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                     Text(
                                       productsModel.salePrice == ""
                                           ? "10,000"
-                                          : productsModel.salePrice ??
-                                              "10,000",
+                                          : productsModel.salePrice ?? "10,000",
                                       style: const TextStyle(
                                           fontSize: 20.0,
                                           fontWeight: FontWeight.bold),
@@ -140,8 +136,10 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                       width: 5.0,
                                     ),
                                     Text(
-                                      productsModel.regularPrice ??
-                                          "15,000",
+                                      productsModel.regularPrice != ""
+                                          ? productsModel.regularPrice ??
+                                              "20000"
+                                          : "0.0",
                                       style: const TextStyle(
                                           decoration:
                                               TextDecoration.lineThrough),
@@ -161,8 +159,8 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                 print("PRESSED");
                                 if (wishListProvider.favProductIds
                                     .contains(productsModel.id)) {
-                                  wishListProvider.removeFromWishlist(
-                                      productsModel.id!);
+                                  wishListProvider
+                                      .removeFromWishlist(productsModel.id!);
                                   print("Product is removed from wishlist");
                                 } else {
                                   wishListProvider
@@ -174,7 +172,6 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                     const SizedBox(
                       height: 10.0,
                     ),
-
                     Container(
                         color: const Color(0xfff1f7eb),
                         padding: const EdgeInsets.symmetric(
@@ -191,7 +188,6 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                     const SizedBox(
                       height: 10.0,
                     ),
-
                     SizedBox(
                       height: MediaQuery.of(context).size.height / 2.5,
                       child: Scrollbar(
@@ -220,13 +216,11 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                     const LabelWidget(
                       label: Strings.description_label,
                     ),
-
                     HtmlWidget(productsModel.description ??
                         Strings.product_description),
                     const SizedBox(
                       height: 10.0,
                     ),
-
                     Row(
                       children: [
                         const LabelWidget(
@@ -247,8 +241,9 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         const SizedBox(
                           width: 10.0,
                         ),
-                        Text(productsModel.categories != null ?
-                        productsModel.categories![0].name ?? "Jewellery" : "Jewellery")
+                        Text(productsModel.categories != null
+                            ? productsModel.categories![0].name ?? "Jewellery"
+                            : "Jewellery")
                       ],
                     ),
                     const SizedBox(
@@ -273,15 +268,13 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                 return Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 10.0),
-                                  child: Text(
-                                      productsModel.tags?[index].name ??
-                                          "Category"),
+                                  child: Text(productsModel.tags?[index].name ??
+                                      "Category"),
                                 );
                               },
                               scrollDirection: Axis.horizontal,
                             ),
                           ),
-                   
                   ])),
         ])),
       ),
@@ -296,10 +289,11 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
               cartProvider.addToCartId(productsModel.id!);
               print("CART IDS : ${cartProvider.cartProductIds}");
 
-
               cartProvider.addToCart(CartProductModel(
                   cartProductid: productsModel.id,
-                  price: productsModel.regularPrice ?? "20000",
+                  price: productsModel.regularPrice != ""
+                      ? productsModel.regularPrice ?? "20000"
+                      : "0.0",
                   productName: productsModel.name ?? "Jewellery",
                   quantity: "1",
                   size: 5,
