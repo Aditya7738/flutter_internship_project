@@ -7,6 +7,16 @@ class ValidationHelper{
     return null;
   }
 
+static String? isFullAddress(String? input){
+    if(nullOrEmptyString(input) == null){
+      if(input!.length != 10){
+        return "Please enter full address";
+      }
+      return null;
+    }
+  }
+
+
   static String? isPhoneNoValid(String? input){
     if(nullOrEmptyString(input) == null){
       if(input!.length != 10){

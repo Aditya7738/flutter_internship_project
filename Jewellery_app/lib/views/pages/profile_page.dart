@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:jwelery_app/constants/strings.dart';
 import 'package:badges/badges.dart' as badges;
@@ -62,80 +63,14 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          title: Image.network(
-            Strings.app_logo,
-            width: 150,
-            height: 80,
-          ),
+        appBar: AppBar(
+          title: Text("Edit Profile"),
           backgroundColor: Colors.white,
-          actions: <Widget>[
-            const CircleAvatar(
-              radius: 12.0,
-
-              child: CircleAvatar(
-                backgroundImage: NetworkImage(
-                    "https://upload.wikimedia.org/wikipedia/commons/b/bc/Flag_of_India.png"),
-                radius: 12,
-              ), //CircleAvatar,
-            ),
-            const SizedBox(
-              width: 10,
-            ),
-            SizedBox(
-              height: 40.0,
-              width: 32.0,
-              child: badges.Badge(
-                badgeStyle: const badges.BadgeStyle(badgeColor: Colors.purple),
-                badgeContent: Consumer<WishlistProvider>(
-                    builder: (context, value, child) {
-                  print("LENGTH OF FAV: ${value.favProductIds}");
-                  return Text(
-                    value.favProductIds.length.toString(),
-                    style: const TextStyle(color: Colors.white),
-                  );
-                }),
-                child: IconButton(
-                  onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const WishListPage()));
-                  },
-                  icon: const Icon(Icons.favorite_sharp, color: Colors.black),
-                ),
-              ),
-            ),
-            const SizedBox(
-              width: 12,
-            ),
-            SizedBox(
-              height: 40.0,
-              width: 32.0,
-              child: badges.Badge(
-                badgeStyle: const badges.BadgeStyle(badgeColor: Colors.purple),
-                badgeContent: Consumer<CartProvider>(
-                    builder: (context, value, child) => Text(
-                          value.cart.length.toString(),
-                          style: const TextStyle(color: Colors.white),
-                        )),
-                child: IconButton(
-                  onPressed: () {
-                    print("CART CLICKED");
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => CartPage()));
-                  },
-                  icon: const Icon(Icons.shopping_cart),
-                  color: Colors.black,
-                ),
-              ),
-            ),
-            const SizedBox(
-              width: 12,
-            ),
-          ]),
-      body: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: SingleChildScrollView(child: Consumer<ProfileProvider>(
-          builder: (context, value, child) {
+        ),
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+          child: SingleChildScrollView(child:
+              Consumer<ProfileProvider>(builder: (context, value, child) {
             return Form(
               key: _formKey,
               child: Column(
@@ -148,16 +83,17 @@ class _ProfilePageState extends State<ProfilePage> {
                       validator: (value) {
                         return ValidationHelper.nullOrEmptyString(value);
                       },
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         // errorText: ,
                         labelText: "First Name*",
-                        border: const OutlineInputBorder(),
+                        border: OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20.0))),
                       ),
-                  
                     ),
                   ),
                   const SizedBox(
-                    height: 20.0,
+                    height: 30.0,
                   ),
                   TextFormField(
                     keyboardType: TextInputType.name,
@@ -166,12 +102,13 @@ class _ProfilePageState extends State<ProfilePage> {
                     },
                     decoration: InputDecoration(
                       labelText: "Last Name*",
-                      border: const OutlineInputBorder(),
+                      border: OutlineInputBorder(
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(20.0))),
                     ),
-                 
                   ),
                   const SizedBox(
-                    height: 20.0,
+                    height: 30.0,
                   ),
                   Container(
                     height: 75.0,
@@ -181,23 +118,40 @@ class _ProfilePageState extends State<ProfilePage> {
                         return ValidationHelper.isPhoneNoValid(value);
                       },
                       decoration: InputDecoration(
-                          suffix: Container(
-                              width: 100.0,
-                              height: 40.0,
-                              decoration: BoxDecoration(
-                                  color: Color(0xffCC868A),
-                                  borderRadius: BorderRadius.circular(10.0)),
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 10.0, horizontal: 20.0),
-                              child: Center(
-                                child: const Text(
-                                  "VERIFY",
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 15.0),
-                                ),
-                              )),
-                          border: const OutlineInputBorder(),
-                      
+                          suffix: GestureDetector(
+                              onTap: () {
+                                value.setPhoneNoVerified(true);
+                              },
+                              child: value.phoneNoVerified
+                                  ? Container(
+                                      width: 100.0,
+                                      height: 40.0,
+                                      decoration: BoxDecoration(
+                                          color: Color(0xffCC868A),
+                                          borderRadius:
+                                              BorderRadius.circular(10.0)),
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 10.0, horizontal: 20.0),
+                                      child: Center(
+                                        child: const Text(
+                                          "VERIFY",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 15.0),
+                                        ),
+                                      ))
+                                  : Padding(
+                                      padding:
+                                          const EdgeInsets.only(bottom: 0.0),
+                                      child: Image.asset(
+                                        "assets/images/yes.png",
+                                        width: 30.0,
+                                        height: 25.0,
+                                      ),
+                                    )),
+                          border: const OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20.0))),
                           prefix: DropdownButton(
                               value: selectedOption,
                               icon:
@@ -217,10 +171,9 @@ class _ProfilePageState extends State<ProfilePage> {
                       maxLines: 1,
                     ),
                   ),
-                  
-                  
+
                   const SizedBox(
-                    height: 20.0,
+                    height: 30.0,
                   ),
 
                   Container(
@@ -233,22 +186,39 @@ class _ProfilePageState extends State<ProfilePage> {
                       decoration: InputDecoration(
                         //labelText: "Enter your email",
                         labelText: "Enter your email*",
-                        border: const OutlineInputBorder(),
-                        suffix: Container(
-                            width: 100.0,
-                            height: 40.0,
-                            decoration: BoxDecoration(
-                                color: Color(0xffCC868A),
-                                borderRadius: BorderRadius.circular(10.0)),
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 10.0, horizontal: 20.0),
-                            child: Center(
-                              child: const Text(
-                                "VERIFY",
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 15.0),
-                              ),
-                            )),
+                        border: const OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20.0))),
+                        suffix: GestureDetector(
+                            onTap: () {
+                              value.setEmailVerified(true);
+                            },
+                            child: value.phoneNoVerified
+                                ? Container(
+                                    width: 100.0,
+                                    height: 40.0,
+                                    decoration: BoxDecoration(
+                                        color: Color(0xffCC868A),
+                                        borderRadius:
+                                            BorderRadius.circular(10.0)),
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 10.0, horizontal: 20.0),
+                                    child: Center(
+                                      child: const Text(
+                                        "VERIFY",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 15.0),
+                                      ),
+                                    ))
+                                : Padding(
+                                    padding: const EdgeInsets.only(bottom: 0.0),
+                                    child: Image.asset(
+                                      "assets/images/yes.png",
+                                      width: 30.0,
+                                      height: 25.0,
+                                    ),
+                                  )),
                       ),
                     ),
                   ),
@@ -257,22 +227,43 @@ class _ProfilePageState extends State<ProfilePage> {
                   //   onPressed: (){}, child: Text("VERIFY")),
 
                   SizedBox(
-                    height: 20.0,
+                    height: 30.0,
+                  ),
+
+                  TextFormField(
+                    minLines: 2,
+                    maxLines: 3,
+                    validator: (value) {
+                      return ValidationHelper.isFullAddress(value);
+                    },
+                    keyboardType: TextInputType.streetAddress,
+                    decoration: InputDecoration(
+                      labelText: "Address*",
+                      border: const OutlineInputBorder(
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(20.0))),
+                    ),
+                    
+                  ),
+                  SizedBox(
+                    height: 30.0,
                   ),
 
                   TextFormField(
                     validator: (value) {
-                        return ValidationHelper.isPincodeValid(value);
-                      },
+                      return ValidationHelper.isPincodeValid(value);
+                    },
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                       labelText: "Pin code*",
-                      border: const OutlineInputBorder(),
+                      border: const OutlineInputBorder(
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(20.0))),
                     ),
                     maxLines: 1,
                   ),
                   SizedBox(
-                    height: 20.0,
+                    height: 30.0,
                   ),
 
                   TextFormField(
@@ -280,21 +271,20 @@ class _ProfilePageState extends State<ProfilePage> {
                     keyboardType: TextInputType.datetime,
                     onTap: () async {
                       print("CALENDAR PRESSED");
-                      
 
                       birthdateController.text = await _selectedDate(context);
-                      
-
                     },
                     decoration: const InputDecoration(
                       suffixIcon: SuffixIcon(icon: Icons.calendar_month),
                       labelText: "Birthday (Optional)",
-                      border: const OutlineInputBorder(),
+                      border: const OutlineInputBorder(
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(20.0))),
                     ),
                     maxLines: 1,
                   ),
                   const SizedBox(
-                    height: 20.0,
+                    height: 30.0,
                   ),
 
                   TextFormField(
@@ -309,17 +299,18 @@ class _ProfilePageState extends State<ProfilePage> {
                     decoration: InputDecoration(
                       suffixIcon: SuffixIcon(icon: Icons.calendar_month),
                       labelText: "Anniversary (Optional)",
-                      border: const OutlineInputBorder(),
+                      border: const OutlineInputBorder(
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(20.0))),
                     ),
                     maxLines: 1,
                   ),
                   SizedBox(
-                    height: 20.0,
+                    height: 30.0,
                   ),
 
-                  
                   TextFormField(
-                   onTap: () async {
+                    onTap: () async {
                       print("CALENDAR PRESSED");
 
                       spousebirthdateController.text =
@@ -330,13 +321,66 @@ class _ProfilePageState extends State<ProfilePage> {
                     decoration: InputDecoration(
                       suffixIcon: SuffixIcon(icon: Icons.calendar_month),
                       labelText: "Spouse Birthday (Optional)",
-                      border: const OutlineInputBorder(),
+                      border: const OutlineInputBorder(
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(20.0))),
                     ),
                     maxLines: 1,
                   ),
 
                   SizedBox(
-                    height: 20.0,
+                    height: 30.0,
+                  ),
+
+                  // Center(
+                  //   child: Text("*By clicking on Save chage, you accept our"),
+
+                  // ),
+                  Center(
+                      child: RichText(
+                          text: TextSpan(
+                              text:
+                                  '*By clicking on Save chage, you accept our ',
+                              style: TextStyle(color: Colors.black),
+                              children: <TextSpan>[
+                        TextSpan(
+                          text: 'T&C',
+                          style: TextStyle(
+                            color: Color(0xffCC868A),
+                            
+                          ),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              // Handle the click event for the specific word.
+                              print('You clicked on T&C');
+                              // Add your custom action here.
+                            },
+                        ),
+                        TextSpan(
+                          text: ' and ',
+                          style: TextStyle(
+                            color: Colors.black,
+                           
+                          ),
+                          
+                        ),
+                        TextSpan(
+                          text: 'Privacy Policy',
+                          style: TextStyle(
+                            color: Color(0xffCC868A),
+                            
+                          ),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              // Handle the click event for the specific word.
+                              print('You clicked on Privacy Policy');
+                              // Add your custom action here.
+                            },
+                        ),
+                      ]))),
+
+                  SizedBox(
+                    height: 30.0,
                   ),
                   GestureDetector(
                     onTap: () {
@@ -361,9 +405,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ],
               ),
             );
-          },
-        )),
-      ),
-    );
+          })),
+        ));
   }
 }

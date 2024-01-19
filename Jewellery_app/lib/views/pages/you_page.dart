@@ -4,6 +4,10 @@ import 'package:jwelery_app/constants/strings.dart';
 import 'package:jwelery_app/providers/cart_provider.dart';
 import 'package:jwelery_app/providers/wishlist_provider.dart';
 import 'package:jwelery_app/views/pages/cart_page.dart';
+import 'package:jwelery_app/views/pages/login_page.dart';
+import 'package:jwelery_app/views/pages/my_account_page.dart';
+import 'package:jwelery_app/views/pages/notification_page.dart';
+import 'package:jwelery_app/views/pages/orders_page.dart';
 import 'package:jwelery_app/views/pages/wishlist_page.dart';
 import 'package:provider/provider.dart';
 
@@ -34,14 +38,7 @@ class YouPage extends StatelessWidget {
     "Rate Us",
   ];
 
-  List<String> title3 = [
-    "Return",
-    "Exchange",
-    "Repair",
-    "Shipping",
-    "FAQ"
-
-  ];
+  List<String> title3 = ["Return", "Exchange", "Repair", "Shipping", "FAQ"];
 
   @override
   Widget build(BuildContext context) {
@@ -127,9 +124,31 @@ class YouPage extends StatelessWidget {
               width: MediaQuery.of(context).size.width,
               height: 280.0,
               child: ListView.separated(
-                itemCount: 4,
+                itemCount: icons.length,
                 itemBuilder: (context, index) {
                   return ListTile(
+                    onTap: () {
+                      switch (index) {
+                        case 0:
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => LoginPage(),
+                          ));
+
+                          break;
+                          case 2:
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => NotificationPage(),
+                          ));
+
+                          break;
+                        case 3:
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => OrderPage(),
+                          ));
+                          break;
+                        default:
+                      }
+                    },
                     leading: Icon(icons[index]),
                     title: Text(title[index], style: TextStyle(fontSize: 17.0)),
                   );
@@ -205,7 +224,9 @@ class YouPage extends StatelessWidget {
                             borderRadius: BorderRadius.all(
                               Radius.circular(15.0),
                             )),
-                        child: Image.asset("assets/images/whatsapp.png",),
+                        child: Image.asset(
+                          "assets/images/whatsapp.png",
+                        ),
                       ),
                       Text("Whatsapp")
                     ],
@@ -226,7 +247,7 @@ class YouPage extends StatelessWidget {
               width: MediaQuery.of(context).size.width,
               height: 200.0,
               child: ListView.separated(
-                itemCount: 3,
+                itemCount: icons2.length,
                 itemBuilder: (context, index) {
                   return ListTile(
                     leading: Icon(icons2[index]),
@@ -247,35 +268,30 @@ class YouPage extends StatelessWidget {
                   "POLICIES",
                   style: TextStyle(fontSize: 15.0),
                 )),
-             SizedBox(
+            SizedBox(
               width: MediaQuery.of(context).size.width,
               height: 100.0,
               child: GridView.builder(
-                itemCount: 5,
+                itemCount: title3.length,
                 itemBuilder: (context, index) {
                   return Container(
-                  decoration: BoxDecoration(
-                  
-                    border: Border.all(
-                              color: Colors.grey, style: BorderStyle.solid),
-
-                  ),
-                    child: Padding(padding: EdgeInsets.symmetric(horizontal: 30.0,
-                    vertical: 10.0),
-                    child: Text(title3[index]),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                          color: Colors.grey, style: BorderStyle.solid),
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 30.0, vertical: 10.0),
+                      child: Text(title3[index]),
                     ),
                   );
                 },
-              gridDelegate:SliverGridDelegateWithFixedCrossAxisCount(
-                        childAspectRatio: 2.9,
-                        crossAxisCount:
-                            3,
-                       
-                        mainAxisSpacing: 0.0),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    childAspectRatio: 2.9,
+                    crossAxisCount: 3,
+                    mainAxisSpacing: 0.0),
               ),
             ),
-
-
           ],
         ),
       ),
