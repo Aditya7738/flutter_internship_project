@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jwelery_app/api/api_service.dart';
 import 'package:jwelery_app/model/navigation_model.dart';
 import 'package:jwelery_app/providers/cart_provider.dart';
+import 'package:jwelery_app/providers/customer_provider.dart';
 import 'package:jwelery_app/providers/profile_provider.dart';
 import 'package:jwelery_app/providers/wishlist_provider.dart';
 import 'package:jwelery_app/views/pages/home_screen.dart';
@@ -43,6 +44,8 @@ class _DashboardPageState extends State<DashboardPage> {
         .getWishListSharedPrefs();
     print("call wishlist shared prefs");
     Provider.of<ProfileProvider>(context, listen: false).getProfileSharedPrefs();
+    Provider.of<CustomerProvider>(context, listen: false).getCustomerSharedPrefs();
+
   }
  
   @override

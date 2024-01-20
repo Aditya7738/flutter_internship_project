@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jwelery_app/views/widgets/empty_list_widget.dart';
+import 'package:jwelery_app/views/widgets/my_order_tab.dart';
 
 class OrderPage extends StatelessWidget {
   const OrderPage({super.key});
@@ -27,7 +28,11 @@ class OrderPage extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-          EmptyListWidget(imagePath: "assets/images/delivery_service.png", message: "Oops! You haven't placed an order yet!"),
+
+
+          //EmptyListWidget(imagePath: "assets/images/delivery_service.png", message: "Oops! You haven't placed an order yet!"),
+          MyOrderTab(),
+
           EmptyListWidget(imagePath: "assets/images/cancel.png", message: "You don't have ay completely cancelled order.", forCancelledOrder: true,),
           ]
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jwelery_app/providers/cart_provider.dart';
+import 'package:jwelery_app/providers/customer_provider.dart';
 import 'package:jwelery_app/providers/profile_provider.dart';
 import 'package:jwelery_app/providers/wishlist_provider.dart';
 import 'package:jwelery_app/views/pages/dashboard_page.dart';
@@ -28,6 +29,7 @@ SystemChrome.setPreferredOrientations([
         ChangeNotifierProvider(create: (context) => CartProvider()),
         ChangeNotifierProvider(create: (context) => WishlistProvider()),
         ChangeNotifierProvider(create: (context) => ProfileProvider()),
+        ChangeNotifierProvider(create: (context) => CustomerProvider()),
       ],
       child: MaterialApp(
         title: Strings.app_name,

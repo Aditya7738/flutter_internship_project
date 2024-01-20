@@ -12,6 +12,7 @@ import 'package:jwelery_app/views/pages/wishlist_page.dart';
 import 'package:jwelery_app/views/widgets/choice_widget.dart';
 import 'package:jwelery_app/views/widgets/suffix_icon.dart';
 import 'package:provider/provider.dart';
+import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 class ProfilePage extends StatefulWidget {
   ProfilePage({super.key});

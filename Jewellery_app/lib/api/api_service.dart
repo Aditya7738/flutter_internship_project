@@ -4,6 +4,7 @@ import 'dart:ffi';
 import 'package:jwelery_app/constants/strings.dart';
 import 'package:jwelery_app/model/category_model.dart';
 import 'package:http/http.dart' as http;
+import 'package:jwelery_app/model/customer_model.dart';
 import 'package:jwelery_app/model/products_model.dart' as AllProducts;
 import 'package:jwelery_app/model/products_model.dart';
 import 'package:jwelery_app/model/products_of_category.dart'
@@ -441,5 +442,28 @@ class ApiService {
     }else{
       return [];
     }
+  }
+
+
+  static Future<http.Response> createCustomer(Map<String, dynamic> customerData) async {
+    final endpoint = "https://tiarabytj.com/wp-json/wc/v3/customers?consumer_key=${Strings.consumerKey}&consumer_secret=${Strings.consumerSecret}";
+
+    Uri uri = Uri.parse(endpoint);
+
+    http.Response response = await http.post(uri,
+    body: customerData
+    );
+
+    print("STATUS ${response.statusCode}");
+    print("BODY ${response.body}");
+
+    if(response.statusCode == 201){
+      print("BODY ${response.body}");
+      final json = jsonDecode(response.body);
+      print("JSON $json");
+
+      return response;
+    }
+   return response;
   }
 }

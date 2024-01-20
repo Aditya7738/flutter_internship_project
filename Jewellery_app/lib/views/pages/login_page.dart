@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:jwelery_app/constants/strings.dart';
 import 'package:jwelery_app/helpers/validation_helper.dart';
+import 'package:jwelery_app/views/pages/signup_page.dart';
 import 'package:jwelery_app/views/pages/you_page.dart';
 
 class LoginPage extends StatelessWidget {
@@ -104,7 +105,7 @@ class LoginPage extends StatelessWidget {
                           ),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
-                              
+                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => SignupPage(),));
                             },
                         ),
                       ]))),
