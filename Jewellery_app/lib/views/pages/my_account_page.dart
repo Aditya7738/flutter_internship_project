@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:jwelery_app/constants/strings.dart';
 import 'package:jwelery_app/providers/cart_provider.dart';
 import 'package:jwelery_app/views/pages/cart_page.dart';
 import 'package:jwelery_app/views/pages/orders_page.dart';
@@ -41,8 +40,8 @@ class MyAccountPage extends StatelessWidget {
       builder: (context) {
         return AlertDialog(
           alignment: Alignment.center,
-          title: Text("Confirm Logout"),
-          content: Text("Please click on confirm button for logout else cance"),
+          title: const Text("Confirm Logout"),
+          content: const Text("Please click on confirm button for logout else cance"),
           actions: [
             
             GestureDetector(
@@ -71,7 +70,7 @@ class MyAccountPage extends StatelessWidget {
               },
               child: Container(
                   decoration: BoxDecoration(
-                      color: Color(0xffCC868A),
+                      color: const Color(0xffCC868A),
                       borderRadius: BorderRadius.circular(5.0)),
                   padding: const EdgeInsets.symmetric(
                       vertical: 10.0, horizontal: 20.0),
@@ -91,10 +90,10 @@ class MyAccountPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Text("My Account"),
+          title: const Text("My Account"),
           backgroundColor: Colors.white,
           actions: <Widget>[
-            Icon(
+            const Icon(
               Icons.search_rounded,
               size: 30.0,
             ),
@@ -128,21 +127,21 @@ class MyAccountPage extends StatelessWidget {
             
           ]),
       body: Container(
-        color: Color.fromARGB(255, 236, 236, 236),
+        color: const Color.fromARGB(255, 236, 236, 236),
         child: Column(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 20.0,
             ),
             Container(
               color: Colors.white,
-              padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 30.0),
+              padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 30.0),
               child: Row(children: [
                 Container(
                   color: Colors.red,
                   padding:
-                      EdgeInsets.symmetric(horizontal: 35.0, vertical: 20.0),
-                  child: Text(
+                      const EdgeInsets.symmetric(horizontal: 35.0, vertical: 20.0),
+                  child: const Text(
                     "A",
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
@@ -150,28 +149,28 @@ class MyAccountPage extends StatelessWidget {
                         fontSize: 30.0),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 20.0,
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       "FIRST NAME",
                       style: TextStyle(fontSize: 20.0),
                     ),
-                    Text(
+                    const Text(
                       "LAST NAME",
                       style: TextStyle(fontSize: 20.0),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 15.0,
                     ),
                     InkWell(
                         onTap: () => Navigator.of(context).push(
                             MaterialPageRoute(
-                                builder: (context) => ProfilePage())),
-                        child: Text(
+                                builder: (context) => const ProfilePage())),
+                        child: const Text(
                           "Edit Profile",
                           style: TextStyle(color: Colors.green),
                         ))
@@ -179,7 +178,7 @@ class MyAccountPage extends StatelessWidget {
                 )
               ]),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10.0,
             ),
             SizedBox(
@@ -191,23 +190,23 @@ class MyAccountPage extends StatelessWidget {
                 itemBuilder: (context, index) {
                   return Card(
                     margin:
-                        EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+                        const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: ListTile(
                         onTap: (){
                           switch (index) {
                             case 0:
-                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => OrderPage()));
+                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const OrderPage()));
                               break;
                               case 1:
-                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => PaymentPage()));
+                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const PaymentPage()));
                               break;
                               case 2:
-                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => WishListPage()));
+                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const WishListPage()));
                               break;
                               case 3:
-                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => WishListPage()));
+                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const WishListPage()));
                               break;
                               case 4:
                               showCouponDialog(context);
@@ -221,8 +220,8 @@ class MyAccountPage extends StatelessWidget {
                                 width: 40.0,
                                 height: 40.0,
                               ),
-                            title: Text(titles[index], style: TextStyle(fontSize: 18.0)),
-                            trailing: Icon(Icons.chevron_right_outlined),  
+                            title: Text(titles[index], style: const TextStyle(fontSize: 18.0)),
+                            trailing: const Icon(Icons.chevron_right_outlined),  
                       ),
                     ),
                   );
@@ -238,7 +237,7 @@ class MyAccountPage extends StatelessWidget {
   Card MyAccountListItem(int index) {
     return Card(
                     margin:
-                        EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+                        const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
                     child: Padding(
                       padding: const EdgeInsets.all(18.0),
                       child: Row(
@@ -248,10 +247,10 @@ class MyAccountPage extends StatelessWidget {
                             width: 40.0,
                             height: 40.0,
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 10.0,
                           ),
-                          Text(titles[index], style: TextStyle(fontSize: 18.0))
+                          Text(titles[index], style: const TextStyle(fontSize: 18.0))
                         ],
                       ),
                     ),

@@ -86,7 +86,7 @@ class CustomerModel {
         "shipping": shipping?.toJson(),
         "is_paying_customer": isPayingCustomer,
         "avatar_url": avatarUrl,
-        "meta_data": metaData.map((x) => x?.toJson()).toList(),
+        "meta_data": metaData.map((x) => x.toJson()).toList(),
         "nickname": nickname,
         "push_notify": pushNotify,
         "notes": notes,
@@ -173,8 +173,8 @@ class Links {
     }
 
     Map<String, dynamic> toJson() => {
-        "self": self.map((x) => x?.toJson()).toList(),
-        "collection": collection.map((x) => x?.toJson()).toList(),
+        "self": self.map((x) => x.toJson()).toList(),
+        "collection": collection.map((x) => x.toJson()).toList(),
     };
 
 }
@@ -207,7 +207,7 @@ class MetaDatum {
 
     final int? id;
     final String? key;
-    final dynamic? value;
+    final dynamic value;
 
     factory MetaDatum.fromJson(Map<String, dynamic> json){ 
         return MetaDatum(

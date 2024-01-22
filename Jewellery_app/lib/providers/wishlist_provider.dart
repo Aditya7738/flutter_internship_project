@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:jwelery_app/model/products_model.dart';
-import 'package:jwelery_app/model/wishlist_product_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class WishlistProvider with ChangeNotifier {
@@ -119,7 +118,7 @@ class WishlistProvider with ChangeNotifier {
       var dynamicfavProductIds = jsonDecode(wishlist) as List<dynamic>;
 
       _favProductIds = dynamicfavProductIds.whereType<int>().toList();
-      print("FAV IDS : ${_favProductIds}");
+      print("FAV IDS : $_favProductIds");
     } else {
       print("NULL WISHLIST");
     }

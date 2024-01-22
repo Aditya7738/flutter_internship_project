@@ -18,12 +18,13 @@ class SignupPage extends StatefulWidget {
 class _SignupPageState extends State<SignupPage> {
   final _formKey = GlobalKey<FormState>();
 
-  TextEditingController _phoneNoController = TextEditingController();
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _firstNameController = TextEditingController();
-  TextEditingController _lastNameController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
-  TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _phoneNoController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
 
   String phone = "";
   String email = "";
@@ -63,7 +64,7 @@ class _SignupPageState extends State<SignupPage> {
                       const SizedBox(
                         height: 20.0,
                       ),
-                      Text(
+                      const Text(
                         "Signup with Tiara By TJ",
                         style: TextStyle(
                             fontSize: 20.0, fontWeight: FontWeight.bold),
@@ -71,7 +72,7 @@ class _SignupPageState extends State<SignupPage> {
                       const SizedBox(
                         height: 20.0,
                       ),
-                      Container(
+                      SizedBox(
                         height: 75.0,
                         child: TextFormField(
                           controller: _phoneNoController,
@@ -155,7 +156,7 @@ class _SignupPageState extends State<SignupPage> {
                       ),
                       Row(
                         children: [
-                          Container(
+                          SizedBox(
                             width: (MediaQuery.of(context).size.width / 2) - 35,
                             child: TextFormField(
                               controller: _firstNameController,
@@ -176,7 +177,7 @@ class _SignupPageState extends State<SignupPage> {
                           const SizedBox(
                             width: 28.0,
                           ),
-                          Container(
+                          SizedBox(
                             width: (MediaQuery.of(context).size.width / 2) - 35,
                             child: TextFormField(
                               controller: _lastNameController,
@@ -185,7 +186,7 @@ class _SignupPageState extends State<SignupPage> {
                                 return ValidationHelper.nullOrEmptyString(
                                     value);
                               },
-                              decoration: InputDecoration(
+                              decoration: const InputDecoration(
                                 labelText: "Last Name*",
                                 border: OutlineInputBorder(
                                     borderRadius: BorderRadius.all(
@@ -218,7 +219,7 @@ class _SignupPageState extends State<SignupPage> {
                           ),
                           // errorText: ,
                           labelText: "Enter your password",
-                          border: OutlineInputBorder(
+                          border: const OutlineInputBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(20.0))),
                         ),
@@ -247,7 +248,7 @@ class _SignupPageState extends State<SignupPage> {
                           ),
                           // errorText: ,
                           labelText: "Confirm your password",
-                          border: OutlineInputBorder(
+                          border: const OutlineInputBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(20.0))),
                         ),
@@ -313,13 +314,13 @@ class _SignupPageState extends State<SignupPage> {
                             width: MediaQuery.of(context).size.width,
                             height: 50.0,
                             decoration: BoxDecoration(
-                                color: Color(0xffCC868A),
+                                color: const Color(0xffCC868A),
                                 borderRadius: BorderRadius.circular(15.0)),
                             padding: const EdgeInsets.symmetric(
                                 vertical: 10.0, horizontal: 20.0),
                             child: Center(
                               child: isLoading
-                                  ? SizedBox(
+                                  ? const SizedBox(
                                       width: 20.0,
                                       height: 20.0,
                                       child: CircularProgressIndicator(
@@ -337,18 +338,18 @@ class _SignupPageState extends State<SignupPage> {
                                     ),
                             )),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 20.0,
                       ),
                       Center(
                           child: RichText(
                               text: TextSpan(
                                   text: 'Already have an account?',
-                                  style: TextStyle(color: Colors.black),
+                                  style: const TextStyle(color: Colors.black),
                                   children: <TextSpan>[
                             TextSpan(
                               text: ' Login',
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Color(0xffCC868A),
                               ),

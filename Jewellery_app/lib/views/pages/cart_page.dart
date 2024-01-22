@@ -29,6 +29,10 @@ class _CartPageState extends State<CartPage> {
 
   @override
   Widget build(BuildContext context) {
+    final cartProvider = Provider.of<CartProvider>(context, listen: false);
+
+    final cart = cartProvider.cart;
+
     List<String> quantityList = [
       "1",
       "2",
@@ -346,15 +350,15 @@ class _CartPageState extends State<CartPage> {
                             height: 15.0,
                             color: Colors.grey,
                           ),
-                          CartTotalRow(
+                          const CartTotalRow(
                               label: 'Shipping charge',
                               value: "Free",
                               showMoney: false),
-                          Divider(
+                          const Divider(
                             height: 15.0,
                             color: Colors.grey,
                           ),
-                          CartTotalRow(
+                          const CartTotalRow(
                             label: 'Shipping insurance',
                             value: "Free",
                             showMoney: false,
@@ -424,7 +428,7 @@ class _CartPageState extends State<CartPage> {
                     GestureDetector(
                       onTap: () {
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
-                            builder: (context) => SearchPage()));
+                            builder: (context) => const SearchPage()));
                       },
                       child: Container(
                           decoration: BoxDecoration(
@@ -445,15 +449,18 @@ class _CartPageState extends State<CartPage> {
           }
         })),
       ),
-      floatingActionButton: Container(
-          decoration: BoxDecoration(
-              color: Color(0xffCC868A),
-              borderRadius: BorderRadius.circular(5.0)),
-          padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-          child: const Text(
-            "Proceed to checkout",
-            style: TextStyle(color: Colors.white, fontSize: 17.0),
-          )),
+      floatingActionButton: cart.isNotEmpty
+          ? Container(
+              decoration: BoxDecoration(
+                  color: const Color(0xffCC868A),
+                  borderRadius: BorderRadius.circular(5.0)),
+              padding:
+                  const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+              child: const Text(
+                "Proceed to checkout",
+                style: TextStyle(color: Colors.white, fontSize: 17.0),
+              ))
+          : null,
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
@@ -469,7 +476,7 @@ class _CartPageState extends State<CartPage> {
             TextFormField(
               maxLines: 1,
               enabled: true,
-              decoration: InputDecoration(hintText: "Coupon code"),
+              decoration: const InputDecoration(hintText: "Coupon code"),
             ),
             const SizedBox(
               height: 20.0,
@@ -482,7 +489,7 @@ class _CartPageState extends State<CartPage> {
               },
               child: Container(
                   decoration: BoxDecoration(
-                      color: Color(0xffCC868A),
+                      color: const Color(0xffCC868A),
                       borderRadius: BorderRadius.circular(5.0)),
                   padding: const EdgeInsets.symmetric(
                       vertical: 10.0, horizontal: 20.0),

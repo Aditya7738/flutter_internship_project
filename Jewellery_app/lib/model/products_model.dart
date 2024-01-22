@@ -278,7 +278,7 @@ class ProductsModel {
         "purchase_note": purchaseNote,
         "categories": categories?.map((x) => x.toJson()).toList(),
         "tags": tags?.map((x) => x.toJson()).toList(),
-        "images": images?.map((x) => x.toJson()).toList(),
+        "images": images.map((x) => x.toJson()).toList(),
         "attributes": attributes?.map((x) => x.toJson()).toList(),
         "default_attributes": defaultAttributes?.map((x) => x).toList(),
         "variations": variations?.map((x) => x).toList(),

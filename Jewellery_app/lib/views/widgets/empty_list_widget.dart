@@ -33,7 +33,7 @@ class EmptyListWidget extends StatelessWidget {
                     child: Text(
                      
                       message,
-                      style: TextStyle(fontSize: 18.0),
+                      style: const TextStyle(fontSize: 18.0),
                     ),
                   ),
                   const SizedBox(
@@ -45,7 +45,7 @@ class EmptyListWidget extends StatelessWidget {
                   GestureDetector(
                     onTap: () {
                       Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (context) => SearchPage()));
+                          builder: (context) => const SearchPage()));
                     },
                     child: Container(
                         decoration: BoxDecoration(
@@ -60,7 +60,7 @@ class EmptyListWidget extends StatelessWidget {
                         )),
                   )
                   :
-                  SizedBox()
+                  const SizedBox()
                 ],
               ),
             ),

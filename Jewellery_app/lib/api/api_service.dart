@@ -12,7 +12,6 @@ import 'package:jwelery_app/model/products_of_category.dart'
 
 class ApiService {
   static List<CategoriesModel> listOfCategory = [];
-  
 
   static int categoriesPageNo = 1;
 
@@ -65,8 +64,7 @@ class ApiService {
     }
   }
 
-  static List<ProductsModel>
-      listOfProductsCategoryWise = [];
+  static List<ProductsModel> listOfProductsCategoryWise = [];
 
   static int categoryPageNo = 1;
   static late int categoryId;
@@ -82,8 +80,8 @@ class ApiService {
     return false;
   }
 
-  static Future<List<ProductsModel>>
-      fetchProductsCategoryWise({required int id, required int pageNo}) async {
+  static Future<List<ProductsModel>> fetchProductsCategoryWise(
+      {required int id, required int pageNo}) async {
     categoryId = id;
 
     //https://tiarabytj.com/wp-json/wc/v3/products?consumer_key=ck_33882e17eeaff38b20ac7c781156024bc2d6af4a&consumer_secret=cs_df67b056d05606c05275b571ab39fa508fcdd7b9&category=230
@@ -102,8 +100,7 @@ class ApiService {
       print(json);
 
       for (int i = 0; i < json.length; i++) {
-        listOfProductsCategoryWise
-            .add(ProductsModel(
+        listOfProductsCategoryWise.add(ProductsModel(
           id: json[i]['id'],
           name: json[i]['name'],
           slug: json[i]['slug'],
@@ -149,7 +146,7 @@ class ApiService {
           lowStockAmount: json[i]['low_stock_amount'],
           soldIndividually: json[i]['sold_individually'],
           weight: json[i]['weight'],
-          
+
           shippingRequired: json[i]['shipping_required'],
           shippingTaxable: json[i]['shipping_taxable'],
           shippingClass: json[i]['shipping_class'],
@@ -165,7 +162,7 @@ class ApiService {
               : List<dynamic>.from(json[i]["cross_sell_ids"]!.map((x) => x)),
           parentId: json[i]['parent_id'],
           purchaseNote: json[i]['purchase_note'],
-           categories: json[i]["categories"] == null
+          categories: json[i]["categories"] == null
               ? []
               : List<AllProducts.Category>.from(json[i]["categories"]!
                   .map((x) => AllProducts.Category.fromJson(x))),
@@ -232,7 +229,6 @@ class ApiService {
     }
   }
 
-  
   static List<AllProducts.ProductsModel> listOfProductsModel =
       <AllProducts.ProductsModel>[];
 
@@ -402,7 +398,8 @@ class ApiService {
   static List<AllProducts.ProductsModel> listOfFavProductsModel =
       <AllProducts.ProductsModel>[];
 
-  static Future<List<AllProducts.ProductsModel>> fetchFavProducts(List<int> ids) async {
+  static Future<List<AllProducts.ProductsModel>> fetchFavProducts(
+      List<int> ids) async {
     var endpoint =
         "${Strings.baseUrl}/wp-json/wc/v3/products?consumer_key=${Strings.consumerKey}&consumer_secret=${Strings.consumerSecret}&include=";
 
@@ -432,38 +429,80 @@ class ApiService {
               ? []
               : List<ProductImage>.from(
                   json[i]["images"]!.map((x) => ProductImage.fromJson(x))),
-
         ));
       }
 
       print("LENGTH OF PRODUCT: ${listOfProductsModel.length}");
 
       return listOfFavProductsModel;
-    }else{
+    } else {
       return [];
     }
   }
 
-
-  static Future<http.Response> createCustomer(Map<String, dynamic> customerData) async {
-    final endpoint = "https://tiarabytj.com/wp-json/wc/v3/customers?consumer_key=${Strings.consumerKey}&consumer_secret=${Strings.consumerSecret}";
+  static Future<http.Response> createCustomer(
+      Map<String, dynamic> customerData) async {
+    final endpoint =
+        "https://tiarabytj.com/wp-json/wc/v3/customers?consumer_key=${Strings.consumerKey}&consumer_secret=${Strings.consumerSecret}";
 
     Uri uri = Uri.parse(endpoint);
 
-    http.Response response = await http.post(uri,
-    body: customerData
-    );
+    http.Response response = await http.post(uri, body: customerData);
 
     print("STATUS ${response.statusCode}");
     print("BODY ${response.body}");
 
-    if(response.statusCode == 201){
+    if (response.statusCode == 201) {
       print("BODY ${response.body}");
       final json = jsonDecode(response.body);
       print("JSON $json");
 
       return response;
     }
-   return response;
+    return response;
+  }
+
+  static Future<http.StreamedResponse?> loginCustomer(
+      String email, String password, String username) async {
+    final endpoint =
+        "https://tiarabytj.com/wp-json/wc/v3/customers?consumer_key=${Strings.consumerKey}&consumer_secret=${Strings.consumerSecret}";
+
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+          'Basic cmFodWxtLnRhbmlrYXRlY2hAZ21haWwuY29tOnJhaHVsMTIjJA=='
+    };
+
+    Uri uri = Uri.parse(endpoint);
+
+    var request = http.Request('GET', uri);
+
+    request.body = json
+        .encode({"email": email, "password": password, "username": username});
+
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+    //http.Response response = await request.send();
+
+    //http.Response response = await http.get(uri, body: customerData);
+
+    print("STATUS ${response.statusCode}");
+    // print("BODY ${response.body}");
+
+    if (response.statusCode == 200) {
+      print("response.stream.bytesToString()");
+      print(await response.stream.bytesToString());
+
+      //String body = await response.stream.bytesToString();
+      // final json = jsonDecode(response.body);
+      // print("JSON $json");
+
+      return response;
+    } else {
+      print("REASON ${response.reasonPhrase}");
+      return null;
+    }
+    //return "REASON ${response.reasonPhrase}";
   }
 }

@@ -15,14 +15,14 @@ class MyOrderTab extends StatelessWidget {
           return Card(
             child: Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Row(
                         children: [
-                          Text("Order No: ", style: const TextStyle(
+                          Text("Order No: ", style: TextStyle(
                                 fontSize: 17.0,
                               ),),
                           Text(
@@ -40,7 +40,7 @@ class MyOrderTab extends StatelessWidget {
                     ],
                   ),
                 ),
-                Divider(
+                const Divider(
                   height: 5.0,
                 ),
                 Padding(
@@ -50,25 +50,25 @@ class MyOrderTab extends StatelessWidget {
                     children: [
                       Row(children: [
                         Container(
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: Colors.grey,
+                                  style: BorderStyle.solid)),
                           child: Image.network(
                             Strings.defaultImageUrl,
                             width: 100.0,
                             height: 100.0,
                           ),
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: Colors.grey,
-                                  style: BorderStyle.solid)),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 10.0,
                         ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
+                            const Text(
                               "Butterfly Watch Charm",
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 17.0,
                               ),
                             ),
@@ -79,24 +79,24 @@ class MyOrderTab extends StatelessWidget {
                                   width: 19.0,
                                   height: 17.0,
                                 ),
-                                Text(
+                                const Text(
                                   // productsModel.regularPrice != ""
                                   //     ? productsModel.regularPrice ??
                                   "20000",
                                   // : "0.0",
                                   // productsModel.regularPrice ??
                                   //     "20,000",
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 17.0,
                                   ),
                                 ),
                               ],
                             ),
-                            Row(
+                            const Row(
                               children: [
                                 Text(
                                   "Sku: ",
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 17.0,
                                   ),
                                 ),
@@ -107,7 +107,7 @@ class MyOrderTab extends StatelessWidget {
                                   // : "0.0",
                                   // productsModel.regularPrice ??
                                   //     "20,000",
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 17.0,
                                   ),
                                 ),
@@ -116,18 +116,18 @@ class MyOrderTab extends StatelessWidget {
                           ],
                         ),
                       ]),
-                      Icon(Icons.chevron_right_outlined)
+                      const Icon(Icons.chevron_right_outlined)
                     ],
                   ),
                 ),
-                Divider(
+                const Divider(
                   height: 5.0,
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
                     children: [
-                      Row(
+                      const Row(
                         children: [
                           Text(
                             "Order Received ",
@@ -169,19 +169,19 @@ class MyOrderTab extends StatelessWidget {
 
                           SliderTheme(
                             data: SliderTheme.of(context).copyWith(
-                              activeTrackColor: Color(0xffCC868A),
+                              activeTrackColor: const Color(0xffCC868A),
                               trackHeight: 5.0,
-                              tickMarkShape: RoundSliderTickMarkShape(
+                              tickMarkShape: const RoundSliderTickMarkShape(
                                 tickMarkRadius: 4.0,
                               ),
-                              thumbShape: RoundSliderThumbShape(
+                              thumbShape: const RoundSliderThumbShape(
                                   enabledThumbRadius: 7.0),
                               activeTickMarkColor: Colors.black,
                               inactiveTickMarkColor: Colors.white,
                             ),
                             child: Slider(
                               divisions: 2,
-                              activeColor: Color(0xffCC868A),
+                              activeColor: const Color(0xffCC868A),
                               value: 0.5,
                               onChanged: (value) {},
                               min: 0.0,
@@ -189,7 +189,7 @@ class MyOrderTab extends StatelessWidget {
                             ),
                           ),
 
-                          Row(
+                          const Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [

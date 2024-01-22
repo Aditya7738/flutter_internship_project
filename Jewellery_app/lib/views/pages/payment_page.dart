@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:jwelery_app/views/pages/search_page.dart';
 import 'package:jwelery_app/views/widgets/empty_list_widget.dart';
 
 class PaymentPage extends StatelessWidget {

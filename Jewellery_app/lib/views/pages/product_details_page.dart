@@ -4,7 +4,6 @@ import 'package:jwelery_app/helpers/date_helper.dart';
 import 'package:jwelery_app/model/cart_product_model.dart';
 import 'package:jwelery_app/model/choice_model.dart';
 import 'package:jwelery_app/model/products_model.dart';
-import 'package:jwelery_app/model/products_of_category.dart';
 import 'package:jwelery_app/providers/cart_provider.dart';
 import 'package:jwelery_app/providers/wishlist_provider.dart';
 import 'package:jwelery_app/views/pages/cart_page.dart';

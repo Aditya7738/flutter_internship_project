@@ -93,7 +93,7 @@ class CartProvider with ChangeNotifier {
       var dynamicCartProductIds = jsonDecode(cardtIds) as List<dynamic>;
 
       _cartProductIds = dynamicCartProductIds.whereType<int>().toList();
-      print("cartid_list : ${_cartProductIds}");
+      print("cartid_list : $_cartProductIds");
     } else {
       print("NULL cartid_list");
     }

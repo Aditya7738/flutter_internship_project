@@ -4,7 +4,6 @@ import 'package:jwelery_app/providers/customer_provider.dart';
 import 'package:jwelery_app/providers/profile_provider.dart';
 import 'package:jwelery_app/providers/wishlist_provider.dart';
 import 'package:jwelery_app/views/pages/dashboard_page.dart';
-import 'package:jwelery_app/views/pages/home_screen.dart';
 import 'package:provider/provider.dart';
 import 'constants/strings.dart';
 import 'package:flutter/services.dart';

@@ -8,8 +8,8 @@ class OrderPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<Widget> tabs = [
-      Tab(text: "My Orders",),
-      Tab(text: "Cancelled Orders",)
+      const Tab(text: "My Orders",),
+      const Tab(text: "Cancelled Orders",)
     ];
 
 
@@ -17,7 +17,7 @@ class OrderPage extends StatelessWidget {
       length: tabs.length,
       child: Scaffold(
         appBar: AppBar(
-          title: Text(
+          title: const Text(
             "My Orders"
           ),
           bottom: TabBar(

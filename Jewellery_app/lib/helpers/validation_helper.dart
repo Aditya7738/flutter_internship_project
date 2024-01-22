@@ -13,6 +13,7 @@ class ValidationHelper {
       }
       return null;
     }
+    return null;
   }
 
   static String? isPhoneNoValid(String? input) {
@@ -68,8 +69,8 @@ class ValidationHelper {
     if (nullOrEmptyString(pass) == null) {//"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
       RegExp regExp = RegExp(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$');
       print("${regExp.hasMatch(pass!)}");
-      print(pass!);
-      if (regExp.hasMatch(pass!)) {
+      print(pass);
+      if (regExp.hasMatch(pass)) {
         return "Password don't contain uppercase, lowercase, number, symbol and length is below 6";
       }
       return null;

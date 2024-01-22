@@ -1,21 +1,12 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:jwelery_app/constants/strings.dart';
-import 'package:badges/badges.dart' as badges;
 import 'package:jwelery_app/helpers/validation_helper.dart';
-import 'package:jwelery_app/model/choice_model.dart';
-import 'package:jwelery_app/providers/cart_provider.dart';
 import 'package:jwelery_app/providers/profile_provider.dart';
-import 'package:jwelery_app/providers/wishlist_provider.dart';
-import 'package:jwelery_app/views/pages/cart_page.dart';
-import 'package:jwelery_app/views/pages/wishlist_page.dart';
-import 'package:jwelery_app/views/widgets/choice_widget.dart';
 import 'package:jwelery_app/views/widgets/suffix_icon.dart';
 import 'package:provider/provider.dart';
-import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 class ProfilePage extends StatefulWidget {
-  ProfilePage({super.key});
+  const ProfilePage({super.key});
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -65,7 +56,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Edit Profile"),
+          title: const Text("Edit Profile"),
           backgroundColor: Colors.white,
         ),
         body: Padding(
@@ -101,7 +92,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     validator: (value) {
                       return ValidationHelper.nullOrEmptyString(value);
                     },
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: "Last Name*",
                       border: OutlineInputBorder(
                           borderRadius:
@@ -111,7 +102,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   const SizedBox(
                     height: 30.0,
                   ),
-                  Container(
+                  SizedBox(
                     height: 75.0,
                     child: TextFormField(
                       keyboardType: TextInputType.phone,
@@ -128,13 +119,13 @@ class _ProfilePageState extends State<ProfilePage> {
                                       width: 100.0,
                                       height: 40.0,
                                       decoration: BoxDecoration(
-                                          color: Color(0xffCC868A),
+                                          color: const Color(0xffCC868A),
                                           borderRadius:
                                               BorderRadius.circular(10.0)),
                                       padding: const EdgeInsets.symmetric(
                                           vertical: 10.0, horizontal: 20.0),
-                                      child: Center(
-                                        child: const Text(
+                                      child: const Center(
+                                        child: Text(
                                           "VERIFY",
                                           style: TextStyle(
                                               color: Colors.white,
@@ -177,7 +168,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     height: 30.0,
                   ),
 
-                  Container(
+                  SizedBox(
                     height: 75.0,
                     child: TextFormField(
                       keyboardType: TextInputType.emailAddress,
@@ -199,13 +190,13 @@ class _ProfilePageState extends State<ProfilePage> {
                                     width: 100.0,
                                     height: 40.0,
                                     decoration: BoxDecoration(
-                                        color: Color(0xffCC868A),
+                                        color: const Color(0xffCC868A),
                                         borderRadius:
                                             BorderRadius.circular(10.0)),
                                     padding: const EdgeInsets.symmetric(
                                         vertical: 10.0, horizontal: 20.0),
-                                    child: Center(
-                                      child: const Text(
+                                    child: const Center(
+                                      child: Text(
                                         "VERIFY",
                                         style: TextStyle(
                                             color: Colors.white,
@@ -227,7 +218,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   // ElevatedButton(
                   //   onPressed: (){}, child: Text("VERIFY")),
 
-                  SizedBox(
+                  const SizedBox(
                     height: 30.0,
                   ),
 
@@ -238,15 +229,15 @@ class _ProfilePageState extends State<ProfilePage> {
                       return ValidationHelper.isFullAddress(value);
                     },
                     keyboardType: TextInputType.streetAddress,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: "Address*",
-                      border: const OutlineInputBorder(
+                      border: OutlineInputBorder(
                           borderRadius:
                               BorderRadius.all(Radius.circular(20.0))),
                     ),
                     
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 30.0,
                   ),
 
@@ -255,15 +246,15 @@ class _ProfilePageState extends State<ProfilePage> {
                       return ValidationHelper.isPincodeValid(value);
                     },
                     keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: "Pin code*",
-                      border: const OutlineInputBorder(
+                      border: OutlineInputBorder(
                           borderRadius:
                               BorderRadius.all(Radius.circular(20.0))),
                     ),
                     maxLines: 1,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 30.0,
                   ),
 
@@ -278,7 +269,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     decoration: const InputDecoration(
                       suffixIcon: SuffixIcon(icon: Icons.calendar_month),
                       labelText: "Birthday (Optional)",
-                      border: const OutlineInputBorder(
+                      border: OutlineInputBorder(
                           borderRadius:
                               BorderRadius.all(Radius.circular(20.0))),
                     ),
@@ -297,16 +288,16 @@ class _ProfilePageState extends State<ProfilePage> {
                     },
                     controller: anniversarydateController,
                     keyboardType: TextInputType.datetime,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       suffixIcon: SuffixIcon(icon: Icons.calendar_month),
                       labelText: "Anniversary (Optional)",
-                      border: const OutlineInputBorder(
+                      border: OutlineInputBorder(
                           borderRadius:
                               BorderRadius.all(Radius.circular(20.0))),
                     ),
                     maxLines: 1,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 30.0,
                   ),
 
@@ -319,17 +310,17 @@ class _ProfilePageState extends State<ProfilePage> {
                     },
                     controller: spousebirthdateController,
                     keyboardType: TextInputType.datetime,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       suffixIcon: SuffixIcon(icon: Icons.calendar_month),
                       labelText: "Spouse Birthday (Optional)",
-                      border: const OutlineInputBorder(
+                      border: OutlineInputBorder(
                           borderRadius:
                               BorderRadius.all(Radius.circular(20.0))),
                     ),
                     maxLines: 1,
                   ),
 
-                  SizedBox(
+                  const SizedBox(
                     height: 30.0,
                   ),
 
@@ -342,11 +333,11 @@ class _ProfilePageState extends State<ProfilePage> {
                           text: TextSpan(
                               text:
                                   '*By clicking on Save chage, you accept our ',
-                              style: TextStyle(color: Colors.black),
+                              style: const TextStyle(color: Colors.black),
                               children: <TextSpan>[
                         TextSpan(
                           text: 'T&C',
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Color(0xffCC868A),
                             
                           ),
@@ -357,7 +348,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               // Add your custom action here.
                             },
                         ),
-                        TextSpan(
+                        const TextSpan(
                           text: ' and ',
                           style: TextStyle(
                             color: Colors.black,
@@ -367,7 +358,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                         TextSpan(
                           text: 'Privacy Policy',
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Color(0xffCC868A),
                             
                           ),
@@ -380,7 +371,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                       ]))),
 
-                  SizedBox(
+                  const SizedBox(
                     height: 30.0,
                   ),
                   GestureDetector(
@@ -391,12 +382,12 @@ class _ProfilePageState extends State<ProfilePage> {
                         width: 180.0,
                         height: 50.0,
                         decoration: BoxDecoration(
-                            color: Color(0xffCC868A),
+                            color: const Color(0xffCC868A),
                             borderRadius: BorderRadius.circular(5.0)),
                         padding: const EdgeInsets.symmetric(
                             vertical: 10.0, horizontal: 20.0),
-                        child: Center(
-                          child: const Text(
+                        child: const Center(
+                          child: Text(
                             "SAVE CHAGES",
                             style:
                                 TextStyle(color: Colors.white, fontSize: 17.0),

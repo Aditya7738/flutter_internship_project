@@ -3,7 +3,6 @@ import 'package:jwelery_app/constants/strings.dart';
 import 'package:jwelery_app/helpers/date_helper.dart';
 import 'package:jwelery_app/model/cart_product_model.dart';
 import 'package:jwelery_app/model/products_model.dart';
-import 'package:jwelery_app/model/products_of_category.dart';
 import 'package:jwelery_app/providers/cart_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:jwelery_app/providers/wishlist_provider.dart';
@@ -165,7 +164,7 @@ class _ProductItemState extends State<ProductItem> {
                                   : "0.0",
                               style: const TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 17.0,
+                                fontSize: 15.0,
                               ),
                             )
                           ],
@@ -241,8 +240,8 @@ class _ProductItemState extends State<ProductItem> {
                             const EdgeInsets.only(right: 10.0, bottom: 10.0),
                         child: cartProvider.cartProductIds
                                 .contains(productsModel.id)
-                            ? Icon(Icons.shopping_cart)
-                            : Icon(Icons.add_shopping_cart_rounded)),
+                            ? const Icon(Icons.shopping_cart)
+                            : const Icon(Icons.add_shopping_cart_rounded)),
                   ),
                 ],
               )

@@ -3,13 +3,10 @@ import 'package:jwelery_app/api/api_service.dart';
 import 'package:jwelery_app/constants/strings.dart';
 import 'package:jwelery_app/helpers/date_helper.dart';
 import 'package:jwelery_app/model/cart_product_model.dart';
-import 'package:jwelery_app/model/products_model.dart';
 import 'package:jwelery_app/providers/cart_provider.dart';
-import 'package:jwelery_app/providers/wishlist_provider.dart';
 import 'package:jwelery_app/providers/wishlist_provider.dart';
 import 'package:jwelery_app/views/pages/cart_page.dart';
 import 'package:jwelery_app/views/widgets/cart_app_bar.dart';
-import 'package:jwelery_app/views/widgets/label_widget.dart';
 import 'package:provider/provider.dart';
 
 class WishListPage extends StatefulWidget {
@@ -70,7 +67,7 @@ class _WishListPageState extends State<WishListPage> {
         print("LEnGTH ${value.wishlistProducts.length}");
 
         return Padding(
-            padding: EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8.0),
             child: value.listLoading
                 ? const Center(
                     child: CircularProgressIndicator(
@@ -144,11 +141,22 @@ class _WishListPageState extends State<WishListPage> {
                                                     MainAxisAlignment
                                                         .spaceBetween,
                                                 children: [
-                                                  Text(
-                                                    wishListItem.name ??
-                                                        "Jewellery",
-                                                    style: const TextStyle(
-                                                        fontSize: 16.0),
+                                                  SizedBox(
+                                                    width:
+                                                        (MediaQuery.of(context)
+                                                                    .size
+                                                                    .width /
+                                                                2) -
+                                                            10,
+                                                    child: Text(
+                                                      wishListItem.name ??
+                                                          "Jewellery",
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      softWrap: true,
+                                                      style: const TextStyle(
+                                                          fontSize: 16.0),
+                                                    ),
                                                   ),
                                                   GestureDetector(
                                                     onTap: () {
@@ -191,9 +199,12 @@ class _WishListPageState extends State<WishListPage> {
                                                     height: 17.0,
                                                   ),
                                                   Text(
-                                                    wishListItem.regularPrice != ""
-                                                              ? wishListItem.regularPrice ??  "20000"
-                                                              : "20000",
+                                                    wishListItem.regularPrice !=
+                                                            ""
+                                                        ? wishListItem
+                                                                .regularPrice ??
+                                                            "20000"
+                                                        : "20000",
                                                     softWrap: true,
                                                     overflow:
                                                         TextOverflow.ellipsis,
@@ -212,9 +223,13 @@ class _WishListPageState extends State<WishListPage> {
                                                   cartProvider.addToCart(CartProductModel(
                                                       cartProductid:
                                                           wishListItem.id,
-                                                      price: wishListItem.regularPrice != ""
-                                                              ? wishListItem.regularPrice ??  "20000"
-                                                              : "0.0",
+                                                      price: wishListItem
+                                                                  .regularPrice !=
+                                                              ""
+                                                          ? wishListItem
+                                                                  .regularPrice ??
+                                                              "20000"
+                                                          : "0.0",
                                                       productName:
                                                           wishListItem.name ??
                                                               "Jewellery",

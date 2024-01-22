@@ -1,22 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:jwelery_app/api/api_service.dart';
-import 'package:jwelery_app/model/navigation_model.dart';
 import 'package:jwelery_app/providers/cart_provider.dart';
 import 'package:jwelery_app/providers/customer_provider.dart';
 import 'package:jwelery_app/providers/profile_provider.dart';
 import 'package:jwelery_app/providers/wishlist_provider.dart';
 import 'package:jwelery_app/views/pages/home_screen.dart';
-import 'package:jwelery_app/views/pages/profile_page.dart';
 import 'package:jwelery_app/views/pages/you_page.dart';
-import 'package:jwelery_app/views/widgets/app_bar.dart';
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:dots_indicator/dots_indicator.dart';
-import 'package:jwelery_app/views/widgets/button_widget.dart';
-import 'package:jwelery_app/views/widgets/feature_widget.dart';
-import 'package:jwelery_app/views/widgets/pincode_widget.dart';
 import 'package:provider/provider.dart';
 
-import '../widgets/nav_drawer.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -53,7 +43,7 @@ class _DashboardPageState extends State<DashboardPage> {
     
     
     final tabs = <Widget>[
-      HomeScreen(),
+      const HomeScreen(),
       YouPage()
     ];
     return Scaffold(

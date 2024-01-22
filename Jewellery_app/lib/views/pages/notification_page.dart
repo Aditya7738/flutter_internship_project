@@ -22,7 +22,7 @@ class NotificationPage extends StatelessWidget {
           ),
           backgroundColor: Colors.white,
           actions: <Widget>[
-            Icon(
+            const Icon(
               Icons.search_rounded,
               size: 30.0,
             ),

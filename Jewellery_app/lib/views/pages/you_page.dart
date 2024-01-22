@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:jwelery_app/constants/strings.dart';
 import 'package:jwelery_app/providers/cart_provider.dart';
+import 'package:jwelery_app/providers/customer_provider.dart';
 import 'package:jwelery_app/providers/wishlist_provider.dart';
 import 'package:jwelery_app/views/pages/cart_page.dart';
 import 'package:jwelery_app/views/pages/login_page.dart';
-import 'package:jwelery_app/views/pages/my_account_page.dart';
 import 'package:jwelery_app/views/pages/notification_page.dart';
 import 'package:jwelery_app/views/pages/orders_page.dart';
 import 'package:jwelery_app/views/pages/wishlist_page.dart';
@@ -19,12 +19,6 @@ class YouPage extends StatelessWidget {
     Icons.qr_code_scanner_outlined,
     Icons.notifications_none_outlined,
     Icons.pin_drop_outlined
-  ];
-  List<String> title = [
-    "Login",
-    "Scan(at store)",
-    "Notifications",
-    "Track Order",
   ];
 
   List<IconData> icons2 = [
@@ -42,6 +36,17 @@ class YouPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final customerProvider =
+        Provider.of<CustomerProvider>(context, listen: false);
+
+    List<String> title = [
+      customerProvider.customerData == <String, dynamic>{}
+          ? "My Account"
+          : "Login",
+      "Scan(at store)",
+      "Notifications",
+      "Track Order",
+    ];
     return Scaffold(
       appBar: AppBar(
           title: Image.network(
@@ -51,7 +56,7 @@ class YouPage extends StatelessWidget {
           ),
           backgroundColor: Colors.white,
           actions: <Widget>[
-            Icon(
+            const Icon(
               Icons.search_rounded,
               size: 30.0,
             ),
@@ -113,10 +118,11 @@ class YouPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-                padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
+                padding: const EdgeInsets.symmetric(
+                    vertical: 10.0, horizontal: 15.0),
                 width: MediaQuery.of(context).size.width,
-                color: Color.fromARGB(255, 237, 237, 237),
-                child: Text(
+                color: const Color.fromARGB(255, 237, 237, 237),
+                child: const Text(
                   "Hello, there!",
                   style: TextStyle(fontSize: 17.0),
                 )),
@@ -135,34 +141,36 @@ class YouPage extends StatelessWidget {
                           ));
 
                           break;
-                          case 2:
+                        case 2:
                           Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => NotificationPage(),
+                            builder: (context) => const NotificationPage(),
                           ));
 
                           break;
                         case 3:
                           Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => OrderPage(),
+                            builder: (context) => const OrderPage(),
                           ));
                           break;
                         default:
                       }
                     },
                     leading: Icon(icons[index]),
-                    title: Text(title[index], style: TextStyle(fontSize: 17.0)),
+                    title: Text(title[index],
+                        style: const TextStyle(fontSize: 17.0)),
                   );
                 },
                 separatorBuilder: (context, index) =>
-                    Divider(thickness: 1.0, color: Colors.grey),
+                    const Divider(thickness: 1.0, color: Colors.grey),
               ),
             ),
             Container(
-                padding: EdgeInsets.only(left: 15.0, top: 30.0, bottom: 5.0),
+                padding:
+                    const EdgeInsets.only(left: 15.0, top: 30.0, bottom: 5.0),
                 alignment: Alignment.bottomLeft,
                 width: MediaQuery.of(context).size.width,
-                color: Color.fromARGB(255, 237, 237, 237),
-                child: Text(
+                color: const Color.fromARGB(255, 237, 237, 237),
+                child: const Text(
                   "CONTACT US",
                   style: TextStyle(fontSize: 15.0),
                 )),
@@ -174,18 +182,18 @@ class YouPage extends StatelessWidget {
                   child: Column(
                     children: [
                       Container(
-                        margin: EdgeInsets.symmetric(vertical: 10.0),
+                        margin: const EdgeInsets.symmetric(vertical: 10.0),
                         width: 50.0,
                         height: 50.0,
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                             shape: BoxShape.rectangle,
-                            color: const Color.fromARGB(255, 230, 230, 230),
+                            color: Color.fromARGB(255, 230, 230, 230),
                             borderRadius: BorderRadius.all(
                               Radius.circular(15.0),
                             )),
-                        child: Icon(Icons.call),
+                        child: const Icon(Icons.call),
                       ),
-                      Text("Call")
+                      const Text("Call")
                     ],
                   ),
                 ),
@@ -194,18 +202,18 @@ class YouPage extends StatelessWidget {
                   child: Column(
                     children: [
                       Container(
-                        margin: EdgeInsets.symmetric(vertical: 10.0),
+                        margin: const EdgeInsets.symmetric(vertical: 10.0),
                         width: 50.0,
                         height: 50.0,
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                             shape: BoxShape.rectangle,
-                            color: const Color.fromARGB(255, 230, 230, 230),
+                            color: Color.fromARGB(255, 230, 230, 230),
                             borderRadius: BorderRadius.all(
                               Radius.circular(15.0),
                             )),
-                        child: Icon(Icons.forum_sharp),
+                        child: const Icon(Icons.forum_sharp),
                       ),
-                      Text("Chat")
+                      const Text("Chat")
                     ],
                   ),
                 ),
@@ -214,13 +222,13 @@ class YouPage extends StatelessWidget {
                   child: Column(
                     children: [
                       Container(
-                        margin: EdgeInsets.symmetric(vertical: 10.0),
+                        margin: const EdgeInsets.symmetric(vertical: 10.0),
                         width: 50.0,
                         height: 50.0,
-                        padding: EdgeInsets.all(10.0),
-                        decoration: BoxDecoration(
+                        padding: const EdgeInsets.all(10.0),
+                        decoration: const BoxDecoration(
                             shape: BoxShape.rectangle,
-                            color: const Color.fromARGB(255, 230, 230, 230),
+                            color: Color.fromARGB(255, 230, 230, 230),
                             borderRadius: BorderRadius.all(
                               Radius.circular(15.0),
                             )),
@@ -228,18 +236,19 @@ class YouPage extends StatelessWidget {
                           "assets/images/whatsapp.png",
                         ),
                       ),
-                      Text("Whatsapp")
+                      const Text("Whatsapp")
                     ],
                   ),
                 )
               ],
             ),
             Container(
-                padding: EdgeInsets.only(left: 15.0, top: 30.0, bottom: 5.0),
+                padding:
+                    const EdgeInsets.only(left: 15.0, top: 30.0, bottom: 5.0),
                 alignment: Alignment.bottomLeft,
                 width: MediaQuery.of(context).size.width,
-                color: Color.fromARGB(255, 237, 237, 237),
-                child: Text(
+                color: const Color.fromARGB(255, 237, 237, 237),
+                child: const Text(
                   "SPREAD THE WORD",
                   style: TextStyle(fontSize: 15.0),
                 )),
@@ -251,20 +260,21 @@ class YouPage extends StatelessWidget {
                 itemBuilder: (context, index) {
                   return ListTile(
                     leading: Icon(icons2[index]),
-                    title:
-                        Text(title2[index], style: TextStyle(fontSize: 17.0)),
+                    title: Text(title2[index],
+                        style: const TextStyle(fontSize: 17.0)),
                   );
                 },
                 separatorBuilder: (context, index) =>
-                    Divider(thickness: 1.0, color: Colors.grey),
+                    const Divider(thickness: 1.0, color: Colors.grey),
               ),
             ),
             Container(
-                padding: EdgeInsets.only(left: 15.0, top: 30.0, bottom: 5.0),
+                padding:
+                    const EdgeInsets.only(left: 15.0, top: 30.0, bottom: 5.0),
                 alignment: Alignment.bottomLeft,
                 width: MediaQuery.of(context).size.width,
-                color: Color.fromARGB(255, 237, 237, 237),
-                child: Text(
+                color: const Color.fromARGB(255, 237, 237, 237),
+                child: const Text(
                   "POLICIES",
                   style: TextStyle(fontSize: 15.0),
                 )),
@@ -280,13 +290,13 @@ class YouPage extends StatelessWidget {
                           color: Colors.grey, style: BorderStyle.solid),
                     ),
                     child: Padding(
-                      padding: EdgeInsets.symmetric(
+                      padding: const EdgeInsets.symmetric(
                           horizontal: 30.0, vertical: 10.0),
                       child: Text(title3[index]),
                     ),
                   );
                 },
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     childAspectRatio: 2.9,
                     crossAxisCount: 3,
                     mainAxisSpacing: 0.0),

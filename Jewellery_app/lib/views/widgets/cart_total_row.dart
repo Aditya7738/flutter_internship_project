@@ -19,7 +19,7 @@ class CartTotalRow extends StatelessWidget {
       children: [
         Text(
               label,
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: const TextStyle(fontWeight: FontWeight.bold),
             ),
             showMoney
                 ? Row(
