@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jwelery_app/constants/strings.dart';
 import 'package:jwelery_app/providers/cart_provider.dart';
 import 'package:jwelery_app/views/pages/search_page.dart';
+import 'package:jwelery_app/views/pages/shipping_page.dart';
 import 'package:jwelery_app/views/widgets/cart_app_bar.dart';
 import 'package:jwelery_app/views/widgets/cart_total_row.dart';
 import 'package:jwelery_app/views/widgets/label_widget.dart';
@@ -450,16 +451,22 @@ class _CartPageState extends State<CartPage> {
         })),
       ),
       floatingActionButton: cart.isNotEmpty
-          ? Container(
-              decoration: BoxDecoration(
-                  color: const Color(0xffCC868A),
-                  borderRadius: BorderRadius.circular(5.0)),
-              padding:
-                  const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-              child: const Text(
-                "Proceed to checkout",
-                style: TextStyle(color: Colors.white, fontSize: 17.0),
-              ))
+          ? GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => ShippingPage()));
+              },
+              child: Container(
+                  decoration: BoxDecoration(
+                      color: const Color(0xffCC868A),
+                      borderRadius: BorderRadius.circular(5.0)),
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 10.0, horizontal: 20.0),
+                  child: const Text(
+                    "Proceed to checkout",
+                    style: TextStyle(color: Colors.white, fontSize: 17.0),
+                  )),
+            )
           : null,
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );

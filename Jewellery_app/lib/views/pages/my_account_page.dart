@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:jwelery_app/providers/cart_provider.dart';
+import 'package:jwelery_app/providers/customer_provider.dart';
 import 'package:jwelery_app/views/pages/cart_page.dart';
+import 'package:jwelery_app/views/pages/dashboard_page.dart';
 import 'package:jwelery_app/views/pages/orders_page.dart';
 import 'package:jwelery_app/views/pages/payment_page.dart';
 import 'package:jwelery_app/views/pages/profile_page.dart';
@@ -34,6 +36,7 @@ class MyAccountPage extends StatelessWidget {
 
    void showCouponDialog(BuildContext context) {
     //TextEditingController textEditingController = TextEditingController();
+    final customerProvider = Provider.of<CustomerProvider>(context, listen: false);
 
     showDialog(
       context: context,
@@ -46,9 +49,7 @@ class MyAccountPage extends StatelessWidget {
             
             GestureDetector(
               onTap: () {
-                // Navigator.of(context).pushReplacement(
-                //     MaterialPageRoute(
-                //         builder: (context) => SearchPage()));
+                Navigator.of(context).pop();
               },
               child: Container(
                   decoration: BoxDecoration(
@@ -64,9 +65,12 @@ class MyAccountPage extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                // Navigator.of(context).pushReplacement(
-                //     MaterialPageRoute(
-                //         builder: (context) => SearchPage()));
+                customerProvider.customerData.clear();
+                print("customerProvider.customerData.length ${customerProvider.customerData.length}");
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                        builder: (context) => DashboardPage()));
+               
               },
               child: Container(
                   decoration: BoxDecoration(
@@ -205,10 +209,10 @@ class MyAccountPage extends StatelessWidget {
                               case 2:
                               Navigator.of(context).push(MaterialPageRoute(builder: (context) => const WishListPage()));
                               break;
+                              // case 3:
+                              // Navigator.of(context).push(MaterialPageRoute(builder: (context) => const WishListPage()));
+                              // break;
                               case 3:
-                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const WishListPage()));
-                              break;
-                              case 4:
                               showCouponDialog(context);
                               break;
                             default:

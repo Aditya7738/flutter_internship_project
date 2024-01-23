@@ -297,9 +297,10 @@ class _SignupPageState extends State<SignupPage> {
 
                             if (response.statusCode == 201) {
                               String body = response.body;
+                              List<Map<String, dynamic>> data = <Map<String, dynamic>>[];
 
                               try {
-                                Map<String, dynamic> data = jsonDecode(body);
+                                data = jsonDecode(body);
                                 print("JSON DECODE DATA $data");
                               } catch (e) {
                                 print('Error decoding: $e');

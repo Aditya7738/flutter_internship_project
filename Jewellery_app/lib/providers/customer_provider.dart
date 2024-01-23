@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CustomerProvider with ChangeNotifier {
-  Map<String, dynamic> _customerData = <String, dynamic>{};
+  List<Map<String, dynamic>> _customerData = <Map<String, dynamic>>[];
 
-  Map<String, dynamic> get customerData => _customerData;
+  List<Map<String, dynamic>> get customerData => _customerData;
 
-  void setCustomerData(Map<String, dynamic> customerData) {
+  void setCustomerData(List<Map<String, dynamic>> customerData) {
     _customerData = customerData;
     notifyListeners();
     _setCustomerSharedPrefs();
@@ -30,12 +30,18 @@ class CustomerProvider with ChangeNotifier {
 
     if (customerDataString != null) {
       try {
-        _customerData = jsonDecode(customerDataString!);
+        _customerData = List<Map<String, dynamic>>.from(jsonDecode(customerDataString));
+        print(_customerData.runtimeType);
+       // _customerData = list as List<Map<String, dynamic>>;
+       // print("CUSTOMERDATA ${_customerData.runtimeType}");
+        
+
       } catch (e) {
         print("Error customer decoding ${e.toString()}");
       }
     } else {
-      _customerData = <String, dynamic>{};
+      _customerData = <Map<String, dynamic>>[];
+      
     }
 
     print("customerDataString $customerDataString");

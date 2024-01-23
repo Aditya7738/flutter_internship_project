@@ -6,6 +6,7 @@ import 'package:jwelery_app/providers/customer_provider.dart';
 import 'package:jwelery_app/providers/wishlist_provider.dart';
 import 'package:jwelery_app/views/pages/cart_page.dart';
 import 'package:jwelery_app/views/pages/login_page.dart';
+import 'package:jwelery_app/views/pages/my_account_page.dart';
 import 'package:jwelery_app/views/pages/notification_page.dart';
 import 'package:jwelery_app/views/pages/orders_page.dart';
 import 'package:jwelery_app/views/pages/wishlist_page.dart';
@@ -39,10 +40,15 @@ class YouPage extends StatelessWidget {
     final customerProvider =
         Provider.of<CustomerProvider>(context, listen: false);
 
+ 
+
+    bool isDataEmpty = customerProvider.customerData.length == 0;
+    print("isDataEmpty $isDataEmpty");
+    print("CUSTOMERDATA ${customerProvider.customerData.length}");
     List<String> title = [
-      customerProvider.customerData == <String, dynamic>{}
-          ? "My Account"
-          : "Login",
+        isDataEmpty
+          ? "Login"
+          : "My Account",
       "Scan(at store)",
       "Notifications",
       "Track Order",
@@ -136,9 +142,18 @@ class YouPage extends StatelessWidget {
                     onTap: () {
                       switch (index) {
                         case 0:
-                          Navigator.of(context).push(MaterialPageRoute(
+                        isDataEmpty
+          ? 
+
+                        Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => LoginPage(),
+                          ))
+                          :
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => MyAccountPage(),
                           ));
+                        
+                          
 
                           break;
                         case 2:

@@ -9,6 +9,7 @@ import 'package:jwelery_app/model/products_model.dart' as AllProducts;
 import 'package:jwelery_app/model/products_model.dart';
 import 'package:jwelery_app/model/products_of_category.dart'
     as ProductsRelatedToCategory;
+import 'package:provider/provider.dart';
 
 class ApiService {
   static List<CategoriesModel> listOfCategory = [];
@@ -491,8 +492,8 @@ class ApiService {
     // print("BODY ${response.body}");
 
     if (response.statusCode == 200) {
-      print("response.stream.bytesToString()");
-      print(await response.stream.bytesToString());
+      // print("response.stream.bytesToString()");
+      // print(await response.stream.bytesToString());
 
       //String body = await response.stream.bytesToString();
       // final json = jsonDecode(response.body);
@@ -504,5 +505,43 @@ class ApiService {
       return null;
     }
     //return "REASON ${response.reasonPhrase}";
+  }
+
+
+  static Future<http.StreamedResponse?> updateCustomer(int customerId) async {
+    final endpoint =
+        "https://tiarabytj.com/wp-json/wc/v3/customers/$customerId?consumer_key=${Strings.consumerKey}&consumer_secret=${Strings.consumerSecret}";
+
+    var headers = {
+      'Content-Type': 'application/json',
+      
+    };
+
+    Uri uri = Uri.parse(endpoint);
+
+    var request = http.Request('PUT', uri);
+
+    // request.body = json
+    //     .encode({"email": email, "password": password, "username": username});
+
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+
+    print("STATUS ${response.statusCode}");
+   
+
+    if (response.statusCode == 200) {
+
+
+      return response;
+    } else {
+      print("REASON ${response.reasonPhrase}");
+      return null;
+    }
+
+
+
   }
 }

@@ -288,6 +288,8 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
               cartProvider.addToCartId(productsModel.id!);
               print("CART IDS : ${cartProvider.cartProductIds}");
 
+              
+
               cartProvider.addToCart(CartProductModel(
                   cartProductid: productsModel.id,
                   price: productsModel.regularPrice != ""
