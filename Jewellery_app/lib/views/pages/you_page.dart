@@ -42,7 +42,7 @@ class YouPage extends StatelessWidget {
 
  
 
-    bool isDataEmpty = customerProvider.customerData.length == 0;
+    bool isDataEmpty = customerProvider.customerData.isEmpty;
     print("isDataEmpty $isDataEmpty");
     print("CUSTOMERDATA ${customerProvider.customerData.length}");
     List<String> title = [
@@ -146,7 +146,7 @@ class YouPage extends StatelessWidget {
           ? 
 
                         Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => LoginPage(),
+                            builder: (context) => const LoginPage(),
                           ))
                           :
                           Navigator.of(context).push(MaterialPageRoute(

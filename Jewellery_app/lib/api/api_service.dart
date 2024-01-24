@@ -1,15 +1,12 @@
 import 'dart:convert';
-import 'dart:ffi';
 
 import 'package:jwelery_app/constants/strings.dart';
 import 'package:jwelery_app/model/category_model.dart';
 import 'package:http/http.dart' as http;
-import 'package:jwelery_app/model/customer_model.dart';
 import 'package:jwelery_app/model/products_model.dart' as AllProducts;
 import 'package:jwelery_app/model/products_model.dart';
 import 'package:jwelery_app/model/products_of_category.dart'
     as ProductsRelatedToCategory;
-import 'package:provider/provider.dart';
 
 class ApiService {
   static List<CategoriesModel> listOfCategory = [];
@@ -443,7 +440,7 @@ class ApiService {
 
   static Future<http.Response> createCustomer(
       Map<String, dynamic> customerData) async {
-    final endpoint =
+    const endpoint =
         "https://tiarabytj.com/wp-json/wc/v3/customers?consumer_key=${Strings.consumerKey}&consumer_secret=${Strings.consumerSecret}";
 
     Uri uri = Uri.parse(endpoint);
@@ -465,7 +462,7 @@ class ApiService {
 
   static Future<http.StreamedResponse?> loginCustomer(
       String email, String password, String username) async {
-    final endpoint =
+    const endpoint =
         "https://tiarabytj.com/wp-json/wc/v3/customers?consumer_key=${Strings.consumerKey}&consumer_secret=${Strings.consumerSecret}";
 
     var headers = {
@@ -484,42 +481,61 @@ class ApiService {
     request.headers.addAll(headers);
 
     http.StreamedResponse response = await request.send();
-    //http.Response response = await request.send();
 
-    //http.Response response = await http.get(uri, body: customerData);
 
     print("STATUS ${response.statusCode}");
-    // print("BODY ${response.body}");
+
 
     if (response.statusCode == 200) {
-      // print("response.stream.bytesToString()");
-      // print(await response.stream.bytesToString());
-
-      //String body = await response.stream.bytesToString();
-      // final json = jsonDecode(response.body);
-      // print("JSON $json");
 
       return response;
     } else {
       print("REASON ${response.reasonPhrase}");
       return null;
     }
-    //return "REASON ${response.reasonPhrase}";
+    
   }
 
-
-  static Future<http.StreamedResponse?> updateCustomer(int customerId) async {
+  static Future<http.StreamedResponse?> updateCustomer(int customerId,
+      Map<String, String> billingData, Map<String, String> shippingData) async {
     final endpoint =
         "https://tiarabytj.com/wp-json/wc/v3/customers/$customerId?consumer_key=${Strings.consumerKey}&consumer_secret=${Strings.consumerSecret}";
 
     var headers = {
       'Content-Type': 'application/json',
-      
     };
 
     Uri uri = Uri.parse(endpoint);
 
     var request = http.Request('PUT', uri);
+
+    request.body = json.encode({
+      "billing": {
+        "first_name": billingData["first_name"],
+        "last_name": billingData["last_name"],
+        "company": billingData["company"],
+        "address_1": billingData["address_1"],
+        "address_2": billingData["address_2"],
+        "city": billingData["city"],
+        "postcode": billingData["postcode"],
+        "country": billingData["country"],
+        "state": billingData["state"],
+        "email": billingData["email"],
+        "phone": billingData["phone"]
+      },
+      "shipping": {
+        "first_name": shippingData["first_name"],
+        "last_name": shippingData["last_name"],
+        "company": shippingData["company"],
+        "address_1": shippingData["address_1"],
+        "address_2": shippingData["address_2"],
+        "city": shippingData["city"],
+        "postcode": shippingData["postcode"],
+        "country": shippingData["country"],
+        "state": shippingData["state"],
+        "phone": shippingData["phone"]
+      },
+    });
 
     // request.body = json
     //     .encode({"email": email, "password": password, "username": username});
@@ -528,20 +544,80 @@ class ApiService {
 
     http.StreamedResponse response = await request.send();
 
-
     print("STATUS ${response.statusCode}");
-   
 
     if (response.statusCode == 200) {
-
+      print("$response");
 
       return response;
     } else {
       print("REASON ${response.reasonPhrase}");
       return null;
     }
+  }
+
+  static Future<http.StreamedResponse?> createOrder(
+      Map<String, String> billingData, Map<String, String> shippingData, List<Map<String, dynamic>> productData, int customerId, double totalPrice) async {
+        print("CUSTOMERID $customerId");
+    // https://tiarabytj.com/wp-json/wc/v3/orders?consumer_key=ck_33882e17eeaff38b20ac7c781156024bc2d6af4a&consumer_secret=cs_df67b056d05606c05275b571ab39fa508fcdd7b9
+    const endpoint =
+        "https://tiarabytj.com/wp-json/wc/v3/orders?consumer_key=ck_33882e17eeaff38b20ac7c781156024bc2d6af4a&consumer_secret=cs_df67b056d05606c05275b571ab39fa508fcdd7b9";
+
+    Uri uri = Uri.parse(endpoint);
+
+    var request = http.Request('POST', uri);
 
 
+    final body = json.encode({
+      // "total": totalPrice,
+      "customer_id": customerId,
+      // "billing": billingData,
+      // "shipping": shippingData,
+      "billing": {
+        "first_name": billingData["first_name"],
+        "last_name": billingData["last_name"],
+        "company": billingData["company"],
+        "address_1": billingData["address_1"],
+        "address_2": billingData["address_2"],
+        "city": billingData["city"],
+        "postcode": billingData["postcode"],
+        "country": billingData["country"],
+        "state": billingData["state"],
+        "email": billingData["email"],
+        "phone": billingData["phone"]
+      },
+      "shipping": {
+        "first_name": shippingData["first_name"],
+        "last_name": shippingData["last_name"],
+        "company": shippingData["company"],
+        "address_1": shippingData["address_1"],
+        "address_2": shippingData["address_2"],
+        "city": shippingData["city"],
+        "postcode": shippingData["postcode"],
+        "country": shippingData["country"],
+        "state": shippingData["state"],
+        "phone": shippingData["phone"]
+      },
+      "date_paid": DateTime.now().toString(),
+      "line_items": productData
+    });
 
+    print("BODY $body");
+
+    request.body = body;
+
+    http.StreamedResponse response = await request.send();
+
+    print("STATUS ${response.statusCode}");
+    print("CREATE ORDER ${await response.stream.bytesToString()}");
+
+    if (response.statusCode == 201) {
+      print("CREATE ORDER $response");
+
+      return response;
+    } else {
+      print("REASON ${response.reasonPhrase}");
+      return null;
+    }
   }
 }

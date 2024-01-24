@@ -284,48 +284,7 @@ class _CartPageState extends State<CartPage> {
                       ),
                     ),
 
-                    // Container(
-                    //   decoration: BoxDecoration(
-                    //       borderRadius: BorderRadius.circular(10.0),
-                    //       border: Border.all(
-                    //           color: Colors.grey, style: BorderStyle.solid)),
-                    //   child: Padding(
-                    //     padding: const EdgeInsets.symmetric(
-                    //         vertical: 20.0, horizontal: 20.0),
-                    //     child: Column(
-                    //       crossAxisAlignment: CrossAxisAlignment.end,
-                    //       children: [
-                    //         TextFormField(
-                    //           maxLines: 1,
-                    //           enabled: true,
-                    //           decoration: InputDecoration(hintText: "Coupon code"),
-                    //         ),
-                    //         const SizedBox(
-                    //           height: 20.0,
-                    //         ),
-                    //         GestureDetector(
-                    //           onTap: () {
-                    //             Navigator.of(context).pushReplacement(
-                    //                 MaterialPageRoute(
-                    //                     builder: (context) => SearchPage()));
-                    //           },
-                    //           child: Container(
-                    //               decoration: BoxDecoration(
-                    //                   color: Color(0xffCC868A),
-                    //                   borderRadius: BorderRadius.circular(5.0)),
-                    //               padding: const EdgeInsets.symmetric(
-                    //                   vertical: 10.0, horizontal: 20.0),
-                    //               child: const Text(
-                    //                 "Apply coupon",
-                    //                 style: TextStyle(
-                    //                     color: Colors.white, fontSize: 17.0),
-                    //               )),
-                    //         ),
-                    //       ],
-                    //     ),
-                    //   ),
-                    // ),
-
+                   
                     const SizedBox(
                       height: 15.0,
                     ),
@@ -454,7 +413,7 @@ class _CartPageState extends State<CartPage> {
           ? GestureDetector(
               onTap: () {
                 Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => ShippingPage()));
+                    MaterialPageRoute(builder: (context) => const ShippingPage()));
               },
               child: Container(
                   decoration: BoxDecoration(

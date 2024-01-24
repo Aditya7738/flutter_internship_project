@@ -11,7 +11,7 @@ import 'package:provider/provider.dart';
 import 'package:jwelery_app/providers/customer_provider.dart';
 
 class LoginPage extends StatefulWidget {
-  LoginPage({super.key});
+  const LoginPage({super.key});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -80,22 +80,22 @@ class _LoginPageState extends State<LoginPage> {
 
                   isLoginUnSuccessful
                           ? Container(
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                   vertical: 15.0, horizontal: 25.0),
                               //width: MediaQuery.of(context).size.width,
                               decoration: BoxDecoration(
                                   shape: BoxShape.rectangle,
                                   borderRadius: BorderRadius.circular(20.0),
-                                  color: Color.fromARGB(255, 253, 233, 231),
+                                  color: const Color.fromARGB(255, 253, 233, 231),
                                   border: Border.all(
                                       color: Colors.red,
                                       style: BorderStyle.solid)),
-                              child: Text(
+                              child: const Text(
                                 "Email / password is wrong. Try again..",
                                 style: TextStyle(color: Colors.red, fontSize: 17.0),
                               ),
                             )
-                          : SizedBox(),
+                          : const SizedBox(),
 
                       const SizedBox(
                         height: 20.0,

@@ -302,7 +302,10 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                   imageUrl: productsModel.images.isEmpty
                       ? Strings.defaultImageUrl
                       : productsModel.images[0].src ??
-                          Strings.defaultImageUrl));
+                          Strings.defaultImageUrl,
+                          sku: productsModel.sku ?? "ABC",
+                          imageId:  productsModel.images.isNotEmpty ? productsModel.images[0].id : 0
+                          ));
 
               print("Product is added to cart");
               Navigator.of(context)

@@ -357,7 +357,7 @@ class _SignupPageState extends State<SignupPage> {
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
                                   Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => LoginPage(),
+                                    builder: (context) => const LoginPage(),
                                   ));
                                 },
                             ),

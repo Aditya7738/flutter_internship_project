@@ -217,7 +217,9 @@ class _ProductItemState extends State<ProductItem> {
                             imageUrl: productsModel.images.isEmpty
                                 ? Strings.defaultImageUrl
                                 : productsModel.images[0].src ??
-                                    Strings.defaultImageUrl));
+                                    Strings.defaultImageUrl,
+                                     sku: productsModel.sku, 
+                                     imageId: productsModel.images.isNotEmpty ? productsModel.images[0].id : 0));
                       } else {
                         cartProvider.addToCartId(productsModel.id!);
                         cartProvider.addToCart(CartProductModel(
@@ -232,7 +234,9 @@ class _ProductItemState extends State<ProductItem> {
                             imageUrl: productsModel.images.isEmpty
                                 ? Strings.defaultImageUrl
                                 : productsModel.images[0].src ??
-                                    Strings.defaultImageUrl));
+                                    Strings.defaultImageUrl,
+                                     sku: productsModel.sku, 
+                                     imageId: productsModel.images.isNotEmpty ? productsModel.images[0].id : 0));
                       }
                     },
                     child: Padding(

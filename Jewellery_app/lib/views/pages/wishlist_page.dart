@@ -220,32 +220,39 @@ class _WishListPageState extends State<WishListPage> {
                                             children: [
                                               GestureDetector(
                                                 onTap: () {
-                                                  cartProvider.addToCart(CartProductModel(
-                                                      cartProductid:
-                                                          wishListItem.id,
-                                                      price: wishListItem
-                                                                  .regularPrice !=
-                                                              ""
-                                                          ? wishListItem
-                                                                  .regularPrice ??
-                                                              "20000"
-                                                          : "0.0",
-                                                      productName:
-                                                          wishListItem.name ??
-                                                              "Jewellery",
-                                                      quantity: "1",
-                                                      size: 5,
-                                                      deliveryDate: DateHelper
-                                                          .getCurrentDateInWords(),
-                                                      imageUrl: wishListItem
-                                                              .images.isEmpty
-                                                          ? Strings
-                                                              .defaultImageUrl
-                                                          : wishListItem
-                                                                  .images[0]
-                                                                  .src ??
-                                                              Strings
-                                                                  .defaultImageUrl));
+                                                  cartProvider.addToCart(
+                                                      CartProductModel(
+                                                    cartProductid:
+                                                        wishListItem.id,
+                                                    price: wishListItem
+                                                                .regularPrice !=
+                                                            ""
+                                                        ? wishListItem
+                                                                .regularPrice ??
+                                                            "20000"
+                                                        : "0.0",
+                                                    productName:
+                                                        wishListItem.name ??
+                                                            "Jewellery",
+                                                    quantity: "1",
+                                                    size: 5,
+                                                    deliveryDate: DateHelper
+                                                        .getCurrentDateInWords(),
+                                                    imageUrl: wishListItem
+                                                            .images.isEmpty
+                                                        ? Strings
+                                                            .defaultImageUrl
+                                                        : wishListItem.images[0]
+                                                                .src ??
+                                                            Strings
+                                                                .defaultImageUrl,
+                                                    sku: wishListItem.sku,
+                                                    imageId: wishListItem
+                                                            .images.isNotEmpty
+                                                        ? wishListItem
+                                                            .images[0].id
+                                                        : 0,
+                                                  ));
                                                   Navigator.of(context).push(
                                                       MaterialPageRoute(
                                                           builder: (context) =>

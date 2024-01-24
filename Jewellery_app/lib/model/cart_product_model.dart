@@ -6,6 +6,10 @@ class CartProductModel {
   final int? size;
   final String? deliveryDate;
   final String? imageUrl;
+  final String? sku;
+  final int? imageId;
+  
+
 
   CartProductModel(
       {required this.cartProductid,
@@ -15,6 +19,9 @@ class CartProductModel {
       required this.size,
       required this.deliveryDate,
       required this.imageUrl,
+      required this.sku,
+      required this.imageId,
+   
       });
 
   CartProductModel.fromMap(Map<dynamic, dynamic> res)
@@ -24,7 +31,10 @@ class CartProductModel {
         quantity = res['quantity'],
         size = res['size'],
         deliveryDate = res['deliveryDate'],
-        imageUrl = res['imageUrl'];
+        imageUrl = res['imageUrl'],
+        imageId = res['imageId'],
+      
+        sku = res['sku'];
 
   Map<String, Object?> toMap() {
     return {
@@ -34,7 +44,10 @@ class CartProductModel {
       'quantity': quantity,
       'size': size,
       'deliveryDate': deliveryDate,
-      'imageUrl': imageUrl
+      'imageUrl': imageUrl,
+      'imageId': imageId,
+      'sku': sku,
+   
     };
   }
 }

@@ -1,12 +1,17 @@
 // import 'package:flutter/material.dart';
 // import 'package:jwelery_app/helpers/validation_helper.dart';
 
-// class MobileInputField extends StatelessWidget {
+// class MobileInputField extends StatefulWidget {
 //   const MobileInputField({super.key});
 
 //   @override
+//   State<MobileInputField> createState() => _MobileInputFieldState();
+// }
+
+// class _MobileInputFieldState extends State<MobileInputField> {
+//   @override
 //   Widget build(BuildContext context) {
-//     return Container(
+//     return SizedBox(
 //                     height: 75.0,
 //                     child: TextFormField(
 //                       keyboardType: TextInputType.phone,

@@ -69,7 +69,7 @@ class MyAccountPage extends StatelessWidget {
                 print("customerProvider.customerData.length ${customerProvider.customerData.length}");
                 Navigator.of(context).pushReplacement(
                     MaterialPageRoute(
-                        builder: (context) => DashboardPage()));
+                        builder: (context) => const DashboardPage()));
                
               },
               child: Container(
