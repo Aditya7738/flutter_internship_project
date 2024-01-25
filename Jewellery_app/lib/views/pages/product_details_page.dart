@@ -288,8 +288,6 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
               cartProvider.addToCartId(productsModel.id!);
               print("CART IDS : ${cartProvider.cartProductIds}");
 
-              
-
               cartProvider.addToCart(CartProductModel(
                   cartProductid: productsModel.id,
                   price: productsModel.regularPrice != ""
@@ -301,11 +299,11 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                   deliveryDate: DateHelper.getCurrentDateInWords(),
                   imageUrl: productsModel.images.isEmpty
                       ? Strings.defaultImageUrl
-                      : productsModel.images[0].src ??
-                          Strings.defaultImageUrl,
-                          sku: productsModel.sku ?? "ABC",
-                          imageId:  productsModel.images.isNotEmpty ? productsModel.images[0].id : 0
-                          ));
+                      : productsModel.images[0].src ?? Strings.defaultImageUrl,
+                  sku: productsModel.sku ?? "ABC",
+                  imageId: productsModel.images.isNotEmpty
+                      ? productsModel.images[0].id
+                      : 0));
 
               print("Product is added to cart");
               Navigator.of(context)

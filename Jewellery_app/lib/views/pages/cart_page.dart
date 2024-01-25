@@ -176,10 +176,23 @@ class _CartPageState extends State<CartPage> {
                                           ],
                                         ),
                                       ),
-                                      Text(
-                                        cartData.productName ?? "Jewellery",
-                                        style: const TextStyle(fontSize: 16.0),
-                                      ),
+                                      SizedBox(
+                                          width: (MediaQuery.of(context)
+                                                      .size
+                                                      .width -
+                                                  (MediaQuery.of(context)
+                                                          .size
+                                                          .width /
+                                                      3)) -
+                                              45,
+                                          child: Text(
+                                            cartData.productName ?? "Jewellery",
+                                            
+                                            style:
+                                                const TextStyle(fontSize: 16.0),
+                                            overflow: TextOverflow.ellipsis,
+                                            softWrap: true,
+                                          )),
                                       Row(
                                         children: [
                                           Row(
@@ -284,7 +297,6 @@ class _CartPageState extends State<CartPage> {
                       ),
                     ),
 
-                   
                     const SizedBox(
                       height: 15.0,
                     ),
@@ -412,8 +424,8 @@ class _CartPageState extends State<CartPage> {
       floatingActionButton: cart.isNotEmpty
           ? GestureDetector(
               onTap: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => const ShippingPage()));
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const ShippingPage()));
               },
               child: Container(
                   decoration: BoxDecoration(

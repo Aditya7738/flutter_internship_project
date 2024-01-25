@@ -25,8 +25,11 @@ class _ProductPageState extends State<ProductPage> {
 
   @override
   void initState() {
+
     super.initState();
+
     getProducts();
+
     _scrollController.addListener(() async {
       print(
           "CONDITION ${_scrollController.position.pixels == _scrollController.position.maxScrollExtent}");
@@ -37,6 +40,7 @@ class _ProductPageState extends State<ProductPage> {
         loadMoreData();
       }
     });
+    
   }
 
   void loadMoreData() async {

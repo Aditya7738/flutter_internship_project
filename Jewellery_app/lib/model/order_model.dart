@@ -345,10 +345,13 @@ class OrderImage {
         required this.src,
     });
 
-    final String? id;
+    final dynamic id;
     final String? src;
 
     factory OrderImage.fromJson(Map<String, dynamic> json){ 
+     // print("ID TYPE: ${json["id"].runtimeType} ${json["id"].toString}");
+    //  print("src TYPE: ${json["src"].toString()}");
+      
         return OrderImage(
             id: json["id"],
             src: json["src"],

@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:jwelery_app/api/api_service.dart';
 import 'package:jwelery_app/constants/strings.dart';
@@ -687,6 +689,8 @@ class _ShippingPageState extends State<ShippingPage> {
 
                           //         ],
                           //       )
+
+                          //customer_id = 230999
                           ShippingForm(
                               formHeading: "Fill Shipping Details",
                               firstNameController2: _firstNameController2,
@@ -742,9 +746,7 @@ class _ShippingPageState extends State<ShippingPage> {
                             });
 
                             await ApiService.updateCustomer(
-                                customerId,
-                                billingData,
-                                shippingData);
+                                customerId, billingData, shippingData);
 
                             setState(() {
                               isUpdateLoading = false;
@@ -784,7 +786,6 @@ class _ShippingPageState extends State<ShippingPage> {
                       GestureDetector(
                         onTap: () async {
                           if (_formKey.currentState!.validate()) {
-
                             billingData = {
                               "first_name": _firstNameController.text,
                               "last_name": _lastNameController.text,
@@ -823,23 +824,18 @@ class _ShippingPageState extends State<ShippingPage> {
                               productData.add({
                                 "name": cartList[i].productName ?? "Jewellery",
                                 "product_id": cartList[i].cartProductid,
-
-                                "quantity": cartList[i].quantity,
-
-                                // "subtotal": cartProvider.calculateTotalPrice(),
-
-                                // "total": cartProvider.calculateTotalPrice(),
-
+                                "quantity": int.parse(cartList[i].quantity!),
                                 "sku": cartList[i].sku,
-                                "price": cartList[i].price,
+                                "price": int.parse(cartList[i].price!),
                                 "image": {
                                   "id": cartList[i].imageId,
                                   "src": cartList[i].imageUrl
                                 },
                                 "parent_name": ""
-                           
                               });
                             }
+
+                            
 
                             print("STORED PRODUCT $productData");
 
@@ -848,7 +844,11 @@ class _ShippingPageState extends State<ShippingPage> {
                             });
 
                             await ApiService.createOrder(
-                                billingData, shippingData, productData, customerId, cartProvider.calculateTotalPrice());
+                                billingData,
+                                shippingData,
+                                productData,
+                                customerId,
+                                cartProvider.calculateTotalPrice());
 
                             setState(() {
                               creatingOrder = false;
