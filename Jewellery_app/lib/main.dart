@@ -34,8 +34,15 @@ SystemChrome.setPreferredOrientations([
         title: Strings.app_name,
         theme: ThemeData(
           
-          primarySwatch: Colors.blue,
-        ),
+          primaryColor: Color(0xffCC868A),
+          textTheme: TextTheme(
+            headline1: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 18.0,
+      
+            ))
+          ),
+        
         home: const DashboardPage(),
         debugShowCheckedModeBanner: false,
       ),

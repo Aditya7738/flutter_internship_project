@@ -16,10 +16,11 @@ class ButtonWidget extends StatelessWidget {
         decoration: BoxDecoration(
           shape: BoxShape.rectangle,
           borderRadius: BorderRadius.circular(10.0),
-          gradient: const LinearGradient(
-              colors: [Color(0xFFDC58E6), Color(0xFF9062F9)],
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight),
+          // gradient: const LinearGradient(
+          //     colors: [Color(0xFFDC58E6), Color(0xFF9062F9)],
+          //     begin: Alignment.centerLeft,
+          //     end: Alignment.centerRight),
+          color: Theme.of(context).primaryColor
         ),
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),

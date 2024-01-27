@@ -44,8 +44,9 @@ class NavDrawer extends StatelessWidget {
       backgroundColor: backgroundColor,
       child: ListView(
         children: [
-          DrawerHeader(
-              child: Image.asset("assets/images/malabar_gold_logo.png")),
+          // DrawerHeader(
+          //     child: Image.asset("assets/images/malabar_gold_logo.png")
+          //     ),
           ...renderListTiles()
         ],
       ),

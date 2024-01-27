@@ -222,9 +222,8 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                     ),
                     Row(
                       children: [
-                        const LabelWidget(
-                          label: "SKU:",
-                          fontSize: 18.0,
+                        Text("SKU:",
+                          style: Theme.of(context).textTheme.headline1,
                         ),
                         const SizedBox(
                           width: 10.0,
@@ -233,9 +232,8 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         const SizedBox(
                           width: 30.0,
                         ),
-                        const LabelWidget(
-                          label: "Category:",
-                          fontSize: 18.0,
+                        Text("Category:",
+                          style: Theme.of(context).textTheme.headline1,
                         ),
                         const SizedBox(
                           width: 10.0,
@@ -248,11 +246,10 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                     const SizedBox(
                       width: 20.0,
                     ),
-                    const Text(
+                    Text(
                       "Tags:",
-                      style: TextStyle(
-                          fontSize: 18.0, fontWeight: FontWeight.bold),
-                    ),
+                          style: Theme.of(context).textTheme.headline1,
+                        ),
                     const SizedBox(
                       height: 5.0,
                     ),
