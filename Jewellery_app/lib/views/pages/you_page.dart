@@ -9,6 +9,7 @@ import 'package:jwelery_app/views/pages/login_page.dart';
 import 'package:jwelery_app/views/pages/my_account_page.dart';
 import 'package:jwelery_app/views/pages/notification_page.dart';
 import 'package:jwelery_app/views/pages/orders_page.dart';
+import 'package:jwelery_app/views/pages/search_page.dart';
 import 'package:jwelery_app/views/pages/wishlist_page.dart';
 import 'package:provider/provider.dart';
 
@@ -62,9 +63,15 @@ class YouPage extends StatelessWidget {
           ),
           backgroundColor: Colors.white,
           actions: <Widget>[
-            const Icon(
-              Icons.search_rounded,
-              size: 30.0,
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => SearchPage(),));
+              },
+              child: const Icon(
+                
+                Icons.search_rounded,
+                size: 30.0,
+              ),
             ),
             const SizedBox(
               width: 10,

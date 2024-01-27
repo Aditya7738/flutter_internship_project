@@ -62,7 +62,7 @@ class _WishListPageState extends State<WishListPage> {
     //final wishlistProvider = Provider.of<WishlistProvider>(context, listen: false);
 
     return Scaffold(
-      appBar: const CartAppBar(title: "Wishlist", forCart: false),
+      appBar: const CartAppBar(title: "Wishlist"),
       body: Consumer<WishlistProvider>(builder: (context, value, child) {
         print("LEnGTH ${value.wishlistProducts.length}");
 
@@ -208,9 +208,7 @@ class _WishListPageState extends State<WishListPage> {
                                                     softWrap: true,
                                                     overflow:
                                                         TextOverflow.ellipsis,
-                                                    style: const TextStyle(
-                                                      fontSize: 17.0,
-                                                    ),
+                                                    style: Theme.of(context).textTheme.headline3
                                                   )
                                                 ],
                                               ),

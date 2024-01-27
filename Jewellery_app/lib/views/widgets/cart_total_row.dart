@@ -15,37 +15,23 @@ class CartTotalRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-     
       children: [
         Text(
-              label,
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            ),
-            showMoney
-                ? Row(
-        children: [
-          Image.asset(
-            "assets/images/rupee.png",
-            width: 19.0,
-            height: 17.0,
-          ),
-          Text(
-            value,
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 17.0,
-            ),
-          )
-        ],
-                  )
-                : Text(
-        value,
-        style: const TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 17.0,
+          label,
+          style: Theme.of(context).textTheme.headline3
         ),
-                  )
-        
+        showMoney
+            ? Row(
+                children: [
+                  Image.asset(
+                    "assets/images/rupee.png",
+                    width: 19.0,
+                    height: 17.0,
+                  ),
+                  Text(value, style: Theme.of(context).textTheme.headline3)
+                ],
+              )
+            : Text(value, style: Theme.of(context).textTheme.headline3)
       ],
     );
   }

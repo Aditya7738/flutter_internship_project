@@ -8,7 +8,7 @@ class ValidationHelper {
 
   static String? isFullAddress(String? input) {
     if (nullOrEmptyString(input) == null) {
-      if (input!.length != 10) {
+      if (input!.length <= 10) {
         return "Please enter full address";
       }
       return null;

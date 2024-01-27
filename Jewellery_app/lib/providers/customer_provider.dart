@@ -33,7 +33,8 @@ class CustomerProvider with ChangeNotifier {
         _customerData = List<Map<String, dynamic>>.from(jsonDecode(customerDataString));
         //print(_customerData.runtimeType);
        // _customerData = list as List<Map<String, dynamic>>;
-       // print("CUSTOMERDATA ${_customerData.runtimeType}");
+       print("CUSTOMERDATA ${_customerData[0]}");
+       print("CUSTOMERDATA ${_customerData.length}");
         
 
       } catch (e) {

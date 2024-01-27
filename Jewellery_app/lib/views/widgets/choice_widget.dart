@@ -58,7 +58,7 @@ class _ChoiceWidgetState extends State<ChoiceWidget> {
     Widget rowddl = Row(
       children: [
 
-        LabelWidget(label: choiceModel.label ?? "", fontSize: 16.0,),
+        Text(choiceModel.label ?? "", style: Theme.of(context).textTheme.headline4),
         const SizedBox(width: 10.0,),
         DropdownButton(
           value: selectedOption,

@@ -3,6 +3,7 @@ import 'package:jwelery_app/constants/strings.dart';
 import 'package:jwelery_app/providers/cart_provider.dart';
 import 'package:jwelery_app/views/pages/search_page.dart';
 import 'package:jwelery_app/views/pages/shipping_page.dart';
+import 'package:jwelery_app/views/widgets/button_widget.dart';
 import 'package:jwelery_app/views/widgets/cart_app_bar.dart';
 import 'package:jwelery_app/views/widgets/cart_total_row.dart';
 import 'package:jwelery_app/views/widgets/label_widget.dart';
@@ -73,7 +74,7 @@ class _CartPageState extends State<CartPage> {
     return Scaffold(
       appBar: const CartAppBar(
         title: 'Cart',
-        forCart: true,
+       
       ),
       body: Scrollbar(
         child: SingleChildScrollView(
@@ -143,13 +144,10 @@ class _CartPageState extends State<CartPage> {
                                                   width: 19.0,
                                                   height: 17.0,
                                                 ),
-                                                Text(
-                                                  cartData.price ?? "20,000",
-                                                  style: const TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 17.0,
-                                                  ),
-                                                )
+                                                Text(cartData.price ?? "20,000",
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .headline3)
                                               ],
                                             ),
                                             GestureDetector(
@@ -170,6 +168,7 @@ class _CartPageState extends State<CartPage> {
                                                 child: const Icon(
                                                   Icons.close_rounded,
                                                   color: Colors.white,
+                                                  size: 19.0,
                                                 ),
                                               ),
                                             )
@@ -187,7 +186,6 @@ class _CartPageState extends State<CartPage> {
                                               45,
                                           child: Text(
                                             cartData.productName ?? "Jewellery",
-                                            
                                             style:
                                                 const TextStyle(fontSize: 16.0),
                                             overflow: TextOverflow.ellipsis,
@@ -197,10 +195,10 @@ class _CartPageState extends State<CartPage> {
                                         children: [
                                           Row(
                                             children: [
-                                              const LabelWidget(
-                                                label: "Qty: ",
-                                                fontSize: 16.0,
-                                              ),
+                                              Text("Qty: ",
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .headline4),
                                               const SizedBox(
                                                 width: 5.0,
                                               ),
@@ -231,10 +229,10 @@ class _CartPageState extends State<CartPage> {
                                           ),
                                           Row(
                                             children: [
-                                              const LabelWidget(
-                                                label: "Size: ",
-                                                fontSize: 16.0,
-                                              ),
+                                              Text("Size: ",
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .headline4),
                                               const SizedBox(
                                                 width: 5.0,
                                               ),
@@ -261,13 +259,11 @@ class _CartPageState extends State<CartPage> {
                                       ),
                                       const Text(
                                         "Expected Delivery : ",
-                                        style: TextStyle(fontSize: 15.0),
+                                        style: TextStyle(fontSize: 16.0),
                                       ),
                                       Text(
                                         cartData.deliveryDate ?? "After 5 days",
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 15.0),
+                                        style: Theme.of(context).textTheme.headline4
                                       )
                                     ],
                                   ),
@@ -301,10 +297,10 @@ class _CartPageState extends State<CartPage> {
                       height: 15.0,
                     ),
 
-                    const Text(
-                      "Cart totals",
-                      style: TextStyle(
-                          fontSize: 18.0, fontWeight: FontWeight.bold),
+                    Text("Cart totals",
+                        style: Theme.of(context).textTheme.headline2),
+                    const SizedBox(
+                      height: 5.0,
                     ),
 
                     Container(
@@ -314,6 +310,14 @@ class _CartPageState extends State<CartPage> {
                               color: Colors.grey, style: BorderStyle.solid)),
                       child: Column(
                         children: [
+                          CartTotalRow(
+                              label: 'No. of Items',
+                              value: value.cartProductIds.length.toString(),
+                              showMoney: false),
+                          const Divider(
+                            height: 15.0,
+                            color: Colors.grey,
+                          ),
                           CartTotalRow(
                               label: 'Subtotal',
                               value: value.calculateTotalPrice().toString(),
@@ -349,7 +353,7 @@ class _CartPageState extends State<CartPage> {
                     ),
 
                     const SizedBox(
-                      height: 70.0,
+                      height: 90.0,
                     ),
 
                     // Container(
@@ -390,10 +394,8 @@ class _CartPageState extends State<CartPage> {
                     const SizedBox(
                       height: 40.0,
                     ),
-                    const Text(
-                      "Your Shopping Bag is Empty",
-                      style: TextStyle(fontSize: 20.0),
-                    ),
+                    Text("Your Shopping Bag is Empty",
+                        style: Theme.of(context).textTheme.headline1),
                     const SizedBox(
                       height: 50.0,
                     ),
@@ -421,26 +423,47 @@ class _CartPageState extends State<CartPage> {
           }
         })),
       ),
-      floatingActionButton: cart.isNotEmpty
-          ? GestureDetector(
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const ShippingPage()));
-              },
-              child: Container(
-                  decoration: BoxDecoration(
-                      color: const Color(0xffCC868A),
-                      borderRadius: BorderRadius.circular(5.0)),
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 10.0, horizontal: 20.0),
-                  child: const Text(
-                    "Proceed to checkout",
-                    style: TextStyle(color: Colors.white, fontSize: 17.0),
-                  )),
-            )
-          : null,
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-    );
+      bottomSheet: 
+      cart.length != 0
+      ?
+      BottomSheet(
+        enableDrag: false,
+        onClosing: () {},
+        builder: (context) {
+          return Padding(
+            padding: const EdgeInsets.all(18.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Image.asset(
+                      "assets/images/rupee.png",
+                      width: 25.0,
+                      height: 37.0,
+                    ),
+                    Text(cartProvider.calculateTotalPrice().toString(),
+                        style: Theme.of(context).textTheme.headline1)
+                  ],
+                ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width / 2,
+                  child: ButtonWidget(
+                    btnString: "Proceed to checkout",
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const ShippingPage()));
+                    },
+                  ),
+                )
+              ],
+            ),
+          );
+        },
+      )
+      :
+      SizedBox(),
+      );
   }
 
   void showCouponDialog(BuildContext context) {

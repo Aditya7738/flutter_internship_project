@@ -79,10 +79,7 @@ class _MyOrderTabState extends State<MyOrderTab> {
                                 ),
                                 Text(
                                   orderModel.id.toString(),
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 17.0,
-                                  ),
+                                  style: Theme.of(context).textTheme.headline3
                                 )
                               ],
                             ),
@@ -187,8 +184,8 @@ class _MyOrderTabState extends State<MyOrderTab> {
                                                     // productsModel.regularPrice ??
                                                     //     "20,000",
                                                     style: TextStyle(
-                                                      fontSize: 17.0,
-                                                    ),
+                                                    fontSize: 17.0,
+                                                  ),
                                                   ),
                                                 ],
                                               ),
@@ -196,9 +193,9 @@ class _MyOrderTabState extends State<MyOrderTab> {
                                                 children: [
                                                   Text(
                                                     "Sku: ",
-                                                    style: TextStyle(
-                                                      fontSize: 17.0,
-                                                    ),
+                                                     style: TextStyle(
+                                                    fontSize: 17.0,
+                                                  ),
                                                   ),
                                                   Text(
                                                     // productsModel.regularPrice != ""
@@ -207,9 +204,9 @@ class _MyOrderTabState extends State<MyOrderTab> {
                                                     // : "0.0",
                                                     // productsModel.regularPrice ??
                                                     //     "20,000",
-                                                    style: TextStyle(
-                                                      fontSize: 17.0,
-                                                    ),
+                                                     style: TextStyle(
+                                                    fontSize: 17.0,
+                                                  ),
                                                   ),
                                                 ],
                                               )
@@ -232,13 +229,11 @@ class _MyOrderTabState extends State<MyOrderTab> {
                         padding: const EdgeInsets.all(8.0),
                         child: Column(
                           children: [
-                            const Row(
+                            Row(
                               children: [
                                 Text(
                                   "Order Received ",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 17.0),
+                                  style: Theme.of(context).textTheme.headline3
                                 ),
                                 Text("(21-May-2021)")
                               ],

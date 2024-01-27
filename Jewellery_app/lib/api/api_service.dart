@@ -553,6 +553,42 @@ class ApiService {
     }
   }
 
+  static Future<http.StreamedResponse?> updateCustomerProfile(
+      int customerId, Map<String, String> updatedProfileData) async {
+    final endpoint =
+        "https://tiarabytj.com/wp-json/wc/v3/customers/$customerId?consumer_key=${Strings.consumerKey}&consumer_secret=${Strings.consumerSecret}";
+
+    var headers = {
+      'Content-Type': 'application/json',
+    };
+
+    Uri uri = Uri.parse(endpoint);
+
+    var request = http.Request('PUT', uri);
+
+    request.body = json.encode({
+      "email": updatedProfileData["email"],
+      "first_name": updatedProfileData["first_name"],
+      "last_name": updatedProfileData["last_name"],
+     
+    });
+
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    print("STATUS ${response.statusCode}");
+
+    if (response.statusCode == 200) {
+      print("${response.toString()}");
+
+      return response;
+    } else {
+      print("REASON ${response.reasonPhrase}");
+      return null;
+    }
+  }
+
   static Future<http.Response> createOrder(
       Map<String, String> billingData,
       Map<String, String> shippingData,
@@ -568,7 +604,7 @@ class ApiService {
     http.Response response = await http.post(uri,
         headers: {'Content-Type': 'application/json'},
         body: json.encode({
-          "customer_id": 230999,
+          "customer_id": customerId,
           "billing": billingData,
           "shipping": shippingData,
           // "date_paid": DateTime.now().toIso8601String(),
@@ -589,7 +625,6 @@ class ApiService {
       return response;
     }
   }
-
 
   static int tempCustomerId = 0;
   static int orderPageNo = 1;
@@ -612,7 +647,7 @@ class ApiService {
 
   static Future<List<CustomersOrder.OrderModel>> fetchOrders(
       int customerId, int pageNo) async {
-        tempCustomerId = customerId;
+    tempCustomerId = customerId;
 
     String endpoint =
         "https://tiarabytj.com/wp-json/wc/v3/orders?consumer_key=${Strings.consumerKey}&consumer_secret=${Strings.consumerSecret}&customer=$customerId&page=$pageNo&per_page=10";
@@ -713,7 +748,7 @@ class ApiService {
       print("LENGTH OF ORDER: ${listOfOrders.length}");
 
       return listOfOrders;
-    }else{
+    } else {
       return [];
     }
   }

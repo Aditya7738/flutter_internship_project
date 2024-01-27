@@ -87,7 +87,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
           ),
           Padding(
               padding:
-                  const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+                  const EdgeInsets.only(left: 10.0,right: 10.0, top: 5.0, bottom: 86.0),
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -109,10 +109,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                           : "0.0",
                                       // productsModel.regularPrice ??
                                       //     "20,000",
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 17.0,
-                                      ),
+                                      style: Theme.of(context).textTheme.headline3
                                     )
                                   ],
                                 )
@@ -127,9 +124,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                       productsModel.salePrice == ""
                                           ? "10,000"
                                           : productsModel.salePrice ?? "10,000",
-                                      style: const TextStyle(
-                                          fontSize: 20.0,
-                                          fontWeight: FontWeight.bold),
+                                      style: Theme.of(context).textTheme.headline2
                                     ),
                                     const SizedBox(
                                       width: 5.0,
@@ -223,7 +218,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                     Row(
                       children: [
                         Text("SKU:",
-                          style: Theme.of(context).textTheme.headline1,
+                          style: Theme.of(context).textTheme.headline2,
                         ),
                         const SizedBox(
                           width: 10.0,
@@ -233,7 +228,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                           width: 30.0,
                         ),
                         Text("Category:",
-                          style: Theme.of(context).textTheme.headline1,
+                          style: Theme.of(context).textTheme.headline2,
                         ),
                         const SizedBox(
                           width: 10.0,
@@ -244,11 +239,11 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                       ],
                     ),
                     const SizedBox(
-                      width: 20.0,
+                      width: 30.0,
                     ),
                     Text(
                       "Tags:",
-                          style: Theme.of(context).textTheme.headline1,
+                          style: Theme.of(context).textTheme.headline2,
                         ),
                     const SizedBox(
                       height: 5.0,
@@ -274,10 +269,68 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                   ])),
         ])),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      floatingActionButton: SizedBox(
-        width: 160.0,
-        child: ButtonWidget(
+      bottomSheet: BottomSheet(
+        enableDrag: false,
+        onClosing: () {},
+        builder: (context) {
+          return Padding(
+            padding: const EdgeInsets.all(18.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                productsModel.salePrice == ""
+                              ? Row(
+                                  children: [
+                                    Image.asset(
+                                      "assets/images/rupee.png",
+                                      width: 25.0,
+                      height: 37.0,
+                                    ),
+                                    Text(
+                                      productsModel.regularPrice != ""
+                                          ? productsModel.regularPrice ??
+                                              "20000"
+                                          : "0.0",
+                                      // productsModel.regularPrice ??
+                                      //     "20,000",
+                                      style: Theme.of(context).textTheme.headline1
+                                    )
+                                  ],
+                                )
+                              : Row(
+                                  children: [
+                                    Image.asset(
+                                      "assets/images/rupee.png",
+                                      width: 25.0,
+                      height: 37.0,
+                                    ),
+                                    Text(
+                                      productsModel.salePrice == ""
+                                          ? "10,000"
+                                          : productsModel.salePrice ?? "10,000",
+                                      style: Theme.of(context).textTheme.headline1
+                                    ),
+                                    const SizedBox(
+                                      width: 5.0,
+                                    ),
+                                    Text(
+                                      productsModel.regularPrice != ""
+                                          ? productsModel.regularPrice ??
+                                              "20000"
+                                          : "0.0",
+                                      style: const TextStyle(
+                                          decoration:
+                                              TextDecoration.lineThrough),
+                                    ),
+                                  ],
+                                ),
+
+                                ////////////////
+
+
+                SizedBox(
+                  width: MediaQuery.of(context).size.width / 2,
+                  child: ButtonWidget(
             imagePath: "assets/images/grocery_store.png",
             btnString: Strings.cart_btn_text,
             onTap: () async {
@@ -306,7 +359,46 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
               Navigator.of(context)
                   .push(MaterialPageRoute(builder: (context) => CartPage()));
             }),
+
+                )
+              ],
+            ),
+          );
+        },
       ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      // floatingActionButton: SizedBox(
+      //   width: 160.0,
+      //   child: ButtonWidget(
+      //       imagePath: "assets/images/grocery_store.png",
+      //       btnString: Strings.cart_btn_text,
+      //       onTap: () async {
+      //         print("CART PRESSED");
+      //         cartProvider.addToCartId(productsModel.id!);
+      //         print("CART IDS : ${cartProvider.cartProductIds}");
+
+      //         cartProvider.addToCart(CartProductModel(
+      //             cartProductid: productsModel.id,
+      //             price: productsModel.regularPrice != ""
+      //                 ? productsModel.regularPrice ?? "20000"
+      //                 : "0.0",
+      //             productName: productsModel.name ?? "Jewellery",
+      //             quantity: "1",
+      //             size: 5,
+      //             deliveryDate: DateHelper.getCurrentDateInWords(),
+      //             imageUrl: productsModel.images.isEmpty
+      //                 ? Strings.defaultImageUrl
+      //                 : productsModel.images[0].src ?? Strings.defaultImageUrl,
+      //             sku: productsModel.sku ?? "ABC",
+      //             imageId: productsModel.images.isNotEmpty
+      //                 ? productsModel.images[0].id
+      //                 : 0));
+
+      //         print("Product is added to cart");
+      //         Navigator.of(context)
+      //             .push(MaterialPageRoute(builder: (context) => CartPage()));
+      //       }),
+      // ),
     );
   }
 }

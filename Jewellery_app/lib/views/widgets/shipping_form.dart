@@ -105,7 +105,7 @@ late TextEditingController firstNameController2;
       children: [
          Text(
           formHeading,
-          style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+          style: Theme.of(context).textTheme.headline1
         ),
         const SizedBox(
           height: 20.0,

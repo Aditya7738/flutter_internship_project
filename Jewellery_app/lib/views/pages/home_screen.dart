@@ -88,14 +88,14 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  @override
-  void dispose() {
+  // @override
+  // void dispose() {
   
-    super.dispose();
-     _scrollController.dispose();
+  //   super.dispose();
+  //    _scrollController.dispose();
      
 
-  }
+  // }
   @override
   Widget build(BuildContext context) {
     double width = 20.0;
@@ -326,12 +326,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     const SizedBox(
                       height: 30.0,
                     ),
-                    const SizedBox(
-                        width: 200.0,
-                        height: 40.0,
-                        child: ButtonWidget(
-                            btnString: "Get Started",
-                            imagePath: "assets/images/right_arrow.png"))
+                    Container(
+                      width: 400.0,
+                      child: ButtonWidget(
+                          btnString: "Get Started",
+                          imagePath: "assets/images/right_arrow.png"),
+                    )
                   ],
                 ),
               ]),

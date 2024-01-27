@@ -64,10 +64,9 @@ class _SignupPageState extends State<SignupPage> {
                       const SizedBox(
                         height: 20.0,
                       ),
-                      const Text(
+                      Text(
                         "Signup with Tiara By TJ",
-                        style: TextStyle(
-                            fontSize: 20.0, fontWeight: FontWeight.bold),
+                       style: Theme.of(context).textTheme.headline1
                       ),
                       const SizedBox(
                         height: 20.0,
@@ -256,6 +255,52 @@ class _SignupPageState extends State<SignupPage> {
                       const SizedBox(
                         height: 30.0,
                       ),
+                      Center(
+                      child: RichText(
+                          text: TextSpan(
+                              text:
+                                  '*By clicking on Save chage, you accept our ',
+                              style: const TextStyle(color: Colors.black),
+                              children: <TextSpan>[
+                        TextSpan(
+                          text: 'T&C',
+                          style: const TextStyle(
+                            color: Color(0xffCC868A),
+                            
+                          ),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              // Handle the click event for the specific word.
+                              print('You clicked on T&C');
+                              // Add your custom action here.
+                            },
+                        ),
+                        const TextSpan(
+                          text: ' and ',
+                          style: TextStyle(
+                            color: Colors.black,
+                           
+                          ),
+                          
+                        ),
+                        TextSpan(
+                          text: 'Privacy Policy',
+                          style: const TextStyle(
+                            color: Color(0xffCC868A),
+                            
+                          ),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              // Handle the click event for the specific word.
+                              print('You clicked on Privacy Policy');
+                              // Add your custom action here.
+                            },
+                        ),
+                      ]))),
+
+                  const SizedBox(
+                    height: 30.0,
+                  ),
                       GestureDetector(
                         onTap: () async {
                           if (_formKey.currentState!.validate()) {

@@ -3,9 +3,9 @@ import 'package:jwelery_app/views/widgets/bottom_app_bar_cart.dart';
 
 class CartAppBar extends StatelessWidget implements PreferredSizeWidget{
   final String title;
-  final bool forCart;
 
-  const CartAppBar({super.key, required this.title, required this.forCart});
+
+  const CartAppBar({super.key, required this.title});
 
   @override
   Widget build(BuildContext context) {
@@ -17,12 +17,12 @@ class CartAppBar extends StatelessWidget implements PreferredSizeWidget{
           Icon(Icons.live_help),
           SizedBox(width: 10.0,),
         ],
-        bottom: forCart ? const BottomAppBarCart() : null,
+        
         elevation: 5.0,
       );
   }
   
   @override
   // TODO: implement preferredSize
-  Size get preferredSize => forCart ? const Size.fromHeight(kToolbarHeight + kToolbarHeight) : const Size.fromHeight(kToolbarHeight);
+  Size get preferredSize =>  const Size.fromHeight(kToolbarHeight);
 }

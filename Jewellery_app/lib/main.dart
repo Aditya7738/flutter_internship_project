@@ -38,9 +38,25 @@ SystemChrome.setPreferredOrientations([
           textTheme: TextTheme(
             headline1: TextStyle(
             fontWeight: FontWeight.bold,
+            fontSize: 20.0,
+      
+            ),
+            headline2: TextStyle(
+            fontWeight: FontWeight.bold,
             fontSize: 18.0,
       
-            ))
+            ), //product details heading
+            headline3: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 17.0,
+      
+            ), //price text style
+             headline4: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 16.0,
+      
+            ),
+            )
           ),
         
         home: const DashboardPage(),

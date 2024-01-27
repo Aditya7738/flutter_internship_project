@@ -180,8 +180,7 @@ class _ProductItemState extends State<ProductItem> {
                               productsModel.salePrice == ""
                                   ? "10,000"
                                   : productsModel.salePrice ?? "10,000",
-                              style: const TextStyle(
-                                  fontSize: 17.0, fontWeight: FontWeight.bold),
+                             style: Theme.of(context).textTheme.headline3
                             ),
                             const SizedBox(
                               width: 5.0,

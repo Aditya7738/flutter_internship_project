@@ -17,8 +17,7 @@ class FreePointsWidget extends StatelessWidget {
       ),
       Text(
         "xClusive Points",
-        style: TextStyle(
-            color: textColor, fontWeight: FontWeight.bold, fontSize: 20.0),
+        style: Theme.of(context).textTheme.headline1
       ),
       const SizedBox(
         height: 20.0,

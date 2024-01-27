@@ -1,6 +1,8 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:jwelery_app/api/api_service.dart';
 import 'package:jwelery_app/helpers/validation_helper.dart';
+import 'package:jwelery_app/providers/customer_provider.dart';
 import 'package:jwelery_app/providers/profile_provider.dart';
 import 'package:jwelery_app/views/widgets/suffix_icon.dart';
 import 'package:provider/provider.dart';
@@ -17,6 +19,24 @@ class _ProfilePageState extends State<ProfilePage> {
   TextEditingController anniversarydateController = TextEditingController();
   TextEditingController spousebirthdateController = TextEditingController();
 
+  final TextEditingController _firstNameController = TextEditingController();
+
+  final TextEditingController _lastNameController = TextEditingController();
+
+  final TextEditingController _companyNameController = TextEditingController();
+
+  final TextEditingController _addressController1 = TextEditingController();
+
+  final TextEditingController _addressController2 = TextEditingController();
+
+  final TextEditingController _phoneNoController = TextEditingController();
+
+  final TextEditingController _cityController = TextEditingController();
+
+  final TextEditingController _pinNoController = TextEditingController();
+
+  final TextEditingController _emailController = TextEditingController();
+
   List<String> options = ["+91", "+92"];
 
   String selectedOption = "+91";
@@ -24,6 +44,8 @@ class _ProfilePageState extends State<ProfilePage> {
   final _formKey = GlobalKey<FormState>();
 
   DateTime selectedDate = DateTime.now();
+
+  bool isUpdating = false;
 
   Future<String> _selectedDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -45,15 +67,24 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
-  // @override
-  // void initState() {
-  //   // TODO: implement initState
-  //   super.initState();
-  //    selectedOption = options[0];
-  // }
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    final customerProvider =
+        Provider.of<CustomerProvider>(context, listen: false);
+
+    _firstNameController.text = customerProvider.customerData[0]["first_name"];
+    _lastNameController.text = customerProvider.customerData[0]["last_name"];
+    _emailController.text = customerProvider.customerData[0]["email"];
+    //_phoneNoController.text = customerProvider.customerData[0]["phone"];
+  }
 
   @override
   Widget build(BuildContext context) {
+    final customerProvider =
+        Provider.of<CustomerProvider>(context, listen: false);
+    int customerId = customerProvider.customerData[0]["id"];
     return Scaffold(
         appBar: AppBar(
           title: const Text("Edit Profile"),
@@ -71,6 +102,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   Padding(
                     padding: const EdgeInsets.only(top: 7.0),
                     child: TextFormField(
+                      controller: _firstNameController,
                       keyboardType: TextInputType.name,
                       validator: (value) {
                         return ValidationHelper.nullOrEmptyString(value);
@@ -88,6 +120,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     height: 30.0,
                   ),
                   TextFormField(
+                    controller: _lastNameController,
                     keyboardType: TextInputType.name,
                     validator: (value) {
                       return ValidationHelper.nullOrEmptyString(value);
@@ -106,6 +139,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     height: 75.0,
                     child: TextFormField(
                       keyboardType: TextInputType.phone,
+                      controller: _phoneNoController,
                       validator: (value) {
                         return ValidationHelper.isPhoneNoValid(value);
                       },
@@ -172,6 +206,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     height: 75.0,
                     child: TextFormField(
                       keyboardType: TextInputType.emailAddress,
+                      controller: _emailController,
                       validator: (value) {
                         return ValidationHelper.isEmailValid(value);
                       },
@@ -235,7 +270,6 @@ class _ProfilePageState extends State<ProfilePage> {
                           borderRadius:
                               BorderRadius.all(Radius.circular(20.0))),
                     ),
-                    
                   ),
                   const SizedBox(
                     height: 30.0,
@@ -328,55 +362,45 @@ class _ProfilePageState extends State<ProfilePage> {
                   //   child: Text("*By clicking on Save chage, you accept our"),
 
                   // ),
-                  Center(
-                      child: RichText(
-                          text: TextSpan(
-                              text:
-                                  '*By clicking on Save chage, you accept our ',
-                              style: const TextStyle(color: Colors.black),
-                              children: <TextSpan>[
-                        TextSpan(
-                          text: 'T&C',
-                          style: const TextStyle(
-                            color: Color(0xffCC868A),
-                            
-                          ),
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () {
-                              // Handle the click event for the specific word.
-                              print('You clicked on T&C');
-                              // Add your custom action here.
-                            },
-                        ),
-                        const TextSpan(
-                          text: ' and ',
-                          style: TextStyle(
-                            color: Colors.black,
-                           
-                          ),
-                          
-                        ),
-                        TextSpan(
-                          text: 'Privacy Policy',
-                          style: const TextStyle(
-                            color: Color(0xffCC868A),
-                            
-                          ),
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () {
-                              // Handle the click event for the specific word.
-                              print('You clicked on Privacy Policy');
-                              // Add your custom action here.
-                            },
-                        ),
-                      ]))),
 
-                  const SizedBox(
-                    height: 30.0,
-                  ),
                   GestureDetector(
-                    onTap: () {
-                      if (_formKey.currentState!.validate()) {}
+                    onTap: () async {
+                      if (_formKey.currentState!.validate()) {
+                       
+
+                        Map<String, String> updatedData = {
+                          "email": _emailController.text,
+                          "first_name": _firstNameController.text,
+                          "last_name": _lastNameController.text,
+                        
+                        };
+
+                        setState(() {
+                          isUpdating = true;
+                        });
+
+                        final response = await ApiService.updateCustomerProfile(
+                            customerId, updatedData);
+                        setState(() {
+                          isUpdating = false;
+                        });
+
+                        if (response != null) {
+                          if (response.statusCode == 200) {
+
+                            // String body = response.body;
+                            // List<Map<String, dynamic>> data =
+                            //     <Map<String, dynamic>>[];
+
+                            // try {
+                            //   data = jsonDecode(body);
+                            //   print("JSON DECODE DATA $data");
+                            // } catch (e) {
+                            //   print('Error decoding: $e');
+                            // }
+                          }
+                        }
+                      }
                     },
                     child: Container(
                         width: 180.0,
@@ -386,12 +410,22 @@ class _ProfilePageState extends State<ProfilePage> {
                             borderRadius: BorderRadius.circular(5.0)),
                         padding: const EdgeInsets.symmetric(
                             vertical: 10.0, horizontal: 20.0),
-                        child: const Center(
-                          child: Text(
-                            "SAVE CHAGES",
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 17.0),
-                          ),
+                        child: Center(
+                          child: isUpdating
+                              ? const SizedBox(
+                                  width: 20.0,
+                                  height: 20.0,
+                                  child: CircularProgressIndicator(
+                                    color: Colors.white,
+                                    strokeWidth: 2.0,
+                                    backgroundColor: Color(0xffCC868A),
+                                  ),
+                                )
+                              : Text(
+                                  "SAVE CHAGES",
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 17.0),
+                                ),
                         )),
                   ),
                 ],
