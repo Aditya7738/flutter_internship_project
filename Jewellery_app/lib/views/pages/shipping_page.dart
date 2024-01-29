@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:ffi';
 
 import 'package:flutter/material.dart';
@@ -6,6 +7,7 @@ import 'package:jwelery_app/constants/strings.dart';
 import 'package:jwelery_app/helpers/validation_helper.dart';
 import 'package:jwelery_app/providers/cart_provider.dart';
 import 'package:jwelery_app/providers/customer_provider.dart';
+import 'package:jwelery_app/views/pages/payment_page.dart';
 import 'package:jwelery_app/views/widgets/shipping_form.dart';
 import 'package:provider/provider.dart';
 
@@ -435,7 +437,7 @@ class _ShippingPageState extends State<ShippingPage> {
                       ),
                       differentShippingAddress == true
                           ?
-                         
+
                           //customer_id = 230999
                           ShippingForm(
                               formHeading: "Fill Shipping Details",
@@ -581,8 +583,6 @@ class _ShippingPageState extends State<ShippingPage> {
                               });
                             }
 
-                            
-
                             print("STORED PRODUCT $productData");
 
                             setState(() {
@@ -596,9 +596,34 @@ class _ShippingPageState extends State<ShippingPage> {
                                 customerId,
                                 cartProvider.calculateTotalPrice());
 
+                            final response =
+                                await ApiService.createRazorpayOrder();
+
+                            List<Map<String, dynamic>> data =
+                                <Map<String, dynamic>>[];
+
+                            if (response != null) {
+                              String body =
+                                  await response.stream.bytesToString();
+                                  print("Payment body $body");
+
+                              try {
+                                data.add(jsonDecode(body));
+                                print("${body.runtimeType}");
+                                print("JSON DECODE DATA $data");
+                              } catch (e) {
+                                print('Error decoding: $e');
+                              }
+                            }
+
                             setState(() {
                               creatingOrder = false;
                             });
+
+                       
+                            
+
+                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => PaymentPage(orderId: data[0]["id"]),));
                           }
                         },
                         child: Container(

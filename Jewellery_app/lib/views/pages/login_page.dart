@@ -224,7 +224,7 @@ class _LoginPageState extends State<LoginPage> {
                                 navigationLoading = false;   
                               });
 
-                              Navigator.of(context).push(MaterialPageRoute(
+                              Navigator.of(context).pushReplacement(MaterialPageRoute(
                                   builder: (context) => YouPage()));
                             } else {
                               setState(() {

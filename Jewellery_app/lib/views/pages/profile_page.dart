@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:jwelery_app/api/api_service.dart';
@@ -381,25 +383,32 @@ class _ProfilePageState extends State<ProfilePage> {
 
                         final response = await ApiService.updateCustomerProfile(
                             customerId, updatedData);
-                        setState(() {
-                          isUpdating = false;
-                        });
+                       
 
                         if (response != null) {
                           if (response.statusCode == 200) {
 
-                            // String body = response.body;
-                            // List<Map<String, dynamic>> data =
-                            //     <Map<String, dynamic>>[];
+                            List<Map<String, dynamic>> data = <Map<String, dynamic>>[];
 
-                            // try {
-                            //   data = jsonDecode(body);
-                            //   print("JSON DECODE DATA $data");
-                            // } catch (e) {
-                            //   print('Error decoding: $e');
-                            // }
+
+
+                            String body = await response.stream.bytesToString();
+                            print(body);
+
+                             try {
+                                data.add(jsonDecode(body));
+                                print("${body.runtimeType}");
+                                print("JSON DECODE DATA $data");
+                              } catch (e) {
+                                print('Error decoding: $e');
+                              }
+
+                            customerProvider.setCustomerData(data);
                           }
                         }
+                         setState(() {
+                          isUpdating = false;
+                        });
                       }
                     },
                     child: Container(

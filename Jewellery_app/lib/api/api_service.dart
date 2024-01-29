@@ -555,6 +555,7 @@ class ApiService {
 
   static Future<http.StreamedResponse?> updateCustomerProfile(
       int customerId, Map<String, String> updatedProfileData) async {
+    print("$customerId");
     final endpoint =
         "https://tiarabytj.com/wp-json/wc/v3/customers/$customerId?consumer_key=${Strings.consumerKey}&consumer_secret=${Strings.consumerSecret}";
 
@@ -570,8 +571,9 @@ class ApiService {
       "email": updatedProfileData["email"],
       "first_name": updatedProfileData["first_name"],
       "last_name": updatedProfileData["last_name"],
-     
     });
+
+    print("${request.body}");
 
     request.headers.addAll(headers);
 
@@ -580,7 +582,7 @@ class ApiService {
     print("STATUS ${response.statusCode}");
 
     if (response.statusCode == 200) {
-      print("${response.toString()}");
+      //print("${await response.stream.bytesToString()}");
 
       return response;
     } else {
@@ -650,7 +652,7 @@ class ApiService {
     tempCustomerId = customerId;
 
     String endpoint =
-        "https://tiarabytj.com/wp-json/wc/v3/orders?consumer_key=${Strings.consumerKey}&consumer_secret=${Strings.consumerSecret}&customer=$customerId&page=$pageNo&per_page=10";
+        "https://tiarabytj.com/wp-json/wc/v3/orders?consumer_key=${Strings.consumerKey}&consumer_secret=${Strings.consumerSecret}&customer=$customerId&page=$pageNo&per_page=5";
 
     Uri uri = Uri.parse(endpoint);
 
@@ -750,6 +752,35 @@ class ApiService {
       return listOfOrders;
     } else {
       return [];
+    }
+  }
+
+  static Future<http.StreamedResponse?> createRazorpayOrder() async {
+    final endpoint = "https://api.razorpay.com/v1/orders";
+
+    Uri uri = Uri.parse(endpoint);
+
+    final headers = {
+      'content-type': 'application/json',
+      'Authorization': 'Basic cnpwX3Rlc3RfQkdnRm15bUFyMlM0aFA6UXVPMVpCNG5BeWhRYUdIaUtpeEdqN3px'
+    };
+
+    var request = http.Request('POST', uri);
+
+    request.body = jsonEncode(
+        {"amount": 100, "currency": "INR", "receipt": "rcptid_11"});
+
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+    print("STATUS ${response.statusCode}");
+
+    if (response.statusCode == 200) {
+      //print("PAYMENT ${await response.stream.bytesToString()}");
+      return response;
+    } else {
+      print(response.reasonPhrase);
+      return null;
     }
   }
 }

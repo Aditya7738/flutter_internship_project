@@ -3,8 +3,9 @@ import 'package:jwelery_app/providers/cart_provider.dart';
 import 'package:jwelery_app/providers/customer_provider.dart';
 import 'package:jwelery_app/views/pages/cart_page.dart';
 import 'package:jwelery_app/views/pages/dashboard_page.dart';
+import 'package:jwelery_app/views/pages/login_page.dart';
 import 'package:jwelery_app/views/pages/orders_page.dart';
-import 'package:jwelery_app/views/pages/payment_page.dart';
+import 'package:jwelery_app/views/pages/active_payment_page.dart';
 import 'package:jwelery_app/views/pages/profile_page.dart';
 import 'package:jwelery_app/views/pages/search_page.dart';
 import 'package:jwelery_app/views/pages/wishlist_page.dart';
@@ -47,7 +48,7 @@ class MyAccountPage extends StatelessWidget {
           alignment: Alignment.center,
           title: const Text("Confirm Logout"),
           content: const Text(
-              "Please click on confirm button for logout else cance"),
+              "Please click on confirm button for logout else cancel"),
           actions: [
             GestureDetector(
               onTap: () {
@@ -72,8 +73,9 @@ class MyAccountPage extends StatelessWidget {
                     "customerProvider.customerData.length ${customerProvider.customerData.length}");
                     print(
                     "customerProvider.customerData ${customerProvider.customerData}");
-                Navigator.of(context).pushReplacement(MaterialPageRoute(
-                    builder: (context) => const DashboardPage()));
+                Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(
+                    builder: (context) => const LoginPage()), 
+                    (route) => false,);
               },
               child: Container(
                   decoration: BoxDecoration(
@@ -214,7 +216,7 @@ class MyAccountPage extends StatelessWidget {
                               break;
                             case 1:
                               Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => const PaymentPage()));
+                                  builder: (context) => const ActivePayments()));
                               break;
                             case 2:
                               Navigator.of(context).push(MaterialPageRoute(
