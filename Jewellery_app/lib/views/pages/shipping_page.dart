@@ -8,8 +8,10 @@ import 'package:jwelery_app/helpers/validation_helper.dart';
 import 'package:jwelery_app/providers/cart_provider.dart';
 import 'package:jwelery_app/providers/customer_provider.dart';
 import 'package:jwelery_app/views/pages/payment_page.dart';
+import 'package:jwelery_app/views/pages/payment_successful.dart';
 import 'package:jwelery_app/views/widgets/shipping_form.dart';
 import 'package:provider/provider.dart';
+import 'package:razorpay_flutter/razorpay_flutter.dart';
 
 class ShippingPage extends StatefulWidget {
   const ShippingPage({super.key});
@@ -20,6 +22,10 @@ class ShippingPage extends StatefulWidget {
 
 class _ShippingPageState extends State<ShippingPage> {
   final _formKey = GlobalKey<FormState>();
+
+  Razorpay _razorpay = Razorpay();
+  late String order_id;
+  late String payableAmount;
 
   String selectedCountry = "India";
 
@@ -116,10 +122,64 @@ class _ShippingPageState extends State<ShippingPage> {
   bool creatingOrder = false;
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _firstNameController.text = "abc";
+    _firstNameController2.text = "abc";
+    _lastNameController.text = "def";
+    _lastNameController2.text = "def";
+    _addressController1.text = "ghi";
+    _addressController2.text = "ghi";
+    _address2Controller1.text = "jkl";
+    _address2Controller2.text = "jkl";
+    _cityController.text = "mno";
+    _cityController2.text = "mno";
+    _pinNoController.text = "466432";
+    _pinNoController2.text = "466432";
+    _phoneNoController.text = "2638746434";
+    _emailController.text = "eg@gmail.com";
+
+    _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
+    _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
+    _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
+  }
+
+  void _handlePaymentSuccess(PaymentSuccessResponse response) {
+    //  Toast.show("Payment successful ${response.paymentId}", duration: 2);
+    //print("Payment successful ${response.paymentId}");
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => PaymentSucessfulPage(),
+    ));
+  }
+
+  void _handlePaymentError(PaymentFailureResponse response) {
+    // Toast.show("Payment failed ${response.message}", duration: 2);
+    print("Payment failed ${response.message}");
+  }
+
+  void _handleExternalWallet(ExternalWalletResponse response) {
+    // Toast.show("External wallet ${response.walletName}", duration: 2);
+    print("External wallet ${response.walletName}");
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _razorpay.clear();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final customerProvider =
         Provider.of<CustomerProvider>(context, listen: false);
     final cartProvider = Provider.of<CartProvider>(context, listen: false);
+    final customerData = customerProvider.customerData[0];
+
+    String productName = "";
+    for (int i = 0; i < cartProvider.cart.length; i++) {
+      productName += cartProvider.cart[i].productName! + ", ";
+    }
 
     // print("${customerProvider.customerData[0]["id"]}");
     // print("CUSTOMER DATA LIST");
@@ -134,6 +194,7 @@ class _ShippingPageState extends State<ShippingPage> {
 
     return Scaffold(
       appBar: AppBar(
+        surfaceTintColor: Colors.white,
         title: Image.network(
           Strings.app_logo,
           width: 150,
@@ -605,7 +666,7 @@ class _ShippingPageState extends State<ShippingPage> {
                             if (response != null) {
                               String body =
                                   await response.stream.bytesToString();
-                                  print("Payment body $body");
+                              print("Payment body $body");
 
                               try {
                                 data.add(jsonDecode(body));
@@ -614,16 +675,42 @@ class _ShippingPageState extends State<ShippingPage> {
                               } catch (e) {
                                 print('Error decoding: $e');
                               }
+
+                              var options = {
+                                'key': ApiService
+                                            .woocommerce_razorpay_settings[0]
+                                        ["data"]
+                                    ["woocommerce_razorpay_settings"]["key_id"],
+                                //'amount': (cartProvider.calculateTotalPrice() * 100).toString(), //in the smallest currency sub-unit.
+                                'amount': '100',
+                                'name': 'Tiara by TJ',
+                                'order_id': data[0][
+                                    "id"], // Generate order_id using Orders API
+                                'description': productName,
+                                'timeout': 60, // in seconds
+                                'prefill': {
+                                  'contact': customerData["billing"]["phone"],
+                                  'email': customerData["email"]
+                                }
+                              };
+
+                              print("Payment $options");
+
+                              try {
+                                final response = _razorpay.open(options);
+                              } catch (e) {
+                                debugPrint(e.toString());
+                              }
                             }
 
                             setState(() {
                               creatingOrder = false;
                             });
 
-                       
-                            
-
-                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => PaymentPage(orderId: data[0]["id"]),));
+                            // Navigator.of(context).push(MaterialPageRoute(
+                            //   builder: (context) =>
+                            //       PaymentPage(orderId: data[0]["id"]),
+                            // ));
                           }
                         },
                         child: Container(

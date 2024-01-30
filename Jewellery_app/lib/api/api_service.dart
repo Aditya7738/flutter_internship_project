@@ -755,20 +755,78 @@ class ApiService {
     }
   }
 
+  static List<Map<String, dynamic>> woocommerce_razorpay_settings =
+      <Map<String, dynamic>>[];
+
+  static Future<void> generateBasicAuthForRazorPay() async {
+    final endpoint =
+        "https://tiarabytj.com/wp-json/store/v1/settings?options=woocommerce_razorpay_settings";
+
+    Uri uri = Uri.parse(endpoint);
+    String userName = "tiarabytj@gmail.com";
+    String password = "October@Jwero";
+
+    String basicAuth =
+        "Basic " + base64Encode(utf8.encode('$userName:$password'));
+
+    final headers = {
+      'content-type': 'application/json',
+      'Authorization': basicAuth
+    };
+
+    var request = http.Request('GET', uri);
+
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+    print("STATUS ${response.statusCode}");
+
+    if (response.statusCode == 200) {
+      String body = await response.stream.bytesToString();
+
+      try {
+        final jsonBody = jsonDecode(body);
+        print(jsonBody.runtimeType);
+        woocommerce_razorpay_settings.clear();
+        woocommerce_razorpay_settings.add(jsonDecode(body));
+
+        print("JSON DECODE DATA $woocommerce_razorpay_settings");
+      } catch (e) {
+        print('Error decoding: $e');
+      }
+    } else {
+      print(response.reasonPhrase);
+    }
+  }
+
   static Future<http.StreamedResponse?> createRazorpayOrder() async {
     final endpoint = "https://api.razorpay.com/v1/orders";
 
     Uri uri = Uri.parse(endpoint);
 
+    print(woocommerce_razorpay_settings);
+
+    final key_id = woocommerce_razorpay_settings[0]["data"]
+        ["woocommerce_razorpay_settings"]["key_id"];
+    final key_secret = woocommerce_razorpay_settings[0]["data"]
+        ["woocommerce_razorpay_settings"]["key_secret"];
+
+        print("key_id $key_id , key_secret $key_secret");
+
+    String basicAuth =
+        "Basic " + base64Encode(utf8.encode('$key_id:$key_secret'));
+
+        print("basicAuth $basicAuth");
+
     final headers = {
       'content-type': 'application/json',
-      'Authorization': 'Basic cnpwX3Rlc3RfQkdnRm15bUFyMlM0aFA6UXVPMVpCNG5BeWhRYUdIaUtpeEdqN3px'
+      'Authorization': basicAuth
     };
 
     var request = http.Request('POST', uri);
 
-    request.body = jsonEncode(
-        {"amount": 100, "currency": "INR", "receipt": "rcptid_11"});
+    request.body =
+        jsonEncode({"amount": 100, "currency": "INR", "receipt": "rcptid_11"});
 
     request.headers.addAll(headers);
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jwelery_app/api/api_service.dart';
 import 'package:jwelery_app/providers/cart_provider.dart';
 import 'package:jwelery_app/providers/customer_provider.dart';
 import 'package:jwelery_app/providers/profile_provider.dart';
@@ -29,6 +30,8 @@ SystemChrome.setPreferredOrientations([
   DeviceOrientation.portraitUp,
   DeviceOrientation.portraitDown
 ]);
+
+    getBasicAuthForRazorPay();
 
     return MultiProvider(
       providers: [
@@ -70,5 +73,10 @@ SystemChrome.setPreferredOrientations([
         debugShowCheckedModeBanner: false,
       ),
     );
+  }
+  
+  void getBasicAuthForRazorPay() async {
+    print("getBasicAuthForRazorPay");
+    await ApiService.generateBasicAuthForRazorPay();
   }
 }
