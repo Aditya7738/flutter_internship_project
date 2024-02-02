@@ -657,12 +657,8 @@ class _ShippingPageState extends State<ShippingPage> {
                                 customerId,
                                 cartProvider.calculateTotalPrice());
 
-                                
-
                             // final response =
                             //     await ApiService.createRazorpayOrder();
-
-                            
 
                             // if (response != null) {
                             //   String body =
@@ -677,47 +673,64 @@ class _ShippingPageState extends State<ShippingPage> {
                             //     print('Error decoding: $e');
                             //   }
 
-                              // var options = {
-                              //   'key': ApiService
-                              //               .woocommerce_razorpay_settings[0]
-                              //           ["data"]
-                              //       ["woocommerce_razorpay_settings"]["key_id"],
-                              //   //'amount': (cartProvider.calculateTotalPrice() * 100).toString(), //in the smallest currency sub-unit.
-                              //   'amount': '100',
-                              //   'name': 'Tiara by TJ',
-                              //   'order_id': data[0][
-                              //       "id"], // Generate order_id using Orders API
-                              //   'description': productName,
-                              //   'timeout': 60, // in seconds
-                              //   'prefill': {
-                              //     'contact': customerData["billing"]["phone"],
-                              //     'email': customerData["email"]
-                              //   }
-                              // };
+                            // var options = {
+                            //   'key': ApiService
+                            //               .woocommerce_razorpay_settings[0]
+                            //           ["data"]
+                            //       ["woocommerce_razorpay_settings"]["key_id"],
+                            //   //'amount': (cartProvider.calculateTotalPrice() * 100).toString(), //in the smallest currency sub-unit.
+                            //   'amount': '100',
+                            //   'name': 'Tiara by TJ',
+                            //   'order_id': data[0][
+                            //       "id"], // Generate order_id using Orders API
+                            //   'description': productName,
+                            //   'timeout': 60, // in seconds
+                            //   'prefill': {
+                            //     'contact': customerData["billing"]["phone"],
+                            //     'email': customerData["email"]
+                            //   }
+                            // };
 
-                              // print("Payment $options");
+                            // print("Payment $options");
 
-                              // try {
-                              //   final response = _razorpay.open(options);
-                              // } catch (e) {
-                              //   debugPrint(e.toString());
-                              // }
+                            // try {
+                            //   final response = _razorpay.open(options);
+                            // } catch (e) {
+                            //   debugPrint(e.toString());
+                            // }
 
-                              List<Map<String, dynamic>> data =
+                            List<Map<String, dynamic>> razorpayOrderData =
                                 await uiCreateRazorpayOrder();
-                            
+
+                            List<Map<String, dynamic>> cashFreeOrderData =
+                                await uiCreateCashFreeOrder();
 
                             setState(() {
                               creatingOrder = false;
                             });
 
+                            Map<String, String> impCashFreeData =
+                                <String, String>{};
+
+                            if (cashFreeOrderData.isNotEmpty) {
+                              impCashFreeData = {
+                                "order_id": cashFreeOrderData[0]["order_id"],
+                                "cf_order_id": cashFreeOrderData[0]
+                                    ["cf_order_id"],
+                                "payment_session_id": cashFreeOrderData[0]
+                                    ["payment_session_id"],
+                                "order_status": cashFreeOrderData[0]
+                                    ["order_status"],
+                              };
+                            }
+
                             Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) =>
-                                  PaymentPage(orderId: data[0]["id"]),
+                              builder: (context) => PaymentPage(
+                                  orderId: razorpayOrderData[0]["id"],
+                                  cashFreeData: impCashFreeData),
                             ));
                           }
                         },
-                      
                         child: Container(
                             width: MediaQuery.of(context).size.width,
                             decoration: BoxDecoration(
@@ -740,7 +753,7 @@ class _ShippingPageState extends State<ShippingPage> {
                                       "Create order",
                                       style: TextStyle(
                                           color: Colors.white,
-                                          fontSize: 17.0,
+                                          fontSize: 18.0,
                                           fontWeight: FontWeight.bold),
                                     ),
                             )),
@@ -756,20 +769,39 @@ class _ShippingPageState extends State<ShippingPage> {
 
     if (response != null) {
       String body = await response.stream.bytesToString();
-      print("Payment body $body");
+      print("Razorpay Payment body $body");
 
       try {
         print("${body.runtimeType}");
-        print("JSON DECODE DATA $data");
+        print("Razorpay JSON DECODE DATA $data");
         data.add(jsonDecode(body));
         return data;
       } catch (e) {
-        print('Error decoding: $e');
+        print('Razorpay Error decoding: $e');
         return <Map<String, dynamic>>[];
       }
     }
     return <Map<String, dynamic>>[];
   }
 
-   
+  Future<List<Map<String, dynamic>>> uiCreateCashFreeOrder() async {
+    List<Map<String, dynamic>> data = <Map<String, dynamic>>[];
+    final response = await ApiService.createCashFreeOrder();
+
+    if (response != null) {
+      String body = await response.stream.bytesToString();
+      print("CashFree Payment body $body");
+
+      try {
+        print("${body.runtimeType}");
+        print("CashFree JSON DECODE DATA $data");
+        data.add(jsonDecode(body));
+        return data;
+      } catch (e) {
+        print('CashFree Error decoding: $e');
+        return <Map<String, dynamic>>[];
+      }
+    }
+    return <Map<String, dynamic>>[];
+  }
 }

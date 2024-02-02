@@ -42,6 +42,12 @@
 			</string>
 		</array>
 		<key>
+			NSCameraUsageDescription
+		</key>
+		<string>
+			Please mention the description to give user info
+		</string>
+		<key>
 			CFBundleDevelopmentRegion
 		</key>
 		<string>

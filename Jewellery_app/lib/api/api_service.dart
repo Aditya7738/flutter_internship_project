@@ -458,6 +458,8 @@ class ApiService {
       print("JSON $json");
 
       return response;
+    }else{
+      return response;
     }
     return response;
   }
@@ -877,10 +879,13 @@ class ApiService {
     http.StreamedResponse response = await request.send();
 
     if (response.statusCode == 200) {
-      print("cashfree response ${await response.stream.bytesToString()}");
+      //print("cashfree response ${await response.stream.bytesToString()}");
+      return response;
     } else {
       print(" cashfree error${response.reasonPhrase}");
+      return null;
     }
+  
   }
 
   static List<PaymentGatewaysModel> paymentGateways = <PaymentGatewaysModel>[];

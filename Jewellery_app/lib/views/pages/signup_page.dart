@@ -40,6 +40,9 @@ class _SignupPageState extends State<SignupPage> {
   bool isObscured2 = true;
 
   bool isLoading = false;
+  
+  bool isRegisterUnSuccessful = false;
+  String errorMsg = "";
 
   @override
   Widget build(BuildContext context) {
@@ -69,6 +72,34 @@ class _SignupPageState extends State<SignupPage> {
                       const SizedBox(
                         height: 20.0,
                       ),
+
+                      isRegisterUnSuccessful
+                          ? Container(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 15.0, horizontal: 25.0),
+                              //width: MediaQuery.of(context).size.width,
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.rectangle,
+                                  borderRadius: BorderRadius.circular(20.0),
+                                  color: const Color.fromARGB(255, 253, 233, 231),
+                                  border: Border.all(
+                                      color: Colors.red,
+                                      style: BorderStyle.solid)),
+                              child: Expanded(
+                                child: Text(
+                                  errorMsg,
+                                  maxLines: 3,
+                                  style: TextStyle(color: Colors.red, fontSize: 17.0),
+                                ),
+                              ),
+                            )
+                          : const SizedBox(),
+
+                          const SizedBox(
+                        height: 30.0,
+                      ),
+
+
                       SizedBox(
                         height: 75.0,
                         child: TextFormField(
@@ -352,6 +383,25 @@ class _SignupPageState extends State<SignupPage> {
                                   MaterialPageRoute(
                                     builder: (context) => LoginPage(),
                                   ));
+                            }else{
+                               String body = response.body;
+                              Map<String, dynamic> data =
+                                  <String, dynamic>{};
+
+                              try {
+                                data = jsonDecode(body);
+
+                                
+
+                                setState(() {
+                                  isRegisterUnSuccessful = true;
+                                  errorMsg = data["message"];
+
+                                });
+                                print("JSON DECODE DATA $data");
+                              } catch (e) {
+                                print('Error decoding: $e');
+                              }
                             }
                           }
                           // print("$phoneNo $email $firstName $lastName");
