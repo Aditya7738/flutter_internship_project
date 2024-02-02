@@ -4,6 +4,7 @@ import 'package:jwelery_app/constants/strings.dart';
 import 'package:jwelery_app/model/category_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:jwelery_app/model/order_model.dart' as CustomersOrder;
+import 'package:jwelery_app/model/payment_gatways_model.dart';
 import 'package:jwelery_app/model/products_model.dart' as AllProducts;
 import 'package:jwelery_app/model/products_model.dart';
 import 'package:jwelery_app/model/products_of_category.dart'
@@ -811,12 +812,12 @@ class ApiService {
     final key_secret = woocommerce_razorpay_settings[0]["data"]
         ["woocommerce_razorpay_settings"]["key_secret"];
 
-        print("key_id $key_id , key_secret $key_secret");
+    print("key_id $key_id , key_secret $key_secret");
 
     String basicAuth =
         "Basic " + base64Encode(utf8.encode('$key_id:$key_secret'));
 
-        print("basicAuth $basicAuth");
+    print("basicAuth $basicAuth");
 
     final headers = {
       'content-type': 'application/json',
@@ -838,6 +839,118 @@ class ApiService {
       return response;
     } else {
       print(response.reasonPhrase);
+      return null;
+    }
+  }
+
+  static String cashFreeProductionUrl = "https://api.cashfree.com/pg/orders";
+  static String cashFreeSandBoxUrl = "https://sandbox.cashfree.com/pg/orders";
+
+  static String x_Client_Secret = '32b58214b2122f105cd95ceb200ab3fa3ce31cef';
+  static String x_Client_Id = '25374ad9549ebbd8ac34a363647352';
+
+  static Future<http.StreamedResponse?> createCashFreeOrder() async {
+    String url = 'https://sandbox.cashfree.com/pg/orders';
+
+    Uri uri = Uri.parse(url);
+
+    var headers = {
+      'X-Client-Secret': x_Client_Secret,
+      'X-Client-Id': x_Client_Id,
+      'x-api-version': '2023-08-01',
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    };
+    var request = http.Request('POST', uri);
+    request.body = json.encode({
+      "order_amount": 1.0,
+      "order_currency": "INR",
+      "customer_details": {
+        "customer_id": "USER123",
+        "customer_name": "joe",
+        "customer_email": "joe.s@cashfree.com",
+        "customer_phone": "+919876543210"
+      }
+    });
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      print("cashfree response ${await response.stream.bytesToString()}");
+    } else {
+      print(" cashfree error${response.reasonPhrase}");
+    }
+  }
+
+  static List<PaymentGatewaysModel> paymentGateways = <PaymentGatewaysModel>[];
+  static Future<List<PaymentGatewaysModel>?> getPaymentGateways() async {
+    final endpoint = "https://tiarabytj.com/wp-json/wc/v3/payment_gateways";
+    Uri uri = Uri.parse(endpoint);
+    String userName = "tiarabytj@gmail.com";
+    String password = "October@Jwero";
+
+    String basicAuth =
+        "Basic " + base64Encode(utf8.encode('$userName:$password'));
+
+    final headers = {
+      'content-type': 'application/json',
+      'Authorization': basicAuth
+    };
+
+    var request = http.Request('GET', uri);
+
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+    print("STATUS ${response.statusCode}");
+
+    if (response.statusCode == 200) {
+      String body = await response.stream.bytesToString();
+
+      try {
+        final jsonBody = jsonDecode(body);
+
+        print("paymentbody $jsonBody");
+
+        for (var i = 0; i < jsonBody.length; i++) {
+          if (jsonBody[i]["enabled"] == true) {
+            paymentGateways.add(PaymentGatewaysModel(
+              id: jsonBody[i]["id"],
+              title: jsonBody[i]["title"],
+              description: jsonBody[i]["description"],
+              order: jsonBody[i]["order"],
+              enabled: jsonBody[i]["enabled"],
+              methodTitle: jsonBody[i]["method_title"],
+              methodDescription: jsonBody[i]["method_description"],
+              methodSupports: jsonBody[i]["method_supports"] == null
+                  ? []
+                  : List<String>.from(
+                      jsonBody[i]["method_supports"]!.map((x) => x)),
+              settings: jsonBody[i]["settings"],
+              needsSetup: jsonBody[i]["needs_setup"],
+              postInstallScripts: jsonBody[i]["post_install_scripts"] == null
+                  ? []
+                  : List<dynamic>.from(
+                      jsonBody[i]["post_install_scripts"]!.map((x) => x)),
+              settingsUrl: jsonBody[i]["settings_url"],
+              connectionUrl: jsonBody[i]["connection_url"],
+              setupHelpText: jsonBody[i]["setup_help_text"],
+              requiredSettingsKeys:
+                  jsonBody[i]["required_settings_keys"] == null
+                      ? []
+                      : List<String>.from(
+                          jsonBody[i]["required_settings_keys"]!.map((x) => x)),
+            ));
+          }
+        }
+
+        print("paymentGateways.length ${paymentGateways.length}");
+        //print("paymentGateways $paymentGateways");
+        return paymentGateways;
+      } catch (e) {
+        print(e.toString());
+      }
       return null;
     }
   }

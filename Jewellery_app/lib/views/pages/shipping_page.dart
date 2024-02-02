@@ -23,7 +23,7 @@ class ShippingPage extends StatefulWidget {
 class _ShippingPageState extends State<ShippingPage> {
   final _formKey = GlobalKey<FormState>();
 
-  Razorpay _razorpay = Razorpay();
+  // Razorpay _razorpay = Razorpay();
   late String order_id;
   late String payableAmount;
 
@@ -140,34 +140,34 @@ class _ShippingPageState extends State<ShippingPage> {
     _phoneNoController.text = "2638746434";
     _emailController.text = "eg@gmail.com";
 
-    _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
-    _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
-    _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
+    // _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
+    // _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
+    // _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
   }
 
-  void _handlePaymentSuccess(PaymentSuccessResponse response) {
-    //  Toast.show("Payment successful ${response.paymentId}", duration: 2);
-    //print("Payment successful ${response.paymentId}");
-    Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => PaymentSucessfulPage(),
-    ));
-  }
+  // void _handlePaymentSuccess(PaymentSuccessResponse response) {
+  //   //  Toast.show("Payment successful ${response.paymentId}", duration: 2);
+  //   //print("Payment successful ${response.paymentId}");
+  //   Navigator.of(context).push(MaterialPageRoute(
+  //     builder: (context) => PaymentSucessfulPage(),
+  //   ));
+  // }
 
-  void _handlePaymentError(PaymentFailureResponse response) {
-    // Toast.show("Payment failed ${response.message}", duration: 2);
-    print("Payment failed ${response.message}");
-  }
+  // void _handlePaymentError(PaymentFailureResponse response) {
+  //   // Toast.show("Payment failed ${response.message}", duration: 2);
+  //   print("Payment failed ${response.message}");
+  // }
 
-  void _handleExternalWallet(ExternalWalletResponse response) {
-    // Toast.show("External wallet ${response.walletName}", duration: 2);
-    print("External wallet ${response.walletName}");
-  }
+  // void _handleExternalWallet(ExternalWalletResponse response) {
+  //   // Toast.show("External wallet ${response.walletName}", duration: 2);
+  //   print("External wallet ${response.walletName}");
+  // }
 
-  @override
-  void dispose() {
-    super.dispose();
-    _razorpay.clear();
-  }
+  // @override
+  // void dispose() {
+  //   super.dispose();
+  //   _razorpay.clear();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -657,62 +657,67 @@ class _ShippingPageState extends State<ShippingPage> {
                                 customerId,
                                 cartProvider.calculateTotalPrice());
 
-                            final response =
-                                await ApiService.createRazorpayOrder();
+                                
 
-                            List<Map<String, dynamic>> data =
-                                <Map<String, dynamic>>[];
+                            // final response =
+                            //     await ApiService.createRazorpayOrder();
 
-                            if (response != null) {
-                              String body =
-                                  await response.stream.bytesToString();
-                              print("Payment body $body");
+                            
 
-                              try {
-                                data.add(jsonDecode(body));
-                                print("${body.runtimeType}");
-                                print("JSON DECODE DATA $data");
-                              } catch (e) {
-                                print('Error decoding: $e');
-                              }
+                            // if (response != null) {
+                            //   String body =
+                            //       await response.stream.bytesToString();
+                            //   print("Payment body $body");
 
-                              var options = {
-                                'key': ApiService
-                                            .woocommerce_razorpay_settings[0]
-                                        ["data"]
-                                    ["woocommerce_razorpay_settings"]["key_id"],
-                                //'amount': (cartProvider.calculateTotalPrice() * 100).toString(), //in the smallest currency sub-unit.
-                                'amount': '100',
-                                'name': 'Tiara by TJ',
-                                'order_id': data[0][
-                                    "id"], // Generate order_id using Orders API
-                                'description': productName,
-                                'timeout': 60, // in seconds
-                                'prefill': {
-                                  'contact': customerData["billing"]["phone"],
-                                  'email': customerData["email"]
-                                }
-                              };
+                            //   try {
+                            //     data.add(jsonDecode(body));
+                            //     print("${body.runtimeType}");
+                            //     print("JSON DECODE DATA $data");
+                            //   } catch (e) {
+                            //     print('Error decoding: $e');
+                            //   }
 
-                              print("Payment $options");
+                              // var options = {
+                              //   'key': ApiService
+                              //               .woocommerce_razorpay_settings[0]
+                              //           ["data"]
+                              //       ["woocommerce_razorpay_settings"]["key_id"],
+                              //   //'amount': (cartProvider.calculateTotalPrice() * 100).toString(), //in the smallest currency sub-unit.
+                              //   'amount': '100',
+                              //   'name': 'Tiara by TJ',
+                              //   'order_id': data[0][
+                              //       "id"], // Generate order_id using Orders API
+                              //   'description': productName,
+                              //   'timeout': 60, // in seconds
+                              //   'prefill': {
+                              //     'contact': customerData["billing"]["phone"],
+                              //     'email': customerData["email"]
+                              //   }
+                              // };
 
-                              try {
-                                final response = _razorpay.open(options);
-                              } catch (e) {
-                                debugPrint(e.toString());
-                              }
-                            }
+                              // print("Payment $options");
+
+                              // try {
+                              //   final response = _razorpay.open(options);
+                              // } catch (e) {
+                              //   debugPrint(e.toString());
+                              // }
+
+                              List<Map<String, dynamic>> data =
+                                await uiCreateRazorpayOrder();
+                            
 
                             setState(() {
                               creatingOrder = false;
                             });
 
-                            // Navigator.of(context).push(MaterialPageRoute(
-                            //   builder: (context) =>
-                            //       PaymentPage(orderId: data[0]["id"]),
-                            // ));
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) =>
+                                  PaymentPage(orderId: data[0]["id"]),
+                            ));
                           }
                         },
+                      
                         child: Container(
                             width: MediaQuery.of(context).size.width,
                             decoration: BoxDecoration(
@@ -744,4 +749,27 @@ class _ShippingPageState extends State<ShippingPage> {
                   )))),
     );
   }
+
+  Future<List<Map<String, dynamic>>> uiCreateRazorpayOrder() async {
+    List<Map<String, dynamic>> data = <Map<String, dynamic>>[];
+    final response = await ApiService.createRazorpayOrder();
+
+    if (response != null) {
+      String body = await response.stream.bytesToString();
+      print("Payment body $body");
+
+      try {
+        print("${body.runtimeType}");
+        print("JSON DECODE DATA $data");
+        data.add(jsonDecode(body));
+        return data;
+      } catch (e) {
+        print('Error decoding: $e');
+        return <Map<String, dynamic>>[];
+      }
+    }
+    return <Map<String, dynamic>>[];
+  }
+
+   
 }
