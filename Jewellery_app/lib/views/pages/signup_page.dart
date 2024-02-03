@@ -1,11 +1,11 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:jwelery_app/api/api_service.dart';
-import 'package:jwelery_app/constants/strings.dart';
+import 'package:Tiara_by_TJ/api/api_service.dart';
+import 'package:Tiara_by_TJ/constants/strings.dart';
 import 'dart:convert';
-import 'package:jwelery_app/helpers/validation_helper.dart';
-import 'package:jwelery_app/providers/customer_provider.dart';
-import 'package:jwelery_app/views/pages/login_page.dart';
+import 'package:Tiara_by_TJ/helpers/validation_helper.dart';
+import 'package:Tiara_by_TJ/providers/customer_provider.dart';
+import 'package:Tiara_by_TJ/views/pages/login_page.dart';
 import 'package:provider/provider.dart';
 
 class SignupPage extends StatefulWidget {
@@ -351,6 +351,8 @@ class _SignupPageState extends State<SignupPage> {
                               "password": password
                             };
 
+                            
+
                             print("SAVED DATA $data");
 
                             setState(() {
@@ -381,7 +383,7 @@ class _SignupPageState extends State<SignupPage> {
                               Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => LoginPage(),
+                                    builder: (context) => LoginPage(isComeFromCart: false,),
                                   ));
                             }else{
                                String body = response.body;
@@ -452,7 +454,7 @@ class _SignupPageState extends State<SignupPage> {
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
                                   Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => const LoginPage(),
+                                    builder: (context) => const LoginPage(isComeFromCart: false,),
                                   ));
                                 },
                             ),

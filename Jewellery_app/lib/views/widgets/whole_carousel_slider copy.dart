@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
-import 'package:jwelery_app/constants/strings.dart';
-import 'package:jwelery_app/model/products_model.dart';
+import 'package:Tiara_by_TJ/constants/strings.dart';
+import 'package:Tiara_by_TJ/model/products_model.dart';
 
 class SearchProductWholeCarouselSlider extends StatefulWidget {
   final List<ProductImage> listOfProductImage;

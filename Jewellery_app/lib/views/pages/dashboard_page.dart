@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:jwelery_app/providers/cart_provider.dart';
-import 'package:jwelery_app/providers/customer_provider.dart';
-import 'package:jwelery_app/providers/profile_provider.dart';
-import 'package:jwelery_app/providers/wishlist_provider.dart';
-import 'package:jwelery_app/views/pages/home_screen.dart';
-import 'package:jwelery_app/views/pages/you_page.dart';
+import 'package:Tiara_by_TJ/providers/cart_provider.dart';
+import 'package:Tiara_by_TJ/providers/customer_provider.dart';
+import 'package:Tiara_by_TJ/providers/profile_provider.dart';
+import 'package:Tiara_by_TJ/providers/wishlist_provider.dart';
+import 'package:Tiara_by_TJ/views/pages/home_screen.dart';
+import 'package:Tiara_by_TJ/views/pages/you_page.dart';
 import 'package:provider/provider.dart';
 
 

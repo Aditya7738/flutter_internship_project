@@ -1,4 +1,4 @@
-name: jwelery_app
+name: Tiara_by_TJ
 description: A new Flutter project.
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -51,10 +51,11 @@ dependencies:
   lottie: ^3.0.0
   payu_checkoutpro_flutter: ^1.0.4
   cc_avenue: ^1.0.3
-  flutter_stripe: ^10.0.0
+  package_rename: ^1.5.3
   webview_flutter: ^4.5.0
   html: ^0.15.4
-  
+  onesignal_flutter: ^5.1.0
+  #flutter_cashfree_pg_sdk: ^2.1.1+31
 
 
 dev_dependencies:

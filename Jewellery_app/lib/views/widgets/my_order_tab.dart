@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:jwelery_app/api/api_service.dart';
-import 'package:jwelery_app/constants/strings.dart';
-import 'package:jwelery_app/helpers/date_helper.dart';
-import 'package:jwelery_app/model/order_model.dart';
-import 'package:jwelery_app/providers/customer_provider.dart';
+import 'package:Tiara_by_TJ/api/api_service.dart';
+import 'package:Tiara_by_TJ/constants/strings.dart';
+import 'package:Tiara_by_TJ/helpers/date_helper.dart';
+import 'package:Tiara_by_TJ/model/order_model.dart';
+import 'package:Tiara_by_TJ/providers/customer_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 

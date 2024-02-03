@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:jwelery_app/views/widgets/empty_list_widget.dart';
-import 'package:jwelery_app/views/widgets/my_order_tab.dart';
+import 'package:Tiara_by_TJ/views/widgets/empty_list_widget.dart';
+import 'package:Tiara_by_TJ/views/widgets/my_order_tab.dart';
 
 class OrderPage extends StatelessWidget {
   const OrderPage({super.key});

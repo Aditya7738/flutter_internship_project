@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:jwelery_app/views/pages/dashboard_page.dart';
-import 'package:jwelery_app/views/pages/search_page.dart';
-import 'package:jwelery_app/views/widgets/empty_list_widget.dart';
+import 'package:Tiara_by_TJ/views/pages/dashboard_page.dart';
+import 'package:Tiara_by_TJ/views/pages/search_page.dart';
+import 'package:Tiara_by_TJ/views/widgets/empty_list_widget.dart';
 import 'package:lottie/lottie.dart';
 
 class PaymentSucessfulPage extends StatelessWidget {

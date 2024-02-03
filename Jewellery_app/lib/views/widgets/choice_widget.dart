@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
-import 'package:jwelery_app/model/choice_model.dart';
-import 'package:jwelery_app/views/widgets/label_widget.dart';
+import 'package:Tiara_by_TJ/model/choice_model.dart';
+import 'package:Tiara_by_TJ/views/widgets/label_widget.dart';
 
 class ChoiceWidget extends StatefulWidget {
   final ChoiceModel choiceModel;

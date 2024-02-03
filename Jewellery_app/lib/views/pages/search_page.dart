@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:jwelery_app/api/api_service.dart';
-import 'package:jwelery_app/constants/strings.dart';
-import 'package:jwelery_app/model/products_model.dart';
+import 'package:Tiara_by_TJ/api/api_service.dart';
+import 'package:Tiara_by_TJ/constants/strings.dart';
+import 'package:Tiara_by_TJ/model/products_model.dart';
 
-import 'package:jwelery_app/views/pages/product_details_page.dart';
+import 'package:Tiara_by_TJ/views/pages/product_details_page.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});

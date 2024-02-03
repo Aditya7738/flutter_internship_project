@@ -1,12 +1,15 @@
+import 'package:Tiara_by_TJ/providers/customer_provider.dart';
+import 'package:Tiara_by_TJ/views/pages/dashboard_page.dart';
+import 'package:Tiara_by_TJ/views/pages/login_page.dart';
 import 'package:flutter/material.dart';
-import 'package:jwelery_app/constants/strings.dart';
-import 'package:jwelery_app/providers/cart_provider.dart';
-import 'package:jwelery_app/views/pages/search_page.dart';
-import 'package:jwelery_app/views/pages/shipping_page.dart';
-import 'package:jwelery_app/views/widgets/button_widget.dart';
-import 'package:jwelery_app/views/widgets/cart_app_bar.dart';
-import 'package:jwelery_app/views/widgets/cart_total_row.dart';
-import 'package:jwelery_app/views/widgets/label_widget.dart';
+import 'package:Tiara_by_TJ/constants/strings.dart';
+import 'package:Tiara_by_TJ/providers/cart_provider.dart';
+import 'package:Tiara_by_TJ/views/pages/search_page.dart';
+import 'package:Tiara_by_TJ/views/pages/shipping_page.dart';
+import 'package:Tiara_by_TJ/views/widgets/button_widget.dart';
+import 'package:Tiara_by_TJ/views/widgets/cart_app_bar.dart';
+import 'package:Tiara_by_TJ/views/widgets/cart_total_row.dart';
+import 'package:Tiara_by_TJ/views/widgets/label_widget.dart';
 import 'package:provider/provider.dart';
 
 class CartPage extends StatefulWidget {
@@ -74,7 +77,6 @@ class _CartPageState extends State<CartPage> {
     return Scaffold(
       appBar: const CartAppBar(
         title: 'Cart',
-       
       ),
       body: Scrollbar(
         child: SingleChildScrollView(
@@ -262,9 +264,11 @@ class _CartPageState extends State<CartPage> {
                                         style: TextStyle(fontSize: 16.0),
                                       ),
                                       Text(
-                                        cartData.deliveryDate ?? "After 5 days",
-                                        style: Theme.of(context).textTheme.headline4
-                                      )
+                                          cartData.deliveryDate ??
+                                              "After 5 days",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headline4)
                                     ],
                                   ),
                                 ),
@@ -402,7 +406,7 @@ class _CartPageState extends State<CartPage> {
                     GestureDetector(
                       onTap: () {
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
-                            builder: (context) => const SearchPage()));
+                            builder: (context) => const DashboardPage()));
                       },
                       child: Container(
                           decoration: BoxDecoration(
@@ -423,47 +427,72 @@ class _CartPageState extends State<CartPage> {
           }
         })),
       ),
-      bottomSheet: 
-      cart.length != 0
-      ?
-      BottomSheet(
-        enableDrag: false,
-        onClosing: () {},
-        builder: (context) {
-          return Padding(
-            padding: const EdgeInsets.all(18.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    Image.asset(
-                      "assets/images/rupee.png",
-                      width: 25.0,
-                      height: 37.0,
-                    ),
-                    Text(cartProvider.calculateTotalPrice().toString(),
-                        style: Theme.of(context).textTheme.headline1)
-                  ],
-                ),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width / 2,
-                  child: ButtonWidget(
-                    btnString: "Proceed to checkout",
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => const ShippingPage()));
-                    },
+      bottomSheet: cart.length != 0
+          ? BottomSheet(
+              enableDrag: false,
+              onClosing: () {},
+              builder: (context) {
+                return Padding(
+                  padding: const EdgeInsets.all(18.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Image.asset(
+                            "assets/images/rupee.png",
+                            width: 25.0,
+                            height: 37.0,
+                          ),
+                          Text(cartProvider.calculateTotalPrice().toString(),
+                              style: Theme.of(context).textTheme.headline1)
+                        ],
+                      ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width / 2,
+                        child: ButtonWidget(
+                          btnString: "Proceed to checkout",
+                          onTap: () {
+                            final customerProvider =
+                                Provider.of<CustomerProvider>(context,
+                                    listen: false);
+
+                                    List<Map<String,dynamic>> oldCartDataList = <Map<String,dynamic>>[];
+
+                                  //user old cart item should be added to cart again when he login and direct to cart page 
+                                    // for (var i = 0; i < cartProvider.cart.length; i++) {
+                                    //   oldCartDataList.add(
+                                        
+                                    //   );
+                                    // } 
+
+                                    // customerProvider.customerData.addAll(
+
+                                    // );
+
+                            bool isDataEmpty =
+                                customerProvider.customerData.isEmpty;
+
+                                if(isDataEmpty){
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => const LoginPage(isComeFromCart: true,)));
+
+                                }else{
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => const ShippingPage()));
+
+                                }
+                            
+                          },
+                        ),
+                      )
+                    ],
                   ),
-                )
-              ],
-            ),
-          );
-        },
-      )
-      :
-      SizedBox(),
-      );
+                );
+              },
+            )
+          : SizedBox(),
+    );
   }
 
   void showCouponDialog(BuildContext context) {

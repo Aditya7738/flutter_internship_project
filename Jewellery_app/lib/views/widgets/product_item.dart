@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:jwelery_app/constants/strings.dart';
-import 'package:jwelery_app/helpers/date_helper.dart';
-import 'package:jwelery_app/model/cart_product_model.dart';
-import 'package:jwelery_app/model/products_model.dart';
-import 'package:jwelery_app/providers/cart_provider.dart';
+import 'package:Tiara_by_TJ/constants/strings.dart';
+import 'package:Tiara_by_TJ/helpers/date_helper.dart';
+import 'package:Tiara_by_TJ/model/cart_product_model.dart';
+import 'package:Tiara_by_TJ/model/products_model.dart';
+import 'package:Tiara_by_TJ/providers/cart_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:jwelery_app/providers/wishlist_provider.dart';
-import 'package:jwelery_app/views/pages/product_details_page.dart';
+import 'package:Tiara_by_TJ/providers/wishlist_provider.dart';
+import 'package:Tiara_by_TJ/views/pages/product_details_page.dart';
 
 class ProductItem extends StatefulWidget {
   final ProductsModel productsModel;
@@ -47,10 +47,12 @@ class _ProductItemState extends State<ProductItem> {
             children: [
               productsModel.images.isEmpty ||
                       productsModel.images[0].src == null
-                  ? Placeholder(
-                      fallbackHeight:
-                          (MediaQuery.of(context).size.width / 2) + 10.0,
-                    )
+                  ? ClipRRect(
+                    child: Image.asset("assets/images/image_placeholder.jpg",
+                        width: (MediaQuery.of(context).size.width / 2) + 16.0,
+                        height: (MediaQuery.of(context).size.width / 2) + 10.0
+                        ),
+                  )
                   : Image.network(
                       productsModel.images.isEmpty
                           ? Strings.defaultImageUrl
@@ -177,11 +179,10 @@ class _ProductItemState extends State<ProductItem> {
                               height: 17.0,
                             ),
                             Text(
-                              productsModel.salePrice == ""
-                                  ? "10,000"
-                                  : productsModel.salePrice ?? "10,000",
-                             style: Theme.of(context).textTheme.headline3
-                            ),
+                                productsModel.salePrice == ""
+                                    ? "10,000"
+                                    : productsModel.salePrice ?? "10,000",
+                                style: Theme.of(context).textTheme.headline3),
                             const SizedBox(
                               width: 5.0,
                             ),
@@ -217,8 +218,10 @@ class _ProductItemState extends State<ProductItem> {
                                 ? Strings.defaultImageUrl
                                 : productsModel.images[0].src ??
                                     Strings.defaultImageUrl,
-                                     sku: productsModel.sku, 
-                                     imageId: productsModel.images.isNotEmpty ? productsModel.images[0].id : 0));
+                            sku: productsModel.sku,
+                            imageId: productsModel.images.isNotEmpty
+                                ? productsModel.images[0].id
+                                : 0));
                       } else {
                         cartProvider.addToCartId(productsModel.id!);
                         cartProvider.addToCart(CartProductModel(
@@ -234,8 +237,10 @@ class _ProductItemState extends State<ProductItem> {
                                 ? Strings.defaultImageUrl
                                 : productsModel.images[0].src ??
                                     Strings.defaultImageUrl,
-                                     sku: productsModel.sku, 
-                                     imageId: productsModel.images.isNotEmpty ? productsModel.images[0].id : 0));
+                            sku: productsModel.sku,
+                            imageId: productsModel.images.isNotEmpty
+                                ? productsModel.images[0].id
+                                : 0));
                       }
                     },
                     child: Padding(

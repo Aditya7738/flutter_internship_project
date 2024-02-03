@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jwelery_app/views/widgets/bottom_app_bar_cart.dart';
+import 'package:Tiara_by_TJ/views/widgets/bottom_app_bar_cart.dart';
 
 class CartAppBar extends StatelessWidget implements PreferredSizeWidget{
   final String title;

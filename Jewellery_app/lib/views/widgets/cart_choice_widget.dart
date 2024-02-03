@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jwelery_app/model/choice_model.dart';
+import 'package:Tiara_by_TJ/model/choice_model.dart';
 
 class CartChoiceWidget extends StatelessWidget {
    final ChoiceModel choiceModel;

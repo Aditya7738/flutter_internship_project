@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:jwelery_app/api/api_service.dart';
-import 'package:jwelery_app/model/navigation_model.dart';
-import 'package:jwelery_app/views/widgets/app_bar.dart';
+import 'package:Tiara_by_TJ/api/api_service.dart';
+import 'package:Tiara_by_TJ/model/navigation_model.dart';
+import 'package:Tiara_by_TJ/views/widgets/app_bar.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
-import 'package:jwelery_app/views/widgets/button_widget.dart';
-import 'package:jwelery_app/views/widgets/feature_widget.dart';
-import 'package:jwelery_app/views/widgets/pincode_widget.dart';
+import 'package:Tiara_by_TJ/views/widgets/button_widget.dart';
+import 'package:Tiara_by_TJ/views/widgets/feature_widget.dart';
+import 'package:Tiara_by_TJ/views/widgets/pincode_widget.dart';
 
 import '../widgets/nav_drawer.dart';
 

@@ -1,0 +1,31 @@
+# dart run package_rename
+package_rename_config:
+  android:
+    app_name: Tiara_by_TJ
+    package_name: com.tanikatech.tiarabytj
+    override_old_package: com.example.jwelery_app
+
+  # ios:
+  #   app_name: Package Rename Demo
+  #   bundle_name: renamedemo
+  #   package_name: rocks.outdatedguy.packagerenamedemo
+
+  # web:
+  #   app_name: Package Rename Demo
+  #   description: CLI tool to rename package configurations in Flutter project.
+
+  # linux:
+  #   app_name: Package Rename Demo
+  #   package_name: rocks.outdatedguy.packagerenamedemo
+  #   exe_name: renamedemo-linux-x64
+
+  # windows:
+  #   app_name: Package Rename Demo
+  #   organization: OutdatedGuy
+  #   copyright_notice: Copyright © 2023 OutdatedGuy. All rights reserved.
+  #   exe_name: renamedemo-win32
+
+  # macos:
+  #   app_name: Package Rename Demo
+  #   package_name: rocks.outdatedguy.packagerenamedemo
+  #   copyright_notice: Copyright © 2023 OutdatedGuy. All rights reserved.

@@ -1,6 +1,7 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.example.jwelery_app" xmlns:tools="http://schemas.android.com/tools">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.tanikatech.tiarabytj" xmlns:tools="http://schemas.android.com/tools">
 	<uses-permission android:name="android.permission.RECEIVE_SMS" />
-	<application android:label="jwelery_app" android:name="${applicationName}" android:icon="@mipmap/ic_launcher" tools:replace="android:label">
+	<application android:label="Tiara_by_TJ"
+    tools:replace="android:label">
 		<activity android:name=".MainActivity" android:exported="true" android:launchMode="singleTop" android:theme="@style/LaunchTheme" android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode" android:hardwareAccelerated="true" android:enableOnBackInvokedCallback="true" android:windowSoftInputMode="adjustResize">
 			<!--
 			Specifies an Android theme to apply to this Activity as soon as
@@ -14,7 +15,7 @@
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 		</activity>
-		<activity android:name="com.avinash.gotluru.cc_avenue.Framework.WebViewActivity" android:label="@string/app_name">
+		<activity android:name="com.avinash.gotluru.cc_avenue.Framework.WebViewActivity" android:label="Tiara_by_TJ">
 		</activity>
 		<!--
 		Don't delete the meta-data below.

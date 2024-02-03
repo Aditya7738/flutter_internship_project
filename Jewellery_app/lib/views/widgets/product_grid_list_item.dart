@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jwelery_app/model/products_of_category.dart';
+import 'package:Tiara_by_TJ/model/products_of_category.dart';
 
 class ProductGridListItem extends StatefulWidget {
   final ProductOfCategoryModel productOfCategoryModel;

@@ -1,5 +1,6 @@
 
-import 'package:jwelery_app/model/cart_product_model.dart';
+import 'package:Tiara_by_TJ/model/cart_product_model.dart';
+
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:jwelery_app/model/category_model.dart';
-import 'package:jwelery_app/views/widgets/category_grid_item.dart';
+import 'package:Tiara_by_TJ/model/category_model.dart';
+import 'package:Tiara_by_TJ/views/widgets/category_grid_item.dart';
 
 
 class SlideDrawer extends StatelessWidget {

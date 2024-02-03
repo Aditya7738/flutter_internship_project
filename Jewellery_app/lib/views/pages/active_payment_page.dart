@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jwelery_app/views/widgets/empty_list_widget.dart';
+import 'package:Tiara_by_TJ/views/widgets/empty_list_widget.dart';
 
 class ActivePayments extends StatelessWidget {
   const ActivePayments({super.key});

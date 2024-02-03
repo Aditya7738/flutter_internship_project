@@ -1,17 +1,20 @@
 import 'dart:convert';
 
+import 'package:Tiara_by_TJ/views/pages/cart_page.dart';
+import 'package:Tiara_by_TJ/views/pages/shipping_page.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:jwelery_app/api/api_service.dart';
-import 'package:jwelery_app/constants/strings.dart';
-import 'package:jwelery_app/helpers/validation_helper.dart';
-import 'package:jwelery_app/views/pages/signup_page.dart';
-import 'package:jwelery_app/views/pages/you_page.dart';
+import 'package:Tiara_by_TJ/api/api_service.dart';
+import 'package:Tiara_by_TJ/constants/strings.dart';
+import 'package:Tiara_by_TJ/helpers/validation_helper.dart';
+import 'package:Tiara_by_TJ/views/pages/signup_page.dart';
+import 'package:Tiara_by_TJ/views/pages/you_page.dart';
 import 'package:provider/provider.dart';
-import 'package:jwelery_app/providers/customer_provider.dart';
+import 'package:Tiara_by_TJ/providers/customer_provider.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+  final bool isComeFromCart;
+  const LoginPage({super.key, required this.isComeFromCart});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -223,6 +226,12 @@ class _LoginPageState extends State<LoginPage> {
                               setState(() {
                                 navigationLoading = false;   
                               });
+
+                              widget.isComeFromCart 
+                              ?
+                              Navigator.of(context).pushReplacement(MaterialPageRoute(
+                                  builder: (context) => CartPage()))
+                                  :
 
                               Navigator.of(context).pushReplacement(MaterialPageRoute(
                                   builder: (context) => YouPage()));

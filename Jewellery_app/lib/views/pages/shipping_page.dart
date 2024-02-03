@@ -2,14 +2,14 @@ import 'dart:convert';
 import 'dart:ffi';
 
 import 'package:flutter/material.dart';
-import 'package:jwelery_app/api/api_service.dart';
-import 'package:jwelery_app/constants/strings.dart';
-import 'package:jwelery_app/helpers/validation_helper.dart';
-import 'package:jwelery_app/providers/cart_provider.dart';
-import 'package:jwelery_app/providers/customer_provider.dart';
-import 'package:jwelery_app/views/pages/payment_page.dart';
-import 'package:jwelery_app/views/pages/payment_successful.dart';
-import 'package:jwelery_app/views/widgets/shipping_form.dart';
+import 'package:Tiara_by_TJ/api/api_service.dart';
+import 'package:Tiara_by_TJ/constants/strings.dart';
+import 'package:Tiara_by_TJ/helpers/validation_helper.dart';
+import 'package:Tiara_by_TJ/providers/cart_provider.dart';
+import 'package:Tiara_by_TJ/providers/customer_provider.dart';
+import 'package:Tiara_by_TJ/views/pages/payment_page.dart';
+import 'package:Tiara_by_TJ/views/pages/payment_successful.dart';
+import 'package:Tiara_by_TJ/views/widgets/shipping_form.dart';
 import 'package:provider/provider.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 
@@ -649,13 +649,13 @@ class _ShippingPageState extends State<ShippingPage> {
                             setState(() {
                               creatingOrder = true;
                             });
-
-                            await ApiService.createOrder(
-                                billingData,
-                                shippingData,
-                                productData,
-                                customerId,
-                                cartProvider.calculateTotalPrice());
+                                  //do it after payment successful - redirect user to this page and modify this page where login, shipping ajd paymet will be on same page
+                            // await ApiService.createOrder(
+                            //     billingData,
+                            //     shippingData,
+                            //     productData,
+                            //     customerId,
+                            //     cartProvider.calculateTotalPrice());
 
                             // final response =
                             //     await ApiService.createRazorpayOrder();

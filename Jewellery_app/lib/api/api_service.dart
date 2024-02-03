@@ -1,13 +1,13 @@
 import 'dart:convert';
 
-import 'package:jwelery_app/constants/strings.dart';
-import 'package:jwelery_app/model/category_model.dart';
+import 'package:Tiara_by_TJ/constants/strings.dart';
+import 'package:Tiara_by_TJ/model/category_model.dart';
 import 'package:http/http.dart' as http;
-import 'package:jwelery_app/model/order_model.dart' as CustomersOrder;
-import 'package:jwelery_app/model/payment_gatways_model.dart';
-import 'package:jwelery_app/model/products_model.dart' as AllProducts;
-import 'package:jwelery_app/model/products_model.dart';
-import 'package:jwelery_app/model/products_of_category.dart'
+import 'package:Tiara_by_TJ/model/order_model.dart' as CustomersOrder;
+import 'package:Tiara_by_TJ/model/payment_gatways_model.dart';
+import 'package:Tiara_by_TJ/model/products_model.dart' as AllProducts;
+import 'package:Tiara_by_TJ/model/products_model.dart';
+import 'package:Tiara_by_TJ/model/products_of_category.dart'
     as ProductsRelatedToCategory;
 
 class ApiService {

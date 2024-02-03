@@ -1,6 +1,7 @@
 //Pass these values from your app to SDK, this data is only for test purpose
 
-import 'package:jwelery_app/helpers/payu_test_credentials.dart';
+import 'package:Tiara_by_TJ/helpers/payu_test_credentials.dart';
+
 import 'package:payu_checkoutpro_flutter/PayUConstantKeys.dart';
 class PayUParams {
   static Map createPayUPaymentParams() {

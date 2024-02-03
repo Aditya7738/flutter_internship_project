@@ -6,14 +6,16 @@ import 'dart:convert';
 // import 'dart:js' as js;
 
 import 'package:flutter/material.dart';
-import 'package:jwelery_app/api/api_service.dart';
-import 'package:jwelery_app/helpers/hashservice.dart';
-import 'package:jwelery_app/helpers/pay_u_params.dart';
-import 'package:jwelery_app/model/payment_gatways_model.dart';
-import 'package:jwelery_app/providers/cart_provider.dart';
-import 'package:jwelery_app/providers/customer_provider.dart';
-import 'package:jwelery_app/views/pages/payment_failed.dart';
-import 'package:jwelery_app/views/pages/payment_successful.dart';
+import 'package:Tiara_by_TJ/api/api_service.dart';
+import 'package:Tiara_by_TJ/helpers/hashservice.dart';
+import 'package:Tiara_by_TJ/helpers/pay_u_params.dart';
+import 'package:Tiara_by_TJ/model/payment_gatways_model.dart';
+import 'package:Tiara_by_TJ/model/step.dart';
+import 'package:Tiara_by_TJ/providers/cart_provider.dart';
+import 'package:Tiara_by_TJ/providers/customer_provider.dart';
+import 'package:Tiara_by_TJ/views/pages/payment_failed.dart';
+import 'package:Tiara_by_TJ/views/pages/payment_successful.dart';
+import 'package:Tiara_by_TJ/views/widgets/steplist.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:provider/provider.dart';
 
@@ -54,7 +56,7 @@ import 'package:cc_avenue/cc_avenue.dart';
 import 'package:flutter/services.dart';
 
 //flutter_stripe
-import 'package:flutter_stripe/flutter_stripe.dart' as stripe;
+// import 'package:flutter_stripe/flutter_stripe.dart' as stripe;
 
 // import 'package:toast/toast.dart';
 
@@ -85,8 +87,6 @@ class _PaymentPageState extends State<PaymentPage>
     // TODO: implement initState
     super.initState();
 
-    getPaymentGateways();
-
     _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
     _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
     _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
@@ -94,19 +94,10 @@ class _PaymentPageState extends State<PaymentPage>
     cashFreeData = widget.cashFreeData;
     _checkoutPro = PayUCheckoutProFlutter(this as PayUCheckoutProProtocol);
 
-    //cfPaymentGatewayService.setCallback(verifyPayment, onError);
+    //cfPaymentGatewayService.setCallback(verifyPayment, onErrorPay);
   }
 
-  getPaymentGateways() async {
-    setState(() {
-      isLoading = true;
-    });
-    ApiService.paymentGateways.clear();
-    await ApiService.getPaymentGateways();
-    setState(() {
-      isLoading = false;
-    });
-  }
+  getPaymentGateways() async {}
 
   void _handlePaymentSuccess(PaymentSuccessResponse response) {
     //  Toast.show("Payment successful ${response.paymentId}", duration: 2);
@@ -184,8 +175,9 @@ class _PaymentPageState extends State<PaymentPage>
           currencyType: 'INR',
           merchantId: 'tiarabytj@gmail.com',
           orderId: '519',
-            redirectUrl: 'http://122.182.6.216/merchant/ccavResponseHandler.jsp',
-        rsaKeyUrl: 'https://secure.ccavenue.com/transaction/jsp/GetRSA.jsp'  //redirecting to this link
+          redirectUrl: 'http://122.182.6.216/merchant/ccavResponseHandler.jsp',
+          rsaKeyUrl:
+              'https://secure.ccavenue.com/transaction/jsp/GetRSA.jsp' //redirecting to this link
           );
     } on PlatformException {
       print('PlatformException');
@@ -193,13 +185,16 @@ class _PaymentPageState extends State<PaymentPage>
       print("CcAvenue error ${e.toString()}");
     }
   }
+
+  //CASHFREE ---------------------------------------------------
+  
   // void verifyPayment(String orderId) {
-  //   print("Verify Payment");
+  //   print("Verify Payment of order - $orderId");
   // }
 
-  // void onError(CFErrorResponse errorResponse, String orderId) {
-  //   print(errorResponse.getMessage());
-  //   print("Error while making payment");
+  // void onErrorPay(CFErrorResponse errorResponse, String orderId) {
+  //   print("Error while making payment ${errorResponse.getMessage()}");
+  
   // }
 
   // webCheckout() async {
@@ -223,11 +218,46 @@ class _PaymentPageState extends State<PaymentPage>
   //   return null;
   // }
 
-  openPayUCheckoutScreen() async {
-    _checkoutPro.openCheckoutScreen(
-      payUPaymentParams: PayUParams.createPayUPaymentParams(),
-      payUCheckoutProConfig: PayUParams.createPayUConfigParams(),
-    );
+  //PayU --------------------------------------------------------
+
+  // openPayUCheckoutScreen() async {
+  //   _checkoutPro.openCheckoutScreen(
+  //     payUPaymentParams: PayUParams.createPayUPaymentParams(),
+  //     payUCheckoutProConfig: PayUParams.createPayUConfigParams(),
+  //   );
+  // }
+
+  //------------------------------------------------------------------
+
+  Future<List<ExpansionListItemModel>> getSteps() async {
+    // setState(() {
+    //   isLoading = true;
+    // });
+    ApiService.paymentGateways.clear();
+    await ApiService.getPaymentGateways();
+    setState(() {
+      
+    });
+
+    List<ExpansionListItemModel> list = <ExpansionListItemModel>[];
+
+    for (int i = 0; i < ApiService.paymentGateways.length; i++) {
+      list.add(ExpansionListItemModel(
+          ApiService.paymentGateways[i].title ?? "Payment method",
+          ApiService.paymentGateways[i].description ?? ""));
+    }
+
+    print("list length ${list.length}");
+
+    // var _items = [
+    //   ExpansionListItemModel('Step 0: Install Flutter',
+    //       'Install Flutter development tools according to the official documentation.'),
+    //   ExpansionListItemModel('Step 1: Create a project',
+    //       'Open your terminal, run `flutter create <project_name>` to create a new project.'),
+    //   ExpansionListItemModel('Step 2: Run the app',
+    //       'Change your terminal directory to the project directory, enter `flutter run`.'),
+    // ];
+    return list;
   }
 
   @override
@@ -246,44 +276,49 @@ class _PaymentPageState extends State<PaymentPage>
         appBar: AppBar(
           title: Text("Payment methods"),
         ),
-        body: isLoading
-            ? Center(
-                child: CircularProgressIndicator(
-                  backgroundColor: Colors.white,
-                ),
-              )
-            : SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.only(left: 5.0),
-                          child: Text(
-                            "Select your preferred payment method",
-                            style: Theme.of(context).textTheme.headline2,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 10.0),
-                          child: Container(
-                              width: MediaQuery.of(context).size.width,
-                              height: MediaQuery.of(context).size.height,
-                              child: ListView.builder(
-                                itemCount: ApiService.paymentGateways.length,
-                                itemBuilder: (context, index) {
-                                  PaymentGatewaysModel paymentGatewaysModel =
-                                      ApiService.paymentGateways[index];
-                                  return GestureDetector(
-                                    onTap: () {
-                                      print("pay method pressed");
+        body:
+            //  isLoading
+            //     ?
+            //  Center(
+            //     child: CircularProgressIndicator(
+            //       backgroundColor: Colors.white,
+            //     ),
+            //   )
+            // :
+            SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(left: 5.0),
+                    child: Text(
+                      "Select your preferred payment method",
+                      style: Theme.of(context).textTheme.headline2,
+                    ),
+                  ),
+                  Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10.0),
+                      child: FutureBuilder(
+                        future: getSteps(),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<List<ExpansionListItemModel>>
+                                snapshot) {
+                          if (snapshot.hasData && snapshot.data != null) {
+                            final steps = snapshot.data;
+                            //return SizedBox();
+                            return Column(children: [
+                              ExpansionPanelList(
+                                expansionCallback: (panelIndex, isExpanded) {
+                                  print("pressed $panelIndex");
+                                  PaymentGatewaysModel paymentGatewaysModel = ApiService.paymentGateways[panelIndex];
 
-                                      switch (paymentGatewaysModel.id) {
+                                  switch (paymentGatewaysModel.id) {
                                         case "cod":
                                           break;
                                         case "cashfree":
-                                          // webCheckout();
+                                           //webCheckout();
                                           break;
                                         case "razorpay":
                                           makeRazorPayment();
@@ -295,35 +330,55 @@ class _PaymentPageState extends State<PaymentPage>
                                           initPlatformState();
                                           break;
                                         case "stripe":
-                                          openPayUCheckoutScreen();
                                           break;
+
+                                          // case "payubiz":
+                                          // openPayUCheckoutScreen();
+                                          // break;
 
                                         default:
                                       }
-                                    },
-                                    child: Padding(
-                                      padding:
-                                          const EdgeInsets.only(bottom: 8.0),
-                                      child: Card(
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 15.0, horizontal: 15.0),
-                                          child: Text(
-                                            paymentGatewaysModel.title ??
-                                                "Payment method",
-                                            style:
-                                                const TextStyle(fontSize: 18.0),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  );
+
+
+                                  setState(() {
+                                    print(" ExpansionPanelList $isExpanded");
+                                    steps![panelIndex].isExpanded = isExpanded;
+                                  });
                                 },
-                              )),
-                        ),
-                      ]),
-                ),
-              ));
+                                children: steps!.map<ExpansionPanel>(
+                                    (ExpansionListItemModel
+                                        expansionListItemModel) {
+                                 
+                                  return ExpansionPanel(
+                                      headerBuilder: (context, isExpanded) {
+                                        expansionListItemModel.isExpanded = isExpanded;
+                                        print(" ExpansionPanel $isExpanded");
+                                        return ListTile(
+                                          title: Text(
+                                              expansionListItemModel.title),
+                                        );
+                                      
+                                      },
+                                      body: ListTile(
+                                        title:
+                                            Text(expansionListItemModel.body),
+                                      ),
+                                      isExpanded: expansionListItemModel.isExpanded);
+                                }).toList(),
+                              ),
+                            ]);
+                          } else {
+                            return Center(
+                              child: CircularProgressIndicator(
+                                color: Colors.black,
+                              ),
+                            );
+                          }
+                        },
+                      )),
+                ]),
+          ),
+        ));
   }
 
   showAlertDialog(BuildContext context, String title, String content) {

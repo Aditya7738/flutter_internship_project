@@ -1,8 +1,14 @@
+import 'package:Tiara_by_TJ/providers/cart_provider.dart';
+import 'package:Tiara_by_TJ/providers/wishlist_provider.dart';
+import 'package:Tiara_by_TJ/views/pages/cart_page.dart';
+import 'package:Tiara_by_TJ/views/pages/wishlist_page.dart';
+import 'package:Tiara_by_TJ/views/widgets/custom_searchbar.dart';
 import 'package:flutter/material.dart';
-import 'package:jwelery_app/api/api_service.dart';
+import 'package:Tiara_by_TJ/api/api_service.dart';
 
-import 'package:jwelery_app/views/widgets/product_item.dart';
-
+import 'package:Tiara_by_TJ/views/widgets/product_item.dart';
+import 'package:provider/provider.dart';
+import 'package:badges/badges.dart' as badges;
 
 class ProductPage extends StatefulWidget {
   final int id;
@@ -15,7 +21,6 @@ class ProductPage extends StatefulWidget {
 class _ProductPageState extends State<ProductPage> {
   //List<ProductOfCategoryModel> listOfProductsCategoryWise = [];
   final ScrollController _scrollController = ScrollController();
-  
 
   bool isLoading = true;
 
@@ -25,7 +30,6 @@ class _ProductPageState extends State<ProductPage> {
 
   @override
   void initState() {
-
     super.initState();
 
     getProducts();
@@ -40,7 +44,6 @@ class _ProductPageState extends State<ProductPage> {
         loadMoreData();
       }
     });
-    
   }
 
   void loadMoreData() async {
@@ -74,47 +77,62 @@ class _ProductPageState extends State<ProductPage> {
 
   @override
   Widget build(BuildContext context) {
-
-
     return Scaffold(
-      appBar: AppBar(
-          elevation: 5.0,
-          backgroundColor: Colors.white,
-          foregroundColor: Colors.black,
-          title: SizedBox(
-            height: 40.0,
-            child: TextField(
-              onChanged: (value) async {
-               
+      appBar: AppBar(title: Text("Products"), actions: <Widget>[
+        SizedBox(
+          height: 40.0,
+          width: 32.0,
+          child: badges.Badge(
+            badgeStyle: const badges.BadgeStyle(badgeColor: Colors.purple),
+            badgeContent:
+                Consumer<WishlistProvider>(builder: (context, value, child) {
+              print("LENGTH OF FAV: ${value.favProductIds}");
+              return Text(
+                value.favProductIds.length.toString(),
+                style: const TextStyle(color: Colors.white),
+              );
+            }),
+            child: IconButton(
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const WishListPage()));
               },
-              showCursor: true,
-              maxLines: 1,
-              
-              cursorColor: Colors.grey,
-              decoration: const InputDecoration(
-                  focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey)),
-                  prefixIcon: Icon(
-                    Icons.search_rounded,
-                    color: Colors.grey,
-                    size: 30.0,
-                  ),
-                  fillColor: Colors.grey,
-                  hintText: "Search",
-                  hintStyle: TextStyle(color: Colors.grey, fontSize: 18.0)),
+              icon: const Icon(Icons.favorite_sharp, color: Colors.black),
             ),
           ),
-          actions: [
-            Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                child: Image.asset(
-                  "assets/images/ios_mic_outline.png",
-                  color: Colors.grey,
-                  width: 30.0,
-                  height: 30.0,
-                ))
-          ],
         ),
+        const SizedBox(
+          width: 12,
+        ),
+        SizedBox(
+          height: 40.0,
+          width: 32.0,
+          child: badges.Badge(
+            badgeStyle: const badges.BadgeStyle(badgeColor: Colors.purple),
+            badgeContent: Consumer<CartProvider>(
+                builder: (context, value, child) => Text(
+                      value.cart.length.toString(),
+                      style: const TextStyle(color: Colors.white),
+                    )),
+            child: IconButton(
+              onPressed: () {
+                print("CART CLICKED");
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) => CartPage()));
+              },
+              icon: const Icon(Icons.shopping_cart),
+              color: Colors.black,
+            ),
+          ),
+        ),
+        const SizedBox(
+          width: 12,
+        ),
+      ],
+      bottom: CustomSearchBar(),
+
+      
+      ),
       body: newListLoading
           ? const Center(
               child: CircularProgressIndicator(
@@ -136,7 +154,8 @@ class _ProductPageState extends State<ProductPage> {
                         crossAxisSpacing: 5.0,
                         mainAxisSpacing: 10.0),
                     itemBuilder: (BuildContext context, int index) {
-                      if (index < ApiService.listOfProductsCategoryWise.length) {
+                      if (index <
+                          ApiService.listOfProductsCategoryWise.length) {
                         return ProductItem(
                           productsModel:
                               ApiService.listOfProductsCategoryWise[index],

@@ -2,11 +2,11 @@ import 'dart:convert';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:jwelery_app/api/api_service.dart';
-import 'package:jwelery_app/helpers/validation_helper.dart';
-import 'package:jwelery_app/providers/customer_provider.dart';
-import 'package:jwelery_app/providers/profile_provider.dart';
-import 'package:jwelery_app/views/widgets/suffix_icon.dart';
+import 'package:Tiara_by_TJ/api/api_service.dart';
+import 'package:Tiara_by_TJ/helpers/validation_helper.dart';
+import 'package:Tiara_by_TJ/providers/customer_provider.dart';
+import 'package:Tiara_by_TJ/providers/profile_provider.dart';
+import 'package:Tiara_by_TJ/views/widgets/suffix_icon.dart';
 import 'package:provider/provider.dart';
 
 class ProfilePage extends StatefulWidget {

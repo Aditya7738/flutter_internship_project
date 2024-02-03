@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jwelery_app/views/pages/search_page.dart';
+import 'package:Tiara_by_TJ/views/pages/search_page.dart';
 
 class EmptyListWidget extends StatelessWidget {
   final String imagePath;

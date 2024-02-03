@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:jwelery_app/model/category_model.dart';
-import 'package:jwelery_app/views/pages/product_page.dart';
+import 'package:Tiara_by_TJ/model/category_model.dart';
+import 'package:Tiara_by_TJ/views/pages/product_page.dart';
 
 class FeatureWidget extends StatefulWidget {
   final bool isLoading;

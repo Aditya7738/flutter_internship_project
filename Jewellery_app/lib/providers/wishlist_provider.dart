@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:jwelery_app/model/products_model.dart';
+import 'package:Tiara_by_TJ/model/products_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class WishlistProvider with ChangeNotifier {
