@@ -1,3 +1,4 @@
+import 'package:Tiara_by_TJ/providers/customize_options_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:Tiara_by_TJ/api/api_service.dart';
 import 'package:Tiara_by_TJ/providers/cart_provider.dart';
@@ -5,6 +6,7 @@ import 'package:Tiara_by_TJ/providers/customer_provider.dart';
 import 'package:Tiara_by_TJ/providers/profile_provider.dart';
 import 'package:Tiara_by_TJ/providers/wishlist_provider.dart';
 import 'package:Tiara_by_TJ/views/pages/dashboard_page.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'constants/strings.dart';
 import 'package:flutter/services.dart';
@@ -61,7 +63,14 @@ class _MyAppState extends State<MyApp> {
 
     OneSignal.Notifications.clearAll();
 
+    await Permission.notification.isDenied.then((value){
+      if (value) {
+        Permission.notification.request();
+      }
+    });
+
     OneSignal.User.pushSubscription.addObserver((state) {
+      print("PERMISSION STATE ${state.current.optedIn}");
       print("optedIn ${OneSignal.User.pushSubscription.optedIn}");
       print("id ${OneSignal.User.pushSubscription.id}");
       print("token ${OneSignal.User.pushSubscription.token}");
@@ -69,12 +78,15 @@ class _MyAppState extends State<MyApp> {
     });
 
     OneSignal.Notifications.addPermissionObserver((state) {
-      print("Has permission " + state.toString());
+      print("HAS PERMISSION " + state.toString());
+      if(state == false){
+        Permission.notification.request();
+      }
     });
 
     OneSignal.Notifications.addClickListener((event) {
       print('NOTIFICATION CLICK LISTENER CALLED WITH EVENT: $event');
-      this.setState(() {
+      setState(() {
         _debugLabelString =
             " \n${event.notification.jsonRepresentation().replaceAll("\\n", "\n")}";
       });
@@ -92,7 +104,7 @@ class _MyAppState extends State<MyApp> {
       /// notification.display() to display after preventing default
       event.notification.display();
 
-      this.setState(() {
+      setState(() {
         _debugLabelString =
             "Notification received in foreground notification: \n${event.notification.jsonRepresentation().replaceAll("\\n", "\n")}";
       });
@@ -101,95 +113,8 @@ class _MyAppState extends State<MyApp> {
 
   /////////////////////////////////////////
 
-  void _handleSendTags() {
-    print("Sending tags");
-    OneSignal.User.addTagWithKey("test2", "val2");
 
-    print("Sending tags array");
-    var sendTags = {'test': 'value', 'test2': 'value2'};
-    OneSignal.User.addTags(sendTags);
-  }
 
-  void _handleRemoveTag() {
-    print("Deleting tag");
-    OneSignal.User.removeTag("test2");
-
-    print("Deleting tags array");
-    OneSignal.User.removeTags(['test']);
-  }
-
-  void _handleGetTags() async {
-    print("Get tags");
-
-    var tags = await OneSignal.User.getTags();
-    print(tags);
-  }
-
-  void _handlePromptForPushPermission() {
-    print("Prompting for Permission");
-    OneSignal.Notifications.requestPermission(true);
-  }
-
-  void _handleSetLanguage() {
-    if (_language == null) return;
-    print("Setting language");
-    OneSignal.User.setLanguage(_language!);
-  }
-
-  void _handleSetEmail() {
-    if (_emailAddress == null) return;
-    print("Setting email");
-
-    OneSignal.User.addEmail(_emailAddress!);
-  }
-
-  void _handleRemoveEmail() {
-    if (_emailAddress == null) return;
-    print("Remove email");
-
-    OneSignal.User.removeEmail(_emailAddress!);
-  }
-
-  void _handleSetSMSNumber() {
-    if (_smsNumber == null) return;
-    print("Setting SMS Number");
-
-    OneSignal.User.addSms(_smsNumber!);
-  }
-
-  void _handleRemoveSMSNumber() {
-    if (_smsNumber == null) return;
-    print("Remove smsNumber");
-
-    OneSignal.User.removeSms(_smsNumber!);
-  }
-
-  void _handleConsent() {
-    print("Setting consent to true");
-    OneSignal.consentGiven(true);
-
-    print("Setting state");
-    this.setState(() {
-      _enableConsentButton = false;
-    });
-  }
-
-  void _handleSetLocationShared() {
-    print("Setting location shared to true");
-    OneSignal.Location.setShared(true);
-  }
-
-  void _handleLogin() {
-    print("Setting external user ID");
-    if (_externalUserId == null) return;
-    OneSignal.login(_externalUserId!);
-    OneSignal.User.addAlias("fb_id", "1341524");
-  }
-
-  void _handleLogout() {
-    OneSignal.logout();
-    OneSignal.User.removeAlias("fb_id");
-  }
 
   oneSignalOutcomeExamples() async {
     OneSignal.Session.addOutcome("normal_1");
@@ -202,13 +127,7 @@ class _MyAppState extends State<MyApp> {
     OneSignal.Session.addOutcomeWithValue("value_2", 3.9);
   }
 
-  void _handleOptIn() {
-    OneSignal.User.pushSubscription.optIn();
-  }
 
-  void _handleOptOut() {
-    OneSignal.User.pushSubscription.optOut();
-  }
 
 ////////////////////////////////////////////////////////
 
@@ -225,6 +144,7 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(create: (context) => WishlistProvider()),
         ChangeNotifierProvider(create: (context) => ProfileProvider()),
         ChangeNotifierProvider(create: (context) => CustomerProvider()),
+        ChangeNotifierProvider(create: (context) => CustomizeOptionsProvider(),)
       ],
       child: MaterialApp(
         title: Strings.app_name,

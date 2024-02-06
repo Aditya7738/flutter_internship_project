@@ -141,18 +141,18 @@ class _ProductPageState extends State<ProductPage> {
               ),
             )
           : Padding(
-              padding: const EdgeInsets.all(4.0),
+              padding: const EdgeInsets.all(0.0),
               child: Scrollbar(
                 child: GridView.builder(
                     controller: _scrollController,
                     itemCount: ApiService.listOfProductsCategoryWise.length +
                         (isLoading || !isThereMoreProducts ? 1 : 0),
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        childAspectRatio: 0.74,
+                        childAspectRatio: 0.64,
                         crossAxisCount:
                             MediaQuery.of(context).size.width > 600 ? 4 : 2,
-                        crossAxisSpacing: 5.0,
-                        mainAxisSpacing: 10.0),
+                        crossAxisSpacing: 0.0,
+                        mainAxisSpacing: 0.0),
                     itemBuilder: (BuildContext context, int index) {
                       if (index <
                           ApiService.listOfProductsCategoryWise.length) {

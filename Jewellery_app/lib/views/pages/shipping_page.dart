@@ -657,47 +657,6 @@ class _ShippingPageState extends State<ShippingPage> {
                             //     customerId,
                             //     cartProvider.calculateTotalPrice());
 
-                            // final response =
-                            //     await ApiService.createRazorpayOrder();
-
-                            // if (response != null) {
-                            //   String body =
-                            //       await response.stream.bytesToString();
-                            //   print("Payment body $body");
-
-                            //   try {
-                            //     data.add(jsonDecode(body));
-                            //     print("${body.runtimeType}");
-                            //     print("JSON DECODE DATA $data");
-                            //   } catch (e) {
-                            //     print('Error decoding: $e');
-                            //   }
-
-                            // var options = {
-                            //   'key': ApiService
-                            //               .woocommerce_razorpay_settings[0]
-                            //           ["data"]
-                            //       ["woocommerce_razorpay_settings"]["key_id"],
-                            //   //'amount': (cartProvider.calculateTotalPrice() * 100).toString(), //in the smallest currency sub-unit.
-                            //   'amount': '100',
-                            //   'name': 'Tiara by TJ',
-                            //   'order_id': data[0][
-                            //       "id"], // Generate order_id using Orders API
-                            //   'description': productName,
-                            //   'timeout': 60, // in seconds
-                            //   'prefill': {
-                            //     'contact': customerData["billing"]["phone"],
-                            //     'email': customerData["email"]
-                            //   }
-                            // };
-
-                            // print("Payment $options");
-
-                            // try {
-                            //   final response = _razorpay.open(options);
-                            // } catch (e) {
-                            //   debugPrint(e.toString());
-                            // }
 
                             List<Map<String, dynamic>> razorpayOrderData =
                                 await uiCreateRazorpayOrder();

@@ -55,6 +55,10 @@ dependencies:
   webview_flutter: ^4.5.0
   html: ^0.15.4
   onesignal_flutter: ^5.1.0
+  permission_handler: ^11.2.0
+  cached_network_image: ^3.3.1
+  flutter_rating_bar: ^4.0.1
+  getwidget: ^4.0.0
   #flutter_cashfree_pg_sdk: ^2.1.1+31
 
 

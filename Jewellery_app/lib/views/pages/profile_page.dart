@@ -27,9 +27,9 @@ class _ProfilePageState extends State<ProfilePage> {
 
   final TextEditingController _companyNameController = TextEditingController();
 
-  final TextEditingController _addressController1 = TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
 
-  final TextEditingController _addressController2 = TextEditingController();
+
 
   final TextEditingController _phoneNoController = TextEditingController();
 
@@ -79,7 +79,15 @@ class _ProfilePageState extends State<ProfilePage> {
     _firstNameController.text = customerProvider.customerData[0]["first_name"];
     _lastNameController.text = customerProvider.customerData[0]["last_name"];
     _emailController.text = customerProvider.customerData[0]["email"];
-    //_phoneNoController.text = customerProvider.customerData[0]["phone"];
+   _phoneNoController.text = customerProvider.customerData[0]["mobile_no"];
+   _addressController.text = customerProvider.customerData[0]["address"];
+   _pinNoController.text = customerProvider.customerData[0]["pincode"];
+   birthdateController.text = customerProvider.customerData[0]["birthday"];
+   anniversarydateController.text = customerProvider.customerData[0]["anniversary"];
+   spousebirthdateController.text = customerProvider.customerData[0]["spouse_birthday"];
+
+
+  
   }
 
   @override
@@ -262,6 +270,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   TextFormField(
                     minLines: 2,
                     maxLines: 3,
+                    controller: _addressController,
                     validator: (value) {
                       return ValidationHelper.isFullAddress(value);
                     },
@@ -278,6 +287,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
 
                   TextFormField(
+                    controller: _pinNoController,
                     validator: (value) {
                       return ValidationHelper.isPincodeValid(value);
                     },
@@ -404,6 +414,20 @@ class _ProfilePageState extends State<ProfilePage> {
                               }
 
                             customerProvider.setCustomerData(data);
+
+                            customerProvider.customerData[0]["mobile_no"] = _phoneNoController.text;
+                            customerProvider.customerData[0]["address"] = _addressController.text;
+                            print(" _pinNoController.text ${ _pinNoController.text}");
+                            customerProvider.customerData[0]["pincode"] = _pinNoController.text;
+                            print(" birthdateController.text ${ birthdateController.text}");
+                            customerProvider.customerData[0]["birthday"] = birthdateController.text;
+                            print(" anniversarydateController.text ${ anniversarydateController.text}");
+                            customerProvider.customerData[0]["anniversary"] = anniversarydateController.text;
+                            print(" spousebirthdateController.text ${ spousebirthdateController.text}");
+                            customerProvider.customerData[0]["spouse_birthday"] = spousebirthdateController.text;
+
+                            print("updated customerData list ${customerProvider.customerData[0]}");
+                            Navigator.pop(context);
                           }
                         }
                          setState(() {

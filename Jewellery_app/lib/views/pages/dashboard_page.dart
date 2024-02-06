@@ -1,3 +1,6 @@
+import 'package:Tiara_by_TJ/api/api_service.dart';
+import 'package:Tiara_by_TJ/model/product_customization_option_model.dart';
+import 'package:Tiara_by_TJ/providers/customize_options_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:Tiara_by_TJ/providers/cart_provider.dart';
 import 'package:Tiara_by_TJ/providers/customer_provider.dart';
@@ -7,7 +10,6 @@ import 'package:Tiara_by_TJ/views/pages/home_screen.dart';
 import 'package:Tiara_by_TJ/views/pages/you_page.dart';
 import 'package:provider/provider.dart';
 
-
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
 
@@ -16,14 +18,42 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
-
   int _currentIndex = 0;
 
   @override
   void initState() {
     // TODO: implement initState
-    
+
     getDataFromProvider();
+    getProductCustomizeOptions();
+  }
+
+  Future<void> getProductCustomizeOptions() async {
+    ProductCustomizationOptionsModel? productCustomizationOptionsModel =
+        await ApiService.getProductCustomizeOptions();
+    final customizationOptionsProvider =
+        Provider.of<CustomizeOptionsProvider>(context, listen: false);
+    Map<String, dynamic> customizeOptionsdata = <String, dynamic>{};
+
+    if (productCustomizationOptionsModel != null) {
+      if (productCustomizationOptionsModel.data != null) {
+        customizeOptionsdata = {
+          "enable_everything":
+              productCustomizationOptionsModel.data!.display ?? "0",
+          "enable_kt": productCustomizationOptionsModel.data!.kt ?? "0",
+          "enable_color": productCustomizationOptionsModel.data!.color ?? "0",
+          "enable_diamond":
+              productCustomizationOptionsModel.data!.diamond ?? "0",
+          "collections": productCustomizationOptionsModel.data!.collections,
+          "colors": productCustomizationOptionsModel.data!.colors,
+          "diamond_purities":
+              productCustomizationOptionsModel.data!.diamondPurities,
+          "purities": productCustomizationOptionsModel.data!.purities
+        };
+      }
+    }
+
+    customizationOptionsProvider.setCustomizeOptionsdata(customizeOptionsdata);
   }
 
   void getDataFromProvider() async {
@@ -33,47 +63,42 @@ class _DashboardPageState extends State<DashboardPage> {
     Provider.of<WishlistProvider>(context, listen: false)
         .getWishListSharedPrefs();
     print("call wishlist shared prefs");
-    Provider.of<ProfileProvider>(context, listen: false).getProfileSharedPrefs();
-    Provider.of<CustomerProvider>(context, listen: false).getCustomerSharedPrefs();
-
+    Provider.of<ProfileProvider>(context, listen: false)
+        .getProfileSharedPrefs();
+    Provider.of<CustomerProvider>(context, listen: false)
+        .getCustomerSharedPrefs();
   }
- 
+
   @override
   Widget build(BuildContext context) {
-    
-    
-    final tabs = <Widget>[
-      const HomeScreen(),
-      YouPage()
-    ];
+    final tabs = <Widget>[const HomeScreen(), YouPage()];
     return Scaffold(
-      
-      
-      
-      body:   tabs[_currentIndex],   
-       bottomNavigationBar: BottomNavigationBar(
-
-        type: BottomNavigationBarType.fixed,
-        onTap: (index) {
-          print("TAB O: $index");
-          setState(() {
-            _currentIndex = index;
-          });
-          
-        },
-        currentIndex: _currentIndex,
-        items: const <BottomNavigationBarItem>[
-        BottomNavigationBarItem(
-            icon: Icon(Icons.home_outlined, color: Color(0xffCC868A),),
-            label: "Home",
-            activeIcon: Icon(Icons.home_filled, color: Color(0xffCC868A)),
+      body: tabs[_currentIndex],
+      bottomNavigationBar: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
+          onTap: (index) {
+            print("TAB O: $index");
+            setState(() {
+              _currentIndex = index;
+            });
+          },
+          currentIndex: _currentIndex,
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.home_outlined,
+                color: Color(0xffCC868A),
+              ),
+              label: "Home",
+              activeIcon: Icon(Icons.home_filled, color: Color(0xffCC868A)),
             ),
-        BottomNavigationBarItem(
-            icon: Icon(Icons.person_outline_outlined, color: Color(0xffCC868A)),
-            label: "My Account",
-            activeIcon: Icon(Icons.person_2_sharp, color: Color(0xffCC868A)),
+            BottomNavigationBarItem(
+              icon:
+                  Icon(Icons.person_outline_outlined, color: Color(0xffCC868A)),
+              label: "My Account",
+              activeIcon: Icon(Icons.person_sharp, color: Color(0xffCC868A)),
             ),
-      ]),
+          ]),
     );
   }
 }

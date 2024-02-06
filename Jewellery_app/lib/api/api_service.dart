@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:Tiara_by_TJ/constants/strings.dart';
 import 'package:Tiara_by_TJ/model/category_model.dart';
+import 'package:Tiara_by_TJ/model/product_customization_option_model.dart';
+import 'package:Tiara_by_TJ/model/reviews_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:Tiara_by_TJ/model/order_model.dart' as CustomersOrder;
 import 'package:Tiara_by_TJ/model/payment_gatways_model.dart';
@@ -458,10 +460,9 @@ class ApiService {
       print("JSON $json");
 
       return response;
-    }else{
+    } else {
       return response;
     }
-    return response;
   }
 
   static Future<http.StreamedResponse?> loginCustomer(
@@ -585,8 +586,6 @@ class ApiService {
     print("STATUS ${response.statusCode}");
 
     if (response.statusCode == 200) {
-      //print("${await response.stream.bytesToString()}");
-
       return response;
     } else {
       print("REASON ${response.reasonPhrase}");
@@ -885,7 +884,6 @@ class ApiService {
       print(" cashfree error${response.reasonPhrase}");
       return null;
     }
-  
   }
 
   static List<PaymentGatewaysModel> paymentGateways = <PaymentGatewaysModel>[];
@@ -958,5 +956,98 @@ class ApiService {
       }
       return null;
     }
+  }
+
+  static Future<http.Response> createProductReview(
+      Map<String, dynamic> reviewData) async {
+    final url =
+        "https://tiarabytj.com/wp-json/wc/v3/products/reviews?consumer_key=${Strings.consumerKey}&consumer_secret=${Strings.consumerSecret}";
+
+    Uri uri = Uri.parse(url);
+    final response = await http.post(uri,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: json.encode({
+          "product_id": reviewData["product_id"],
+          "review": reviewData["review"],
+          "reviewer": reviewData["reviewer"],
+          "reviewer_email": reviewData["reviewer_email"],
+          "rating": reviewData["rating"]
+        }));
+
+    print({"REVIEW response.body ${response.body}"});
+
+    return response;
+  }
+
+  static List<ReviewsModel> reviewsList = <ReviewsModel>[];
+
+  static Future<List<ReviewsModel>> getReviews(String productId) async {
+    final url =
+        "https://tiarabytj.com/wp-json/wc/v3/products/reviews?consumer_key=${Strings.consumerKey}&consumer_secret=${Strings.consumerSecret}&product=$productId";
+
+    print("current productId $productId");
+    Uri uri = Uri.parse(url);
+
+    final response = await http.get(uri);
+
+    if (response.statusCode == 200) {
+      final json = jsonDecode(response.body);
+
+      print("JSON REVIEW $json");
+
+      for (var i = 0; i < json.length; i++) {
+        reviewsList.add(ReviewsModel(
+          id: json[i]["id"],
+          dateCreated: DateTime.tryParse(json[i]["date_created"] ?? ""),
+          dateCreatedGmt: DateTime.tryParse(json[i]["date_created_gmt"] ?? ""),
+          productId: json[i]["product_id"],
+          productName: json[i]["product_name"],
+          productPermalink: json[i]["product_permalink"],
+          status: json[i]["status"],
+          reviewer: json[i]["reviewer"],
+          reviewerEmail: json[i]["reviewer_email"],
+          review: json[i]["review"],
+          rating: json[i]["rating"],
+          verified: json[i]["verified"],
+          reviewerAvatarUrls: Map.from(json[i]["reviewer_avatar_urls"])
+              .map((k, v) => MapEntry<String, String>(k, v)),
+        ));
+      }
+      return reviewsList;
+    }
+
+    return reviewsList;
+  }
+
+  static ProductCustomizationOptionsModel? productCustomizationOptionsModel;
+
+  static Future<ProductCustomizationOptionsModel?> getProductCustomizeOptions() async {
+    final url =
+        "https://tiarabytj.com/wp-json/store/v1/settings/Show_product_customize";
+
+    Uri uri = Uri.parse(url);
+
+    final response = await http.get(uri, headers: {
+      'authorization': 'Basic dGlhcmFieXRqQGdtYWlsLmNvbTpPY3RvYmVyQEp3ZXJv',
+      'content-type': 'application/json',
+    });
+
+    if (response.statusCode == 200) {
+      print("CUSTOM BODY ${response.body}");
+
+      final json = jsonDecode(response.body);
+
+      print("CUSTOM JSON $json");
+
+      productCustomizationOptionsModel = ProductCustomizationOptionsModel(
+        type: json["type"],
+        data: json["data"] == null ? null : Data.fromJson(json["data"]),
+      );
+
+      return productCustomizationOptionsModel;
+    }
+    return productCustomizationOptionsModel;
   }
 }

@@ -35,7 +35,7 @@ class _CartPageState extends State<CartPage> {
   @override
   Widget build(BuildContext context) {
     final cartProvider = Provider.of<CartProvider>(context, listen: false);
-
+    final customerProvider = Provider.of<CustomerProvider>(context, listen: false);
     final cart = cartProvider.cart;
 
     List<String> quantityList = [
@@ -360,27 +360,7 @@ class _CartPageState extends State<CartPage> {
                       height: 90.0,
                     ),
 
-                    // Container(
-                    //     decoration: BoxDecoration(
-                    //         color: Color(0xffCC868A),
-                    //         borderRadius: BorderRadius.circular(5.0)),
-                    //     padding: const EdgeInsets.symmetric(
-                    //         vertical: 10.0, horizontal: 20.0),
-                    //     child: const Text(
-                    //       "Proceed to checkout",
-                    //       style: TextStyle(color: Colors.white, fontSize: 17.0),
-                    //     )),
-
-                    // InkWell(
-                    //   child: const Text(
-                    //     "Save & Continue Shopping",
-                    //     style: TextStyle(decoration: TextDecoration.underline),
-                    //   ),
-                    //   onTap: () {
-                    //     Navigator.of(context).pushReplacement(
-                    //         MaterialPageRoute(builder: (context) => SearchPage()));
-                    //   },
-                    // ),
+                 
                   ]),
             );
           } else {
@@ -457,7 +437,7 @@ class _CartPageState extends State<CartPage> {
                                 Provider.of<CustomerProvider>(context,
                                     listen: false);
 
-                                    List<Map<String,dynamic>> oldCartDataList = <Map<String,dynamic>>[];
+                                    //List<Map<String,dynamic>> oldCartDataList = <Map<String,dynamic>>[];
 
                                   //user old cart item should be added to cart again when he login and direct to cart page 
                                     // for (var i = 0; i < cartProvider.cart.length; i++) {

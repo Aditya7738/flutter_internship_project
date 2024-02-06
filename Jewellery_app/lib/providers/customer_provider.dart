@@ -19,6 +19,7 @@ class CustomerProvider with ChangeNotifier {
 
     bool savingCustomerData = await sharedPreferences.setString(
         "customer_data", jsonEncode(customerData));
+         print("SET CUSTOMERDATA ${_customerData.length}");
     print("Saved savingCustomerData $savingCustomerData");
   }
 
