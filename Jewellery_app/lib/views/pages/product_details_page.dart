@@ -41,6 +41,9 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
 
   bool isReviewLoading = false;
 
+  List<ChoiceModel> listOfChoiceModel = <ChoiceModel>[];
+  Map<String, String> modifiedPurities = <String, String>{};
+
   @override
   void initState() {
     super.initState();
@@ -48,47 +51,222 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
     backordersAllowed = productsModel.backordersAllowed ?? false;
 
     getReviews();
-  }
-
-  Future<void> getReviews() async {
-    setState(() {
-      isReviewLoading = true;
-    });
-    ApiService.reviewsList.clear();
-    await ApiService.getReviews(productsModel.id.toString());
-    setState(() {
-      isReviewLoading = false;
-    });
-  }
-
-  // bool isReviewUploaded = false;
-
-  @override
-  Widget build(BuildContext context) {
-    final cartProvider = Provider.of<CartProvider>(context, listen: false);
-    final wishListProvider =
-        Provider.of<WishlistProvider>(context, listen: false);
-    final customerProvider =
-        Provider.of<CustomerProvider>(context, listen: false);
 
     final customizationOptionsProvider =
         Provider.of<CustomizeOptionsProvider>(context, listen: false);
+    //List<ChoiceModel> listOfChoiceModel = <ChoiceModel>[];
 
-    List<ChoiceModel> listOfChoiceModel = <ChoiceModel>[];
+    // List<MetaDatum> metaList = <MetaDatum>[];
 
-    customizationOptionsProvider.customizeOptionsdata["enable_kt"] == "1"
-        ? listOfChoiceModel.add(ChoiceModel(
-            label: "Select Metal",
-            options: ["22 KT", "18 KT"],
-            selectedOption: "18KT",
-          ))
-        : <ChoiceModel>[];
+    List<String?> keys = <String?>[];
+
+    if (productsModel.metaData != null) {
+      print("METADATA IS NOT NULL");
+      for (var i = 0; i < productsModel.metaData!.length; i++) {
+        keys.add(productsModel.metaData![i].key);
+      }
+
+      print("METADATA KEYS ${keys}");
+
+      bool iskeysContainsGoldkt = keys.contains("gold_kt");
+      print("METADATA iskeysContainsGoldkt ${iskeysContainsGoldkt}");
+
+      bool iskeysContainsSilverPurity = keys.contains("silver_purity");
+      print("iskeysContainsSilverPurity KEYS ${iskeysContainsSilverPurity}");
+
+      bool iskeysContainsPlatiniumPurity = keys.contains("platinium_purity");
+      print("METADATA iskeysContainsPlatiniumPurity ${iskeysContainsPlatiniumPurity}");
+
+      List<String> purities =
+          customizationOptionsProvider.customizeOptionsdata["purities"];
+
+print("customizationOptionsProvider.customizeOptionsdata['enable_kt'] ${customizationOptionsProvider.customizeOptionsdata["enable_kt"] ==
+          "1"}");
+      if (customizationOptionsProvider.customizeOptionsdata["enable_kt"] ==
+          "1") {
+        if (iskeysContainsPlatiniumPurity &&
+            iskeysContainsGoldkt &&
+            iskeysContainsSilverPurity) {
+          <ChoiceModel>[];
+        } else if (iskeysContainsPlatiniumPurity &&
+            iskeysContainsGoldkt == false &&
+            iskeysContainsSilverPurity == false) {
+          for (var i = 0; i < productsModel.metaData!.length; i++) {
+            if (productsModel.metaData![i].key == "platinium_purity") {
+              if (productsModel.metaData![i].value == "") {
+                <ChoiceModel>[];
+              } else {
+                for (var i = 0; i < purities.length; i++) {
+                  switch (purities[i]) {
+                    case "375":
+                      modifiedPurities["850"] = "850";
+                      break;
+                    case "583":
+                      modifiedPurities["900"] = "900";
+                      break;
+                    case "750":
+                      modifiedPurities["950"] = "950";
+                      break;
+
+                    default:
+                      print("New purity added");
+                  }
+                }
+
+                List<String> options = <String>[];
+
+                options.addAll(modifiedPurities.values);
+
+                listOfChoiceModel.add(ChoiceModel(
+                  label: "Select Metal",
+                  options: options,
+                  selectedOption: getPlatiniumSelectedOption(
+                          productsModel.metaData![i].value.toString()) ??
+                      "Select",
+                ));
+              }
+            }
+          }
+        } else if (iskeysContainsPlatiniumPurity == false &&
+            iskeysContainsGoldkt &&
+            iskeysContainsSilverPurity == false) {
+          for (var i = 0; i < productsModel.metaData!.length; i++) {
+            if (productsModel.metaData![i].key == "gold_kt") {
+              if (productsModel.metaData![i].value == "") {
+                <ChoiceModel>[];
+              } else {
+                for (var i = 0; i < purities.length; i++) {
+                  switch (purities[i]) {
+                    case "375":
+                      modifiedPurities["375"] = "9KT";
+                      break;
+                    case "583":
+                      modifiedPurities["583"] = "14KT";
+                      break;
+                    case "750":
+                      modifiedPurities["750"] = "18KT";
+                      break;
+                    case "916":
+                      modifiedPurities["916"] = "22KT";
+                      break;
+                    case "995":
+                      modifiedPurities["995"] = "24KT";
+                      break;
+                    case "999":
+                      modifiedPurities["999"] = "24KT";
+                      break;
+                    case "999.99":
+                      modifiedPurities["999.99"] = "24KT";
+                      break;
+                    default:
+                      print("New purity");
+                  }
+                }
+
+                List<String> options = <String>[];
+
+                options.addAll(modifiedPurities.values);
+
+                print("options $options");
+
+                final goldSelectedOption = getGoldSelectedOption(
+                          productsModel.metaData![i].value.toString()) ??
+                      "Select";
+
+                      print("goldSelectedOption $goldSelectedOption");
+                
+
+                listOfChoiceModel.add(ChoiceModel(
+                  label: "Select Metal",
+                  options: options,
+                  selectedOption: getGoldSelectedOption(
+                          productsModel.metaData![i].value.toString()) ??
+                      "Select",
+                ));
+              }
+            }
+          }
+        } else if (iskeysContainsPlatiniumPurity == false &&
+            iskeysContainsGoldkt == false &&
+            iskeysContainsSilverPurity) {
+          for (var i = 0; i < productsModel.metaData!.length; i++) {
+            if (productsModel.metaData![i].key == "silver_purity") {
+              if (productsModel.metaData![i].value == "") {
+                <ChoiceModel>[];
+              } else {
+                for (var i = 0; i < purities.length; i++) {
+                  switch (purities[i]) {
+                    case "650":
+                      modifiedPurities["650"] = "650";
+                      break;
+                    case "750":
+                      modifiedPurities["750"] = "750";
+                      break;
+                    case "850":
+                      modifiedPurities["850"] = "850";
+                      break;
+                    case "925":
+                      modifiedPurities["925"] = "Sterling";
+                      break;
+                    case "995":
+                      modifiedPurities["995"] = "Fine";
+                      break;
+                    case "999":
+                      modifiedPurities["999"] = "Fine";
+                      break;
+
+                    default:
+                      print("New purity");
+                  }
+                }
+
+                List<String> options = <String>[];
+
+                options.addAll(modifiedPurities.values);
+
+                listOfChoiceModel.add(ChoiceModel(
+                  label: "Select Metal",
+                  options: options,
+                  selectedOption: getSilverSelectedOption(
+                          productsModel.metaData![i].value.toString()) ??
+                      "Select",
+                ));
+              }
+            }
+          }
+        } else if (iskeysContainsPlatiniumPurity &&
+            iskeysContainsGoldkt &&
+            iskeysContainsSilverPurity == false) {
+          <ChoiceModel>[];
+        } else if (iskeysContainsPlatiniumPurity == false &&
+            iskeysContainsGoldkt &&
+            iskeysContainsSilverPurity) {
+          <ChoiceModel>[];
+        } else if (iskeysContainsPlatiniumPurity &&
+            iskeysContainsGoldkt == false &&
+            iskeysContainsSilverPurity) {
+          <ChoiceModel>[];
+        }
+
+        // listOfChoiceModel.add(ChoiceModel(
+        //   label: "Select Metal",
+        //   options: ,
+        //   selectedOption: "18KT",
+        // ));
+      } else {
+        <ChoiceModel>[];
+      }
+    }
+
+    print("METADATA IS NULL");
 
     customizationOptionsProvider.customizeOptionsdata["enable_color"] == "1"
         ? listOfChoiceModel.add(ChoiceModel(
             label: "Select Color",
-            options: ["rose", "yellow", "two-tone", "white"],
-            selectedOption: "rose",
+            options:
+                customizationOptionsProvider.customizeOptionsdata["colors"],
+            selectedOption:
+                customizationOptionsProvider.customizeOptionsdata["colors"][0],
           ))
         : <ChoiceModel>[];
 
@@ -107,8 +285,10 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
     customizationOptionsProvider.customizeOptionsdata["enable_diamond"] == "1"
         ? listOfChoiceModel.add(ChoiceModel(
             label: "Type of Diamond",
-            options: ["Natural"],
-            selectedOption: "Natural",
+            options: customizationOptionsProvider
+                .customizeOptionsdata["diamond_purities"],
+            selectedOption: customizationOptionsProvider
+                .customizeOptionsdata["diamond_purities"][0],
           ))
         : <ChoiceModel>[];
 
@@ -119,6 +299,29 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
             selectedOption: "VVS-EF",
           ))
         : <ChoiceModel>[];
+  }
+
+  Future<void> getReviews() async {
+    setState(() {
+      isReviewLoading = true;
+    });
+    ApiService.reviewsList.clear();
+    await ApiService.getReviews(productsModel.id.toString());
+    setState(() {
+      isReviewLoading = false;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final cartProvider = Provider.of<CartProvider>(context, listen: false);
+    final wishListProvider =
+        Provider.of<WishlistProvider>(context, listen: false);
+    final customerProvider =
+        Provider.of<CustomerProvider>(context, listen: false);
+
+    final customizationOptionsProvider =
+        Provider.of<CustomizeOptionsProvider>(context, listen: false);
 
     return Scaffold(
       appBar: AppBar(title: Text("Details"), actions: <Widget>[
@@ -281,9 +484,22 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                     ),
                     customizationOptionsProvider
                                 .customizeOptionsdata["enable_everything"] ==
-                            "1" 
+                            "1"
                         ? SizedBox(
-                            height: customizationOptionsProvider.customizeOptionsdata["enable_color"] != "0" && customizationOptionsProvider.customizeOptionsdata["enable_diamond"] != "0" && customizationOptionsProvider.customizeOptionsdata["enable_kt"] != "0" ? MediaQuery.of(context).size.height / 2.5 : 0.0,
+                            height: customizationOptionsProvider
+                                                .customizeOptionsdata[
+                                            "enable_color"] !=
+                                        "0" &&
+                                    customizationOptionsProvider
+                                                .customizeOptionsdata[
+                                            "enable_diamond"] !=
+                                        "0" &&
+                                    customizationOptionsProvider
+                                                .customizeOptionsdata[
+                                            "enable_kt"] !=
+                                        "0"
+                                ? MediaQuery.of(context).size.height / 2.5
+                                : 0.0,
                             child: Scrollbar(
                               child: GridView.builder(
                                   itemCount: listOfChoiceModel.length,
@@ -546,7 +762,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                               )
                             : Text(
                                 "Be the first to review this product",
-                                style: TextStyle(fontWeight: FontWeight.bold),
+                                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0),
                               ),
                     ApiService.reviewsList.length > 3
                         ? InkWell(
@@ -690,5 +906,83 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
         },
       ),
     );
+  }
+
+  String? getGoldSelectedOption(String purityValue) {
+    String? selectedoption = "";
+    print(" modifiedPurities[583] ${modifiedPurities["583"]}");
+    switch (purityValue) {
+      case "375":
+        selectedoption = modifiedPurities["375"];
+        break;
+      case "583":
+        selectedoption = modifiedPurities["583"];
+        break;
+      case "750":
+        selectedoption = modifiedPurities["750"];
+        break;
+      case "916":
+        selectedoption = modifiedPurities["916"];
+        break;
+      case "995":
+        selectedoption = modifiedPurities["995"];
+        break;
+      case "999":
+        selectedoption = modifiedPurities["999"];
+        break;
+      case "999.99":
+        selectedoption = modifiedPurities["999.99"];
+        break;
+      default:
+        print("New purity");
+    }
+    return selectedoption;
+  }
+
+  String? getPlatiniumSelectedOption(String purityValue) {
+    String? selectedoption = "";
+    switch (purityValue) {
+      case "850":
+        selectedoption = modifiedPurities["850"];
+        break;
+      case "900":
+        selectedoption = modifiedPurities["900"];
+        break;
+      case "950":
+        selectedoption = modifiedPurities["950"];
+        break;
+
+      default:
+        print("New purity");
+    }
+    return selectedoption;
+  }
+
+  String? getSilverSelectedOption(String purityValue) {
+    String? selectedoption = "";
+    switch (purityValue) {
+      case "650":
+        selectedoption = modifiedPurities["650"];
+        break;
+      case "750":
+        selectedoption = modifiedPurities["750"];
+        break;
+      case "850":
+        selectedoption = modifiedPurities["850"];
+        break;
+      case "925":
+        selectedoption = modifiedPurities["925"];
+        break;
+      case "995":
+        selectedoption = modifiedPurities["995"];
+        break;
+      case "999":
+        selectedoption = modifiedPurities["999"];
+        break;
+
+      default:
+        print("New purity");
+    }
+    return selectedoption;
   }
 }

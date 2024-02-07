@@ -1,4 +1,5 @@
 import 'package:Tiara_by_TJ/providers/customize_options_provider.dart';
+import 'package:Tiara_by_TJ/views/pages/filter.dart';
 import 'package:flutter/material.dart';
 import 'package:Tiara_by_TJ/api/api_service.dart';
 import 'package:Tiara_by_TJ/providers/cart_provider.dart';
@@ -168,7 +169,7 @@ class _MyAppState extends State<MyApp> {
                 fontSize: 16.0,
               ),
             )),
-        home: const DashboardPage(),
+        home: Filter(),
         debugShowCheckedModeBanner: false,
       ),
     );

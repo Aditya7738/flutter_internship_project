@@ -122,7 +122,59 @@ class _SearchPageState extends State<SearchPage> {
                   color: Colors.grey,
                   width: 30.0,
                   height: 30.0,
-                ))
+                )),
+            GestureDetector(
+              onTap: () {
+                showModalBottomSheet(
+                  context: context,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(20.0),
+                          topRight: Radius.circular(20.0))),
+                  builder: (context) {
+                    return Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height / 2,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(20.0),
+                              child: Text(
+                                "Filter By",
+                                style: Theme.of(context).textTheme.headline3,
+                              ),
+                            ),
+                            Divider(
+                              thickness: 2.0,
+                            ),
+                            Row(
+                              children: [
+                                Container(
+                                  color: Colors.red,
+                                  padding: EdgeInsets.all(10.0),
+                                  width: MediaQuery.of(context).size.width / 3,
+                                  child: Text("hi"),
+                                ),
+                                Divider(
+                                  thickness: 1.0,
+                                ),
+                                Container()
+                              ],
+                            )
+                          ],
+                        ));
+                  },
+                );
+              },
+              child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  child: Icon(
+                    Icons.filter_list,
+                    color: Colors.grey,
+                    size: 30.0,
+                  )),
+            ),
           ],
         ),
         body: SizedBox(
@@ -263,8 +315,12 @@ class _SearchPageState extends State<SearchPage> {
                                                             width: 20.0,
                                                             height: 20.0,
                                                           ),
-                                                          Text(ApiService.listOfProductsModel[index].regularPrice != ""
-                                                              ? ApiService.listOfProductsModel[index].regularPrice ??  "20000"
+                                                          Text(productsModel
+                                                                      .regularPrice !=
+                                                                  ""
+                                                              ? productsModel
+                                                                      .regularPrice ??
+                                                                  "20000"
                                                               : "20000")
                                                         ],
                                                       )

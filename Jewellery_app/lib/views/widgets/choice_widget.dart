@@ -29,7 +29,7 @@ class _ChoiceWidgetState extends State<ChoiceWidget> {
     super.initState();
     choiceModel = widget.choiceModel;
     options = choiceModel.options;
-    selectedOption = options[0];
+    selectedOption = widget.choiceModel.selectedOption;
     fromCart = widget.fromCart;
     forProfile = widget.forProfile ?? false;
 
