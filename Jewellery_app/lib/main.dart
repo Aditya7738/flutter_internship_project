@@ -1,5 +1,7 @@
 import 'package:Tiara_by_TJ/providers/customize_options_provider.dart';
+import 'package:Tiara_by_TJ/providers/filteroptions_provider.dart';
 import 'package:Tiara_by_TJ/views/pages/filter.dart';
+import 'package:Tiara_by_TJ/views/pages/search_page.dart';
 import 'package:flutter/material.dart';
 import 'package:Tiara_by_TJ/api/api_service.dart';
 import 'package:Tiara_by_TJ/providers/cart_provider.dart';
@@ -46,12 +48,11 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     initPlatformState();
-    
   }
 
   Future<void> initPlatformState() async {
     print("runing initPlatformState");
-     print("ismounted $mounted");
+    print("ismounted $mounted");
     if (!mounted) return;
 
     OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
@@ -64,7 +65,7 @@ class _MyAppState extends State<MyApp> {
 
     OneSignal.Notifications.clearAll();
 
-    await Permission.notification.isDenied.then((value){
+    await Permission.notification.isDenied.then((value) {
       if (value) {
         Permission.notification.request();
       }
@@ -80,9 +81,9 @@ class _MyAppState extends State<MyApp> {
 
     OneSignal.Notifications.addPermissionObserver((state) {
       print("HAS PERMISSION " + state.toString());
-      if(state == false){
-        Permission.notification.request();
-      }
+      // if(state == false){
+      //   Permission.notification.request();
+      // }
     });
 
     OneSignal.Notifications.addClickListener((event) {
@@ -114,9 +115,6 @@ class _MyAppState extends State<MyApp> {
 
   /////////////////////////////////////////
 
-
-
-
   oneSignalOutcomeExamples() async {
     OneSignal.Session.addOutcome("normal_1");
     OneSignal.Session.addOutcome("normal_2");
@@ -127,8 +125,6 @@ class _MyAppState extends State<MyApp> {
     OneSignal.Session.addOutcomeWithValue("value_1", 3.2);
     OneSignal.Session.addOutcomeWithValue("value_2", 3.9);
   }
-
-
 
 ////////////////////////////////////////////////////////
 
@@ -145,7 +141,8 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(create: (context) => WishlistProvider()),
         ChangeNotifierProvider(create: (context) => ProfileProvider()),
         ChangeNotifierProvider(create: (context) => CustomerProvider()),
-        ChangeNotifierProvider(create: (context) => CustomizeOptionsProvider(),)
+        ChangeNotifierProvider(create: (context) => CustomizeOptionsProvider()),
+        ChangeNotifierProvider(create: (context) => FilterOptionsProvider())
       ],
       child: MaterialApp(
         title: Strings.app_name,
@@ -169,7 +166,7 @@ class _MyAppState extends State<MyApp> {
                 fontSize: 16.0,
               ),
             )),
-        home: Filter(),
+        home: DashboardPage(),
         debugShowCheckedModeBanner: false,
       ),
     );

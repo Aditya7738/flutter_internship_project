@@ -1,6 +1,8 @@
 import 'package:Tiara_by_TJ/api/api_service.dart';
+import 'package:Tiara_by_TJ/model/filter_options_model.dart';
 import 'package:Tiara_by_TJ/model/product_customization_option_model.dart';
 import 'package:Tiara_by_TJ/providers/customize_options_provider.dart';
+import 'package:Tiara_by_TJ/providers/filteroptions_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:Tiara_by_TJ/providers/cart_provider.dart';
 import 'package:Tiara_by_TJ/providers/customer_provider.dart';
@@ -26,6 +28,106 @@ class _DashboardPageState extends State<DashboardPage> {
 
     getDataFromProvider();
     getProductCustomizeOptions();
+    getFilterOptions();
+  }
+
+  Future<void> getFilterOptions() async {
+    FilterOptionsModel? filterOptionsModel =
+        await ApiService.getFilterOptions();
+    final filterOptionsProvider =
+        Provider.of<FilterOptionsProvider>(context, listen: false);
+
+    //print("filterOptionsModel IS NOT NULL");
+    List<Map<String, dynamic>> categoriesList = <Map<String, dynamic>>[];
+    for (var i = 0; i < filterOptionsModel!.categories.length; i++) {
+      Map<String, dynamic> categoriesMap = <String, dynamic>{
+        "id": filterOptionsModel.categories[i].id,
+        "label": filterOptionsModel.categories[i].label,
+        "value": filterOptionsModel.categories[i].value,
+        "count": filterOptionsModel.categories[i].count
+      };
+      categoriesList.add(categoriesMap);
+    }
+
+    print("categoriesList $categoriesList");
+
+    filterOptionsProvider.setCategoryFilterOptionsdata(categoriesList);
+
+    List<Map<String, dynamic>> collectionsList = <Map<String, dynamic>>[];
+    for (var i = 0; i < filterOptionsModel.collections.length; i++) {
+      Map<String, dynamic> collectionsMap = <String, dynamic>{
+        "id": filterOptionsModel.collections[i].id,
+        "label": filterOptionsModel.collections[i].label,
+        "value": filterOptionsModel.collections[i].value,
+        "count": filterOptionsModel.collections[i].count
+      };
+      collectionsList.add(collectionsMap);
+    }
+
+    print("collectionsList $collectionsList");
+
+    filterOptionsProvider.setCollectionsFilterOptionsdata(collectionsList);
+
+    List<Map<String, dynamic>> diamondWeightList = <Map<String, dynamic>>[];
+    for (var i = 0; i < filterOptionsModel.diamondWt.length; i++) {
+      Map<String, dynamic> diamondWtMap = <String, dynamic>{
+        "id": filterOptionsModel.diamondWt[i].id,
+        "label": filterOptionsModel.diamondWt[i].label,
+        "value": filterOptionsModel.diamondWt[i].value,
+        "count": filterOptionsModel.diamondWt[i].count
+      };
+      diamondWeightList.add(diamondWtMap);
+    }
+
+    print("diamondWeightList $diamondWeightList");
+
+    filterOptionsProvider.setDiamondWtFilterOptionsdata(diamondWeightList);
+
+    List<Map<String, dynamic>> goldWtList = <Map<String, dynamic>>[];
+    for (var i = 0; i < filterOptionsModel.goldWt.length; i++) {
+      Map<String, dynamic> goldWt = <String, dynamic>{
+        "id": filterOptionsModel.goldWt[i].id,
+        "label": filterOptionsModel.goldWt[i].label,
+        "value": filterOptionsModel.goldWt[i].value,
+        "count": filterOptionsModel.goldWt[i].count
+      };
+      diamondWeightList.add(goldWt);
+    }
+
+    print("goldWtList $goldWtList");
+
+    filterOptionsProvider.setGoldWtFilterOptionsdata(goldWtList);
+
+    List<Map<String, dynamic>> genderList = <Map<String, dynamic>>[];
+    for (var i = 0; i < filterOptionsModel.gender.length; i++) {
+      Map<String, dynamic> gender = <String, dynamic>{
+        "id": filterOptionsModel.gender[i].id,
+        "label": filterOptionsModel.gender[i].label,
+        "value": filterOptionsModel.gender[i].value,
+        "count": filterOptionsModel.gender[i].count
+      };
+      diamondWeightList.add(gender);
+    }
+    print("genderList $genderList");
+
+    filterOptionsProvider.setGenderFilterOptionsdata(genderList);
+
+    List<Map<String, dynamic>> tagsList = <Map<String, dynamic>>[];
+    for (var i = 0; i < filterOptionsModel.tags.length; i++) {
+      Map<String, dynamic> tags = <String, dynamic>{
+        "id": filterOptionsModel.tags[i].id,
+        "label": filterOptionsModel.tags[i].label,
+        "value": filterOptionsModel.tags[i].value,
+        "count": filterOptionsModel.tags[i].count
+      };
+      diamondWeightList.add(tags);
+    }
+
+    print("tagsList $tagsList");
+
+    filterOptionsProvider.setTagsFilterOptionsdata(tagsList);
+
+    print("filterOptionsModel IS NULL");
   }
 
   Future<void> getProductCustomizeOptions() async {

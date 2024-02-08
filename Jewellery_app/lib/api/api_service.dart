@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:Tiara_by_TJ/constants/strings.dart';
 import 'package:Tiara_by_TJ/model/category_model.dart';
+import 'package:Tiara_by_TJ/model/filter_options_model.dart' as FilterOptions;
 import 'package:Tiara_by_TJ/model/product_customization_option_model.dart';
 import 'package:Tiara_by_TJ/model/reviews_model.dart';
 import 'package:http/http.dart' as http;
@@ -1023,7 +1024,8 @@ class ApiService {
 
   static ProductCustomizationOptionsModel? productCustomizationOptionsModel;
 
-  static Future<ProductCustomizationOptionsModel?> getProductCustomizeOptions() async {
+  static Future<ProductCustomizationOptionsModel?>
+      getProductCustomizeOptions() async {
     final url =
         "https://tiarabytj.com/wp-json/store/v1/settings/Show_product_customize";
 
@@ -1050,4 +1052,95 @@ class ApiService {
     }
     return productCustomizationOptionsModel;
   }
+
+  static FilterOptions.FilterOptionsModel? filterOptionsModel;
+  static Future<FilterOptions.FilterOptionsModel?> getFilterOptions() async {
+    String url = "https://tiarabytj.com/wp-json/store/v1/taxonomies";
+
+    Uri uri = Uri.parse(url);
+    String userName = "tiarabytj@gmail.com";
+    String password = "October@Jwero";
+
+    String basicAuth =
+        "Basic " + base64Encode(utf8.encode('$userName:$password'));
+
+    print("filterOptions basicAuth $basicAuth");
+
+    final response = await http.get(uri, headers: {
+      'Authorization': basicAuth,
+      //'Cookie': 'shop_per_page=100'
+    });
+
+    print("filter response.statusCode ${response.statusCode}");
+
+    if (response.statusCode == 200) {
+      print("filterOptions BODY ${response.body}");
+
+      try {
+        final json = jsonDecode(response.body);
+
+      print("filterOptions JSON $json");
+
+      filterOptionsModel = FilterOptions.FilterOptionsModel(
+        collections: json["collections"] == null
+            ? []
+            : List<FilterOptions.Category>.from(
+                json["collections"]!.map((x) => FilterOptions.Category.fromJson(x))),
+        categories: json["categories"] == null
+            ? []
+            : List<FilterOptions.Category>.from(
+                json["categories"]!.map((x) => FilterOptions.Category.fromJson(x))),
+        subCategories: json["sub-categories"] == null
+            ? []
+            : List<FilterOptions.Category>.from(
+                json["sub-categories"]!.map((x) => FilterOptions.Category.fromJson(x))),
+        tags: json["tags"] == null
+            ? []
+            : List<FilterOptions.Category>.from(json["tags"]!.map((x) => FilterOptions.Category.fromJson(x))),
+        diamondWt: json["diamond_wt"] == null
+            ? []
+            : List<FilterOptions.Category>.from(
+                json["diamond_wt"]!.map((x) => FilterOptions.Category.fromJson(x))),
+        goldWt: json["gold_wt"] == null
+            ? []
+            : List<FilterOptions.Category>.from(
+                json["gold_wt"]!.map((x) => FilterOptions.Category.fromJson(x))),
+        gender: json["gender"] == null
+            ? []
+            : List<FilterOptions.Category>.from(json["gender"]!.map((x) => FilterOptions.Category.fromJson(x))),
+      );
+
+      print("filterOptionsModel!.categories.length ${filterOptionsModel!.categories.length}");
+
+      } catch (e) {
+        print("filter json error ${e.toString()}");
+      }
+
+      
+
+      return filterOptionsModel;
+    }
+    return null;
+  }
+
+  //static FilterOptionsModel? filterOptionsModel;
+  // static Future<void> getFilterOptions() async {
+  //   var headers = {
+  //     'Authorization': 'Basic dGlhcmFieXRqQGdtYWlsLmNvbTpPY3RvYmVyQEp3ZXJv',
+  //     'Cookie': 'shop_per_page=100'
+  //   };
+  //   var request = http.Request(
+  //       'GET', Uri.parse('https://tiarabytj.com/wp-json/store/v1/taxonomies'));
+
+  //   request.headers.addAll(headers);
+
+  //   http.StreamedResponse response = await request.send();
+  //   print("filter response.statusCode ${response.statusCode}");
+
+  //   if (response.statusCode == 200) {
+  //     print("response.stream.bytesToString() ${await response.stream.bytesToString()}");
+  //   } else {
+  //     print("response.reasonPhrase ${response.reasonPhrase}");
+  //   }
+  // }
 }

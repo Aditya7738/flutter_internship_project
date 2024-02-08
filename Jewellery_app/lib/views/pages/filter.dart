@@ -1,3 +1,6 @@
+import 'package:Tiara_by_TJ/model/filter_options_model.dart';
+import 'package:Tiara_by_TJ/views/widgets/filter_options.dart';
+import 'package:Tiara_by_TJ/views/widgets/filter_tile.dart';
 import 'package:flutter/material.dart';
 
 class Filter extends StatefulWidget {
@@ -8,110 +11,34 @@ class Filter extends StatefulWidget {
 }
 
 class _FilterState extends State<Filter> {
-  List<Map<String, dynamic>> map = <Map<String, dynamic>>[
+  List<Map<String, String>> map = <Map<String, String>>[
     {"id": "price", "value": "Price"},
     {"id": "collection", "value": "Collections"},
-    {"id": "purity", "value": "Purity"},
-    {"id": "weight", "value": "Weight"},
-    {"id": "diamond", "value": "Diamond"},
+    {"id": "categories", "value": "Categories"},
+    {"id": "sub-categories", "value": "Sub-categories"},
+    {"id": "tags", "value": "Tags"},
+    {"id": "diamond_wt", "value": "Diamond weight"},
+    {"id": "gold_wt", "value": "Gold weight"},
+    {"id": "gender", "value": "Gender"},
   ];
 
-  double selectedMin = 1000.0;
-  double selectedMax = 100000.0;
-
-  late Widget priceRange;
-
-  bool _isDisposed = false;
-
-   @override
-  void dispose() {
-    // Dispose of any resources (e.g., listeners, controllers) here
-    // Set the flag to true to indicate that the widget is disposed
-    _isDisposed = true;
-    super.dispose();
-  }
-
-  _FilterState(){
-    priceRange = Container(
-        color: Colors.green,
-        width: MediaQuery.of(context).size.width -
-            (MediaQuery.of(context).size.width / 3),
-        height: (MediaQuery.of(context).size.height / 2) - 77,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 20.0, top: 20.0),
-              child: Text(
-                "Price Range",
-                style: TextStyle(fontSize: 16.0),
-              ),
-            ),
-            SizedBox(
-              height: 10.0,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset(
-                  "assets/images/rupee.png",
-                  width: 19.0,
-                  height: 17.0,
-                ),
-                Text(
-                  " ${selectedMin.toInt()} - ",
-                ),
-                Image.asset(
-                  "assets/images/rupee.png",
-                  width: 19.0,
-                  height: 17.0,
-                ),
-                Text(
-                  " ${selectedMax.toInt()}",
-                )
-              ],
-            ),
-            SizedBox(
-              height: 10.0,
-            ),
-            RangeSlider(
-              min: 500.0,
-              max: 139080.0,
-              values: RangeValues(selectedMin, selectedMax),
-              onChanged: (value) {
-                print("SELECTED VALUE $value");
-                setState(() {
-                  selectedMin = value.start;
-                  selectedMax = value.end;
-                });
-              },
-              labels:
-                  RangeLabels(selectedMin.toString(), selectedMax.toString()),
-            )
-          ],
-        ),
-      );
-    
-  }
+  
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
- 
-      
   }
+
+  int selectedFilterIndex = -1;
 
   @override
   Widget build(BuildContext context) {
-    var selectedFilterIndex = 0;
- if (_isDisposed) {
-      return SizedBox(); // Return an empty widget if disposed
-    } else {
-    return Scaffold(
-      body: Container(
+    return SingleChildScrollView(
+      child: Container(
+          
           width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height / 2,
+          height: MediaQuery.of(context).size.height / 1.66,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -128,69 +55,96 @@ class _FilterState extends State<Filter> {
               Row(
                 children: [
                   Container(
-                    color: Colors.yellow,
+                    decoration: BoxDecoration(
+                      border: Border.symmetric(vertical: BorderSide(color: Colors.black,
+                                  style: BorderStyle.solid))
+                    ),
+                   
                     width: MediaQuery.of(context).size.width / 3,
-                    height: (MediaQuery.of(context).size.height / 2) - 77,
+                    height: (MediaQuery.of(context).size.height / 2) - 76,
                     child: ListView.separated(
                         itemBuilder: (context, index) {
                           final filters = map[index];
 
-                          return GestureDetector(
+                          return FilterTile(
+                            isFilterTileClicked: index == selectedFilterIndex,
+                            option: filters["value"]!,
                             onTap: () {
                               setState(() {
                                 selectedFilterIndex = index;
                               });
                             },
-                            child: Container(
-                                padding: EdgeInsets.only(
-                                    left: 10.0, top: 10.0, bottom: 10.0),
-                                color: Colors.blue,
-                                height: 45.0,
-                                width: MediaQuery.of(context).size.width / 3,
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(filters["value"]),
-                                    Container(
-                                      color: Colors.red,
-                                      width: 3.0,
-                                    ),
-                                  ],
-                                )),
                           );
                         },
                         separatorBuilder: (context, index) {
                           return Divider(
                             color: Colors.grey,
-                            thickness: 2.0,
+                            thickness: 1.0,
                           );
                         },
                         itemCount: map.length),
                   ),
                   Divider(
-                    height: 2.0,
+                    thickness: 1.0,
                     color: Colors.grey,
                   ),
-                  showSelectedWindow(selectedFilterIndex)
+                  FilterOptions(selectedFilterIndex: selectedFilterIndex),
                 ],
+              ),
+              Divider(
+                thickness: 2.0,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Container(
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: Theme.of(context).primaryColor,
+                                  style: BorderStyle.solid),
+                              borderRadius: BorderRadius.circular(5.0)),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 10.0, horizontal: 20.0),
+                          child: Text(
+                            "Clear all",
+                            style: TextStyle(
+                                color: Theme.of(context).primaryColor,
+                                fontSize: 17.0),
+                          )),
+                    ),
+                    SizedBox(
+                      width: 25.0,
+                    ),
+                    GestureDetector(
+                      onTap: () {},
+                      child: Container(
+                          decoration: BoxDecoration(
+                              color: Theme.of(context).primaryColor,
+                              borderRadius: BorderRadius.circular(5.0)),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 10.0, horizontal: 20.0),
+                          child: const Text(
+                            "Apply",
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 17.0),
+                          )),
+                    ),
+                  ],
+                ),
               )
             ],
           )),
     );
-    }
   }
 
-  Widget showSelectedWindow(int selectedFilterIndex) {
-    Widget window = SizedBox();
-    switch (selectedFilterIndex) {
-      case 0:
-        window = priceRange;
-        break;
-      default:
-        window = SizedBox();
-    }
+  // Widget showSelectedWindow(int selectedFilterIndex) {
 
-    return window;
-  }
+  //   return window;
+  // }
 }

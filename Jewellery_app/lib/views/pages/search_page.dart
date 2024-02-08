@@ -1,3 +1,4 @@
+import 'package:Tiara_by_TJ/views/pages/filter.dart';
 import 'package:flutter/material.dart';
 import 'package:Tiara_by_TJ/api/api_service.dart';
 import 'package:Tiara_by_TJ/constants/strings.dart';
@@ -132,39 +133,7 @@ class _SearchPageState extends State<SearchPage> {
                           topLeft: Radius.circular(20.0),
                           topRight: Radius.circular(20.0))),
                   builder: (context) {
-                    return Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.height / 2,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(20.0),
-                              child: Text(
-                                "Filter By",
-                                style: Theme.of(context).textTheme.headline3,
-                              ),
-                            ),
-                            Divider(
-                              thickness: 2.0,
-                            ),
-                            Row(
-                              children: [
-                                Container(
-                                  color: Colors.red,
-                                  padding: EdgeInsets.all(10.0),
-                                  width: MediaQuery.of(context).size.width / 3,
-                                  child: Text("hi"),
-                                ),
-                                Divider(
-                                  thickness: 1.0,
-                                ),
-                                Container()
-                              ],
-                            )
-                          ],
-                        ));
-                  },
+                    return Filter();                  },
                 );
               },
               child: Padding(
