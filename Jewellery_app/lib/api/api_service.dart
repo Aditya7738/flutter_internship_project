@@ -5,6 +5,8 @@ import 'package:Tiara_by_TJ/model/category_model.dart';
 import 'package:Tiara_by_TJ/model/filter_options_model.dart' as FilterOptions;
 import 'package:Tiara_by_TJ/model/product_customization_option_model.dart';
 import 'package:Tiara_by_TJ/model/reviews_model.dart';
+import 'package:Tiara_by_TJ/providers/filteroptions_provider.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:Tiara_by_TJ/model/order_model.dart' as CustomersOrder;
 import 'package:Tiara_by_TJ/model/payment_gatways_model.dart';
@@ -12,6 +14,7 @@ import 'package:Tiara_by_TJ/model/products_model.dart' as AllProducts;
 import 'package:Tiara_by_TJ/model/products_model.dart';
 import 'package:Tiara_by_TJ/model/products_of_category.dart'
     as ProductsRelatedToCategory;
+import 'package:provider/provider.dart';
 
 class ApiService {
   static List<CategoriesModel> listOfCategory = [];
@@ -241,10 +244,10 @@ class ApiService {
   String temp = "";
 
   static int pagesOfResponse = 1;
-  static Future<bool> showNextPagesProduct() async {
+  static Future<bool> showNextPagesProduct(BuildContext context) async {
     pageNo++;
     if (pageNo <= pagesOfResponse) {
-      await fetchProducts(searchString, pageNo);
+      await fetchProducts(searchString, pageNo,context);
       return true;
     }
 
@@ -252,12 +255,49 @@ class ApiService {
   }
 
   static Future<List<AllProducts.ProductsModel>?> fetchProducts(
-      String searchText, int pageNo) async {
+      String searchText, int pageNo, BuildContext context) async {
     searchString = searchText;
 
     //https: //tiarabytj.com/wp-json/wc/v3/products?consumer_key=ck_33882e17eeaff38b20ac7c781156024bc2d6af4a&consumer_secret=cs_df67b056d05606c05275b571ab39fa508fcdd7b9
-    final endpoint =
-        "${Strings.baseUrl}/wp-json/wc/v3/products?consumer_key=${Strings.consumerKey}&consumer_secret=${Strings.consumerSecret}&per_page=13&search=$searchText&page=$pageNo";
+    String endpoint =
+        "${Strings.baseUrl}/wp-json/wc/v3/products?consumer_key=${Strings.consumerKey}&consumer_secret=${Strings.consumerSecret}&per_page=100&search=$searchText&page=$pageNo";
+
+    final filterProvider =
+        Provider.of<FilterOptionsProvider>(context, listen: false);
+
+    Map<String, dynamic> selectedSubOptionsdata = filterProvider.selectedSubOptionsdata;
+
+    if (selectedSubOptionsdata.containsKey("collection")) {
+      if (selectedSubOptionsdata["collectionCount"] > 0) {
+        endpoint += "&collections=${selectedSubOptionsdata["collection"]}";
+      }
+    }
+
+     if (selectedSubOptionsdata.containsKey("categories")) {
+      if (selectedSubOptionsdata["categoriesCount"] > 0) {
+        endpoint += "&category=${selectedSubOptionsdata["categories"]}";
+      }
+    }
+
+     if (selectedSubOptionsdata.containsKey("sub-categories")) {
+      if (selectedSubOptionsdata["subCategoriesCount"] > 0) {
+        endpoint += "&subcategory=${selectedSubOptionsdata["sub-categories"]}";
+      }
+    }
+
+     if (selectedSubOptionsdata.containsKey("tags")) {
+      if (selectedSubOptionsdata["tagsCount"] > 0) {
+        endpoint += "&tag=${selectedSubOptionsdata["tags"]}";
+      }
+    }
+
+     if (selectedSubOptionsdata.containsKey("price_range")) {
+   
+        endpoint += "&min_price=${selectedSubOptionsdata["price_range"]["min_price"]}&max_price=${selectedSubOptionsdata["price_range"]["max_price"]}";
+      
+    }
+
+    print("filtered url $endpoint");
 
     Uri uri = Uri.parse(endpoint);
 
@@ -1079,68 +1119,76 @@ class ApiService {
       try {
         final json = jsonDecode(response.body);
 
-      print("filterOptions JSON $json");
+        print("filterOptions JSON $json");
 
-      filterOptionsModel = FilterOptions.FilterOptionsModel(
-        collections: json["collections"] == null
-            ? []
-            : List<FilterOptions.Category>.from(
-                json["collections"]!.map((x) => FilterOptions.Category.fromJson(x))),
-        categories: json["categories"] == null
-            ? []
-            : List<FilterOptions.Category>.from(
-                json["categories"]!.map((x) => FilterOptions.Category.fromJson(x))),
-        subCategories: json["sub-categories"] == null
-            ? []
-            : List<FilterOptions.Category>.from(
-                json["sub-categories"]!.map((x) => FilterOptions.Category.fromJson(x))),
-        tags: json["tags"] == null
-            ? []
-            : List<FilterOptions.Category>.from(json["tags"]!.map((x) => FilterOptions.Category.fromJson(x))),
-        diamondWt: json["diamond_wt"] == null
-            ? []
-            : List<FilterOptions.Category>.from(
-                json["diamond_wt"]!.map((x) => FilterOptions.Category.fromJson(x))),
-        goldWt: json["gold_wt"] == null
-            ? []
-            : List<FilterOptions.Category>.from(
-                json["gold_wt"]!.map((x) => FilterOptions.Category.fromJson(x))),
-        gender: json["gender"] == null
-            ? []
-            : List<FilterOptions.Category>.from(json["gender"]!.map((x) => FilterOptions.Category.fromJson(x))),
-      );
+        filterOptionsModel = FilterOptions.FilterOptionsModel(
+          collections: json["collections"] == null
+              ? []
+              : List<FilterOptions.Category>.from(json["collections"]!
+                  .map((x) => FilterOptions.Category.fromJson(x))),
+          categories: json["categories"] == null
+              ? []
+              : List<FilterOptions.Category>.from(json["categories"]!
+                  .map((x) => FilterOptions.Category.fromJson(x))),
+          subCategories: json["sub-categories"] == null
+              ? []
+              : List<FilterOptions.Category>.from(json["sub-categories"]!
+                  .map((x) => FilterOptions.Category.fromJson(x))),
+          tags: json["tags"] == null
+              ? []
+              : List<FilterOptions.Category>.from(
+                  json["tags"]!.map((x) => FilterOptions.Category.fromJson(x))),
+          diamondWt: json["diamond_wt"] == null
+              ? []
+              : List<FilterOptions.Category>.from(json["diamond_wt"]!
+                  .map((x) => FilterOptions.Category.fromJson(x))),
+          goldWt: json["gold_wt"] == null
+              ? []
+              : List<FilterOptions.Category>.from(json["gold_wt"]!
+                  .map((x) => FilterOptions.Category.fromJson(x))),
+          gender: json["gender"] == null
+              ? []
+              : List<FilterOptions.Category>.from(json["gender"]!
+                  .map((x) => FilterOptions.Category.fromJson(x))),
+        );
 
-      print("filterOptionsModel!.categories.length ${filterOptionsModel!.categories.length}");
-
+        print(
+            "filterOptionsModel!.categories.length ${filterOptionsModel!.categories.length}");
       } catch (e) {
         print("filter json error ${e.toString()}");
       }
-
-      
 
       return filterOptionsModel;
     }
     return null;
   }
 
-  //static FilterOptionsModel? filterOptionsModel;
-  // static Future<void> getFilterOptions() async {
-  //   var headers = {
-  //     'Authorization': 'Basic dGlhcmFieXRqQGdtYWlsLmNvbTpPY3RvYmVyQEp3ZXJv',
-  //     'Cookie': 'shop_per_page=100'
-  //   };
-  //   var request = http.Request(
-  //       'GET', Uri.parse('https://tiarabytj.com/wp-json/store/v1/taxonomies'));
+  static Future<void> getFilteredProducts(BuildContext context) async {
+    String url =
+        "https://tiarabytj.com/wp-json/wc/v3/products?consumer_key=${Strings.consumerKey}&consumer_secret=${Strings.consumerSecret}&per_page=100";
 
-  //   request.headers.addAll(headers);
+    final filterProvider =
+        Provider.of<FilterOptionsProvider>(context, listen: false);
 
-  //   http.StreamedResponse response = await request.send();
-  //   print("filter response.statusCode ${response.statusCode}");
+    Map<String, dynamic> selectedSubOptionsdata =
+        filterProvider.selectedSubOptionsdata;
 
-  //   if (response.statusCode == 200) {
-  //     print("response.stream.bytesToString() ${await response.stream.bytesToString()}");
-  //   } else {
-  //     print("response.reasonPhrase ${response.reasonPhrase}");
-  //   }
-  // }
+    if (selectedSubOptionsdata.containsKey("collection")) {
+      if (selectedSubOptionsdata["collectionCount"] > 0) {
+        url += "&collection=${selectedSubOptionsdata["collection"]}";
+      }
+    }
+
+    print("filtered url $url");
+    // else if(selectedSubOptionsdata.containsKey("categories")){
+    //   url += "&category=${selectedSubOptionsdata["categories"]}";
+    // }
+
+    Uri uri = Uri.parse(url);
+    final response = await http.get(uri);
+
+    if (response.statusCode == 200) {
+      print("response.body filtered ${response.body}");
+    }
+  }
 }

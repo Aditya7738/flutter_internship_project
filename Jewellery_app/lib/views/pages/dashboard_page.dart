@@ -68,6 +68,8 @@ class _DashboardPageState extends State<DashboardPage> {
 
     filterOptionsProvider.setCollectionsFilterOptionsdata(collectionsList);
 
+    
+
     List<Map<String, dynamic>> diamondWeightList = <Map<String, dynamic>>[];
     for (var i = 0; i < filterOptionsModel.diamondWt.length; i++) {
       Map<String, dynamic> diamondWtMap = <String, dynamic>{
@@ -80,6 +82,7 @@ class _DashboardPageState extends State<DashboardPage> {
     }
 
     print("diamondWeightList $diamondWeightList");
+    print("diamondWeightList length ${diamondWeightList.length}");
 
     filterOptionsProvider.setDiamondWtFilterOptionsdata(diamondWeightList);
 
@@ -91,10 +94,11 @@ class _DashboardPageState extends State<DashboardPage> {
         "value": filterOptionsModel.goldWt[i].value,
         "count": filterOptionsModel.goldWt[i].count
       };
-      diamondWeightList.add(goldWt);
+      goldWtList.add(goldWt);
     }
 
     print("goldWtList $goldWtList");
+      print("goldWtList length ${goldWtList.length}");
 
     filterOptionsProvider.setGoldWtFilterOptionsdata(goldWtList);
 
@@ -106,9 +110,10 @@ class _DashboardPageState extends State<DashboardPage> {
         "value": filterOptionsModel.gender[i].value,
         "count": filterOptionsModel.gender[i].count
       };
-      diamondWeightList.add(gender);
+      genderList.add(gender);
     }
     print("genderList $genderList");
+        print("genderList length ${genderList.length}");
 
     filterOptionsProvider.setGenderFilterOptionsdata(genderList);
 
@@ -120,12 +125,29 @@ class _DashboardPageState extends State<DashboardPage> {
         "value": filterOptionsModel.tags[i].value,
         "count": filterOptionsModel.tags[i].count
       };
-      diamondWeightList.add(tags);
+      tagsList.add(tags);
     }
 
     print("tagsList $tagsList");
+    print("tagsList length ${tagsList.length}");
 
     filterOptionsProvider.setTagsFilterOptionsdata(tagsList);
+
+    List<Map<String, dynamic>> subCategoriesList = <Map<String, dynamic>>[];
+    for (var i = 0; i < filterOptionsModel.subCategories.length; i++) {
+      Map<String, dynamic> subCategories = <String, dynamic>{
+        "id": filterOptionsModel.subCategories[i].id,
+        "label": filterOptionsModel.subCategories[i].label,
+        "value": filterOptionsModel.subCategories[i].value,
+        "count": filterOptionsModel.subCategories[i].count
+      };
+      subCategoriesList.add(subCategories);
+    }
+
+    print("subCategoriesList $subCategoriesList");
+    print("subCategoriesList length ${subCategoriesList.length}");
+
+    filterOptionsProvider.setSubCategoriesFilterOptionsdata(subCategoriesList);
 
     print("filterOptionsModel IS NULL");
   }

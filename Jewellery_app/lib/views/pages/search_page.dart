@@ -1,9 +1,10 @@
+import 'package:Tiara_by_TJ/providers/filteroptions_provider.dart';
 import 'package:Tiara_by_TJ/views/pages/filter.dart';
 import 'package:flutter/material.dart';
 import 'package:Tiara_by_TJ/api/api_service.dart';
 import 'package:Tiara_by_TJ/constants/strings.dart';
 import 'package:Tiara_by_TJ/model/products_model.dart';
-
+import 'package:provider/provider.dart';
 import 'package:Tiara_by_TJ/views/pages/product_details_page.dart';
 
 class SearchPage extends StatefulWidget {
@@ -20,6 +21,8 @@ class _SearchPageState extends State<SearchPage> {
   bool isThereMoreProducts = true;
   bool newListLoading = false;
   bool isSearchFieldEmpty = false;
+
+  String searchText = "";
 
   @override
   void initState() {
@@ -44,7 +47,7 @@ class _SearchPageState extends State<SearchPage> {
     });
 
     // Fetch more data (e.g., using ApiService)
-    isThereMoreProducts = await ApiService.showNextPagesProduct();
+    isThereMoreProducts = await ApiService.showNextPagesProduct(context);
 
     setState(() {
       isLoading = false;
@@ -60,6 +63,7 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
+    final filterOptionsProvider = Provider.of<FilterOptionsProvider>(context);
     return Scaffold(
         appBar: AppBar(
           elevation: 5.0,
@@ -68,7 +72,7 @@ class _SearchPageState extends State<SearchPage> {
           title: SizedBox(
             height: 40.0,
             child: TextField(
-              onChanged: (value) async {
+              onSubmitted: (value) async {
                 if (value == "") {
                   ApiService.listOfProductsModel.clear();
                   // setState(() {
@@ -86,7 +90,7 @@ class _SearchPageState extends State<SearchPage> {
                     newListLoading = true;
                   });
 
-                  await ApiService.fetchProducts(value, 1);
+                  await ApiService.fetchProducts(value, 1, context);
 
                   setState(() {
                     newListLoading = false;
@@ -95,6 +99,7 @@ class _SearchPageState extends State<SearchPage> {
                   print("ONCHANGED CALLED");
                   setState(() {
                     isSearchBarUsed = true;
+                    searchText = value;
                   });
                 }
               },
@@ -128,12 +133,14 @@ class _SearchPageState extends State<SearchPage> {
               onTap: () {
                 showModalBottomSheet(
                   context: context,
+                  isScrollControlled: true,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(20.0),
                           topRight: Radius.circular(20.0))),
                   builder: (context) {
-                    return Filter();                  },
+                    return Filter(searchText: searchText);
+                  },
                 );
               },
               child: Padding(
@@ -156,7 +163,7 @@ class _SearchPageState extends State<SearchPage> {
               const SizedBox(
                 height: 20.0,
               ),
-              newListLoading
+              newListLoading || filterOptionsProvider.isFilteredListLoading
                   ? const Center(
                       child: CircularProgressIndicator(
                       color: Color(0xffCC868A),

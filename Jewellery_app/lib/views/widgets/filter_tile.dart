@@ -28,6 +28,7 @@ class FilterTile extends StatelessWidget {
               Text(
                 option,
                 style: TextStyle(
+                  fontSize: 15.0,
                     color: isFilterTileClicked
                         ? Theme.of(context).primaryColor
                         : Colors.black),

@@ -1,10 +1,14 @@
+import 'package:Tiara_by_TJ/api/api_service.dart';
 import 'package:Tiara_by_TJ/model/filter_options_model.dart';
+import 'package:Tiara_by_TJ/providers/filteroptions_provider.dart';
 import 'package:Tiara_by_TJ/views/widgets/filter_options.dart';
 import 'package:Tiara_by_TJ/views/widgets/filter_tile.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Filter extends StatefulWidget {
-  Filter({super.key});
+  final String searchText;
+  Filter({super.key, required this.searchText});
 
   @override
   State<Filter> createState() => _FilterState();
@@ -12,7 +16,7 @@ class Filter extends StatefulWidget {
 
 class _FilterState extends State<Filter> {
   List<Map<String, String>> map = <Map<String, String>>[
-    {"id": "price", "value": "Price"},
+    {"id": "price_range", "value": "Price"},
     {"id": "collection", "value": "Collections"},
     {"id": "categories", "value": "Categories"},
     {"id": "sub-categories", "value": "Sub-categories"},
@@ -21,8 +25,6 @@ class _FilterState extends State<Filter> {
     {"id": "gold_wt", "value": "Gold weight"},
     {"id": "gender", "value": "Gender"},
   ];
-
-  
 
   @override
   void initState() {
@@ -34,37 +36,44 @@ class _FilterState extends State<Filter> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Container(
-          
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height / 1.66,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Text(
-                  "Filter By",
-                  style: Theme.of(context).textTheme.headline3,
-                ),
+    final filterOptionsProvider = Provider.of<FilterOptionsProvider>(context);
+    if (selectedFilterIndex != -1) {
+      final filtersToSend = map[selectedFilterIndex];
+
+      print("filtersToSendValue ${filtersToSend["id"]!}");
+    }
+
+    return Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height / 1.66,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Text(
+                "Filter By",
+                style: Theme.of(context).textTheme.headline3,
               ),
-              Divider(
-                thickness: 2.0,
-              ),
-              Row(
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      border: Border.symmetric(vertical: BorderSide(color: Colors.black,
-                                  style: BorderStyle.solid))
-                    ),
-                   
-                    width: MediaQuery.of(context).size.width / 3,
-                    height: (MediaQuery.of(context).size.height / 2) - 76,
+            ),
+            Divider(
+              thickness: 2.0,
+            ),
+            Row(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                      border: Border.symmetric(
+                          vertical: BorderSide(
+                              color: Colors.black, style: BorderStyle.solid))),
+                  width: MediaQuery.of(context).size.width / 3,
+                  height: (MediaQuery.of(context).size.height / 2) - 76,
+                  child: Scrollbar(
                     child: ListView.separated(
                         itemBuilder: (context, index) {
                           final filters = map[index];
+
+                          // print("filtersValue ${filters["id"]!}");
 
                           return FilterTile(
                             isFilterTileClicked: index == selectedFilterIndex,
@@ -84,67 +93,103 @@ class _FilterState extends State<Filter> {
                         },
                         itemCount: map.length),
                   ),
-                  Divider(
-                    thickness: 1.0,
-                    color: Colors.grey,
+                ),
+                Divider(
+                  thickness: 1.0,
+                  color: Colors.grey,
+                ),
+                selectedFilterIndex == -1
+                    ? SizedBox()
+                    : FilterOptions(
+                        selectedFilterIndex: selectedFilterIndex,
+                        filterKey: selectedFilterIndex != -1
+                            ? map[selectedFilterIndex]["id"]!
+                            : ""),
+              ],
+            ),
+            Divider(
+              thickness: 2.0,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    onTap: () async {
+                      Navigator.of(context).pop();
+                      filterOptionsProvider.setFilteredListLoading(true);
+
+                      Map<String, dynamic> selectedSubOptionsdata =
+                          filterOptionsProvider.selectedSubOptionsdata;
+
+                      if (selectedSubOptionsdata.containsKey("collection")) {
+                        selectedSubOptionsdata["collection"] = "";
+                      }
+
+                      if (selectedSubOptionsdata.containsKey("categories")) {
+                        selectedSubOptionsdata["categories"] = "";
+                      }
+
+                      if (selectedSubOptionsdata
+                          .containsKey("sub-categories")) {
+                        selectedSubOptionsdata["sub-categories"] = "";
+                      }
+
+                      if (selectedSubOptionsdata.containsKey("tags")) {
+                        selectedSubOptionsdata["tags"] = "";
+                      }
+
+                      if (selectedSubOptionsdata.containsKey("price_range")) {
+                        selectedSubOptionsdata["price_range"] = "";
+                      }
+                      ApiService.listOfProductsModel.clear();
+                      await ApiService.fetchProducts(
+                          widget.searchText, 1, context);
+                      filterOptionsProvider.setFilteredListLoading(false);
+                    },
+                    child: Container(
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                                color: Theme.of(context).primaryColor,
+                                style: BorderStyle.solid),
+                            borderRadius: BorderRadius.circular(5.0)),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 10.0, horizontal: 20.0),
+                        child: Text(
+                          "Clear all",
+                          style: TextStyle(
+                              color: Theme.of(context).primaryColor,
+                              fontSize: 17.0),
+                        )),
                   ),
-                  FilterOptions(selectedFilterIndex: selectedFilterIndex),
+                  SizedBox(
+                    width: 25.0,
+                  ),
+                  GestureDetector(
+                    onTap: () async {
+                      Navigator.of(context).pop();
+                      filterOptionsProvider.setFilteredListLoading(true);
+                      ApiService.listOfProductsModel.clear();
+                      await ApiService.fetchProducts(
+                          widget.searchText, 1, context);
+                      filterOptionsProvider.setFilteredListLoading(false);
+                    },
+                    child: Container(
+                        decoration: BoxDecoration(
+                            color: Theme.of(context).primaryColor,
+                            borderRadius: BorderRadius.circular(5.0)),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 10.0, horizontal: 20.0),
+                        child: const Text(
+                          "Apply",
+                          style: TextStyle(color: Colors.white, fontSize: 17.0),
+                        )),
+                  ),
                 ],
               ),
-              Divider(
-                thickness: 2.0,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: Container(
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: Theme.of(context).primaryColor,
-                                  style: BorderStyle.solid),
-                              borderRadius: BorderRadius.circular(5.0)),
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 10.0, horizontal: 20.0),
-                          child: Text(
-                            "Clear all",
-                            style: TextStyle(
-                                color: Theme.of(context).primaryColor,
-                                fontSize: 17.0),
-                          )),
-                    ),
-                    SizedBox(
-                      width: 25.0,
-                    ),
-                    GestureDetector(
-                      onTap: () {},
-                      child: Container(
-                          decoration: BoxDecoration(
-                              color: Theme.of(context).primaryColor,
-                              borderRadius: BorderRadius.circular(5.0)),
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 10.0, horizontal: 20.0),
-                          child: const Text(
-                            "Apply",
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 17.0),
-                          )),
-                    ),
-                  ],
-                ),
-              )
-            ],
-          )),
-    );
+            )
+          ],
+        ));
   }
-
-  // Widget showSelectedWindow(int selectedFilterIndex) {
-
-  //   return window;
-  // }
 }

@@ -1,9 +1,14 @@
+import 'package:Tiara_by_TJ/providers/filteroptions_provider.dart';
 import 'package:Tiara_by_TJ/views/widgets/filter_suboptions.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class FilterOptions extends StatefulWidget {
   final int selectedFilterIndex;
-  FilterOptions({super.key, required this.selectedFilterIndex});
+ final String filterKey;
+  FilterOptions({super.key, required this.selectedFilterIndex,
+   required this.filterKey
+   });
 
   @override
   State<FilterOptions> createState() => _FilterOptionsState();
@@ -15,10 +20,10 @@ class _FilterOptionsState extends State<FilterOptions> {
   double selectedMax = 100000.0;
   @override
   Widget build(BuildContext context) {
-////////////////////////////////////////////////////////////////////////
+    final filterOptionsProvider =
+        Provider.of<FilterOptionsProvider>(context, listen: false);
 
     Widget priceRange = Container(
-      
       width: MediaQuery.of(context).size.width -
           (MediaQuery.of(context).size.width / 3),
       height: (MediaQuery.of(context).size.height / 2) - 77,
@@ -69,6 +74,16 @@ class _FilterOptionsState extends State<FilterOptions> {
                 selectedMin = value.start;
                 selectedMax = value.end;
               });
+              
+            },
+            onChangeEnd: (value) {
+              filterOptionsProvider.setSelectedSubOptionsdata({
+                "price_range": {
+                  "min_price": value.start.toInt(),
+                  "max_price": value.end.toInt()
+                }
+              });
+              print("filterOptionsProvider.selectedSubOptionsdata ${filterOptionsProvider.selectedSubOptionsdata}");
             },
             labels: RangeLabels(selectedMin.toString(), selectedMax.toString()),
           )
@@ -76,50 +91,17 @@ class _FilterOptionsState extends State<FilterOptions> {
       ),
     );
 
-    // Widget purityFilter = Container(
-
-    //   width: MediaQuery.of(context).size.width -
-    //       (MediaQuery.of(context).size.width / 3),
-    //   height: (MediaQuery.of(context).size.height / 2) - 77,
-    //   child: ListView.builder(
-    //     itemBuilder: (context, index) {
-    //       return Padding(
-    //         padding: const EdgeInsets.all(8.0),
-    //         child: Row(
-    //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    //           children: [
-    //             Text("14 KT"),
-    //             Container(
-    //               decoration: BoxDecoration(
-    //                 shape: BoxShape.rectangle,
-    //                 borderRadius: BorderRadiusDirectional.horizontal(start:  Radius.circular(10.0), end: Radius.circular(10.0)),
-    //                 border: Border.all(color: Theme.of(context).primaryColor, style: BorderStyle.solid, width: 2.0),),
-    //               child: Padding(
-    //                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
-    //                 child: Text("1"),
-    //               ),
-    //             )
-    //           ],
-    //         ),
-    //       );
-    //     },
-    //     itemCount: 2,
-    //   ),
-    // );
-
-    // Widget weightFilter =
-
-    // Widget sortByDiamond =
-
     print("widget.selectedFilterIndex ${widget.selectedFilterIndex}");
 
     if (widget.selectedFilterIndex == 0) {
+      print("0 in widget.selectedFilterIndex ${widget.selectedFilterIndex}");
       window = priceRange;
       return window;
-    }else{
-      return FilterSubOptions();
+    } else {
+      print("else in widget.selectedFilterIndex ${widget.selectedFilterIndex}");
+      return FilterSubOptions(selectedFilterIndex: widget.selectedFilterIndex, 
+      filterKey: widget.filterKey
+      );
     }
-    
-  
   }
 }
