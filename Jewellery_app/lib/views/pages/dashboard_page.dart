@@ -3,6 +3,7 @@ import 'package:Tiara_by_TJ/model/filter_options_model.dart';
 import 'package:Tiara_by_TJ/model/product_customization_option_model.dart';
 import 'package:Tiara_by_TJ/providers/customize_options_provider.dart';
 import 'package:Tiara_by_TJ/providers/filteroptions_provider.dart';
+import 'package:Tiara_by_TJ/views/pages/digi_gold_page.dart';
 import 'package:flutter/material.dart';
 import 'package:Tiara_by_TJ/providers/cart_provider.dart';
 import 'package:Tiara_by_TJ/providers/customer_provider.dart';
@@ -20,7 +21,7 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
-  int _currentIndex = 0;
+  int _currentIndex = 1;
 
   @override
   void initState() {
@@ -195,7 +196,7 @@ class _DashboardPageState extends State<DashboardPage> {
 
   @override
   Widget build(BuildContext context) {
-    final tabs = <Widget>[const HomeScreen(), YouPage()];
+    final tabs = <Widget>[DigiGoldPage(), const HomeScreen(), YouPage()];
     return Scaffold(
       body: tabs[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
@@ -207,20 +208,27 @@ class _DashboardPageState extends State<DashboardPage> {
             });
           },
           currentIndex: _currentIndex,
-          items: const <BottomNavigationBarItem>[
+          items: <BottomNavigationBarItem>[
+             BottomNavigationBarItem(
+              icon:
+                  Image.asset("assets/images/icons_gold_bars_outline.png", width: 45.0, height: 25.0, color: Theme.of(context).primaryColor,),
+              label: "Digi Gold",
+              activeIcon: Image.asset("assets/images/icons_gold_bars_filled.png", width: 45.0, height: 25.0,color: Theme.of(context).primaryColor,)
+            ),
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.home_outlined,
                 color: Color(0xffCC868A),
               ),
               label: "Home",
-              activeIcon: Icon(Icons.home_filled, color: Color(0xffCC868A)),
+              activeIcon: Icon(Icons.home_filled,  color: Theme.of(context).primaryColor),
             ),
-            BottomNavigationBarItem(
+           
+             BottomNavigationBarItem(
               icon:
-                  Icon(Icons.person_outline_outlined, color: Color(0xffCC868A)),
+                  Icon(Icons.person_outline_outlined,  color: Theme.of(context).primaryColor),
               label: "My Account",
-              activeIcon: Icon(Icons.person_sharp, color: Color(0xffCC868A)),
+              activeIcon: Icon(Icons.person_sharp,  color: Theme.of(context).primaryColor),
             ),
           ]),
     );

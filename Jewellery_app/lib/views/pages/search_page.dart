@@ -23,6 +23,8 @@ class _SearchPageState extends State<SearchPage> {
   bool isSearchFieldEmpty = false;
 
   String searchText = "";
+  
+  bool isProductListEmpty = false;
 
   @override
   void initState() {
@@ -90,16 +92,18 @@ class _SearchPageState extends State<SearchPage> {
                     newListLoading = true;
                   });
 
-                  await ApiService.fetchProducts(value, 1, context);
+                  List<ProductsModel> listOfProducts = await ApiService.fetchProducts(value, 1, context);
 
                   setState(() {
                     newListLoading = false;
+                    isProductListEmpty = listOfProducts.length == 0;
                   });
                   //ApiService.searchProduct(value);
                   print("ONCHANGED CALLED");
                   setState(() {
                     isSearchBarUsed = true;
                     searchText = value;
+
                   });
                 }
               },
@@ -121,14 +125,14 @@ class _SearchPageState extends State<SearchPage> {
             ),
           ),
           actions: [
-            Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                child: Image.asset(
-                  "assets/images/ios_mic_outline.png",
-                  color: Colors.grey,
-                  width: 30.0,
-                  height: 30.0,
-                )),
+            // Padding(
+            //     padding: const EdgeInsets.symmetric(horizontal: 10.0),
+            //     child: Image.asset(
+            //       "assets/images/ios_mic_outline.png",
+            //       color: Colors.grey,
+            //       width: 30.0,
+            //       height: 30.0,
+            //     )),
             GestureDetector(
               onTap: () {
                 showModalBottomSheet(
@@ -307,7 +311,8 @@ class _SearchPageState extends State<SearchPage> {
                                             ),
                                           )),
                                     );
-                                  } else if (!isThereMoreProducts) {
+                                  } else if (!isThereMoreProducts || isProductListEmpty) {
+                                    
                                     return const Padding(
                                       padding: EdgeInsets.symmetric(
                                           vertical: 15.0, horizontal: 10.0),

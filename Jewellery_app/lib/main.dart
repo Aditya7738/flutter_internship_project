@@ -1,6 +1,7 @@
 import 'package:Tiara_by_TJ/providers/customize_options_provider.dart';
 import 'package:Tiara_by_TJ/providers/filteroptions_provider.dart';
 import 'package:Tiara_by_TJ/views/pages/filter.dart';
+import 'package:Tiara_by_TJ/views/pages/home_screen2.dart';
 import 'package:Tiara_by_TJ/views/pages/search_page.dart';
 import 'package:flutter/material.dart';
 import 'package:Tiara_by_TJ/api/api_service.dart';
@@ -166,7 +167,7 @@ class _MyAppState extends State<MyApp> {
                 fontSize: 16.0,
               ),
             )),
-        home: DashboardPage(),
+        home: HomeScreen2(),
         debugShowCheckedModeBanner: false,
       ),
     );

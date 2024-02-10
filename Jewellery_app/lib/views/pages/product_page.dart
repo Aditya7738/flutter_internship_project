@@ -1,8 +1,11 @@
+import 'package:Tiara_by_TJ/model/products_model.dart';
 import 'package:Tiara_by_TJ/providers/cart_provider.dart';
 import 'package:Tiara_by_TJ/providers/wishlist_provider.dart';
 import 'package:Tiara_by_TJ/views/pages/cart_page.dart';
+import 'package:Tiara_by_TJ/views/pages/filter.dart';
 import 'package:Tiara_by_TJ/views/pages/wishlist_page.dart';
 import 'package:Tiara_by_TJ/views/widgets/custom_searchbar.dart';
+import 'package:Tiara_by_TJ/views/widgets/search_products_category.dart';
 import 'package:flutter/material.dart';
 import 'package:Tiara_by_TJ/api/api_service.dart';
 
@@ -75,6 +78,14 @@ class _ProductPageState extends State<ProductPage> {
     super.dispose();
   }
 
+ 
+  bool isSearchBarUsed = false;
+ 
+  bool isSearchFieldEmpty = false;
+   String searchText = "";
+  
+  bool isProductListEmpty = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -129,7 +140,7 @@ class _ProductPageState extends State<ProductPage> {
           width: 12,
         ),
       ],
-      bottom: CustomSearchBar(),
+      bottom: SearchProductsOfCategory()
 
       
       ),

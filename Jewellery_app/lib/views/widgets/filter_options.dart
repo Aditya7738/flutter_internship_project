@@ -5,10 +5,9 @@ import 'package:provider/provider.dart';
 
 class FilterOptions extends StatefulWidget {
   final int selectedFilterIndex;
- final String filterKey;
-  FilterOptions({super.key, required this.selectedFilterIndex,
-   required this.filterKey
-   });
+  final String filterKey;
+  FilterOptions(
+      {super.key, required this.selectedFilterIndex, required this.filterKey});
 
   @override
   State<FilterOptions> createState() => _FilterOptionsState();
@@ -22,6 +21,13 @@ class _FilterOptionsState extends State<FilterOptions> {
   Widget build(BuildContext context) {
     final filterOptionsProvider =
         Provider.of<FilterOptionsProvider>(context, listen: false);
+    Map<String, dynamic> selectedSubOptionsdata =
+        filterOptionsProvider.selectedSubOptionsdata;
+
+    if (selectedSubOptionsdata.containsKey("price_range")) {
+      selectedMin = selectedSubOptionsdata["price_range"]["min_price"].toDouble();
+      selectedMax = selectedSubOptionsdata["price_range"]["max_price"].toDouble();
+    }
 
     Widget priceRange = Container(
       width: MediaQuery.of(context).size.width -
@@ -65,6 +71,7 @@ class _FilterOptionsState extends State<FilterOptions> {
             height: 10.0,
           ),
           RangeSlider(
+            activeColor: Theme.of(context).primaryColor,
             min: 500.0,
             max: 139080.0,
             values: RangeValues(selectedMin, selectedMax),
@@ -74,7 +81,6 @@ class _FilterOptionsState extends State<FilterOptions> {
                 selectedMin = value.start;
                 selectedMax = value.end;
               });
-              
             },
             onChangeEnd: (value) {
               filterOptionsProvider.setSelectedSubOptionsdata({
@@ -83,7 +89,8 @@ class _FilterOptionsState extends State<FilterOptions> {
                   "max_price": value.end.toInt()
                 }
               });
-              print("filterOptionsProvider.selectedSubOptionsdata ${filterOptionsProvider.selectedSubOptionsdata}");
+              print(
+                  "filterOptionsProvider.selectedSubOptionsdata ${filterOptionsProvider.selectedSubOptionsdata}");
             },
             labels: RangeLabels(selectedMin.toString(), selectedMax.toString()),
           )
@@ -99,9 +106,9 @@ class _FilterOptionsState extends State<FilterOptions> {
       return window;
     } else {
       print("else in widget.selectedFilterIndex ${widget.selectedFilterIndex}");
-      return FilterSubOptions(selectedFilterIndex: widget.selectedFilterIndex, 
-      filterKey: widget.filterKey
-      );
+      return FilterSubOptions(
+          selectedFilterIndex: widget.selectedFilterIndex,
+          filterKey: widget.filterKey);
     }
   }
 }

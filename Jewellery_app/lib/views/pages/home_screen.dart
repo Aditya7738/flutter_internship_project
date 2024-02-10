@@ -51,7 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
           "CONDITION ${_scrollController.position.pixels == _scrollController.position.maxScrollExtent}");
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
-        print("REACHED END OF LIST");
+
 
         loadMoreData();
       }

@@ -85,14 +85,16 @@ class _FilterSubOptionsState extends State<FilterSubOptions> {
         child: ListView.builder(
           itemBuilder: (context, index) {
            
-            print("listOfSubOptions legth ${listOfSubOptions.length}");
+            print("listOfSubOptions length ${listOfSubOptions.length}");
             Map<String, dynamic> subOptions = listOfSubOptions[index];
         
             print("subOptions $subOptions");
         
             return FilterSubOptionsWidget(
+
               subOptions: subOptions,
               index: index,
+             
               isFilterSubOptionClicked: index == selectedFilterSubOptionIndex,
               onTap: () {
                 setState(() {
@@ -149,6 +151,7 @@ class _FilterSubOptionsState extends State<FilterSubOptions> {
         
                 print("filterOptionsProvider.selectedSubOptionsdata ${filterOptionsProvider.selectedSubOptionsdata}");
               },
+               filterKey: widget.filterKey,
             );
         
             // return Padding(
