@@ -75,13 +75,14 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
       print("iskeysContainsSilverPurity KEYS ${iskeysContainsSilverPurity}");
 
       bool iskeysContainsPlatiniumPurity = keys.contains("platinium_purity");
-      print("METADATA iskeysContainsPlatiniumPurity ${iskeysContainsPlatiniumPurity}");
+      print(
+          "METADATA iskeysContainsPlatiniumPurity ${iskeysContainsPlatiniumPurity}");
 
       List<String> purities =
           customizationOptionsProvider.customizeOptionsdata["purities"];
 
-print("customizationOptionsProvider.customizeOptionsdata['enable_kt'] ${customizationOptionsProvider.customizeOptionsdata["enable_kt"] ==
-          "1"}");
+      print(
+          "customizationOptionsProvider.customizeOptionsdata['enable_kt'] ${customizationOptionsProvider.customizeOptionsdata["enable_kt"] == "1"}");
       if (customizationOptionsProvider.customizeOptionsdata["enable_kt"] ==
           "1") {
         if (iskeysContainsPlatiniumPurity &&
@@ -170,11 +171,10 @@ print("customizationOptionsProvider.customizeOptionsdata['enable_kt'] ${customiz
                 print("options $options");
 
                 final goldSelectedOption = getGoldSelectedOption(
-                          productsModel.metaData![i].value.toString()) ??
-                      "Select";
+                        productsModel.metaData![i].value.toString()) ??
+                    "Select";
 
-                      print("goldSelectedOption $goldSelectedOption");
-                
+                print("goldSelectedOption $goldSelectedOption");
 
                 listOfChoiceModel.add(ChoiceModel(
                   label: "Select Metal",
@@ -315,8 +315,7 @@ print("customizationOptionsProvider.customizeOptionsdata['enable_kt'] ${customiz
   @override
   Widget build(BuildContext context) {
     final cartProvider = Provider.of<CartProvider>(context, listen: false);
-    final wishListProvider =
-        Provider.of<WishlistProvider>(context, listen: false);
+   
     final customerProvider =
         Provider.of<CustomerProvider>(context, listen: false);
 
@@ -440,28 +439,29 @@ print("customizationOptionsProvider.customizeOptionsdata['enable_kt'] ${customiz
                                     ),
                                   ],
                                 ),
-                          IconButton(
-                              icon: Icon(
-                                wishListProvider.favProductIds
-                                        .contains(productsModel.id)
-                                    ? Icons.favorite
-                                    : Icons.favorite_border_outlined,
-                                color: Colors.red,
-                                size: 30.0,
-                              ),
-                              onPressed: () {
-                                print("PRESSED");
-                                if (wishListProvider.favProductIds
-                                    .contains(productsModel.id)) {
-                                  wishListProvider
-                                      .removeFromWishlist(productsModel.id!);
-                                  print("Product is removed from wishlist");
-                                } else {
-                                  wishListProvider
-                                      .addToWishlist(productsModel.id!);
-                                  print("Product is added to wishlist");
-                                }
-                              }),
+                          Consumer<WishlistProvider>(
+                              builder: (context, value, child) {
+                            print("LENGTH OF FAV: ${value.favProductIds}");
+                            return IconButton(
+                                icon: Icon(
+                                  value.favProductIds.contains(productsModel.id)
+                                      ? Icons.favorite
+                                      : Icons.favorite_border_outlined,
+                                  color: Colors.red,
+                                  size: 30.0,
+                                ),
+                                onPressed: () {
+                                  print("PRESSED");
+                                  if (value.favProductIds
+                                      .contains(productsModel.id)) {
+                                    value.removeFromWishlist(productsModel.id!);
+                                    print("Product is removed from wishlist");
+                                  } else {
+                                    value.addToWishlist(productsModel.id!);
+                                    print("Product is added to wishlist");
+                                  }
+                                });
+                          })
                         ]),
                     const SizedBox(
                       height: 10.0,
@@ -762,7 +762,9 @@ print("customizationOptionsProvider.customizeOptionsdata['enable_kt'] ${customiz
                               )
                             : Text(
                                 "Be the first to review this product",
-                                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0),
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16.0),
                               ),
                     ApiService.reviewsList.length > 3
                         ? InkWell(

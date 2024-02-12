@@ -1,3 +1,4 @@
+import 'package:Tiara_by_TJ/api/api_service.dart';
 import 'package:Tiara_by_TJ/views/widgets/digi_gold_card.dart';
 import 'package:flutter/material.dart';
 
@@ -9,6 +10,23 @@ class DigiGoldPage extends StatefulWidget {
 }
 
 class _DigiGoldPageState extends State<DigiGoldPage> {
+
+bool isDigiGoldPlanLoading = true;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getDigiGoldPlanList();
+  }
+
+  Future<void> getDigiGoldPlanList() async {
+    await ApiService.getListOfDigiGoldPlan();
+
+    setState(() {
+      isDigiGoldPlanLoading = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -127,11 +145,18 @@ class _DigiGoldPageState extends State<DigiGoldPage> {
                     ),
                   ),
                 ),
+
+                isDigiGoldPlanLoading ? 
+                Center(
+                  child: CircularProgressIndicator(
+                    color: Theme.of(context).primaryColor
+                  )
+                ):
                 SizedBox(
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height,
                   child: ListView.builder(
-                      itemCount: 18,
+                      itemCount: ApiService.listOfDigiGoldPlan.length,
                       itemBuilder: (context, index) {
                         return DigiGoldCard();
                       }),

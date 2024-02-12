@@ -16,7 +16,7 @@ class _WholeCarouselSliderState extends State<WholeCarouselSlider> {
   CarouselController carouselController = CarouselController();
   late List<ProductImage> listOfProductImage;
 
-  List<String> urlList = [Strings.defaultImageUrl,Strings.defaultImageUrl];
+  List<String> urlList = ["assets/images/image_placeholder.jpg","assets/images/image_placeholder.jpg",];
   
 
   @override
@@ -30,60 +30,69 @@ class _WholeCarouselSliderState extends State<WholeCarouselSlider> {
   @override
   Widget build(BuildContext context) {
     return Column(children: [
-      CarouselSlider(
-        carouselController: carouselController,
-        items: listOfProductImage.isEmpty ?
-         urlList.map((image) => Image.network(
-                    image,
-                    loadingBuilder: (context, child, loadingProgress) {
-                      if (loadingProgress == null) {
-                        return child;
-                      }
-                      return const SizedBox(
-                        width: 46.0,
-                        height: 16.0,
-                        child: Center(
-                          child: CircularProgressIndicator(
-                            color: Colors.black,
+      Stack(
+        alignment: Alignment.center,
+        children: [
+          CarouselSlider(
+          carouselController: carouselController,
+          items: listOfProductImage.isEmpty ?
+           urlList.map((image) => Image.asset(
+                      image,
+                    
+                    ),
+                  )
+              .toList() 
+              :
+              listOfProductImage.map((image) => Image.network(
+                      image.src!,
+                      loadingBuilder: (context, child, loadingProgress) {
+                        if (loadingProgress == null) {
+                          return child;
+                        }
+                        return const SizedBox(
+                          width: 46.0,
+                          height: 16.0,
+                          child: Center(
+                            child: CircularProgressIndicator(
+                              color: Colors.black,
+                            ),
                           ),
-                        ),
-                      );
-                    },
-                  ),
-                )
-            .toList() 
-            :
-            listOfProductImage.map((image) => Image.network(
-                    image.src!,
-                    loadingBuilder: (context, child, loadingProgress) {
-                      if (loadingProgress == null) {
-                        return child;
-                      }
-                      return const SizedBox(
-                        width: 46.0,
-                        height: 16.0,
-                        child: Center(
-                          child: CircularProgressIndicator(
-                            color: Colors.black,
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                )
-            .toList() ,
-        options: CarouselOptions(
-            viewportFraction: 1.04,
-            height: MediaQuery.of(context).size.height / 2,
-            enlargeCenterPage: true,
-            autoPlay: true,
-            aspectRatio: 16 / 9,
-            autoPlayInterval: const Duration(seconds: 10),
-            onPageChanged: (index, reason) {
-              setState(() {
-                currentIndex = index;
-              });
-            }),
+                        );
+                      },
+                    ),
+                  )
+              .toList() ,
+          options: CarouselOptions(
+              viewportFraction: 1.04,
+              height: MediaQuery.of(context).size.height / 2,
+              enlargeCenterPage: true,
+              autoPlay: true,
+              aspectRatio: 16 / 9,
+              autoPlayInterval: const Duration(seconds: 10),
+              onPageChanged: (index, reason) {
+                setState(() {
+                  currentIndex = index;
+                });
+              }),
+        ),
+
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              IconButton.outlined(onPressed: () {
+                carouselController.previousPage();
+              }, icon: Icon(Icons.chevron_left_outlined)),
+              IconButton.outlined(onPressed: () {
+                carouselController.nextPage();
+              }, icon: Icon(Icons.chevron_right_outlined)),
+            ],
+          ),
+        )
+
+
+        ],
       ),
       SizedBox(
           width: MediaQuery.of(context).size.width,

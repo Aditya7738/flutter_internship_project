@@ -89,7 +89,8 @@ class _ProductPageState extends State<ProductPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Products"), actions: <Widget>[
+      appBar: AppBar(title: Text("Products"), 
+      actions: <Widget>[
         SizedBox(
           height: 40.0,
           width: 32.0,
@@ -167,7 +168,7 @@ class _ProductPageState extends State<ProductPage> {
                     itemBuilder: (BuildContext context, int index) {
                       if (index <
                           ApiService.listOfProductsCategoryWise.length) {
-                        return ProductItem(
+                        return ProductItem(productIndex: index, 
                           productsModel:
                               ApiService.listOfProductsCategoryWise[index],
                         );

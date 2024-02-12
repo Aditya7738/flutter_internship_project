@@ -81,7 +81,7 @@ class CategoryImageModel {
             dateCreatedGmt: DateTime.tryParse(json["date_created_gmt"] ?? ""),
             dateModified: DateTime.tryParse(json["date_modified"] ?? ""),
             dateModifiedGmt: DateTime.tryParse(json["date_modified_gmt"] ?? ""),
-            src: json["src"],
+            src: json["src"].toString(),
             name: json["name"],
             alt: json["alt"],
         );

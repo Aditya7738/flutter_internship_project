@@ -1,3 +1,4 @@
+import 'package:Tiara_by_TJ/views/pages/details_view.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:Tiara_by_TJ/constants/strings.dart';
@@ -11,7 +12,8 @@ import 'package:Tiara_by_TJ/views/pages/product_details_page.dart';
 
 class ProductItem extends StatefulWidget {
   final ProductsModel productsModel;
-  const ProductItem({super.key, required this.productsModel});
+  final int? productIndex;
+  const ProductItem({super.key, required this.productsModel, this.productIndex});
 
   @override
   State<ProductItem> createState() => _ProductItemState();
@@ -26,6 +28,7 @@ class _ProductItemState extends State<ProductItem> {
   void initState() {
     super.initState();
     productsModel = widget.productsModel;
+    
   }
 
   @override
@@ -37,6 +40,11 @@ class _ProductItemState extends State<ProductItem> {
     return GestureDetector(
       onTap: () {
         print("CATEGORY PRODUCT PRESSED");
+        if (widget.productIndex != null) {
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) =>
+                DetailsView(productIndex: widget.productIndex!)));
+        }
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) =>
                 ProductDetailsPage(productsModel: productsModel)));
@@ -56,36 +64,12 @@ class _ProductItemState extends State<ProductItem> {
                      Image.asset(
                         "assets/images/image_placeholder.jpg",
                         width:
-                            (MediaQuery.of(context).size.width / 2) + 16.0,
+                            (MediaQuery.of(context).size.width / 2) - 1.0,
                         height:
                             (MediaQuery.of(context).size.width / 2) + 10.0),
                   )
                 : 
-                // Image.network(
-                //     productsModel.images.isEmpty
-                //         ? Strings.defaultImageUrl
-                //         : productsModel.images[0].src ??
-                //             Strings.defaultImageUrl,
-                //     loadingBuilder: (context, child, loadingProgress) {
-                //       if (loadingProgress == null) {
-                //         return child;
-                //       }
-                //       return SizedBox(
-                //         width:
-                //             (MediaQuery.of(context).size.width / 2) + 16.0,
-                //         height:
-                //             (MediaQuery.of(context).size.width / 2) + 10.0,
-                //         child: const Center(
-                //           child: CircularProgressIndicator(
-                //             color: Colors.black,
-                //           ),
-                //         ),
-                //       );
-                //     },
-                //     width: (MediaQuery.of(context).size.width / 2) + 16.0,
-                //     height: (MediaQuery.of(context).size.width / 2) + 10.0,
-                //     fit: BoxFit.fill,
-                //   ),
+       
              
              CachedNetworkImage(imageUrl: productsModel.images.isEmpty
                         ? Strings.defaultImageUrl
@@ -170,6 +154,7 @@ class _ProductItemState extends State<ProductItem> {
                             ),
                     ],
                   ),
+                  
                   Column(
                     children: [
                       GestureDetector(
@@ -226,74 +211,77 @@ class _ProductItemState extends State<ProductItem> {
                 ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(right: 0.0, left: 5.0,bottom: 5.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  productsModel.averageRating == null ?
-
-
-                  Center(
-                    child: Container(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 5.0, horizontal: 10.0),
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Colors.black, // Border color
-                      width: 2, // Border width
-                    ),
-                    borderRadius:
-                        BorderRadius.circular(18), // Border radius
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        productsModel.averageRating ?? "3.5",
-                        style: const TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold),
+            Container(
+              color: Colors.blue,
+              child: Padding(
+                padding: const EdgeInsets.only(right: 0.0, left: 5.0,bottom: 5.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    productsModel.averageRating == null ?
+                              
+                              
+                    Center(
+                      child: Container(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 5.0, horizontal: 10.0),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Colors.black, // Border color
+                        width: 2, // Border width
                       ),
-                      const SizedBox(
-                        width: 5.0,
-                      ),
-                      const Icon(
-                        Icons.star,
-                        color: Colors.yellow,
-                      )
-                    ],
-                  ),
-                )
-                ) :
-
-                SizedBox(),
-                 IconButton(
-                    icon: Icon(
-                      wishListProvider.favProductIds
-                              .contains(productsModel.id)
-                          ? Icons.favorite
-                          : Icons.favorite_border_outlined,
-                      color: Colors.red,
-                      size: 30.0,
+                      borderRadius:
+                          BorderRadius.circular(18), // Border radius
                     ),
-                    onPressed: () {
-                      print("PRESSED");
-                      if (wishListProvider.favProductIds
-                          .contains(productsModel.id)) {
-                        wishListProvider
-                            .removeFromWishlist(productsModel.id!);
-                        print("Product is removed from wishlist");
-                      } else {
-                        wishListProvider.addToWishlist(productsModel.id!);
-                        print("Product is added to wishlist");
-                      }
-                    }),
-
-
-                ],
-              ),
-              ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          productsModel.averageRating ?? "3.5",
+                          style: const TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(
+                          width: 5.0,
+                        ),
+                        const Icon(
+                          Icons.star,
+                          color: Colors.yellow,
+                        )
+                      ],
+                    ),
+                  )
+                  ) :
+                              
+                  SizedBox(width: MediaQuery.of(context).size.width / 2 - 60,),
+                   IconButton(
+                      icon: Icon(
+                        wishListProvider.favProductIds
+                                .contains(productsModel.id)
+                            ? Icons.favorite
+                            : Icons.favorite_border_outlined,
+                        color: Colors.red,
+                        size: 30.0,
+                      ),
+                      onPressed: () {
+                        print("PRESSED");
+                        if (wishListProvider.favProductIds
+                            .contains(productsModel.id)) {
+                          wishListProvider
+                              .removeFromWishlist(productsModel.id!);
+                          print("Product is removed from wishlist");
+                        } else {
+                          wishListProvider.addToWishlist(productsModel.id!);
+                          print("Product is added to wishlist");
+                        }
+                      }),
+                              
+                              
+                  ],
+                ),
+                ),
+            ),
           ],
         ),
       ),

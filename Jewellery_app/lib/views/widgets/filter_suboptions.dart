@@ -25,31 +25,7 @@ class _FilterSubOptionsState extends State<FilterSubOptions> {
     print(
         "filterOptionsProvider.filterCollectionsOptionsdata length ${filterOptionsProvider.filterCollectionsOptionsdata.length}");
 
-    // switch (widget.selectedFilterIndex) {
-    //   case 1:
-    //     listOfSubOptions = filterOptionsProvider.filterCollectionsOptionsdata;
-    //     break;
-    //   case 2:
-    //     listOfSubOptions = filterOptionsProvider.filterCategoryOptionsdata;
-    //     break;
-    //   case 3:
-    //     listOfSubOptions = filterOptionsProvider.filterSubCategoriesOptionsdata;
-    //     break;
-    //   case 4:
-    //     listOfSubOptions = filterOptionsProvider.filterTagsOptionsdata;
-    //     break;
-    //   case 5:
-    //     listOfSubOptions = filterOptionsProvider.filterDiamondWtOptionsdata;
-    //     break;
-    //   case 6:
-    //     listOfSubOptions = filterOptionsProvider.filterGoldWtOptionsdata;
-    //     break;
-    //   case 7:
-    //     listOfSubOptions = filterOptionsProvider.filterGenderOptionsdata;
-    //     break;
-    //   default:
-    //     listOfSubOptions = <Map<String, dynamic>>[];
-    // }
+    
 
     switch (widget.filterKey) {
       case "collection":
@@ -154,22 +130,7 @@ class _FilterSubOptionsState extends State<FilterSubOptions> {
                filterKey: widget.filterKey,
             );
         
-            // return Padding(
-            //   padding: const EdgeInsets.all(8.0),
-            //   child: Row(
-            //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //     children: [
-            //       SizedBox(
-            //           width: MediaQuery.of(context).size.width / 2,
-            //           child: Text(
-            //             subOptions["label"] ?? "filter$index",
-            //             maxLines: 2,
-            //             style: TextStyle(fontSize: 15.0),
-            //           )),
-            //       Text(subOptions["count"].toString())
-            //     ],
-            //   ),
-            // );
+           
           },
           itemCount: listOfSubOptions.length,
         ),

@@ -37,6 +37,9 @@ class _FilterSubOptionsWidgetState extends State<FilterSubOptionsWidget> {
      
     }
 
+    print("widget.isFilterSubOptionClicked ${widget.isFilterSubOptionClicked}");
+    print("isSelected ${isSelected}");
+
 
     return GestureDetector(
       onTap: widget.onTap,

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:Tiara_by_TJ/constants/strings.dart';
 import 'package:Tiara_by_TJ/model/category_model.dart';
+import 'package:Tiara_by_TJ/model/digi_gold_plan_model.dart' as DigiGoldPlans;
 import 'package:Tiara_by_TJ/model/filter_options_model.dart' as FilterOptions;
 import 'package:Tiara_by_TJ/model/product_customization_option_model.dart';
 import 'package:Tiara_by_TJ/model/reviews_model.dart';
@@ -35,18 +36,18 @@ class ApiService {
   static Future<List<CategoriesModel>> fetchCategories(int pageNo) async {
     //https://tiarabytj.com/wp-json/wc/v3/products/categories?consumer_key=ck_33882e17eeaff38b20ac7c781156024bc2d6af4a&consumer_secret=cs_df67b056d05606c05275b571ab39fa508fcdd7b9
     String categoryUri =
-        "${Strings.baseUrl}/wp-json/wc/v3/products/categories?consumer_key=${Strings.consumerKey}&consumer_secret=${Strings.consumerSecret}&page=$pageNo";
+        "${Strings.baseUrl}/wp-json/wc/v3/products/categories?consumer_key=${Strings.consumerKey}&consumer_secret=${Strings.consumerSecret}&page=$pageNo&per_page=50";
     Uri uri = Uri.parse(categoryUri);
     final response = await http.get(uri);
 
     responseofCategoriesPages = int.parse(response.headers['x-wp-totalpages']!);
 
     if (response.statusCode == 200) {
-      print(response);
+      print("category res $response");
 
       final body = response.body;
       final json = jsonDecode(body);
-      print(json);
+      print("category json $json");
 
       for (int i = 0; i < json.length; i++) {
         listOfCategory.add(CategoriesModel(
@@ -63,6 +64,8 @@ class ApiService {
             count: json[i]['count'],
             links: json[i]['links']));
       }
+
+    
 
       return listOfCategory;
     } else {
@@ -448,7 +451,6 @@ class ApiService {
     String endpoint =
         "${Strings.baseUrl}/wp-json/wc/v3/products?consumer_key=${Strings.consumerKey}&consumer_secret=${Strings.consumerSecret}&per_page=100&on_sale=true";
 
-  
 
     Uri uri = Uri.parse(endpoint);
 
@@ -1494,6 +1496,100 @@ static Future<List<AllProducts.ProductsModel>> getNewlyArrivalProducts(
 
     if (response.statusCode == 200) {
       print("response.body filtered ${response.body}");
+    }
+  }
+
+  static List<DigiGoldPlans.DigiGoldPlanModel> listOfDigiGoldPlan = <DigiGoldPlans.DigiGoldPlanModel>[];
+
+  static Future<void> getListOfDigiGoldPlan() async {
+    String url =
+        "https://tiarabytj.com/wp-json/wc/v3/products?custom_filter[0][key]=_visibility&custom_filter[0][value]=hidden&per_page=100&consumer_key=${Strings.consumerKey}&consumer_secret=${Strings.consumerSecret}";
+    
+    Uri uri = Uri.parse(url);
+    final response = await http.get(uri);
+
+    if (response.statusCode == 200) {
+
+      print("response.body listOfDigiGoldPlan ${response.body}");
+      final json = jsonDecode(response.body);
+
+      for (var i = 0; i < json.length; i++) {
+        listOfDigiGoldPlan.add(DigiGoldPlans.DigiGoldPlanModel(
+            id: json[i]["id"],
+            name: json[i]["name"],
+            slug: json[i]["slug"],
+            permalink: json[i]["permalink"],
+            dateCreated: DateTime.tryParse(json[i]["date_created"] ?? ""),
+            dateCreatedGmt: DateTime.tryParse(json[i]["date_created_gmt"] ?? ""),
+            dateModified: DateTime.tryParse(json[i]["date_modified"] ?? ""),
+            dateModifiedGmt: DateTime.tryParse(json[i]["date_modified_gmt"] ?? ""),
+            type: json[i]["type"],
+            status: json[i]["status"],
+            featured: json[i]["featured"],
+            catalogVisibility: json[i]["catalog_visibility"],
+            description: json[i]["description"],
+            shortDescription: json[i]["short_description"],
+            sku: json[i]["sku"],
+            price: json[i]["price"],
+            regularPrice: json[i]["regular_price"],
+            salePrice: json[i]["sale_price"],
+            dateOnSaleFrom: json[i]["date_on_sale_from"],
+            dateOnSaleFromGmt: json[i]["date_on_sale_from_gmt"],
+            dateOnSaleTo: json[i]["date_on_sale_to"],
+            dateOnSaleToGmt: json[i]["date_on_sale_to_gmt"],
+            onSale: json[i]["on_sale"],
+            purchasable: json[i]["purchasable"],
+            totalSales: json[i]["total_sales"],
+            virtual: json[i]["virtual"],
+            downloadable: json[i]["downloadable"],
+            downloads: json[i]["downloads"] == null ? [] : List<dynamic>.from(json[i]["downloads"]!.map((x) => x)),
+            downloadLimit: json[i]["download_limit"],
+            downloadExpiry: json[i]["download_expiry"],
+            externalUrl: json[i]["external_url"],
+            buttonText: json[i]["button_text"],
+            taxStatus: json[i]["tax_status"],
+            taxClass: json[i]["tax_class"],
+            manageStock: json[i]["manage_stock"],
+            stockQuantity: json[i]["stock_quantity"],
+            backorders: json[i]["backorders"],
+            backordersAllowed: json[i]["backorders_allowed"],
+            backordered: json[i]["backordered"],
+            lowStockAmount: json[i]["low_stock_amount"],
+            soldIndividually: json[i]["sold_individually"],
+            weight: json[i]["weight"],
+            dimensions: json[i]["dimensions"] == null ? null : DigiGoldPlans.Dimensions.fromJson(json[i]["dimensions"]),
+            shippingRequired: json[i]["shipping_required"],
+            shippingTaxable: json[i]["shipping_taxable"],
+            shippingClass: json[i]["shipping_class"],
+            shippingClassId: json[i]["shipping_class_id"],
+            reviewsAllowed: json[i]["reviews_allowed"],
+            averageRating: json[i]["average_rating"],
+            ratingCount: json[i]["rating_count"],
+            upsellIds: json[i]["upsell_ids"] == null ? [] : List<dynamic>.from(json[i]["upsell_ids"]!.map((x) => x)),
+            crossSellIds: json[i]["cross_sell_ids"] == null ? [] : List<dynamic>.from(json[i]["cross_sell_ids"]!.map((x) => x)),
+            parentId: json[i]["parent_id"],
+            purchaseNote: json[i]["purchase_note"],
+            categories: json[i]["categories"] == null ? [] : List<DigiGoldPlans.Category>.from(json[i]["categories"]!.map((x) => Category.fromJson(x))),
+            tags: json[i]["tags"] == null ? [] : List<dynamic>.from(json[i]["tags"]!.map((x) => x)),
+            images: json[i]["images"] == null ? [] : List<DigiGoldPlans.Image>.from(json[i]["images"]!.map((x) => DigiGoldPlans.Image.fromJson(x))),
+            attributes: json[i]["attributes"] == null ? [] : List<DigiGoldPlans.Attribute>.from(json[i]["attributes"]!.map((x) => Attribute.fromJson(x))),
+            defaultAttributes: json[i]["default_attributes"] == null ? [] : List<dynamic>.from(json[i]["default_attributes"]!.map((x) => x)),
+            variations: json[i]["variations"] == null ? [] : List<dynamic>.from(json[i]["variations"]!.map((x) => x)),
+            groupedProducts: json[i]["grouped_products"] == null ? [] : List<dynamic>.from(json[i]["grouped_products"]!.map((x) => x)),
+            menuOrder: json[i]["menu_order"],
+            priceHtml: json[i]["price_html"],
+            relatedIds: json[i]["related_ids"] == null ? [] : List<int>.from(json[i]["related_ids"]!.map((x) => x)),
+            metaData: json[i]["meta_data"] == null ? [] : List<DigiGoldPlans.MetaDatum>.from(json[i]["meta_data"]!.map((x) => MetaDatum.fromJson(x))),
+            stockStatus: json[i]["stock_status"],
+            hasOptions: json[i]["has_options"],
+            postPassword: json[i]["post_password"],
+            subcategory: json[i]["subcategory"] == null ? [] : List<dynamic>.from(json[i]["subcategory"]!.map((x) => x)),
+            collections: json[i]["collections"] == null ? [] : List<dynamic>.from(json[i]["collections"]!.map((x) => x)),
+            links: json[i]["_links"] == null ? null : DigiGoldPlans.Links.fromJson(json[i]["_links"]),
+        ));
+      }
+    }else{
+       print("response.body listOfDigiGoldPlan null");
     }
   }
 }

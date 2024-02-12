@@ -175,6 +175,17 @@ class _HomeScreenState extends State<HomeScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
+            isLoading ?
+            SizedBox(
+              height: MediaQuery.of(context).size.height / 6,
+              child: Center(
+                child: CircularProgressIndicator(
+                  color: Theme.of(context).primaryColor,
+                ),
+              ),
+            )
+
+            :
             Container(
               margin:
                   const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),

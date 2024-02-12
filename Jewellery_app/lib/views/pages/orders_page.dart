@@ -21,7 +21,7 @@ class OrderPage extends StatelessWidget {
             "My Orders"
           ),
           bottom: TabBar(
-          
+          indicatorColor: Theme.of(context).primaryColor,
           tabs: tabs
           ),
         

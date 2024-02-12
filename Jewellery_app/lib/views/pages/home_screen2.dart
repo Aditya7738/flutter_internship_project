@@ -6,6 +6,7 @@ import 'package:Tiara_by_TJ/providers/wishlist_provider.dart';
 import 'package:Tiara_by_TJ/views/pages/cart_page.dart';
 import 'package:Tiara_by_TJ/views/pages/search_page.dart';
 import 'package:Tiara_by_TJ/views/pages/wishlist_page.dart';
+import 'package:Tiara_by_TJ/views/widgets/product_item.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -23,22 +24,27 @@ class HomeScreen2 extends StatefulWidget {
 class _HomeScreen2State extends State<HomeScreen2> {
   int currentIndex = 0;
 
-  late CarouselController carouselController;
+  // late CarouselController carouselController;
 
   List<String> images = <String>[];
 
-  bool isLoading = true;
+  bool isCategoryLoading = true;
 
   bool isNewCategoryLoading = false;
 
-  List<CategoriesModel> categories = <CategoriesModel>[];
+  //List<CategoriesModel> categories = <CategoriesModel>[];
+  final CarouselController carouselController = CarouselController();
+
+  bool isSalesLoading = true;
 
   @override
   void initState() {
     super.initState();
     //getDataFromProvider();
-    carouselController = CarouselController();
-    getRequest();
+    // carouselController = CarouselController();
+    getCategories();
+    //getNewArrivals();
+    getProductsOnSale();
     // _scrollController.addListener(() async {
     //   print(
     //       "CONDITION ${_scrollController.position.pixels == _scrollController.position.maxScrollExtent}");
@@ -56,30 +62,49 @@ class _HomeScreen2State extends State<HomeScreen2> {
     });
 
     // Fetch more data (e.g., using ApiService)
+    ApiService.listOfCategory.clear();
     await ApiService.showNextPageOfCategories();
 
-    categories = ApiService.listOfCategory;
+    //categories = ApiService.listOfCategory;
     setState(() {
       isNewCategoryLoading = false;
     });
   }
 
-  Future<void> getRequest() async {
+  Future<void> getCategories() async {
     await ApiService.fetchCategories(1);
 
-    categories = ApiService.listOfCategory;
+    //categories = ApiService.listOfCategory;
 
-    for (var i = 0; i < categories.length; i++) {
-      images.add(categories[i].image?.src ?? Strings.defaultImageUrl);
+    for (var i = 0; i < ApiService.listOfCategory.length; i++) {
+      images.add(
+          ApiService.listOfCategory[i].image?.src ?? Strings.defaultImageUrl);
     }
 
     setState(() {
-      isLoading = false;
+      isCategoryLoading = false;
+    });
+  }
+
+  Future<void> getProductsOnSale() async {
+    await ApiService.getOnSaleProducts(1);
+
+    //categories = ApiService.listOfCategory;
+
+    // for (var i = 0; i < ApiService.listOfCategory.length; i++) {
+    //   images.add(
+    //       ApiService.listOfCategory[i].image?.src ?? Strings.defaultImageUrl);
+    // }
+
+    setState(() {
+      isSalesLoading = false;
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    print(
+        "ApiService.listOfCategory.length ${ApiService.listOfCategory.length ~/ 2}");
     return Scaffold(
       appBar: AppBar(
           title: CachedNetworkImage(
@@ -177,97 +202,76 @@ class _HomeScreen2State extends State<HomeScreen2> {
             SizedBox(
               height: 10.0,
             ),
-            CarouselSlider.builder(
-              itemCount: ApiService.listOfCategory.length ~/ 2,
-              itemBuilder: (context, index, realIndex) {
-                // final image1Label = ApiService.listOfCategory[index * 2].name;
-                // final image2Label = ApiService.listOfCategory[index * 2 + 1].name;
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      color: Colors.yellow,
-                      child: Column(
-                        children: [
-                          CachedNetworkImage(
-                            fit: BoxFit.fill,
-                            imageUrl: images[index * 2],
-                            width: MediaQuery.of(context).size.width / 2,
-                            height: MediaQuery.of(context).size.width / 2,
-                            placeholder: (context, url) {
-                              return SizedBox(
-                                width: MediaQuery.of(context).size.width / 2,
-                                height: MediaQuery.of(context).size.width / 2,
-                                child: const Center(
-                                  child: CircularProgressIndicator(
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                          const SizedBox(
-                            height: 5.0,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(2.0),
-                            child: Text(
-                              ApiService.listOfCategory[index * 2].name ??
-                                  "Jewellery",
-                              style: const TextStyle(fontSize: 16.0),
-                            ),
-                          ),
-                        ],
+            isSalesLoading
+                ? SizedBox(
+                    height: MediaQuery.of(context).size.width / 2,
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        color: Theme.of(context).primaryColor,
                       ),
                     ),
-                    Container(
-                      color: Colors.red,
-                      child: Column(
+                  )
+                : CarouselSlider.builder(
+                    itemCount: ApiService.listOfCategory.length ~/ 2,
+                    itemBuilder: (context, index, realIndex) {
+                      // final image1Label = ApiService.listOfCategory[index * 2].name;
+                      // final image2Label = ApiService.listOfCategory[index * 2 + 1].name;
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          CachedNetworkImage(
-                            fit: BoxFit.fill,
-                            imageUrl: images[index * 2 + 1],
-                            width: MediaQuery.of(context).size.width / 2,
-                            height: MediaQuery.of(context).size.width / 2,
-                            placeholder: (context, url) {
-                              return SizedBox(
-                                width: MediaQuery.of(context).size.width / 2,
-                                height: MediaQuery.of(context).size.width / 2,
-                                child: const Center(
-                                  child: CircularProgressIndicator(
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(2.0),
-                            child: Text(
-                              ApiService.listOfCategory[index * 2 + 1].name ??
-                                  "Jewellery",
-                              style: const TextStyle(fontSize: 16.0),
-                            ),
-                          ),
+                          Container(
+                              color: Colors.yellow,
+                              child: isNewCategoryLoading
+                                  ? SizedBox(
+                                      width:
+                                          MediaQuery.of(context).size.width / 2,
+                                      height:
+                                          MediaQuery.of(context).size.width / 2,
+                                      child: const Center(
+                                        child: CircularProgressIndicator(
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    )
+                                  : ProductItem(
+                                      productsModel:
+                                          ApiService.onSaleProducts[index],
+                                    )),
+                          Container(
+                              color: Colors.red,
+                              child: isNewCategoryLoading
+                                  ? SizedBox(
+                                      width:
+                                          MediaQuery.of(context).size.width / 2,
+                                      height:
+                                          MediaQuery.of(context).size.width / 2,
+                                      child: const Center(
+                                        child: CircularProgressIndicator(
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    )
+                                  : ProductItem(
+                                      productsModel:
+                                          ApiService.onSaleProducts[index],
+                                    )),
                         ],
-                      ),
-                    ),
-                  ],
-                );
-              },
-              options: CarouselOptions(
-                  viewportFraction: 1.03,
-                  height: 255,
-                  enlargeCenterPage: true,
-                  autoPlay: true,
-                  aspectRatio: 16 / 9,
-                  autoPlayInterval: const Duration(seconds: 3),
-                  onPageChanged: (index, reason) {
-                    setState(() {
-                      currentIndex = index;
-                    });
-                  }),
-            ),
+                      );
+                    },
+                    options: CarouselOptions(
+                        viewportFraction: 1.0,
+
+                        height: 340,
+                        enlargeCenterPage: true,
+                        autoPlay: true,
+                        aspectRatio: 16/9,
+                        autoPlayInterval: const Duration(seconds: 3),
+                        onPageChanged: (index, reason) {
+                          setState(() {
+                            currentIndex = index;
+                          });
+                        }),
+                  ),
             SizedBox(
               height: 40.0,
             ),
@@ -278,98 +282,50 @@ class _HomeScreen2State extends State<HomeScreen2> {
             SizedBox(
               height: 10.0,
             ),
-            CarouselSlider.builder(
-              itemCount: ApiService.listOfCategory.length ~/ 2,
-              itemBuilder: (context, index, realIndex) {
-                // final image1Label = ApiService.listOfCategory[index * 2].name;
-                // final image2Label = ApiService.listOfCategory[index * 2 + 1].name;
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      color: Colors.yellow,
-                      child: Column(
-                        children: [
-                          CachedNetworkImage(
-                            fit: BoxFit.fill,
-                            imageUrl: images[index * 2],
-                            width: MediaQuery.of(context).size.width / 2,
-                            height: MediaQuery.of(context).size.width / 2,
-                            placeholder: (context, url) {
-                              return SizedBox(
-                                width: MediaQuery.of(context).size.width / 2,
-                                height: MediaQuery.of(context).size.width / 2,
-                                child: const Center(
-                                  child: CircularProgressIndicator(
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                          const SizedBox(
-                            height: 5.0,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(2.0),
-                            child: Text(
-                              ApiService.listOfCategory[index * 2].name ??
-                                  "Jewellery",
-                              style: const TextStyle(fontSize: 16.0),
-                            ),
-                          ),
-                        ],
+            isCategoryLoading
+                ? SizedBox(
+                    height: MediaQuery.of(context).size.width / 2,
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        color: Theme.of(context).primaryColor,
                       ),
                     ),
-                    Container(
-                      color: Colors.red,
-                      child: Column(
+                  )
+                : CarouselSlider.builder(
+                    itemCount: ApiService.listOfCategory.length ~/ 2,
+                    itemBuilder: (context, index, realIndex) {
+                      // final image1Label = ApiService.listOfCategory[index * 2].name;
+                      // final image2Label = ApiService.listOfCategory[index * 2 + 1].name;
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          CachedNetworkImage(
-                            fit: BoxFit.fill,
-                            imageUrl: images[index * 2 + 1],
-                            width: MediaQuery.of(context).size.width / 2,
-                            height: MediaQuery.of(context).size.width / 2,
-                            placeholder: (context, url) {
-                              return SizedBox(
-                                width: MediaQuery.of(context).size.width / 2,
-                                height: MediaQuery.of(context).size.width / 2,
-                                child: const Center(
-                                  child: CircularProgressIndicator(
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(2.0),
-                            child: Text(
-                              ApiService.listOfCategory[index * 2 + 1].name ??
-                                  "Jewellery",
-                              style: const TextStyle(fontSize: 16.0),
-                            ),
-                          ),
+                          Container(
+                              color: Colors.yellow,
+                              child: ProductItem(
+                                productsModel: ApiService.onSaleProducts[index],
+                              )),
+                          Container(
+                              color: Colors.red,
+                              child: ProductItem(
+                                productsModel: ApiService.onSaleProducts[index],
+                              )),
                         ],
-                      ),
-                    ),
-                  ],
-                );
-              },
-              options: CarouselOptions(
-                  viewportFraction: 1.03,
-                  height: 255,
-                  enlargeCenterPage: true,
-                  autoPlay: true,
-                  aspectRatio: 16 / 9,
-                  autoPlayInterval: const Duration(seconds: 3),
-                  onPageChanged: (index, reason) {
-                    setState(() {
-                      currentIndex = index;
-                    });
-                  }),
-            ),
-           SizedBox(
+                      );
+                    },
+                    options: CarouselOptions(
+                        viewportFraction: 1.03,
+                        height: 255,
+                        enlargeCenterPage: true,
+                        autoPlay: true,
+                        aspectRatio: 16 / 9,
+                        autoPlayInterval: const Duration(seconds: 3),
+                        onPageChanged: (index, reason) {
+                          setState(() {
+                            currentIndex = index;
+                          });
+                        }),
+                  ),
+            SizedBox(
               height: 40.0,
             ),
             Text(
@@ -379,97 +335,110 @@ class _HomeScreen2State extends State<HomeScreen2> {
             SizedBox(
               height: 10.0,
             ),
-            CarouselSlider.builder(
-              itemCount: ApiService.listOfCategory.length ~/ 2,
-              itemBuilder: (context, index, realIndex) {
-                // final image1Label = ApiService.listOfCategory[index * 2].name;
-                // final image2Label = ApiService.listOfCategory[index * 2 + 1].name;
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      color: Colors.yellow,
-                      child: Column(
+            isCategoryLoading || isNewCategoryLoading
+                ? SizedBox(
+                    height: MediaQuery.of(context).size.width / 2,
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        color: Theme.of(context).primaryColor,
+                      ),
+                    ),
+                  )
+                : CarouselSlider.builder(
+                    itemCount: ApiService.listOfCategory.length ~/ 2,
+                    itemBuilder: (context, index, realIndex) {
+                      // final image1Label = ApiService.listOfCategory[index * 2].name;
+                      // final image2Label = ApiService.listOfCategory[index * 2 + 1].name;
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          CachedNetworkImage(
-                            fit: BoxFit.fill,
-                            imageUrl: images[index * 2],
-                            width: MediaQuery.of(context).size.width / 2,
-                            height: MediaQuery.of(context).size.width / 2,
-                            placeholder: (context, url) {
-                              return SizedBox(
-                                width: MediaQuery.of(context).size.width / 2,
-                                height: MediaQuery.of(context).size.width / 2,
-                                child: const Center(
-                                  child: CircularProgressIndicator(
-                                    color: Colors.black,
+                          Container(
+                            color: Colors.yellow,
+                            child: Column(
+                              children: [
+                                CachedNetworkImage(
+                                  fit: BoxFit.fill,
+                                  imageUrl: images[index * 2],
+                                  width: MediaQuery.of(context).size.width / 2,
+                                  height: MediaQuery.of(context).size.width / 2,
+                                  placeholder: (context, url) {
+                                    return SizedBox(
+                                      width:
+                                          MediaQuery.of(context).size.width / 2,
+                                      height:
+                                          MediaQuery.of(context).size.width / 2,
+                                      child: const Center(
+                                        child: CircularProgressIndicator(
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                                const SizedBox(
+                                  height: 5.0,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(2.0),
+                                  child: Text(
+                                    ApiService.listOfCategory[index * 2].name ??
+                                        "Jewellery",
+                                    style: const TextStyle(fontSize: 16.0),
                                   ),
                                 ),
-                              );
-                            },
+                              ],
+                            ),
                           ),
-                          const SizedBox(
-                            height: 5.0,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(2.0),
-                            child: Text(
-                              ApiService.listOfCategory[index * 2].name ??
-                                  "Jewellery",
-                              style: const TextStyle(fontSize: 16.0),
+                          Container(
+                            color: Colors.red,
+                            child: Column(
+                              children: [
+                                CachedNetworkImage(
+                                  fit: BoxFit.fill,
+                                  imageUrl: images[index * 2 + 1],
+                                  width: MediaQuery.of(context).size.width / 2,
+                                  height: MediaQuery.of(context).size.width / 2,
+                                  placeholder: (context, url) {
+                                    return SizedBox(
+                                      width:
+                                          MediaQuery.of(context).size.width / 2,
+                                      height:
+                                          MediaQuery.of(context).size.width / 2,
+                                      child: const Center(
+                                        child: CircularProgressIndicator(
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(2.0),
+                                  child: Text(
+                                    ApiService.listOfCategory[index * 2 + 1]
+                                            .name ??
+                                        "Jewellery",
+                                    style: const TextStyle(fontSize: 16.0),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ],
-                      ),
-                    ),
-                    Container(
-                      color: Colors.red,
-                      child: Column(
-                        children: [
-                          CachedNetworkImage(
-                            fit: BoxFit.fill,
-                            imageUrl: images[index * 2 + 1],
-                            width: MediaQuery.of(context).size.width / 2,
-                            height: MediaQuery.of(context).size.width / 2,
-                            placeholder: (context, url) {
-                              return SizedBox(
-                                width: MediaQuery.of(context).size.width / 2,
-                                height: MediaQuery.of(context).size.width / 2,
-                                child: const Center(
-                                  child: CircularProgressIndicator(
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(2.0),
-                            child: Text(
-                              ApiService.listOfCategory[index * 2 + 1].name ??
-                                  "Jewellery",
-                              style: const TextStyle(fontSize: 16.0),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                );
-              },
-              options: CarouselOptions(
-                  viewportFraction: 1.03,
-                  height: 255,
-                  enlargeCenterPage: true,
-                  autoPlay: true,
-                  aspectRatio: 16 / 9,
-                  autoPlayInterval: const Duration(seconds: 3),
-                  onPageChanged: (index, reason) {
-                    setState(() {
-                      currentIndex = index;
-                    });
-                  }),
-            ),
+                      );
+                    },
+                    options: CarouselOptions(
+                        viewportFraction: 1.03,
+                        height: 255,
+                        enlargeCenterPage: true,
+                        autoPlay: true,
+                        aspectRatio: 16 / 9,
+                        //autoPlayInterval: const Duration(seconds: 3),
+                        onPageChanged: (index, reason) {
+                          print("ON PAGE CHANGED CALL");
+                          handleCarouselSlide(index);
+                        }),
+                  ),
             SizedBox(
               height: 40.0,
             ),
@@ -477,5 +446,14 @@ class _HomeScreen2State extends State<HomeScreen2> {
         ),
       ),
     );
+  }
+
+  void handleCarouselSlide(int index) {
+    print(
+        "CURRENT INDEX $index, ${(ApiService.listOfCategory.length / 2) - 1}");
+    if (index == ((ApiService.listOfCategory.length / 2) - 1)) {
+      print("CALL LOAD MORE DATA");
+      loadMoreData();
+    }
   }
 }
