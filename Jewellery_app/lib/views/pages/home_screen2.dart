@@ -202,16 +202,18 @@ class _HomeScreen2State extends State<HomeScreen2> {
             SizedBox(
               height: 10.0,
             ),
-            isSalesLoading
-                ? SizedBox(
-                    height: MediaQuery.of(context).size.width / 2,
-                    child: Center(
-                      child: CircularProgressIndicator(
-                        color: Theme.of(context).primaryColor,
-                      ),
-                    ),
-                  )
-                : CarouselSlider.builder(
+            // isSalesLoading
+            //     ? 
+            //     SizedBox(
+            //         height: MediaQuery.of(context).size.width / 2,
+            //         child: Center(
+            //           child: CircularProgressIndicator(
+            //             color: Theme.of(context).primaryColor,
+            //           ),
+            //         ),
+            //       )
+            //     : 
+                CarouselSlider.builder(
                     itemCount: ApiService.listOfCategory.length ~/ 2,
                     itemBuilder: (context, index, realIndex) {
                       // final image1Label = ApiService.listOfCategory[index * 2].name;
@@ -282,16 +284,18 @@ class _HomeScreen2State extends State<HomeScreen2> {
             SizedBox(
               height: 10.0,
             ),
-            isCategoryLoading
-                ? SizedBox(
-                    height: MediaQuery.of(context).size.width / 2,
-                    child: Center(
-                      child: CircularProgressIndicator(
-                        color: Theme.of(context).primaryColor,
-                      ),
-                    ),
-                  )
-                : CarouselSlider.builder(
+            // isCategoryLoading
+            //     ?
+            //      SizedBox(
+            //         height: MediaQuery.of(context).size.width / 2,
+            //         child: Center(
+            //           child: CircularProgressIndicator(
+            //             color: Theme.of(context).primaryColor,
+            //           ),
+            //         ),
+            //       )
+            //     : 
+                CarouselSlider.builder(
                     itemCount: ApiService.listOfCategory.length ~/ 2,
                     itemBuilder: (context, index, realIndex) {
                       // final image1Label = ApiService.listOfCategory[index * 2].name;
@@ -335,16 +339,18 @@ class _HomeScreen2State extends State<HomeScreen2> {
             SizedBox(
               height: 10.0,
             ),
-            isCategoryLoading || isNewCategoryLoading
-                ? SizedBox(
-                    height: MediaQuery.of(context).size.width / 2,
-                    child: Center(
-                      child: CircularProgressIndicator(
-                        color: Theme.of(context).primaryColor,
-                      ),
-                    ),
-                  )
-                : CarouselSlider.builder(
+            // isCategoryLoading || isNewCategoryLoading
+            //     ? 
+            //     SizedBox(
+            //         height: MediaQuery.of(context).size.width / 2,
+            //         child: Center(
+            //           child: CircularProgressIndicator(
+            //             color: Theme.of(context).primaryColor,
+            //           ),
+            //         ),
+            //       )
+            //     :
+                 CarouselSlider.builder(
                     itemCount: ApiService.listOfCategory.length ~/ 2,
                     itemBuilder: (context, index, realIndex) {
                       // final image1Label = ApiService.listOfCategory[index * 2].name;

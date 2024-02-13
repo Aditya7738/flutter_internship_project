@@ -32,16 +32,16 @@ class _FilterState extends State<Filter> {
     super.initState();
   }
 
-  int selectedFilterIndex = -1;
+  int selectedFilterIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     final filterOptionsProvider = Provider.of<FilterOptionsProvider>(context);
-    if (selectedFilterIndex != -1) {
+   /// if (selectedFilterIndex != -1) {
       final filtersToSend = map[selectedFilterIndex];
 
       print("filtersToSendValue ${filtersToSend["id"]!}");
-    }
+   // }
 
     return Container(
         width: MediaQuery.of(context).size.width,
@@ -98,13 +98,17 @@ class _FilterState extends State<Filter> {
                   thickness: 1.0,
                   color: Colors.grey,
                 ),
-                selectedFilterIndex == -1
-                    ? SizedBox()
-                    : FilterOptions(
+                // selectedFilterIndex == -1
+                //     ? SizedBox()
+                //     : 
+                    FilterOptions(
                         selectedFilterIndex: selectedFilterIndex,
-                        filterKey: selectedFilterIndex != -1
-                            ? map[selectedFilterIndex]["id"]!
-                            : ""),
+                        filterKey: 
+                        // selectedFilterIndex != -1
+                        //     ?
+                             map[selectedFilterIndex]["id"]!
+                            //: ""
+                            ),
               ],
             ),
             Divider(
@@ -117,32 +121,35 @@ class _FilterState extends State<Filter> {
                 children: [
                   GestureDetector(
                     onTap: () async {
-                      Navigator.of(context).pop();
+                       Navigator.pop(context, true);
                       filterOptionsProvider.setFilteredListLoading(true);
 
-                      Map<String, dynamic> selectedSubOptionsdata =
-                          filterOptionsProvider.selectedSubOptionsdata;
+                      // Map<String, dynamic> selectedSubOptionsdata =
+                      //     filterOptionsProvider.selectedSubOptionsdata;
 
-                      if (selectedSubOptionsdata.containsKey("collection")) {
-                        selectedSubOptionsdata["collection"] = "";
-                      }
+                      // if (selectedSubOptionsdata.containsKey("collection")) {
+                      //   selectedSubOptionsdata["collection"] = "";
+                      // }
 
-                      if (selectedSubOptionsdata.containsKey("categories")) {
-                        selectedSubOptionsdata["categories"] = "";
-                      }
+                      // if (selectedSubOptionsdata.containsKey("categories")) {
+                      //   selectedSubOptionsdata["categories"] = "";
+                      // }
 
-                      if (selectedSubOptionsdata
-                          .containsKey("sub-categories")) {
-                        selectedSubOptionsdata["sub-categories"] = "";
-                      }
+                      // if (selectedSubOptionsdata
+                      //     .containsKey("sub-categories")) {
+                      //   selectedSubOptionsdata["sub-categories"] = "";
+                      // }
 
-                      if (selectedSubOptionsdata.containsKey("tags")) {
-                        selectedSubOptionsdata["tags"] = "";
-                      }
+                      // if (selectedSubOptionsdata.containsKey("tags")) {
+                      //   selectedSubOptionsdata["tags"] = "";
+                      // }
 
-                      if (selectedSubOptionsdata.containsKey("price_range")) {
-                        selectedSubOptionsdata["price_range"] = "";
-                      }
+                      // if (selectedSubOptionsdata.containsKey("price_range")) {
+                      //   selectedSubOptionsdata["price_range"] = "";
+                      // }
+
+                      filterOptionsProvider.list.clear();
+                      
                       ApiService.listOfProductsModel.clear();
                       await ApiService.fetchProducts(
                           widget.searchText, 1, context);
@@ -168,12 +175,14 @@ class _FilterState extends State<Filter> {
                   ),
                   GestureDetector(
                     onTap: () async {
-                      Navigator.of(context).pop();
+                      Navigator.pop(context, true);
                       filterOptionsProvider.setFilteredListLoading(true);
                       ApiService.listOfProductsModel.clear();
                       await ApiService.fetchProducts(
                           widget.searchText, 1, context);
                       filterOptionsProvider.setFilteredListLoading(false);
+
+
                     },
                     child: Container(
                         decoration: BoxDecoration(

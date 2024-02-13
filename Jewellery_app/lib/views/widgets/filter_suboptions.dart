@@ -23,9 +23,9 @@ class _FilterSubOptionsState extends State<FilterSubOptions> {
     List<Map<String, dynamic>> listOfSubOptions = <Map<String, dynamic>>[];
 
     print(
-        "filterOptionsProvider.filterCollectionsOptionsdata length ${filterOptionsProvider.filterCollectionsOptionsdata.length}");
+        "filterOptionsProvider.filterCollectionsOptionsdata length ${filterOptionsProvider.list.length}");
 
-    
+     print("selectedFilterSubOptionIndex out of return $selectedFilterSubOptionIndex");
 
     switch (widget.filterKey) {
       case "collection":
@@ -65,67 +65,91 @@ class _FilterSubOptionsState extends State<FilterSubOptions> {
             Map<String, dynamic> subOptions = listOfSubOptions[index];
         
             print("subOptions $subOptions");
+
+            print("CURRENT INDEX $index AND SELECTED INDEX $selectedFilterSubOptionIndex");
         
             return FilterSubOptionsWidget(
 
               subOptions: subOptions,
               index: index,
              
-              isFilterSubOptionClicked: index == selectedFilterSubOptionIndex,
+              //isFilterSubOptionClicked: index == selectedFilterSubOptionIndex,
               onTap: () {
                 setState(() {
                   selectedFilterSubOptionIndex = index;
                 });
-        
-                switch (widget.filterKey) {
-                  case "collection":
-                    filterOptionsProvider.setSelectedSubOptionsdata({
-                      "collection": subOptions["id"],
-                      "collectionCount": subOptions["count"]
+
+                 filterOptionsProvider.setSelectedSubOptionsdata({
+                      "id": subOptions["id"],
+                      "count": subOptions["count"],
+                      "label": subOptions["label"],
+                      "parent": widget.filterKey
 
                     });
-                    break;
-                  case "categories":
-                     filterOptionsProvider.setSelectedSubOptionsdata({
-                      "categories": subOptions["id"],
-                      "categoriesCount": subOptions["count"]
-                    });
-                    break;
-                  case "sub-categories":
-                     filterOptionsProvider.setSelectedSubOptionsdata({
-                      "sub-categories": subOptions["id"],
-                      "subCategoriesCount": subOptions["count"]
-                    });
-                    break;
-                  case "tags":
-                     filterOptionsProvider.setSelectedSubOptionsdata({
-                      "tags": subOptions["id"],
-                      "tagsCount": subOptions["count"]
-                    });
-                    break;
-                  case "diamond_wt":
-                     filterOptionsProvider.setSelectedSubOptionsdata({
-                      "diamond_wt": subOptions["id"],
-                      "diamond_wtCount": subOptions["count"]
-                    });
-                    break;
-                  case "gold_wt":
-                     filterOptionsProvider.setSelectedSubOptionsdata({
-                      "gold_wt": subOptions["id"],
-                      "gold_wtCount": subOptions["count"]
-                    });
-                    break;
-                  case "gender":
-                     filterOptionsProvider.setSelectedSubOptionsdata({
-                      "gender": subOptions["id"],
-                      "genderCount": subOptions["count"]
-                    });
-                    break;
-                  default:
-                    listOfSubOptions = <Map<String, dynamic>>[];
-                }
         
-                print("filterOptionsProvider.selectedSubOptionsdata ${filterOptionsProvider.selectedSubOptionsdata}");
+                // switch (widget.filterKey) {
+                //   case "collection":
+                //     filterOptionsProvider.setSelectedSubOptionsdata({
+                //       "id": subOptions["id"],
+                //       "count": subOptions["count"],
+                //       "label": subOptions["label"],
+                //       "parent": widget.filterKey
+
+                //     });
+                //     break;
+                //   case "categories":
+                //      filterOptionsProvider.setSelectedSubOptionsdata({
+                //       "categories": subOptions["id"],
+                //       "categoriesCount": subOptions["count"],
+                //       "categoriesLabel": subOptions["label"],
+                //       "parent": widget.filterKey
+                //     });
+                //     break;
+                //   case "sub-categories":
+                //      filterOptionsProvider.setSelectedSubOptionsdata({
+                //       "sub-categories": subOptions["id"],
+                //       "subCategoriesCount": subOptions["count"],
+                //       "subCategoriesLabel": subOptions["label"],
+                //       "parent": widget.filterKey
+                //     });
+                //     break;
+                //   case "tags":
+                //      filterOptionsProvider.setSelectedSubOptionsdata({
+                //       "tags": subOptions["id"],
+                //       "tagsCount": subOptions["count"],
+                //       "tagsLabel": subOptions["label"],
+                //       "parent": widget.filterKey
+                //     });
+                //     break;
+                //   case "diamond_wt":
+                //      filterOptionsProvider.setSelectedSubOptionsdata({
+                //       "diamond_wt": subOptions["id"],
+                //       "diamond_wtCount": subOptions["count"],
+                //       "diamond_wtLabel": subOptions["label"],
+                //       "parent": widget.filterKey
+                //     });
+                //     break;
+                //   case "gold_wt":
+                //      filterOptionsProvider.setSelectedSubOptionsdata({
+                //       "gold_wt": subOptions["id"],
+                //       "gold_wtCount": subOptions["count"],
+                //       "gold_wtLabel": subOptions["label"],
+                //       "parent": widget.filterKey
+                //     });
+                //     break;
+                //   case "gender":
+                //      filterOptionsProvider.setSelectedSubOptionsdata({
+                //       "gender": subOptions["id"],
+                //       "genderCount": subOptions["count"],
+                //       "genderLabel": subOptions["label"],
+                //       "parent": widget.filterKey
+                //     });
+                //     break;
+                //   default:
+                //     listOfSubOptions = <Map<String, dynamic>>[];
+                // }
+        
+                print("filterOptionsProvider.list ${filterOptionsProvider.list}");
               },
                filterKey: widget.filterKey,
             );

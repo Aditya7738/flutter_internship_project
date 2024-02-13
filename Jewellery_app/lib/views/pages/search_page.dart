@@ -4,6 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:Tiara_by_TJ/api/api_service.dart';
 import 'package:Tiara_by_TJ/constants/strings.dart';
 import 'package:Tiara_by_TJ/model/products_model.dart';
+import 'package:multi_select_flutter/bottom_sheet/multi_select_bottom_sheet_field.dart';
+import 'package:multi_select_flutter/chip_display/multi_select_chip_display.dart';
+import 'package:multi_select_flutter/util/multi_select_item.dart';
+import 'package:multi_select_flutter/util/multi_select_list_type.dart';
 import 'package:provider/provider.dart';
 import 'package:Tiara_by_TJ/views/pages/product_details_page.dart';
 
@@ -23,8 +27,9 @@ class _SearchPageState extends State<SearchPage> {
   bool isSearchFieldEmpty = false;
 
   String searchText = "";
-  
+
   bool isProductListEmpty = false;
+  List<Map<String, dynamic>> appliedFilter = <Map<String, dynamic>>[];
 
   @override
   void initState() {
@@ -41,6 +46,8 @@ class _SearchPageState extends State<SearchPage> {
         loadMoreData();
       }
     });
+
+   
   }
 
   void loadMoreData() async {
@@ -59,13 +66,21 @@ class _SearchPageState extends State<SearchPage> {
   @override
   void dispose() {
     // TODO: implement dispose
+    print("search page dispose called");
     _scrollController.dispose();
     super.dispose();
+    final filterOptionsProvider =
+        Provider.of<FilterOptionsProvider>(context, listen: false);
+    filterOptionsProvider.setFilteredListLoading(false);
   }
+
+  TextEditingController textEditingController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    final filterOptionsProvider = Provider.of<FilterOptionsProvider>(context);
+    final filterOptionsProvider =
+        Provider.of<FilterOptionsProvider>(context, listen: false);
+
     return Scaffold(
         appBar: AppBar(
           elevation: 5.0,
@@ -74,6 +89,7 @@ class _SearchPageState extends State<SearchPage> {
           title: SizedBox(
             height: 40.0,
             child: TextField(
+              controller: textEditingController,
               onSubmitted: (value) async {
                 if (value == "") {
                   ApiService.listOfProductsModel.clear();
@@ -92,7 +108,8 @@ class _SearchPageState extends State<SearchPage> {
                     newListLoading = true;
                   });
 
-                  List<ProductsModel> listOfProducts = await ApiService.fetchProducts(value, 1, context);
+                  List<ProductsModel> listOfProducts =
+                      await ApiService.fetchProducts(value, 1, context);
 
                   setState(() {
                     newListLoading = false;
@@ -103,7 +120,6 @@ class _SearchPageState extends State<SearchPage> {
                   setState(() {
                     isSearchBarUsed = true;
                     searchText = value;
-
                   });
                 }
               },
@@ -125,17 +141,13 @@ class _SearchPageState extends State<SearchPage> {
             ),
           ),
           actions: [
-            // Padding(
-            //     padding: const EdgeInsets.symmetric(horizontal: 10.0),
-            //     child: Image.asset(
-            //       "assets/images/ios_mic_outline.png",
-            //       color: Colors.grey,
-            //       width: 30.0,
-            //       height: 30.0,
-            //     )),
             GestureDetector(
               onTap: () {
+                // if (textEditingController.text == "") {
+                //   return;
+                // } - uncomment it
                 showModalBottomSheet(
+                  enableDrag: true,
                   context: context,
                   isScrollControlled: true,
                   shape: RoundedRectangleBorder(
@@ -146,6 +158,10 @@ class _SearchPageState extends State<SearchPage> {
                     return Filter(searchText: searchText);
                   },
                 );
+
+                // if (filterChanged) {
+                //   setState(() {});
+                // }
               },
               child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -158,20 +174,163 @@ class _SearchPageState extends State<SearchPage> {
           ],
         ),
         body: SizedBox(
-          height: MediaQuery.of(context).size.height -
-              kToolbarHeight +
-              kToolbarHeight,
+          height: MediaQuery.of(context).size.height - (kToolbarHeight * 2),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
+              filterOptionsProvider.list.isEmpty
+                  ? SizedBox()
+                  : SizedBox(
+                      height: 70.0,
+                      width: MediaQuery.of(context).size.width,
+                      child: Consumer<FilterOptionsProvider>(
+                          builder: (context, value, child) {
+                        List<Map<String, dynamic>>  selectedSubOptionsdata =
+                            value.list;
+
+                        print("appliedFilter legth 1 ${appliedFilter.length}");
+
+                        appliedFilter.clear();
+
+                        print("appliedFilter length 2 ${appliedFilter.length}");
+
+                        print(
+                            "selectedSubOptionsdata ${selectedSubOptionsdata}");
+
+                            // for (var i = 0; i < selectedSubOptionsdata.length; i++) {
+                            //   appliedFilter[i] = 
+                            // }
+                        // if (selectedSubOptionsdata.containsKey("collection")) {
+                        //   appliedFilter["collection"] = {
+                        //     "id":  selectedSubOptionsdata["collection"],
+                        //     "label": selectedSubOptionsdata["collectionLabel"],
+                        //   };                     
+                          
+                        // }
+
+                        // if (selectedSubOptionsdata.containsKey("categories")) {
+                        //    appliedFilter["category"] = {
+                        //     "id":  selectedSubOptionsdata["categories"],
+                        //     "label": selectedSubOptionsdata["categoriesLabel"]
+                        // };
+                        // }
+
+                        // if (selectedSubOptionsdata
+                        //     .containsKey("sub-categories")) {
+                        //   appliedFilter["subcategory"] = {
+                        //     "id":  selectedSubOptionsdata["sub-categories"],
+                        //     "label": selectedSubOptionsdata["subCategoriesLabel"]
+                        // };
+                        //     }
+
+                        // if (selectedSubOptionsdata.containsKey("tags")) {
+                        //    appliedFilter["tag"] = {
+                        //     "id":  selectedSubOptionsdata["tags"],
+                        //     "label": selectedSubOptionsdata["tagsLabel"],
+                        // };
+                        // }
+
+                        // if (selectedSubOptionsdata.containsKey("price_range")) {
+                        //    appliedFilter["price_range"] = {
+                        //     "id":  selectedSubOptionsdata["price_range"],
+                        //     "label": "₹ ${selectedSubOptionsdata["price_range"]["min_price"]} - ₹  ${selectedSubOptionsdata["price_range"]["max_price"]}"
+                        
+                        // };
+                        // }
+
+                        print("appliedFilter length ${appliedFilter.length}");
+
+                        return ListView.builder(
+                          padding: EdgeInsets.all(5.0),
+                          scrollDirection: Axis.horizontal,
+                          itemCount: value.list.length,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Chip(
+                                    padding: EdgeInsets.all(7.0),
+                                    label: Text(
+                                     value.list[index]["label"],
+                                      style: TextStyle(
+                                          fontSize: 16.0,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    deleteIcon: Container(
+                                      decoration: const BoxDecoration(
+                                        color: Colors.black,
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: const Icon(
+                                        Icons.close_rounded,
+                                        color: Colors.white,
+                                        size: 19.0,
+                                      ),
+                                    ),
+                                    onDeleted: () async {
+                                      print("ONDELETED CALLED");
+                                      
+                                      value.removeFromList(index);
+                                      
+
+                                      //value.setFilteredListLoading(true);
+
+                                      // Map<String, dynamic> selectedSubOptionsdata =
+                                      //     value.selectedSubOptionsdata;
+
+                                      // if (selectedSubOptionsdata
+                                      //     .containsKey("collection")) {
+                                      //   selectedSubOptionsdata["collection"] =
+                                      //       "";
+                                      // }
+
+                                      // if (selectedSubOptionsdata
+                                      //     .containsKey("categories")) {
+                                      //   selectedSubOptionsdata["categories"] =
+                                      //       "";
+                                      // }
+
+                                      // if (selectedSubOptionsdata
+                                      //     .containsKey("sub-categories")) {
+                                      //   selectedSubOptionsdata[
+                                      //       "sub-categories"] = "";
+                                      // }
+
+                                      // if (selectedSubOptionsdata
+                                      //     .containsKey("tags")) {
+                                      //   selectedSubOptionsdata["tags"] = "";
+                                      // }
+
+                                      // if (selectedSubOptionsdata
+                                      //     .containsKey("price_range")) {
+                                      //   selectedSubOptionsdata["price_range"] =
+                                      //       "";
+                                      // }
+
+                                      ApiService.listOfProductsModel.clear();
+                                      await ApiService.fetchProducts(
+                                          textEditingController.text, 1, context);
+                                      filterOptionsProvider
+                                          .setFilteredListLoading(false);
+                                    }));
+                          },
+                        );
+                      })),
+
+            
               const SizedBox(
-                height: 20.0,
+                height: 10.0,
               ),
               newListLoading || filterOptionsProvider.isFilteredListLoading
-                  ? const Center(
-                      child: CircularProgressIndicator(
-                      color: Color(0xffCC868A),
-                    ))
+                  ? Expanded(
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height / 2,
+                        child: const Center(
+                            child: CircularProgressIndicator(
+                          color: Color(0xffCC868A),
+                        )),
+                      ),
+                    )
                   : isSearchFieldEmpty
                       ? const SizedBox()
                       : Expanded(
@@ -311,8 +470,8 @@ class _SearchPageState extends State<SearchPage> {
                                             ),
                                           )),
                                     );
-                                  } else if (!isThereMoreProducts || isProductListEmpty) {
-                                    
+                                  } else if (!isThereMoreProducts ||
+                                      isProductListEmpty) {
                                     return const Padding(
                                       padding: EdgeInsets.symmetric(
                                           vertical: 15.0, horizontal: 10.0),
@@ -341,3 +500,5 @@ class _SearchPageState extends State<SearchPage> {
         ));
   }
 }
+
+

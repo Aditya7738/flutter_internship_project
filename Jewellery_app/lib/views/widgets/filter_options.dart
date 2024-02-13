@@ -14,21 +14,32 @@ class FilterOptions extends StatefulWidget {
 }
 
 class _FilterOptionsState extends State<FilterOptions> {
-  Widget window = SizedBox();
+  //Widget window = SizedBox();
   double selectedMin = 1000.0;
   double selectedMax = 100000.0;
   @override
   Widget build(BuildContext context) {
     final filterOptionsProvider =
         Provider.of<FilterOptionsProvider>(context, listen: false);
-    Map<String, dynamic> selectedSubOptionsdata =
-        filterOptionsProvider.selectedSubOptionsdata;
+    // Map<String, dynamic> selectedSubOptionsdata =
+    //     filterOptionsProvider.selectedSubOptionsdata;
 
-    if (selectedSubOptionsdata.containsKey("price_range")) {
-      selectedMin = selectedSubOptionsdata["price_range"]["min_price"].toDouble();
-      selectedMax = selectedSubOptionsdata["price_range"]["max_price"].toDouble();
-    }
+    // if (selectedSubOptionsdata.containsKey("price_range")) {
+    //   selectedMin = selectedSubOptionsdata["price_range"]["min_price"].toDouble();
+    //   selectedMax = selectedSubOptionsdata["price_range"]["max_price"].toDouble();
+    // }
 
+     List<Map<String, dynamic>> selectedSubOptions =
+        filterOptionsProvider.list;
+
+       for (var i = 0; i < selectedSubOptions.length; i++) {
+         if(selectedSubOptions[i]["parent"] == "price_range"){
+          selectedMin = selectedSubOptions[i]["price_range"]["min_price"].toDouble();
+      selectedMax = selectedSubOptions[i]["price_range"]["max_price"].toDouble();
+         }
+       }
+
+  
     Widget priceRange = Container(
       width: MediaQuery.of(context).size.width -
           (MediaQuery.of(context).size.width / 3),
@@ -87,10 +98,11 @@ class _FilterOptionsState extends State<FilterOptions> {
                 "price_range": {
                   "min_price": value.start.toInt(),
                   "max_price": value.end.toInt()
-                }
+                },
+                "parent": "price_range"
               });
               print(
-                  "filterOptionsProvider.selectedSubOptionsdata ${filterOptionsProvider.selectedSubOptionsdata}");
+                  "filterOptionsProvider.list ${filterOptionsProvider.list}");
             },
             labels: RangeLabels(selectedMin.toString(), selectedMax.toString()),
           )
@@ -101,11 +113,11 @@ class _FilterOptionsState extends State<FilterOptions> {
     print("widget.selectedFilterIndex ${widget.selectedFilterIndex}");
 
     if (widget.selectedFilterIndex == 0) {
-      print("0 in widget.selectedFilterIndex ${widget.selectedFilterIndex}");
-      window = priceRange;
-      return window;
+      //print("0 in widget.selectedFilterIndex ${widget.selectedFilterIndex}");
+      //window = priceRange;
+      return priceRange;
     } else {
-      print("else in widget.selectedFilterIndex ${widget.selectedFilterIndex}");
+    //  print("else in widget.selectedFilterIndex ${widget.selectedFilterIndex}");
       return FilterSubOptions(
           selectedFilterIndex: widget.selectedFilterIndex,
           filterKey: widget.filterKey);

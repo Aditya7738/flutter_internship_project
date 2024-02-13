@@ -170,7 +170,7 @@ class _MyAppState extends State<MyApp> {
                 fontSize: 16.0,
               ),
             )),
-        home: DigiGoldPage(),
+        home: DashboardPage(),
         debugShowCheckedModeBanner: false,
       ),
     );
