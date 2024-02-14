@@ -106,6 +106,11 @@ class FilterOptionsProvider with ChangeNotifier {
 
   void setSelectedSubOptionsdata(Map<String, dynamic> selectedSubOptionsdata) {
     _list.add(selectedSubOptionsdata);
+    // print("before $_list");
+    // dynamic temp = _list;
+    // temp.add(selectedSubOptionsdata);
+    // _list = temp;
+    // print("after $_list");
     //_selectedSubOptionsdata.addAll(selectedSubOptionsdata);
     notifyListeners();
   }
@@ -113,13 +118,30 @@ class FilterOptionsProvider with ChangeNotifier {
   bool _isFilteredListLoading = false;
   bool get isFilteredListLoading => _isFilteredListLoading;
 
-  void setFilteredListLoading(bool isFilteredListLoading) {
-    _isFilteredListLoading = isFilteredListLoading;
+  void setFilteredListLoading(bool listLoading) {
+    _isFilteredListLoading = listLoading;
+    print("_isFilteredListLoading $_isFilteredListLoading");
     notifyListeners();
   }
 
   void removeFromList(int index) {
-    _list.remove(index);
+     print("index to remove $index");
+     
+       _list.removeAt(index);
+ 
+    
+     print("_list $_list");
+   
+    notifyListeners();
+  }
+
+  void clearFilterList(){
+    try {
+      _list.clear();
+    } catch (e) {
+      print(e.toString());
+    }
+    
     notifyListeners();
   }
 }

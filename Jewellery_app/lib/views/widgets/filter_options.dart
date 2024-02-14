@@ -94,6 +94,7 @@ class _FilterOptionsState extends State<FilterOptions> {
               });
             },
             onChangeEnd: (value) {
+             
               filterOptionsProvider.setSelectedSubOptionsdata({
                 "price_range": {
                   "min_price": value.start.toInt(),

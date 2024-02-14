@@ -29,7 +29,7 @@ class CustomSearchBar extends StatelessWidget implements PreferredSizeWidget{
                 "Search by category, product & more...",
             style: TextStyle(
               color: Color(0xFF4F3267),
-              fontSize: 12.0
+              fontSize: 15.0
             ),)
           ],
 

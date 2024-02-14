@@ -148,11 +148,13 @@ class _FilterState extends State<Filter> {
                       //   selectedSubOptionsdata["price_range"] = "";
                       // }
 
-                      filterOptionsProvider.list.clear();
-                      
+                      //filterOptionsProvider.list.clear();
+                       filterOptionsProvider.clearFilterList;
+                       print("filterOptionsProvider.list ${filterOptionsProvider.list.length}");
+
                       ApiService.listOfProductsModel.clear();
                       await ApiService.fetchProducts(
-                          widget.searchText, 1, context);
+                          widget.searchText, 1, context, filterList: filterOptionsProvider.list);
                       filterOptionsProvider.setFilteredListLoading(false);
                     },
                     child: Container(
@@ -179,9 +181,11 @@ class _FilterState extends State<Filter> {
                       filterOptionsProvider.setFilteredListLoading(true);
                       ApiService.listOfProductsModel.clear();
                       await ApiService.fetchProducts(
-                          widget.searchText, 1, context);
+                          widget.searchText, 1, context, filterList: filterOptionsProvider.list);
                       filterOptionsProvider.setFilteredListLoading(false);
-
+// setState(() {
+  
+// });
 
                     },
                     child: Container(

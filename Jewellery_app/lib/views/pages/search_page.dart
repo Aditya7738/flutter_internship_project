@@ -29,12 +29,15 @@ class _SearchPageState extends State<SearchPage> {
   String searchText = "";
 
   bool isProductListEmpty = false;
-  List<Map<String, dynamic>> appliedFilter = <Map<String, dynamic>>[];
+  //List<Map<String, dynamic>> appliedFilter = <Map<String, dynamic>>[];
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    final filterOptionsProvider =
+        Provider.of<FilterOptionsProvider>(context, listen: false);
+    filterOptionsProvider.clearFilterList;
     ApiService.listOfProductsModel.clear();
     _scrollController.addListener(() async {
       print(
@@ -46,8 +49,6 @@ class _SearchPageState extends State<SearchPage> {
         loadMoreData();
       }
     });
-
-   
   }
 
   void loadMoreData() async {
@@ -78,8 +79,8 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
-    final filterOptionsProvider =
-        Provider.of<FilterOptionsProvider>(context, listen: false);
+    // final filterOptionsProvider =
+    //     Provider.of<FilterOptionsProvider>(context);
 
     return Scaffold(
         appBar: AppBar(
@@ -143,9 +144,9 @@ class _SearchPageState extends State<SearchPage> {
           actions: [
             GestureDetector(
               onTap: () {
-                // if (textEditingController.text == "") {
-                //   return;
-                // } - uncomment it
+                if (textEditingController.text == "") {
+                  return;
+                } //- uncomment it
                 showModalBottomSheet(
                   enableDrag: true,
                   context: context,
@@ -175,82 +176,40 @@ class _SearchPageState extends State<SearchPage> {
         ),
         body: SizedBox(
           height: MediaQuery.of(context).size.height - (kToolbarHeight * 2),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              filterOptionsProvider.list.isEmpty
-                  ? SizedBox()
-                  : SizedBox(
-                      height: 70.0,
-                      width: MediaQuery.of(context).size.width,
-                      child: Consumer<FilterOptionsProvider>(
-                          builder: (context, value, child) {
-                        List<Map<String, dynamic>>  selectedSubOptionsdata =
-                            value.list;
+          child:
+              Consumer<FilterOptionsProvider>(builder: (context, value, child) {
+            List<Map<String, dynamic>> selectedSubOptionsdata = value.list;
+            print("LENGTH ${value.list.length}");
+            //value.clearFilterList;
+            print("LENGTH ${value.list.length}");
+            print("selectedSubOptionsdata ${selectedSubOptionsdata}");
 
-                        print("appliedFilter legth 1 ${appliedFilter.length}");
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                value.list.isEmpty
+                    ? SizedBox()
+                    : SizedBox(
+                        height: 70.0,
+                        width: MediaQuery.of(context).size.width,
+                        child: Consumer<FilterOptionsProvider>(
+                            builder: (context, value, child) {
+                          return ListView.builder(
+                            padding: EdgeInsets.all(5.0),
+                            scrollDirection: Axis.horizontal,
+                            itemCount: value.list.length,
+                            itemBuilder: (context, index) {
+                              // print("value.list[index][parent] == price_range ${value.list[index]["parent"] == "price_range"}");
 
-                        appliedFilter.clear();
-
-                        print("appliedFilter length 2 ${appliedFilter.length}");
-
-                        print(
-                            "selectedSubOptionsdata ${selectedSubOptionsdata}");
-
-                            // for (var i = 0; i < selectedSubOptionsdata.length; i++) {
-                            //   appliedFilter[i] = 
-                            // }
-                        // if (selectedSubOptionsdata.containsKey("collection")) {
-                        //   appliedFilter["collection"] = {
-                        //     "id":  selectedSubOptionsdata["collection"],
-                        //     "label": selectedSubOptionsdata["collectionLabel"],
-                        //   };                     
-                          
-                        // }
-
-                        // if (selectedSubOptionsdata.containsKey("categories")) {
-                        //    appliedFilter["category"] = {
-                        //     "id":  selectedSubOptionsdata["categories"],
-                        //     "label": selectedSubOptionsdata["categoriesLabel"]
-                        // };
-                        // }
-
-                        // if (selectedSubOptionsdata
-                        //     .containsKey("sub-categories")) {
-                        //   appliedFilter["subcategory"] = {
-                        //     "id":  selectedSubOptionsdata["sub-categories"],
-                        //     "label": selectedSubOptionsdata["subCategoriesLabel"]
-                        // };
-                        //     }
-
-                        // if (selectedSubOptionsdata.containsKey("tags")) {
-                        //    appliedFilter["tag"] = {
-                        //     "id":  selectedSubOptionsdata["tags"],
-                        //     "label": selectedSubOptionsdata["tagsLabel"],
-                        // };
-                        // }
-
-                        // if (selectedSubOptionsdata.containsKey("price_range")) {
-                        //    appliedFilter["price_range"] = {
-                        //     "id":  selectedSubOptionsdata["price_range"],
-                        //     "label": "₹ ${selectedSubOptionsdata["price_range"]["min_price"]} - ₹  ${selectedSubOptionsdata["price_range"]["max_price"]}"
-                        
-                        // };
-                        // }
-
-                        print("appliedFilter length ${appliedFilter.length}");
-
-                        return ListView.builder(
-                          padding: EdgeInsets.all(5.0),
-                          scrollDirection: Axis.horizontal,
-                          itemCount: value.list.length,
-                          itemBuilder: (context, index) {
-                            return Padding(
-                                padding: const EdgeInsets.all(8.0),
+                              // print( "₹${value.list[index]["price_range"]["min_price"]}");
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 8.0),
                                 child: Chip(
                                     padding: EdgeInsets.all(7.0),
                                     label: Text(
-                                     value.list[index]["label"],
+                                      value.list[index]["parent"] == "price_range" ?
+                                      "₹${value.list[index]["price_range"]["min_price"]} - ₹${value.list[index]["price_range"]["max_price"]}"
+                                      : value.list[index]["label"],
                                       style: TextStyle(
                                           fontSize: 16.0,
                                           fontWeight: FontWeight.bold),
@@ -268,237 +227,303 @@ class _SearchPageState extends State<SearchPage> {
                                     ),
                                     onDeleted: () async {
                                       print("ONDELETED CALLED");
-                                      
+                                
+                                      print("index to remove $index");
+                                
                                       value.removeFromList(index);
-                                      
-
+                                
+                                          print("_list ${value.list}");
+                                
                                       //value.setFilteredListLoading(true);
-
+                                
                                       // Map<String, dynamic> selectedSubOptionsdata =
                                       //     value.selectedSubOptionsdata;
-
+                                
                                       // if (selectedSubOptionsdata
                                       //     .containsKey("collection")) {
                                       //   selectedSubOptionsdata["collection"] =
                                       //       "";
                                       // }
-
+                                
                                       // if (selectedSubOptionsdata
                                       //     .containsKey("categories")) {
                                       //   selectedSubOptionsdata["categories"] =
                                       //       "";
                                       // }
-
+                                
                                       // if (selectedSubOptionsdata
                                       //     .containsKey("sub-categories")) {
                                       //   selectedSubOptionsdata[
                                       //       "sub-categories"] = "";
                                       // }
-
+                                
                                       // if (selectedSubOptionsdata
                                       //     .containsKey("tags")) {
                                       //   selectedSubOptionsdata["tags"] = "";
                                       // }
-
+                                
                                       // if (selectedSubOptionsdata
                                       //     .containsKey("price_range")) {
                                       //   selectedSubOptionsdata["price_range"] =
                                       //       "";
                                       // }
-
+                                      value.setFilteredListLoading(true);
+                                
                                       ApiService.listOfProductsModel.clear();
                                       await ApiService.fetchProducts(
-                                          textEditingController.text, 1, context);
-                                      filterOptionsProvider
-                                          .setFilteredListLoading(false);
-                                    }));
-                          },
-                        );
-                      })),
+                                          textEditingController.text,
+                                          1,
+                                          context, filterList: value.list);
+                                      value.setFilteredListLoading(false);
+                                    }),
+                              );
+                            },
+                          );
 
-            
-              const SizedBox(
-                height: 10.0,
-              ),
-              newListLoading || filterOptionsProvider.isFilteredListLoading
-                  ? Expanded(
-                      child: SizedBox(
-                        width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.height / 2,
-                        child: const Center(
-                            child: CircularProgressIndicator(
-                          color: Color(0xffCC868A),
-                        )),
-                      ),
-                    )
-                  : isSearchFieldEmpty
-                      ? const SizedBox()
-                      : Expanded(
-                          child: Scrollbar(
-                            child: ListView.builder(
-                                controller: _scrollController,
-                                itemCount:
-                                    ApiService.listOfProductsModel.length +
-                                        (isLoading || !isThereMoreProducts
-                                            ? 1
-                                            : 0), //TODO: error +1
-                                itemBuilder: (context, index) {
-                                  if (index <
-                                      ApiService.listOfProductsModel.length) {
-                                    ProductsModel productsModel =
-                                        ApiService.listOfProductsModel[index];
-                                    return GestureDetector(
-                                      onTap: () {
-                                        Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    ProductDetailsPage(
-                                                        productsModel:
-                                                            productsModel)));
-                                      },
-                                      child: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 5.0, horizontal: 10.0),
-                                          child: Card(
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              children: [
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(8.0),
-                                                  child: Card(
-                                                    elevation: 0.0,
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        25.0)),
-                                                    child: ClipRRect(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              25.0),
-                                                      child: Image.network(
-                                                        productsModel
-                                                                .images.isEmpty
-                                                            ? Strings
-                                                                .defaultImageUrl
-                                                            : productsModel
-                                                                    .images[0]
-                                                                    .src ??
-                                                                Strings
-                                                                    .defaultImageUrl,
-                                                        loadingBuilder: (context,
-                                                            child,
-                                                            loadingProgress) {
-                                                          if (loadingProgress ==
-                                                              null) {
-                                                            return child;
-                                                          }
-                                                          return Container(
-                                                            alignment: Alignment
-                                                                .center,
-                                                            width: 95.0,
-                                                            height: 92.0,
-                                                            child:
-                                                                const CircularProgressIndicator(
-                                                              color:
-                                                                  Colors.black,
-                                                            ),
-                                                          );
-                                                        },
-                                                        fit: BoxFit.fill,
-                                                        width: 95.0,
-                                                        height: 92.0,
+                          // print("appliedFilter legth 1 ${appliedFilter.length}");
+
+                          // appliedFilter.clear();
+
+                          // print("appliedFilter length 2 ${appliedFilter.length}");
+
+                          // for (var i = 0; i < selectedSubOptionsdata.length; i++) {
+                          //   appliedFilter[i] =
+                          // }
+                          // if (selectedSubOptionsdata.containsKey("collection")) {
+                          //   appliedFilter["collection"] = {
+                          //     "id":  selectedSubOptionsdata["collection"],
+                          //     "label": selectedSubOptionsdata["collectionLabel"],
+                          //   };
+
+                          // }
+
+                          // if (selectedSubOptionsdata.containsKey("categories")) {
+                          //    appliedFilter["category"] = {
+                          //     "id":  selectedSubOptionsdata["categories"],
+                          //     "label": selectedSubOptionsdata["categoriesLabel"]
+                          // };
+                          // }
+
+                          // if (selectedSubOptionsdata
+                          //     .containsKey("sub-categories")) {
+                          //   appliedFilter["subcategory"] = {
+                          //     "id":  selectedSubOptionsdata["sub-categories"],
+                          //     "label": selectedSubOptionsdata["subCategoriesLabel"]
+                          // };
+                          //     }
+
+                          // if (selectedSubOptionsdata.containsKey("tags")) {
+                          //    appliedFilter["tag"] = {
+                          //     "id":  selectedSubOptionsdata["tags"],
+                          //     "label": selectedSubOptionsdata["tagsLabel"],
+                          // };
+                          // }
+
+                          // if (selectedSubOptionsdata.containsKey("price_range")) {
+                          //    appliedFilter["price_range"] = {
+                          //     "id":  selectedSubOptionsdata["price_range"],
+                          //     "label": "₹ ${selectedSubOptionsdata["price_range"]["min_price"]} - ₹  ${selectedSubOptionsdata["price_range"]["max_price"]}"
+
+                          // };
+                          // }
+
+                          // print("appliedFilter length ${appliedFilter.length}");
+                        })),
+                        value.list.isEmpty
+                    ? SizedBox():
+                        Divider(thickness: 2.0,),
+              
+                newListLoading || value.isFilteredListLoading
+                    ? Expanded(
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.height / 2,
+                          child: const Center(
+                              child: CircularProgressIndicator(
+                            color: Color(0xffCC868A),
+                          )),
+                        ),
+                      )
+                    : isSearchFieldEmpty
+                        ? const SizedBox()
+                        : Expanded(
+                            child: Scrollbar(
+                              child: ListView.builder(
+                                  controller: _scrollController,
+                                  itemCount:
+                                      ApiService.listOfProductsModel.length +
+                                          (isLoading || !isThereMoreProducts
+                                              ? 1
+                                              : 0), //TODO: error +1
+                                  itemBuilder: (context, index) {
+                                    if (index <
+                                        ApiService.listOfProductsModel.length) {
+                                      print(
+                                          "ApiService.listOfProductsModel.length ${ApiService.listOfProductsModel.length}");
+                                      ProductsModel productsModel =
+                                          ApiService.listOfProductsModel[index];
+                                      return GestureDetector(
+                                        onTap: () {
+                                          Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ProductDetailsPage(
+                                                          productsModel:
+                                                              productsModel)));
+                                        },
+                                        child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 5.0,
+                                                horizontal: 10.0),
+                                            child: Card(
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: Card(
+                                                      elevation: 0.0,
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          25.0)),
+                                                      child: ClipRRect(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(25.0),
+                                                        child: Image.network(
+                                                          productsModel.images
+                                                                  .isEmpty
+                                                              ? Strings
+                                                                  .defaultImageUrl
+                                                              : productsModel
+                                                                      .images[0]
+                                                                      .src ??
+                                                                  Strings
+                                                                      .defaultImageUrl,
+                                                          loadingBuilder: (context,
+                                                              child,
+                                                              loadingProgress) {
+                                                            if (loadingProgress ==
+                                                                null) {
+                                                              return child;
+                                                            }
+                                                            return Container(
+                                                              alignment:
+                                                                  Alignment
+                                                                      .center,
+                                                              width: 95.0,
+                                                              height: 92.0,
+                                                              child:
+                                                                  const CircularProgressIndicator(
+                                                                color: Colors
+                                                                    .black,
+                                                              ),
+                                                            );
+                                                          },
+                                                          fit: BoxFit.fill,
+                                                          width: 95.0,
+                                                          height: 92.0,
+                                                        ),
                                                       ),
                                                     ),
                                                   ),
-                                                ),
-                                                const SizedBox(
-                                                  height: 5.0,
-                                                ),
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(5.0),
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      SizedBox(
-                                                        width: MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .width /
-                                                                2 +
-                                                            30,
-                                                        child: Text(
-                                                          ApiService
-                                                                  .listOfProductsModel[
-                                                                      index]
-                                                                  .name ??
-                                                              "Jewellery",
-                                                          softWrap: true,
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                        ),
-                                                      ),
-                                                      const SizedBox(
-                                                        height: 5.0,
-                                                      ),
-                                                      Row(
-                                                        children: [
-                                                          Image.asset(
-                                                            "assets/images/rupee.png",
-                                                            width: 20.0,
-                                                            height: 20.0,
-                                                          ),
-                                                          Text(productsModel
-                                                                      .regularPrice !=
-                                                                  ""
-                                                              ? productsModel
-                                                                      .regularPrice ??
-                                                                  "20000"
-                                                              : "20000")
-                                                        ],
-                                                      )
-                                                    ],
+                                                  const SizedBox(
+                                                    height: 5.0,
                                                   ),
-                                                )
-                                              ],
-                                            ),
-                                          )),
-                                    );
-                                  } else if (!isThereMoreProducts ||
-                                      isProductListEmpty) {
-                                    return const Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          vertical: 15.0, horizontal: 10.0),
-                                      child: Center(
-                                          child: Text(
-                                        "No more products are left",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                      )),
-                                    );
-                                  } else {
-                                    return const Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          vertical: 15.0, horizontal: 10.0),
-                                      child: Center(
-                                          child: CircularProgressIndicator(
-                                        color: Color(0xffCC868A),
-                                      )),
-                                    );
-                                  }
-                                }),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            5.0),
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        SizedBox(
+                                                          width: MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .width /
+                                                                  2 +
+                                                              30,
+                                                          child: Text(
+                                                            ApiService
+                                                                    .listOfProductsModel[
+                                                                        index]
+                                                                    .name ??
+                                                                "Jewellery",
+                                                            softWrap: true,
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                          ),
+                                                        ),
+                                                        const SizedBox(
+                                                          height: 5.0,
+                                                        ),
+                                                        Row(
+                                                          children: [
+                                                            Image.asset(
+                                                              "assets/images/rupee.png",
+                                                              width: 20.0,
+                                                              height: 20.0,
+                                                            ),
+                                                            Text(productsModel
+                                                                        .regularPrice !=
+                                                                    ""
+                                                                ? productsModel
+                                                                        .regularPrice ??
+                                                                    "20000"
+                                                                : "20000")
+                                                          ],
+                                                        )
+                                                      ],
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            )),
+                                      );
+                                    } else if (!isThereMoreProducts ||
+                                        isProductListEmpty) {
+                                      print(
+                                          "isProductListEmpty $isProductListEmpty");
+                                      print(
+                                          "isThereMoreProducts ${!isThereMoreProducts}");
+                                      print(
+                                          "ApiService.listOfProductsModel.length ${ApiService.listOfProductsModel.length}");
+                                      return const Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: 15.0, horizontal: 10.0),
+                                        child: Center(
+                                            child: Text(
+                                          "No more products are left",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                        )),
+                                      );
+                                    } else {
+                                      return const Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: 15.0, horizontal: 10.0),
+                                        child: Center(
+                                            child: CircularProgressIndicator(
+                                          color: Color(0xffCC868A),
+                                        )),
+                                      );
+                                    }
+                                  }),
+                            ),
                           ),
-                        ),
-            ],
-          ),
+              ],
+            );
+          }),
         ));
   }
 }
-
-

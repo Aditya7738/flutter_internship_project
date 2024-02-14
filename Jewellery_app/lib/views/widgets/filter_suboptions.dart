@@ -14,7 +14,7 @@ class FilterSubOptions extends StatefulWidget {
 }
 
 class _FilterSubOptionsState extends State<FilterSubOptions> {
-  int selectedFilterSubOptionIndex = -1;
+  // int selectedFilterSubOptionIndex = -1;
   @override
   Widget build(BuildContext context) {
     final filterOptionsProvider =
@@ -25,7 +25,7 @@ class _FilterSubOptionsState extends State<FilterSubOptions> {
     print(
         "filterOptionsProvider.filterCollectionsOptionsdata length ${filterOptionsProvider.list.length}");
 
-     print("selectedFilterSubOptionIndex out of return $selectedFilterSubOptionIndex");
+    // print("selectedFilterSubOptionIndex out of return $selectedFilterSubOptionIndex");
 
     switch (widget.filterKey) {
       case "collection":
@@ -60,101 +60,26 @@ class _FilterSubOptionsState extends State<FilterSubOptions> {
       child: Scrollbar(
         child: ListView.builder(
           itemBuilder: (context, index) {
-           
             print("listOfSubOptions length ${listOfSubOptions.length}");
             Map<String, dynamic> subOptions = listOfSubOptions[index];
-        
+
             print("subOptions $subOptions");
 
-            print("CURRENT INDEX $index AND SELECTED INDEX $selectedFilterSubOptionIndex");
-        
-            return FilterSubOptionsWidget(
+            //print("CURRENT INDEX $index AND SELECTED INDEX $selectedFilterSubOptionIndex");
 
+            return FilterSubOptionsWidget(
               subOptions: subOptions,
               index: index,
-             
+
               //isFilterSubOptionClicked: index == selectedFilterSubOptionIndex,
-              onTap: () {
-                setState(() {
-                  selectedFilterSubOptionIndex = index;
-                });
-
-                 filterOptionsProvider.setSelectedSubOptionsdata({
-                      "id": subOptions["id"],
-                      "count": subOptions["count"],
-                      "label": subOptions["label"],
-                      "parent": widget.filterKey
-
-                    });
-        
-                // switch (widget.filterKey) {
-                //   case "collection":
-                //     filterOptionsProvider.setSelectedSubOptionsdata({
-                //       "id": subOptions["id"],
-                //       "count": subOptions["count"],
-                //       "label": subOptions["label"],
-                //       "parent": widget.filterKey
-
-                //     });
-                //     break;
-                //   case "categories":
-                //      filterOptionsProvider.setSelectedSubOptionsdata({
-                //       "categories": subOptions["id"],
-                //       "categoriesCount": subOptions["count"],
-                //       "categoriesLabel": subOptions["label"],
-                //       "parent": widget.filterKey
-                //     });
-                //     break;
-                //   case "sub-categories":
-                //      filterOptionsProvider.setSelectedSubOptionsdata({
-                //       "sub-categories": subOptions["id"],
-                //       "subCategoriesCount": subOptions["count"],
-                //       "subCategoriesLabel": subOptions["label"],
-                //       "parent": widget.filterKey
-                //     });
-                //     break;
-                //   case "tags":
-                //      filterOptionsProvider.setSelectedSubOptionsdata({
-                //       "tags": subOptions["id"],
-                //       "tagsCount": subOptions["count"],
-                //       "tagsLabel": subOptions["label"],
-                //       "parent": widget.filterKey
-                //     });
-                //     break;
-                //   case "diamond_wt":
-                //      filterOptionsProvider.setSelectedSubOptionsdata({
-                //       "diamond_wt": subOptions["id"],
-                //       "diamond_wtCount": subOptions["count"],
-                //       "diamond_wtLabel": subOptions["label"],
-                //       "parent": widget.filterKey
-                //     });
-                //     break;
-                //   case "gold_wt":
-                //      filterOptionsProvider.setSelectedSubOptionsdata({
-                //       "gold_wt": subOptions["id"],
-                //       "gold_wtCount": subOptions["count"],
-                //       "gold_wtLabel": subOptions["label"],
-                //       "parent": widget.filterKey
-                //     });
-                //     break;
-                //   case "gender":
-                //      filterOptionsProvider.setSelectedSubOptionsdata({
-                //       "gender": subOptions["id"],
-                //       "genderCount": subOptions["count"],
-                //       "genderLabel": subOptions["label"],
-                //       "parent": widget.filterKey
-                //     });
-                //     break;
-                //   default:
-                //     listOfSubOptions = <Map<String, dynamic>>[];
-                // }
-        
-                print("filterOptionsProvider.list ${filterOptionsProvider.list}");
-              },
-               filterKey: widget.filterKey,
+              // onTap: () {
+              //   // setState(() {
+              //   //   selectedFilterSubOptionIndex = index;
+              //   // });
+                
+              // },
+              filterKey: widget.filterKey,
             );
-        
-           
           },
           itemCount: listOfSubOptions.length,
         ),

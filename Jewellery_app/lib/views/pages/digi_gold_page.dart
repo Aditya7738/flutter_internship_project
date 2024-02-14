@@ -146,17 +146,17 @@ bool isDigiGoldPlanLoading = true;
                   ),
                 ),
 
-                isDigiGoldPlanLoading ? 
-                Center(
-                  child: CircularProgressIndicator(
-                    color: Theme.of(context).primaryColor
-                  )
-                ):
+                // isDigiGoldPlanLoading ? 
+                // Center(
+                //   child: CircularProgressIndicator(
+                //     color: Theme.of(context).primaryColor
+                //   )
+                // ):
                 SizedBox(
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height,
                   child: ListView.builder(
-                      itemCount: ApiService.listOfDigiGoldPlan.length,
+                      itemCount: 18,
                       itemBuilder: (context, index) {
                         return DigiGoldCard();
                       }),

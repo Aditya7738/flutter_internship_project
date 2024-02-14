@@ -49,7 +49,7 @@ class CategoryGridItem extends StatelessWidget {
           Expanded(
             child: Text(
                 categoryImageModel.name ?? "Jewellery",
-              style: const TextStyle(fontSize: 10.0),
+              style: const TextStyle(fontSize: 15.0),
             ),
           ),
 

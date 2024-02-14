@@ -74,7 +74,7 @@ class _FeatureWidgetState extends State<FeatureWidget> {
                 padding: const EdgeInsets.all(2.0),
                 child: Text(
                   categoriesModel.name ?? "Jewellery",
-                  style: const TextStyle(fontSize: 10.0),
+                  style: const TextStyle(fontSize: 15.0),
                 ),
               ),
             ],

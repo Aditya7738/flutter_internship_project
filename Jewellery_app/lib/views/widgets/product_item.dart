@@ -211,77 +211,74 @@ class _ProductItemState extends State<ProductItem> {
                 ],
               ),
             ),
-            Container(
-              color: Colors.blue,
-              child: Padding(
-                padding: const EdgeInsets.only(right: 0.0, left: 5.0,bottom: 5.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    productsModel.averageRating == null ?
-                              
-                              
-                    Center(
-                      child: Container(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 5.0, horizontal: 10.0),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Colors.black, // Border color
-                        width: 2, // Border width
-                      ),
-                      borderRadius:
-                          BorderRadius.circular(18), // Border radius
+            Padding(
+              padding: const EdgeInsets.only(right: 0.0, left: 5.0,bottom: 5.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  productsModel.averageRating == null ?
+                            
+                            
+                  Center(
+                    child: Container(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 5.0, horizontal: 10.0),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.black, // Border color
+                      width: 2, // Border width
                     ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          productsModel.averageRating ?? "3.5",
-                          style: const TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(
-                          width: 5.0,
-                        ),
-                        const Icon(
-                          Icons.star,
-                          color: Colors.yellow,
-                        )
-                      ],
-                    ),
-                  )
-                  ) :
-                              
-                  SizedBox(width: MediaQuery.of(context).size.width / 2 - 60,),
-                   IconButton(
-                      icon: Icon(
-                        wishListProvider.favProductIds
-                                .contains(productsModel.id)
-                            ? Icons.favorite
-                            : Icons.favorite_border_outlined,
-                        color: Colors.red,
-                        size: 30.0,
+                    borderRadius:
+                        BorderRadius.circular(18), // Border radius
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        productsModel.averageRating ?? "3.5",
+                        style: const TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold),
                       ),
-                      onPressed: () {
-                        print("PRESSED");
-                        if (wishListProvider.favProductIds
-                            .contains(productsModel.id)) {
-                          wishListProvider
-                              .removeFromWishlist(productsModel.id!);
-                          print("Product is removed from wishlist");
-                        } else {
-                          wishListProvider.addToWishlist(productsModel.id!);
-                          print("Product is added to wishlist");
-                        }
-                      }),
-                              
-                              
-                  ],
-                ),
-                ),
-            ),
+                      const SizedBox(
+                        width: 5.0,
+                      ),
+                      const Icon(
+                        Icons.star,
+                        color: Colors.yellow,
+                      )
+                    ],
+                  ),
+                )
+                ) :
+                            
+                SizedBox(width: MediaQuery.of(context).size.width / 2 - 60,),
+                 IconButton(
+                    icon: Icon(
+                      wishListProvider.favProductIds
+                              .contains(productsModel.id)
+                          ? Icons.favorite
+                          : Icons.favorite_border_outlined,
+                      color: Colors.red,
+                      size: 30.0,
+                    ),
+                    onPressed: () {
+                      print("PRESSED");
+                      if (wishListProvider.favProductIds
+                          .contains(productsModel.id)) {
+                        wishListProvider
+                            .removeFromWishlist(productsModel.id!);
+                        print("Product is removed from wishlist");
+                      } else {
+                        wishListProvider.addToWishlist(productsModel.id!);
+                        print("Product is added to wishlist");
+                      }
+                    }),
+                            
+                            
+                ],
+              ),
+              ),
           ],
         ),
       ),

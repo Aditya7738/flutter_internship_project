@@ -256,71 +256,228 @@ class ApiService {
   }
 
   static Future<List<AllProducts.ProductsModel>> fetchProducts(
-      String searchText, int pageNo, BuildContext context) async {
+      String searchText, int pageNo, BuildContext context,
+      {List<Map<String, dynamic>>? filterList}) async {
     searchString = searchText;
 
     //https: //tiarabytj.com/wp-json/wc/v3/products?consumer_key=ck_33882e17eeaff38b20ac7c781156024bc2d6af4a&consumer_secret=cs_df67b056d05606c05275b571ab39fa508fcdd7b9
     String endpoint =
         "${Strings.baseUrl}/wp-json/wc/v3/products?consumer_key=${Strings.consumerKey}&consumer_secret=${Strings.consumerSecret}&per_page=100&search=$searchText&page=$pageNo";
 
-    final filterProvider =
-        Provider.of<FilterOptionsProvider>(context, listen: false);
+    // final filterProvider =
+    //     Provider.of<FilterOptionsProvider>(context, listen: false);
 
-    List<Map<String, dynamic>> selectedSubOptionsList = filterProvider.list;
+    // List<Map<String, dynamic>> selectedSubOptionsList = filterProvider.list;
 
-    for (var i = 0; i < selectedSubOptionsList.length; i++) {
-      switch (selectedSubOptionsList[i]["parent"]) {
-        case "collection":
-          if (selectedSubOptionsList[i]["collectionCount"] > 0) {
-            endpoint +=
-                "&collections=${selectedSubOptionsList[i]["collection"]}";
-          }
-          break;
-        case "categories":
-          if (selectedSubOptionsList[i]["categoriesCount"] > 0) {
-            endpoint += "&category=${selectedSubOptionsList[i]["categories"]}";
-          }
-          break;
+    // for (var i = 0; i < selectedSubOptionsList.length; i++) {
+    //   print("selectedSubOptionsList item$i ${selectedSubOptionsList[i]}");
+    //   switch (selectedSubOptionsList[i]["parent"]) {
+    //     case "collection":
+    //       if (selectedSubOptionsList[i]["count"] > 0) {
+    //         endpoint +=
+    //             "&collections=${selectedSubOptionsList[i]["id"]}";
+    //       }
+    //       break;
+    //     case "categories":
+    //       if (selectedSubOptionsList[i]["count"] > 0) {
+    //         endpoint += "&category=${selectedSubOptionsList[i]["id"]}";
+    //       }
+    //       break;
 
-        case "sub-categories":
-          if (selectedSubOptionsList[i]["subCategoriesCount"] > 0) {
-            endpoint +=
-                "&subcategory=${selectedSubOptionsList[i]["sub-categories"]}";
-          }
-          break;
+    //     case "sub-categories":
+    //       if (selectedSubOptionsList[i]["count"] > 0) {
+    //         endpoint +=
+    //             "&subcategory=${selectedSubOptionsList[i]["id"]}";
+    //       }
+    //       break;
 
-        case "tags":
-        if (selectedSubOptionsList[i]["tagsCount"] > 0) {
-            endpoint +=
-                "&tag=${selectedSubOptionsList[i]["tags"]}";
-          }
-          break;
-        case "diamond_wt":
-        if (selectedSubOptionsList[i]["subCategoriesCount"] > 0) {
-            endpoint +=
-                "&subcategory=${selectedSubOptionsList[i]["sub-categories"]}";
-          }
-          break;
-        case "collection":
-        if (selectedSubOptionsList[i]["subCategoriesCount"] > 0) {
-            endpoint +=
-                "&subcategory=${selectedSubOptionsList[i]["sub-categories"]}";
-          }
-          break;
-        case "collection":
-        if (selectedSubOptionsList[i]["subCategoriesCount"] > 0) {
-            endpoint +=
-                "&subcategory=${selectedSubOptionsList[i]["sub-categories"]}";
-          }
-          break;
+    //     case "tags":
+    //       if (selectedSubOptionsList[i]["count"] > 0) {
+    //         endpoint += "&tag=${selectedSubOptionsList[i]["id"]}";
+    //       }
+    //       break;
+    //     case "diamond_wt":
+    //       if (selectedSubOptionsList[i]["count"] > 0) {
+    //         endpoint +=
+    //             "&subcategory=${selectedSubOptionsList[i]["id"]}";
+    //       }
+    //       break;
+    //     case "gold_wt":
+    //       if (selectedSubOptionsList[i]["count"] > 0) {
+    //         endpoint +=
+    //             "&subcategory=${selectedSubOptionsList[i]["id"]}";
+    //       }
+    //       break;
+    //     case "gender":
+    //       if (selectedSubOptionsList[i]["count"] > 0) {
+    //         endpoint += "&gender=${selectedSubOptionsList[i]["id"]}";
+    //       }
+    //       break;
+    //     case "price_range":
+    //       endpoint +=
+    //           "&min_price=${selectedSubOptionsList[i]["price_range"]["min_price"]}&max_price=${selectedSubOptionsList[i]["price_range"]["max_price"]}";
 
-        default:
+    //       break;
+
+    //     default:
+    //   }
+    // }
+    if (filterList != null) {
+      //1/////////////////
+      List<Map<String, dynamic>> collections = <Map<String, dynamic>>[];
+      for (int j = 0; j < filterList.length; j++) {
+        if (filterList[j]["parent"] == "collection") {
+          if (filterList[j]["count"] > 0) {
+            collections.add(filterList[j]);
+          }
+        }
       }
+
+      List<String> ids = <String>[];
+      for (int k = 0; k < collections.length; k++) {
+        ids.add(collections[k]["id"].toString());
+      }
+
+      print("join ids ${ids.join(",")}");
+
+      endpoint += "&collections=${ids.join(",")}";
+
+      //2////////////////////////////
+      List<Map<String, dynamic>> categories = <Map<String, dynamic>>[];
+      for (int j = 0; j < filterList.length; j++) {
+        if (filterList[j]["parent"] == "categories") {
+          if (filterList[j]["count"] > 0) {
+            categories.add(filterList[j]);
+          }
+        }
+      }
+      List<String> categoriesIds = <String>[];
+      for (int k = 0; k < categories.length; k++) {
+        categoriesIds.add(categories[k]["id"].toString());
+      }
+
+      print("join ids ${categoriesIds.join(",")}");
+
+      endpoint += "&category=${categoriesIds.join(",")}";
+
+      //3//////////////////////////////////////
+      List<Map<String, dynamic>> subCategories = <Map<String, dynamic>>[];
+      for (int j = 0; j < filterList.length; j++) {
+        if (filterList[j]["parent"] == "sub-categories") {
+          if (filterList[j]["count"] > 0) {
+            subCategories.add(filterList[j]);
+          }
+        }
+      }
+      List<String> subCategoriesIds = <String>[];
+      for (int k = 0; k < subCategories.length; k++) {
+        subCategoriesIds.add(subCategories[k]["id"].toString());
+      }
+
+      print("join ids ${subCategoriesIds.join(",")}");
+
+      endpoint += "&subcategory=${subCategoriesIds.join(",")}";
+
+      //4//////////////////////////////////////
+      List<Map<String, dynamic>> tags = <Map<String, dynamic>>[];
+      for (int j = 0; j < filterList.length; j++) {
+        if (filterList[j]["parent"] == "tags") {
+          if (filterList[j]["count"] > 0) {
+            tags.add(filterList[j]);
+          }
+        }
+      }
+      List<String> tagsIds = <String>[];
+      for (int k = 0; k < tags.length; k++) {
+        tagsIds.add(tags[k]["id"].toString());
+      }
+
+      print("join ids ${tagsIds.join(",")}");
+
+      endpoint += "&tag=${tagsIds.join(",")}";
+
+      //5//////////////////////////////////////
+      List<Map<String, dynamic>> diamondWts = <Map<String, dynamic>>[];
+      for (int j = 0; j < filterList.length; j++) {
+        if (filterList[j]["parent"] == "diamond_wt") {
+          if (filterList[j]["count"] > 0) {
+            diamondWts.add(filterList[j]);
+          }
+        }
+      }
+      List<String> diamondWtIds = <String>[];
+      for (int k = 0; k < diamondWts.length; k++) {
+        diamondWtIds.add(diamondWts[k]["id"].toString());
+      }
+
+      print("join ids ${diamondWtIds.join(",")}");
+
+      endpoint += "&tag=${diamondWtIds.join(",")}"; //--chnage here endpoint
+
+//6//////////////////////////////////////
+      List<Map<String, dynamic>> goldWts = <Map<String, dynamic>>[];
+      for (int j = 0; j < filterList.length; j++) {
+        if (filterList[j]["parent"] == "gold_wt") {
+          if (filterList[j]["count"] > 0) {
+            goldWts.add(filterList[j]);
+          }
+        }
+      }
+      List<String> goldWtIds = <String>[];
+      for (int k = 0; k < goldWts.length; k++) {
+        goldWtIds.add(goldWts[k]["id"].toString());
+      }
+
+      print("join ids ${goldWtIds.join(",")}");
+
+      endpoint += "&tag=${goldWtIds.join(",")}"; //--chnage here endpoint
+
+      //7//////////////////////////////////////
+      List<Map<String, dynamic>> genders = <Map<String, dynamic>>[];
+      for (int j = 0; j < filterList.length; j++) {
+        if (filterList[j]["parent"] == "gold_wt") {
+          if (filterList[j]["count"] > 0) {
+            genders.add(filterList[j]);
+          }
+        }
+      }
+      List<String> genderIds = <String>[];
+      for (int k = 0; k < genders.length; k++) {
+        genderIds.add(genders[k]["id"].toString());
+      }
+
+      print("join ids ${genderIds.join(",")}");
+
+      endpoint += "&gender=${genderIds.join(",")}"; //--chnage here endpoint
     }
 
-    // Map<String, dynamic> selectedSubOptionsdata = filterProvider.selectedSubOptionsdata;
+    //       case "diamond_wt":
+    //         if (filterList[i]["count"] > 0) {
+    //           endpoint += "&subcategory=${filterList[i]["id"]}";
+    //         }
+    //         break;
+    //       case "gold_wt":
+    //         if (filterList[i]["count"] > 0) {
+    //           endpoint += "&subcategory=${filterList[i]["id"]}";
+    //         }
+    //         break;
+    //       case "gender":
+    //         if (filterList[i]["count"] > 0) {
+    //           endpoint += "&gender=${filterList[i]["id"]}";
+    //         }
+    //         break;
+    //       case "price_range":
+    //         endpoint +=
+    //             "&min_price=${filterList[i]["price_range"]["min_price"]}&max_price=${filterList[i]["price_range"]["max_price"]}";
 
-   
+    //         break;
+
+    //       default:
+    //     }
+    //   }
+    // }
+
+    // Map<String, dynamic> selectedSubOptionsdata = filterProvider.selectedSubOptionsdata;
 
     //  if (selectedSubOptionsdata.containsKey("tags")) {
     //   if (selectedSubOptionsdata["tagsCount"] > 0) {
@@ -1509,8 +1666,6 @@ class ApiService {
     // Map<String, dynamic> selectedSubOptionsdata =
     //     filterProvider.selectedSubOptionsdata;
 
-        
-
     // if (selectedSubOptionsdata.containsKey("collection")) {
     //   if (selectedSubOptionsdata["collectionCount"] > 0) {
     //     url += "&collection=${selectedSubOptionsdata["collection"]}";
@@ -1519,37 +1674,35 @@ class ApiService {
 
     List<Map<String, dynamic>> selectedSubOptions = filterProvider.list;
 
-for (var i = 0; i < selectedSubOptions.length; i++) {
-  if(selectedSubOptions[i]["parent"] == "collection"){
-url += "&collections=${selectedSubOptions[i]["collection"]}";
-  }
-}
+    for (var i = 0; i < selectedSubOptions.length; i++) {
+      if (selectedSubOptions[i]["parent"] == "collection") {
+        url += "&collections=${selectedSubOptions[i]["collection"]}";
+      }
+    }
 
-for (var i = 0; i < selectedSubOptions.length; i++) {
-  if(selectedSubOptions[i]["parent"] == "categories"){
-url += "&category=${selectedSubOptions[i]["categories"]}";
-  }
-}
+    for (var i = 0; i < selectedSubOptions.length; i++) {
+      if (selectedSubOptions[i]["parent"] == "categories") {
+        url += "&category=${selectedSubOptions[i]["categories"]}";
+      }
+    }
 
-for (var i = 0; i < selectedSubOptions.length; i++) {
-  if(selectedSubOptions[i]["parent"] == "collection"){
-url += "&category=${selectedSubOptions[i]["collection"]}";
-  }
-}
+    for (var i = 0; i < selectedSubOptions.length; i++) {
+      if (selectedSubOptions[i]["parent"] == "collection") {
+        url += "&category=${selectedSubOptions[i]["collection"]}";
+      }
+    }
 
-for (var i = 0; i < selectedSubOptions.length; i++) {
-  if(selectedSubOptions[i]["parent"] == "collection"){
-url += "&category=${selectedSubOptions[i]["collection"]}";
-  }
-}
+    for (var i = 0; i < selectedSubOptions.length; i++) {
+      if (selectedSubOptions[i]["parent"] == "collection") {
+        url += "&category=${selectedSubOptions[i]["collection"]}";
+      }
+    }
 
-for (var i = 0; i < selectedSubOptions.length; i++) {
-  if(selectedSubOptions[i]["parent"] == "collection"){
-url += "&category=${selectedSubOptions[i]["collection"]}";
-  }
-}
-
-
+    for (var i = 0; i < selectedSubOptions.length; i++) {
+      if (selectedSubOptions[i]["parent"] == "collection") {
+        url += "&category=${selectedSubOptions[i]["collection"]}";
+      }
+    }
 
     print("filtered url $url");
     // else if(selectedSubOptionsdata.containsKey("categories")){
