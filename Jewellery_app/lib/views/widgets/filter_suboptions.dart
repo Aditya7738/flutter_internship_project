@@ -69,7 +69,7 @@ class _FilterSubOptionsState extends State<FilterSubOptions> {
 
             return FilterSubOptionsWidget(
               subOptions: subOptions,
-              index: index,
+             index: index,
 
               //isFilterSubOptionClicked: index == selectedFilterSubOptionIndex,
               // onTap: () {

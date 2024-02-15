@@ -412,7 +412,8 @@ class ApiService {
 
       print("join ids ${diamondWtIds.join(",")}");
 
-      endpoint += "&tag=${diamondWtIds.join(",")}"; //--chnage here endpoint
+      endpoint +=
+          "&diamondWt=${diamondWtIds.join(",")}"; //--chnage here endpoint
 
 //6//////////////////////////////////////
       List<Map<String, dynamic>> goldWts = <Map<String, dynamic>>[];
@@ -430,12 +431,12 @@ class ApiService {
 
       print("join ids ${goldWtIds.join(",")}");
 
-      endpoint += "&tag=${goldWtIds.join(",")}"; //--chnage here endpoint
+      endpoint += "&goldWt=${goldWtIds.join(",")}"; //--chnage here endpoint
 
       //7//////////////////////////////////////
       List<Map<String, dynamic>> genders = <Map<String, dynamic>>[];
       for (int j = 0; j < filterList.length; j++) {
-        if (filterList[j]["parent"] == "gold_wt") {
+        if (filterList[j]["parent"] == "gender") {
           if (filterList[j]["count"] > 0) {
             genders.add(filterList[j]);
           }
@@ -449,6 +450,14 @@ class ApiService {
       print("join ids ${genderIds.join(",")}");
 
       endpoint += "&gender=${genderIds.join(",")}"; //--chnage here endpoint
+
+///////////////////////////////////////////////////////
+      for (int j = 0; j < filterList.length; j++) {
+        if (filterList[j]["parent"] == "price_range") {
+       endpoint += "&min_price=${filterList[j]["price_range"]["min_price"]}&max_price=${filterList[j]["price_range"]["max_price"]}";
+
+        }
+      }
     }
 
     //       case "diamond_wt":
@@ -1797,20 +1806,20 @@ class ApiService {
           parentId: json[i]["parent_id"],
           purchaseNote: json[i]["purchase_note"],
           categories: json[i]["categories"] == null
-              ? []
-              : List<DigiGoldPlans.Category>.from(
-                  json[i]["categories"]!.map((x) => Category.fromJson(x))),
+              ? <DigiGoldPlans.Category>[]
+              : List<DigiGoldPlans.Category>.from(json[i]["categories"]!
+                  .map((x) => DigiGoldPlans.Category.fromJson(x))),
           tags: json[i]["tags"] == null
               ? []
               : List<dynamic>.from(json[i]["tags"]!.map((x) => x)),
           images: json[i]["images"] == null
-              ? []
+              ? <DigiGoldPlans.Image>[]
               : List<DigiGoldPlans.Image>.from(json[i]["images"]!
                   .map((x) => DigiGoldPlans.Image.fromJson(x))),
           attributes: json[i]["attributes"] == null
-              ? []
-              : List<DigiGoldPlans.Attribute>.from(
-                  json[i]["attributes"]!.map((x) => Attribute.fromJson(x))),
+              ? <DigiGoldPlans.Attribute>[]
+              : List<DigiGoldPlans.Attribute>.from(json[i]["attributes"]!
+                  .map((x) => DigiGoldPlans.Attribute.fromJson(x))),
           defaultAttributes: json[i]["default_attributes"] == null
               ? []
               : List<dynamic>.from(
@@ -1827,9 +1836,9 @@ class ApiService {
               ? []
               : List<int>.from(json[i]["related_ids"]!.map((x) => x)),
           metaData: json[i]["meta_data"] == null
-              ? []
-              : List<DigiGoldPlans.MetaDatum>.from(
-                  json[i]["meta_data"]!.map((x) => MetaDatum.fromJson(x))),
+              ? <DigiGoldPlans.MetaDatum>[]
+              : List<DigiGoldPlans.MetaDatum>.from(json[i]["meta_data"]!
+                  .map((x) => DigiGoldPlans.MetaDatum.fromJson(x))),
           stockStatus: json[i]["stock_status"],
           hasOptions: json[i]["has_options"],
           postPassword: json[i]["post_password"],

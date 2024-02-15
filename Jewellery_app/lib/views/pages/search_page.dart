@@ -35,9 +35,11 @@ class _SearchPageState extends State<SearchPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
+
     final filterOptionsProvider =
         Provider.of<FilterOptionsProvider>(context, listen: false);
-    filterOptionsProvider.clearFilterList;
+        print("filterOptionsProvider.list.length ${filterOptionsProvider.list.length}");
+    filterOptionsProvider.clearFilterList();
     ApiService.listOfProductsModel.clear();
     _scrollController.addListener(() async {
       print(
@@ -46,7 +48,13 @@ class _SearchPageState extends State<SearchPage> {
           _scrollController.position.maxScrollExtent) {
         print("REACHED END OF LIST");
 
-        loadMoreData();
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+                  // This code will run after the layout and rendering are complete
+                  // Access the size or position of the widget
+                  loadMoreData();
+                });
+
+       
       }
     });
   }
@@ -73,14 +81,15 @@ class _SearchPageState extends State<SearchPage> {
     final filterOptionsProvider =
         Provider.of<FilterOptionsProvider>(context, listen: false);
     filterOptionsProvider.setFilteredListLoading(false);
+    filterOptionsProvider.clearFilterList();
   }
 
   TextEditingController textEditingController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    // final filterOptionsProvider =
-    //     Provider.of<FilterOptionsProvider>(context);
+    final filterOptionsProvider =
+        Provider.of<FilterOptionsProvider>(context);
 
     return Scaffold(
         appBar: AppBar(
@@ -148,6 +157,7 @@ class _SearchPageState extends State<SearchPage> {
                   return;
                 } //- uncomment it
                 showModalBottomSheet(
+                  isDismissible: filterOptionsProvider.list.isEmpty ? true: false,
                   enableDrag: true,
                   context: context,
                   isScrollControlled: true,
@@ -332,6 +342,13 @@ class _SearchPageState extends State<SearchPage> {
                         value.list.isEmpty
                     ? SizedBox():
                         Divider(thickness: 2.0,),
+                        Container(
+                          padding: EdgeInsets.all(8.0),
+                          alignment: Alignment.centerRight,
+                          width: MediaQuery.of(context).size.width,
+                          child: Text("Showing ${ApiService.listOfProductsModel.length} results")),
+
+                        
               
                 newListLoading || value.isFilteredListLoading
                     ? Expanded(

@@ -105,6 +105,33 @@ class FilterOptionsProvider with ChangeNotifier {
   }
 
   void setSelectedSubOptionsdata(Map<String, dynamic> selectedSubOptionsdata) {
+    if (_list.length > 0) {
+      for (var i = 0; i < _list.length; i++) {
+        print(
+            "_list[i].containsValue(selectedSubOptionsdataid ${_list[i].containsValue(selectedSubOptionsdata["id"])}");
+
+        print(
+            "_list[i].containsValue(selectedSubOptionsdataparent) ${_list[i].containsValue(selectedSubOptionsdata["parent"])}");
+        if (_list[i].containsValue(selectedSubOptionsdata["id"]) &&
+            _list[i].containsValue(selectedSubOptionsdata["parent"])) {
+          print("list $_list");
+          removeFromList(i);
+
+          return;
+        }
+      }
+    }
+
+    if (selectedSubOptionsdata["parent"] == "price_range") {
+      if (_list.length > 0) {
+        for (var i = 0; i < _list.length; i++) {
+          if (_list[i].containsValue(selectedSubOptionsdata["parent"])) {
+            removeFromList(i);
+          }
+        }
+      }
+    }
+
     _list.add(selectedSubOptionsdata);
     // print("before $_list");
     // dynamic temp = _list;
@@ -125,23 +152,27 @@ class FilterOptionsProvider with ChangeNotifier {
   }
 
   void removeFromList(int index) {
-     print("index to remove $index");
-     
-       _list.removeAt(index);
- 
-    
-     print("_list $_list");
-   
+    print("index to remove $index");
+
+    _list.removeAt(index);
+
+    print("_list $_list");
+
     notifyListeners();
   }
 
-  void clearFilterList(){
+  void clearFilterList() {
     try {
-      _list.clear();
+      print("filter list ${_list.length}");
+      if (_list.length > 0) {
+        _list.clear();
+      }
+
+      print("filter list cleared ${_list.length}");
     } catch (e) {
       print(e.toString());
     }
-    
+
     notifyListeners();
   }
 }

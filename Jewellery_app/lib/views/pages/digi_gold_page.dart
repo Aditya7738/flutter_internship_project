@@ -1,4 +1,6 @@
 import 'package:Tiara_by_TJ/api/api_service.dart';
+import 'package:Tiara_by_TJ/model/digi_gold_plan_model.dart' as DigiGoldPlan;
+
 import 'package:Tiara_by_TJ/views/widgets/digi_gold_card.dart';
 import 'package:flutter/material.dart';
 
@@ -116,7 +118,7 @@ bool isDigiGoldPlanLoading = true;
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    "Terms & Conditios",
+                                    "Terms & Conditions",
                                     style: TextStyle(color: Colors.white),
                                   ),
                                   SizedBox(
@@ -146,19 +148,25 @@ bool isDigiGoldPlanLoading = true;
                   ),
                 ),
 
-                // isDigiGoldPlanLoading ? 
-                // Center(
-                //   child: CircularProgressIndicator(
-                //     color: Theme.of(context).primaryColor
-                //   )
-                // ):
+                
+
+                isDigiGoldPlanLoading ? 
+                Padding(
+                  padding: const EdgeInsets.only(top: 20.0),
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      color: Theme.of(context).primaryColor
+                    )
+                  ),
+                ):
                 SizedBox(
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height,
                   child: ListView.builder(
-                      itemCount: 18,
+                      itemCount: ApiService.listOfDigiGoldPlan.length,
                       itemBuilder: (context, index) {
-                        return DigiGoldCard();
+                        DigiGoldPlan.DigiGoldPlanModel digiGoldPlan = ApiService.listOfDigiGoldPlan[index];
+                        return DigiGoldCard(digiGoldPlan: digiGoldPlan,);
                       }),
                 )
               ],
