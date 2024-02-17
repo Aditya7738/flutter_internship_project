@@ -14,6 +14,14 @@ class CustomerProvider with ChangeNotifier {
     _setCustomerSharedPrefs();
   }
 
+  void addCustomerData(Map<String, dynamic> customerData){
+    customerData.forEach((key, value) {
+      _customerData[0][key] = value;
+    });
+    notifyListeners();
+    _setCustomerSharedPrefs();
+  }
+
   void _setCustomerSharedPrefs() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
 

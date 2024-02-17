@@ -39,6 +39,7 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
         setState(() {
           jeweller_contribution = widget.digiGoldPlan.metaData[i].value;
           isJewellerContributing = true;
+          
         });
       }
     }
@@ -46,7 +47,8 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
 
   getTermsConditions() {
     for (var i = 0; i < widget.digiGoldPlan.metaData.length; i++) {
-      print("widget.digiGoldPlan.metaData[i].key ${widget.digiGoldPlan.metaData[i].key == "terms_and_conditions"}");
+      print(
+          "widget.digiGoldPlan.metaData[i].key ${widget.digiGoldPlan.metaData[i].key == "terms_and_conditions"}");
       if (widget.digiGoldPlan.metaData[i].key == "terms_and_conditions") {
         setState(() {
           termsConditions = widget.digiGoldPlan.metaData[i].value;
@@ -57,9 +59,9 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
 
   @override
   Widget build(BuildContext context) {
-       final customerProvider =
+    final customerProvider =
         Provider.of<CustomerProvider>(context, listen: true);
-         bool isCustomerDataEmpty = customerProvider.customerData.isEmpty;
+    bool isCustomerDataEmpty = customerProvider.customerData.isEmpty;
     print("termsConditions $termsConditions");
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4.0),
@@ -171,35 +173,33 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                           print("termsSeen2 ${termsSeen}");
                           if (termsSeen) {
                             setState(() {
-                            checkBoxChecked = value ?? false;
-                          });
-                          print("checkBoxChecked ${checkBoxChecked}");
+                              checkBoxChecked = value ?? false;
+                            });
+                            print("checkBoxChecked ${checkBoxChecked}");
                           }
-                          
-
                         },
                       ),
                       GestureDetector(
-
                           onTap: () {
                             setState(() {
                               termsSeen = true;
                             });
                             print("termsSeen1 ${termsSeen}");
 
-
                             showDialog(
                               context: context,
                               builder: (context) {
                                 return AlertDialog(
-                                  alignment: Alignment.center,
-                                  title: const Text(
-                                    "Terms & Conditions",
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                  content: HtmlWidget(termsConditions, textStyle: TextStyle(fontSize: 17.0),)
-                                );
+                                    alignment: Alignment.center,
+                                    title: const Text(
+                                      "Terms & Conditions",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    content: HtmlWidget(
+                                      termsConditions,
+                                      textStyle: TextStyle(fontSize: 17.0),
+                                    ));
                               },
                             );
                           },
@@ -213,57 +213,81 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                   SizedBox(
                     height: 10.0,
                   ),
-
-isCustomerDataEmpty ?
-
-                  GestureDetector(
-                    onTap: () {
-                      if (checkBoxChecked) {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage(isComeFromCart: false),));
-                      }
-                    },
-                    child: Container(
-                        margin: EdgeInsets.only(left: 15.0, bottom: 5.0),
-                        decoration: BoxDecoration(
-                            border: Border.all(
-                                width: 2.0,
-                                color: Theme.of(context).primaryColor,
-                                style: BorderStyle.solid),
-                            borderRadius: BorderRadius.circular(5.0)),
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 10.0, horizontal: 20.0),
-                        child: Text(
-                          "LOGIN",
-                          style: TextStyle(
-                              color: Theme.of(context).primaryColor,
-                              fontSize: 17.0),
-                        )),
-                  )
-                  :
-GestureDetector(
-                    onTap: () {
-                      if (checkBoxChecked) {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => DigiGoldPlanOrderPage(),));
-                      }
-                    },
-                    child: Container(
-                        margin: EdgeInsets.only(left: 15.0, bottom: 5.0),
-                        decoration: BoxDecoration(
-                            border: Border.all(
-                                width: 2.0,
-                                color: Theme.of(context).primaryColor,
-                                style: BorderStyle.solid),
-                            borderRadius: BorderRadius.circular(5.0)),
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 10.0, horizontal: 20.0),
-                        child: Text(
-                          "Buy Plan",
-                          style: TextStyle(
-                              color: Theme.of(context).primaryColor,
-                              fontSize: 17.0),
-                        )),
-                  )
-
+                  isCustomerDataEmpty
+                      ? GestureDetector(
+                          onTap: () {
+                            if (checkBoxChecked) {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        LoginPage(isComeFromCart: false),
+                                  ));
+                            }
+                          },
+                          child: Container(
+                              margin: EdgeInsets.only(left: 15.0, bottom: 5.0),
+                              decoration: checkBoxChecked
+                                  ? BoxDecoration(
+                                      color: Theme.of(context).primaryColor,
+                                      borderRadius: BorderRadius.circular(5.0))
+                                  : BoxDecoration(
+                                      border: Border.all(
+                                          width: 2.0,
+                                          color: Theme.of(context).primaryColor,
+                                          style: BorderStyle.solid),
+                                      borderRadius: BorderRadius.circular(5.0)),
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 10.0, horizontal: 20.0),
+                              child: Text(
+                                "LOGIN",
+                                style: checkBoxChecked
+                                    ? TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 17.0,
+                                        fontWeight: FontWeight.bold)
+                                    : TextStyle(
+                                        color: Theme.of(context).primaryColor,
+                                        fontSize: 17.0),
+                              )),
+                        )
+                      : GestureDetector(
+                          onTap: () {
+                            if (checkBoxChecked) {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        DigiGoldPlanOrderPage(digiGoldPlanModel: widget.digiGoldPlan),
+                                  ));
+                            }
+                          },
+                          child: Container(
+                              margin: EdgeInsets.only(left: 15.0, bottom: 5.0),
+                              decoration: checkBoxChecked
+                                  ? BoxDecoration(
+                                      color: Theme.of(context).primaryColor,
+                                      borderRadius: BorderRadius.circular(5.0))
+                                  : BoxDecoration(
+                                      border: Border.all(
+                                          width: 2.0,
+                                          color: Theme.of(context).primaryColor,
+                                          style: BorderStyle.solid),
+                                      borderRadius: BorderRadius.circular(5.0)),
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 10.0, horizontal: 20.0),
+                              child: Text(
+                                "Buy Plan",
+                                style: checkBoxChecked
+                                    ? TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 17.0,
+                                        fontWeight: FontWeight.bold)
+                                    : TextStyle(
+                                        color: Theme.of(context).primaryColor,
+                                        fontSize: 17.0),
+                              )),
+                        )
                 ],
               ),
             )

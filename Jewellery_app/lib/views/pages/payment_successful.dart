@@ -5,7 +5,8 @@ import 'package:Tiara_by_TJ/views/widgets/empty_list_widget.dart';
 import 'package:lottie/lottie.dart';
 
 class PaymentSucessfulPage extends StatelessWidget {
-  const PaymentSucessfulPage({super.key});
+  
+  PaymentSucessfulPage({super.key});
 
   @override
   Widget build(BuildContext context) {

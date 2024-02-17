@@ -18,7 +18,8 @@ class CartTotalRow extends StatelessWidget {
       children: [
         Text(
           label,
-          style: Theme.of(context).textTheme.headline3
+          style: Theme.of(context).textTheme.headline3,
+          maxLines: 2,
         ),
         showMoney
             ? Row(

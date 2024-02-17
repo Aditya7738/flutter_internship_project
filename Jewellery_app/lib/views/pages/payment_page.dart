@@ -16,6 +16,7 @@ import 'package:Tiara_by_TJ/providers/customer_provider.dart';
 import 'package:Tiara_by_TJ/views/pages/payment_failed.dart';
 import 'package:Tiara_by_TJ/views/pages/payment_successful.dart';
 import 'package:Tiara_by_TJ/views/widgets/steplist.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:provider/provider.dart';
 
@@ -62,10 +63,13 @@ import 'package:flutter/services.dart';
 
 class PaymentPage extends StatefulWidget {
   final String orderId;
-  final Map<String, String> cashFreeData;
+  //final Map<String, String> cashFreeData;
 
-  const PaymentPage(
-      {super.key, required this.orderId, required this.cashFreeData});
+  const PaymentPage({
+    super.key,
+    required this.orderId,
+    //required this.cashFreeData
+  });
 
   @override
   State<PaymentPage> createState() => _PaymentPageState();
@@ -75,7 +79,7 @@ class _PaymentPageState extends State<PaymentPage>
     implements PayUCheckoutProProtocol {
   Razorpay _razorpay = Razorpay();
   late String order_id;
-  late Map<String, String> cashFreeData;
+  // late Map<String, String> cashFreeData;
   late String payableAmount;
   bool isLoading = false;
   late PayUCheckoutProFlutter _checkoutPro;
@@ -91,7 +95,7 @@ class _PaymentPageState extends State<PaymentPage>
     _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
     _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
     order_id = widget.orderId;
-    cashFreeData = widget.cashFreeData;
+    //  cashFreeData = widget.cashFreeData;
     _checkoutPro = PayUCheckoutProFlutter(this as PayUCheckoutProProtocol);
 
     //cfPaymentGatewayService.setCallback(verifyPayment, onErrorPay);
@@ -112,7 +116,7 @@ class _PaymentPageState extends State<PaymentPage>
     print("Payment failed ${response.message}");
 
     Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => PaymentFailedPage(),
+      builder: (context) => PaymentFailedPage(fromCart: false),
     ));
   }
 
@@ -187,14 +191,14 @@ class _PaymentPageState extends State<PaymentPage>
   }
 
   //CASHFREE ---------------------------------------------------
-  
+
   // void verifyPayment(String orderId) {
   //   print("Verify Payment of order - $orderId");
   // }
 
   // void onErrorPay(CFErrorResponse errorResponse, String orderId) {
   //   print("Error while making payment ${errorResponse.getMessage()}");
-  
+
   // }
 
   // webCheckout() async {
@@ -235,14 +239,15 @@ class _PaymentPageState extends State<PaymentPage>
     // });
     ApiService.paymentGateways.clear();
     await ApiService.getPaymentGateways();
-    setState(() {
-      
-    });
+    // setState(() {
+
+    // });
 
     List<ExpansionListItemModel> list = <ExpansionListItemModel>[];
 
     for (int i = 0; i < ApiService.paymentGateways.length; i++) {
       list.add(ExpansionListItemModel(
+        ApiService.paymentGateways[i].id ?? "0",
           ApiService.paymentGateways[i].title ?? "Payment method",
           ApiService.paymentGateways[i].description ?? ""));
     }
@@ -306,64 +311,129 @@ class _PaymentPageState extends State<PaymentPage>
                             AsyncSnapshot<List<ExpansionListItemModel>>
                                 snapshot) {
                           if (snapshot.hasData && snapshot.data != null) {
-                            final steps = snapshot.data;
+                            List<ExpansionListItemModel>? expansionListItem =
+                                snapshot.data;
                             //return SizedBox();
-                            return Column(children: [
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
                               ExpansionPanelList(
                                 expansionCallback: (panelIndex, isExpanded) {
                                   print("pressed $panelIndex");
-                                  PaymentGatewaysModel paymentGatewaysModel = ApiService.paymentGateways[panelIndex];
+                                  if (expansionListItem != null) {
+                                    //    ExpansionListItemModel expansionListItemModel = expansionListItem[panelIndex];
 
-                                  switch (paymentGatewaysModel.id) {
-                                        case "cod":
-                                          break;
-                                        case "cashfree":
-                                           //webCheckout();
-                                          break;
-                                        case "razorpay":
-                                          makeRazorPayment();
-                                          break;
+                                    // switch (expansionListItemModel.id) {
+                                    //       case "cod":
+                                    //         break;
+                                    //       case "cashfree":
+                                    //          //webCheckout();
+                                    //         break;
+                                    //       case "razorpay":
+                                    //         makeRazorPayment();
+                                    //         break;
 
-                                        case "ccavenue":
+                                    //       case "ccavenue":
 
-                                        //Navigate to PaymentScreen - ccavenue _paymet_page.dart
-                                          initPlatformState();
-                                          break;
-                                        case "stripe":
-                                          break;
+                                    //       //Navigate to PaymentScreen - ccavenue _paymet_page.dart
+                                    //         initPlatformState();
+                                    //         break;
+                                    //       case "stripe":
+                                    //         break;
 
-                                          // case "payubiz":
-                                          // openPayUCheckoutScreen();
-                                          // break;
+                                    //         // case "payubiz":
+                                    //         // openPayUCheckoutScreen();
+                                    //         // break;
 
-                                        default:
-                                      }
+                                    //       default:
+                                    //     }
 
-
-                                  setState(() {
-                                    print(" ExpansionPanelList $isExpanded");
-                                    steps![panelIndex].isExpanded = isExpanded;
-                                  });
+                                    setState(() {
+                                      print(" ExpansionPanelList $isExpanded");
+                                      expansionListItem[panelIndex].isExpanded =
+                                          isExpanded;
+                                    });
+                                  }
                                 },
-                                children: steps!.map<ExpansionPanel>(
-                                    (ExpansionListItemModel
+                                children: expansionListItem!
+                                    .map<ExpansionPanel>((ExpansionListItemModel
                                         expansionListItemModel) {
-                                 
                                   return ExpansionPanel(
                                       headerBuilder: (context, isExpanded) {
-                                        expansionListItemModel.isExpanded = isExpanded;
+                                        expansionListItemModel.isExpanded =
+                                            isExpanded;
                                         print(" ExpansionPanel $isExpanded");
                                         return ListTile(
                                           title: Text(
-                                              expansionListItemModel.title),
+                                              expansionListItemModel.title, style: TextStyle(fontSize: 18.0),),
                                         );
-                                      
                                       },
-                                      body: ListTile(
-                                        title:
-                                            Text(expansionListItemModel.body),
+                                      body: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            HtmlWidget(expansionListItemModel.body, textStyle: TextStyle(fontSize: 17.0),),
+                                            SizedBox(height: 10.0,),
+                                            GestureDetector(
+                                              onTap: () {
+                                                
+                                    switch (expansionListItemModel.id) {
+                                          case "cod":
+                                            break;
+                                          case "cashfree":
+                                             //webCheckout();
+                                            break;
+                                          case "razorpay":
+                                            makeRazorPayment();
+                                            break;
+
+                                          case "ccavenue":
+
+                                          //Navigate to PaymentScreen - ccavenue _paymet_page.dart
+                                            initPlatformState();
+                                            break;
+                                          case "stripe":
+                                            break;
+
+                                            // case "payubiz":
+                                            // openPayUCheckoutScreen();
+                                            // break;
+
+                                          default:
+                                        }
+                                              },
+                                              child: Container(
+                                                  width: 150.0,
+                                                  // height: 40.0,
+                                                  decoration: BoxDecoration(
+                                                      color:
+                                                          const Color(0xffCC868A),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              12.0)),
+                                                  padding:
+                                                      const EdgeInsets.symmetric(
+                                                          vertical: 10.0,
+                                                          horizontal: 20.0),
+                                                  child: Center(
+                                                    child: const Text(
+                                                      "Proceed",
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 17.0,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                  )),
+                                            ),
+                                                SizedBox(height: 10.0,),
+                                          ],
+                                        ),
                                       ),
-                                      isExpanded: expansionListItemModel.isExpanded);
+                                      isExpanded:
+                                          expansionListItemModel.isExpanded);
                                 }).toList(),
                               ),
                             ]);

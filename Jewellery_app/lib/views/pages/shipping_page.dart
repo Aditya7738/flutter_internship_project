@@ -139,35 +139,7 @@ class _ShippingPageState extends State<ShippingPage> {
     _pinNoController2.text = "466432";
     _phoneNoController.text = "2638746434";
     _emailController.text = "eg@gmail.com";
-
-    // _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
-    // _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
-    // _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
   }
-
-  // void _handlePaymentSuccess(PaymentSuccessResponse response) {
-  //   //  Toast.show("Payment successful ${response.paymentId}", duration: 2);
-  //   //print("Payment successful ${response.paymentId}");
-  //   Navigator.of(context).push(MaterialPageRoute(
-  //     builder: (context) => PaymentSucessfulPage(),
-  //   ));
-  // }
-
-  // void _handlePaymentError(PaymentFailureResponse response) {
-  //   // Toast.show("Payment failed ${response.message}", duration: 2);
-  //   print("Payment failed ${response.message}");
-  // }
-
-  // void _handleExternalWallet(ExternalWalletResponse response) {
-  //   // Toast.show("External wallet ${response.walletName}", duration: 2);
-  //   print("External wallet ${response.walletName}");
-  // }
-
-  // @override
-  // void dispose() {
-  //   super.dispose();
-  //   _razorpay.clear();
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -180,12 +152,6 @@ class _ShippingPageState extends State<ShippingPage> {
     for (int i = 0; i < cartProvider.cart.length; i++) {
       productName += cartProvider.cart[i].productName! + ", ";
     }
-
-    // print("${customerProvider.customerData[0]["id"]}");
-    // print("CUSTOMER DATA LIST");
-    // for(int i = 0; i < customerProvider.customerData.length; i++){
-    //   print(customerProvider.customerData[0].keys);
-    // }
 
     late Map<String, String> billingData;
     late Map<String, String> shippingData;
@@ -223,238 +189,6 @@ class _ShippingPageState extends State<ShippingPage> {
                         stateOptions: stateOptions,
                         countryCodeOptions: countryCodeOptions,
                       ),
-                      // TextFormField(
-                      //   controller: _firstNameController,
-                      //   keyboardType: TextInputType.name,
-                      //   validator: (value) {
-                      //     return ValidationHelper.nullOrEmptyString(value);
-                      //   },
-                      //   decoration: const InputDecoration(
-                      //     // errorText: ,
-                      //     labelText: "First name*",
-                      //     border: OutlineInputBorder(
-                      //         borderRadius:
-                      //             BorderRadius.all(Radius.circular(20.0))),
-                      //   ),
-                      // ),
-                      // const SizedBox(
-                      //   height: 30.0,
-                      // ),
-                      // TextFormField(
-                      //   controller: _lastNameController,
-                      //   keyboardType: TextInputType.name,
-                      //   validator: (value) {
-                      //     return ValidationHelper.nullOrEmptyString(value);
-                      //   },
-                      //   decoration: const InputDecoration(
-                      //     // errorText: ,
-                      //     labelText: "Last name*",
-                      //     border: OutlineInputBorder(
-                      //         borderRadius:
-                      //             BorderRadius.all(Radius.circular(20.0))),
-                      //   ),
-                      // ),
-                      // const SizedBox(
-                      //   height: 30.0,
-                      // ),
-                      // TextFormField(
-                      //   controller: _companyNameController,
-                      //   keyboardType: TextInputType.name,
-                      //   decoration: const InputDecoration(
-                      //     // errorText: ,
-                      //     labelText: "Company name (optional)",
-                      //     border: OutlineInputBorder(
-                      //         borderRadius:
-                      //             BorderRadius.all(Radius.circular(20.0))),
-                      //   ),
-                      // ),
-                      // const SizedBox(
-                      //   height: 30.0,
-                      // ),
-                      // const Padding(
-                      //   padding: EdgeInsets.only(left: 10.0),
-                      //   child: Text(
-                      //     "Country / Region",
-                      //     style: TextStyle(fontSize: 16.0),
-                      //   ),
-                      // ),
-                      // const SizedBox(
-                      //   height: 5.0,
-                      // ),
-                      // Container(
-                      //   padding: const EdgeInsets.only(right: 10.0, left: 5.0),
-                      //   width: MediaQuery.of(context).size.width,
-                      //   decoration: BoxDecoration(
-                      //       borderRadius:
-                      //           const BorderRadius.all(Radius.circular(20.0)),
-                      //       border: Border.all(
-                      //           color: const Color.fromARGB(255, 103, 103, 103),
-                      //           style: BorderStyle.solid)),
-                      //   // color: Colors.red,
-                      //   child: DropdownButton(
-                      //       itemHeight: kMinInteractiveDimension + 15,
-                      //       isExpanded: true,
-                      //       padding: const EdgeInsets.only(left: 10.0),
-                      //       value: selectedCountry,
-                      //       icon: const Icon(Icons.keyboard_arrow_down_rounded),
-                      //       items: countryOptions.map((String option) {
-                      //         return DropdownMenuItem(
-                      //           value: option,
-                      //           child: Text(option),
-                      //         );
-                      //       }).toList(),
-                      //       onChanged: (String? newValue) {
-                      //         setState(() {
-                      //           selectedCountry = newValue!;
-                      //         });
-                      //       }),
-                      // ),
-                      // const SizedBox(
-                      //   height: 20.0,
-                      // ),
-                      // TextFormField(
-                      //   controller: _addressController1,
-                      //   keyboardType: TextInputType.streetAddress,
-                      //   validator: (value) {
-                      //     return ValidationHelper.nullOrEmptyString(value);
-                      //   },
-                      //   decoration: const InputDecoration(
-                      //     // errorText: ,
-                      //     labelText: "Street address*",
-                      //     hintText: "House umber and street name",
-                      //     border: OutlineInputBorder(
-                      //         borderRadius:
-                      //             BorderRadius.all(Radius.circular(20.0))),
-                      //   ),
-                      // ),
-                      // const SizedBox(
-                      //   height: 10.0,
-                      // ),
-                      // TextFormField(
-                      //   controller: _addressController2,
-                      //   keyboardType: TextInputType.name,
-                      //   decoration: const InputDecoration(
-                      //     // errorText: ,
-                      //     hintText: "Apartment, suite, unit, etc. (optional)",
-                      //     border: OutlineInputBorder(
-                      //         borderRadius:
-                      //             BorderRadius.all(Radius.circular(20.0))),
-                      //   ),
-                      // ),
-                      // const SizedBox(
-                      //   height: 30.0,
-                      // ),
-                      // TextFormField(
-                      //   controller: _cityController,
-                      //   keyboardType: TextInputType.name,
-                      //   validator: (value) {
-                      //     return ValidationHelper.nullOrEmptyString(value);
-                      //   },
-                      //   decoration: const InputDecoration(
-                      //     // errorText: ,
-                      //     labelText: "Town / City *",
-                      //     border: OutlineInputBorder(
-                      //         borderRadius:
-                      //             BorderRadius.all(Radius.circular(20.0))),
-                      //   ),
-                      // ),
-                      // const SizedBox(
-                      //   height: 30.0,
-                      // ),
-                      // const Padding(
-                      //   padding: EdgeInsets.only(left: 10.0),
-                      //   child: Text(
-                      //     "State *",
-                      //     style: TextStyle(fontSize: 16.0),
-                      //   ),
-                      // ),
-                      // const SizedBox(
-                      //   height: 5.0,
-                      // ),
-                      // Container(
-                      //   padding: const EdgeInsets.only(right: 10.0, left: 5.0),
-                      //   width: MediaQuery.of(context).size.width,
-                      //   decoration: BoxDecoration(
-                      //       borderRadius:
-                      //           const BorderRadius.all(Radius.circular(20.0)),
-                      //       border: Border.all(
-                      //           color: const Color.fromARGB(255, 103, 103, 103),
-                      //           style: BorderStyle.solid)),
-                      //   // color: Colors.red,
-                      //   child: DropdownButton(
-                      //       itemHeight: kMinInteractiveDimension + 15,
-                      //       isExpanded: true,
-                      //       padding: const EdgeInsets.only(left: 10.0),
-                      //       value: selectedState,
-                      //       icon: const Icon(Icons.keyboard_arrow_down_rounded),
-                      //       items: stateOptions.map((String option) {
-                      //         return DropdownMenuItem(
-                      //           value: option,
-                      //           child: Text(option),
-                      //         );
-                      //       }).toList(),
-                      //       onChanged: (String? newValue) {
-                      //         setState(() {
-                      //           selectedState = newValue!;
-                      //         });
-                      //       }),
-                      // ),
-                      // const SizedBox(
-                      //   height: 30.0,
-                      // ),
-                      // TextFormField(
-                      //   controller: _pinNoController,
-                      //   keyboardType: TextInputType.number,
-                      //   validator: (value) {
-                      //     return ValidationHelper.isPincodeValid(value);
-                      //   },
-                      //   decoration: const InputDecoration(
-                      //     // errorText: ,
-                      //     labelText: "PIN code *",
-                      //     border: OutlineInputBorder(
-                      //         borderRadius:
-                      //             BorderRadius.all(Radius.circular(20.0))),
-                      //   ),
-                      // ),
-                      // const SizedBox(
-                      //   height: 30.0,
-                      // ),
-                      // SizedBox(
-                      //   height: 75.0,
-                      //   child: TextFormField(
-                      //     controller: _phoneNoController,
-                      //     keyboardType: TextInputType.phone,
-                      //     validator: (value) {
-                      //       return ValidationHelper.isPhoneNoValid(value);
-                      //     },
-                      //     decoration: InputDecoration(
-                      //         border: const OutlineInputBorder(
-                      //             borderRadius:
-                      //                 BorderRadius.all(Radius.circular(20.0))),
-                      //         prefix: DropdownButton(
-                      //             value: selectedCountryCodeOption,
-                      //             icon: const Icon(
-                      //                 Icons.keyboard_arrow_down_rounded),
-                      //             items:
-                      //                 countryCodeOptions.map((String option) {
-                      //               return DropdownMenuItem(
-                      //                 value: option,
-                      //                 child: Text(option),
-                      //               );
-                      //             }).toList(),
-                      //             onChanged: (String? newValue) {
-                      //               setState(() {
-                      //                 selectedCountryCodeOption = newValue!;
-                      //               });
-                      //             }),
-                      //         labelText: "Mobile number*"),
-                      //     maxLines: 1,
-                      //   ),
-                      // ),
-                      // const SizedBox(
-                      //   height: 30.0,
-                      // ),
-
                       TextFormField(
                         controller: _emailController,
                         keyboardType: TextInputType.emailAddress,
@@ -609,6 +343,16 @@ class _ShippingPageState extends State<ShippingPage> {
                               "postcode": _pinNoController.text
                             };
 
+                            Map<String, dynamic> customerBillingData = {
+                              "company": _companyNameController.text,
+                              "address_1": _addressController1.text,
+                              "address_2": _addressController2.text,
+                              "city": _cityController.text,
+                             
+                            };
+
+                            customerProvider.addCustomerData(customerBillingData);
+
                             differentShippingAddress
                                 ? shippingData = {
                                     "first_name": _firstNameController2.text,
@@ -649,7 +393,7 @@ class _ShippingPageState extends State<ShippingPage> {
                             setState(() {
                               creatingOrder = true;
                             });
-                                  //do it after payment successful - redirect user to this page and modify this page where login, shipping ajd paymet will be on same page
+                            //do it after payment successful - redirect user to this page and modify this page where login, shipping ajd paymet will be on same page
                             // await ApiService.createOrder(
                             //     billingData,
                             //     shippingData,
@@ -657,36 +401,36 @@ class _ShippingPageState extends State<ShippingPage> {
                             //     customerId,
                             //     cartProvider.calculateTotalPrice());
 
-
                             List<Map<String, dynamic>> razorpayOrderData =
                                 await uiCreateRazorpayOrder();
 
-                            List<Map<String, dynamic>> cashFreeOrderData =
-                                await uiCreateCashFreeOrder();
+                            // List<Map<String, dynamic>> cashFreeOrderData =
+                            //     await uiCreateCashFreeOrder();
 
                             setState(() {
                               creatingOrder = false;
                             });
 
-                            Map<String, String> impCashFreeData =
-                                <String, String>{};
+                            // Map<String, String> impCashFreeData =
+                            //     <String, String>{};
 
-                            if (cashFreeOrderData.isNotEmpty) {
-                              impCashFreeData = {
-                                "order_id": cashFreeOrderData[0]["order_id"],
-                                "cf_order_id": cashFreeOrderData[0]
-                                    ["cf_order_id"],
-                                "payment_session_id": cashFreeOrderData[0]
-                                    ["payment_session_id"],
-                                "order_status": cashFreeOrderData[0]
-                                    ["order_status"],
-                              };
-                            }
+                            // if (cashFreeOrderData.isNotEmpty) {
+                            //   impCashFreeData = {
+                            //     "order_id": cashFreeOrderData[0]["order_id"],
+                            //     "cf_order_id": cashFreeOrderData[0]
+                            //         ["cf_order_id"],
+                            //     "payment_session_id": cashFreeOrderData[0]
+                            //         ["payment_session_id"],
+                            //     "order_status": cashFreeOrderData[0]
+                            //         ["order_status"],
+                            //   };
+                            // }
 
                             Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => PaymentPage(
                                   orderId: razorpayOrderData[0]["id"],
-                                  cashFreeData: impCashFreeData),
+                                 // cashFreeData: impCashFreeData
+                                  ),
                             ));
                           }
                         },

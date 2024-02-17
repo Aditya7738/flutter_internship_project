@@ -1,3 +1,4 @@
+import 'package:Tiara_by_TJ/views/pages/digigold_order_page.dart';
 import 'package:flutter/material.dart';
 import 'package:Tiara_by_TJ/views/pages/dashboard_page.dart';
 import 'package:Tiara_by_TJ/views/pages/payment_page.dart';
@@ -7,7 +8,9 @@ import 'package:Tiara_by_TJ/views/widgets/empty_list_widget.dart';
 import 'package:lottie/lottie.dart';
 
 class PaymentFailedPage extends StatelessWidget {
-  const PaymentFailedPage({super.key});
+
+    final bool fromCart;
+  PaymentFailedPage({super.key, required this.fromCart});
 
   @override
   Widget build(BuildContext context) {
@@ -26,8 +29,12 @@ class PaymentFailedPage extends StatelessWidget {
           ),
           GestureDetector(
             onTap: () {
+              fromCart ?
               Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (context) => ShippingPage()));
+                  MaterialPageRoute(builder: (context) => ShippingPage()))
+                  :
+                  Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (context) => DigiGoldOrderPage()));
             },
             child: Container(
                 decoration: BoxDecoration(

@@ -17,9 +17,9 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  TextEditingController birthdateController = TextEditingController();
-  TextEditingController anniversarydateController = TextEditingController();
-  TextEditingController spousebirthdateController = TextEditingController();
+  TextEditingController _birthdateController = TextEditingController();
+  TextEditingController _anniversarydateController = TextEditingController();
+  TextEditingController _spousebirthdateController = TextEditingController();
 
   final TextEditingController _firstNameController = TextEditingController();
 
@@ -80,11 +80,11 @@ class _ProfilePageState extends State<ProfilePage> {
     _lastNameController.text = customerProvider.customerData[0]["last_name"];
     _emailController.text = customerProvider.customerData[0]["email"];
    _phoneNoController.text = customerProvider.customerData[0]["mobile_no"];
-   _addressController.text = customerProvider.customerData[0]["address"];
+   _addressController.text = customerProvider.customerData[0]["fulladdress"];
    _pinNoController.text = customerProvider.customerData[0]["pincode"];
-   birthdateController.text = customerProvider.customerData[0]["birthday"];
-   anniversarydateController.text = customerProvider.customerData[0]["anniversary"];
-   spousebirthdateController.text = customerProvider.customerData[0]["spouse_birthday"];
+   _birthdateController.text = customerProvider.customerData[0]["birthday"];
+   _anniversarydateController.text = customerProvider.customerData[0]["anniversary"];
+   _spousebirthdateController.text = customerProvider.customerData[0]["spouse_birthday"];
 
 
   
@@ -305,12 +305,12 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
 
                   TextFormField(
-                    controller: birthdateController,
+                    controller: _birthdateController,
                     keyboardType: TextInputType.datetime,
                     onTap: () async {
                       print("CALENDAR PRESSED");
 
-                      birthdateController.text = await _selectedDate(context);
+                      _birthdateController.text = await _selectedDate(context);
                     },
                     decoration: const InputDecoration(
                       suffixIcon: SuffixIcon(icon: Icons.calendar_month),
@@ -329,10 +329,10 @@ class _ProfilePageState extends State<ProfilePage> {
                     onTap: () async {
                       print("CALENDAR PRESSED");
 
-                      anniversarydateController.text =
+                      _anniversarydateController.text =
                           await _selectedDate(context);
                     },
-                    controller: anniversarydateController,
+                    controller: _anniversarydateController,
                     keyboardType: TextInputType.datetime,
                     decoration: const InputDecoration(
                       suffixIcon: SuffixIcon(icon: Icons.calendar_month),
@@ -351,10 +351,10 @@ class _ProfilePageState extends State<ProfilePage> {
                     onTap: () async {
                       print("CALENDAR PRESSED");
 
-                      spousebirthdateController.text =
+                      _spousebirthdateController.text =
                           await _selectedDate(context);
                     },
-                    controller: spousebirthdateController,
+                    controller: _spousebirthdateController,
                     keyboardType: TextInputType.datetime,
                     decoration: const InputDecoration(
                       suffixIcon: SuffixIcon(icon: Icons.calendar_month),
@@ -384,7 +384,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           "email": _emailController.text,
                           "first_name": _firstNameController.text,
                           "last_name": _lastNameController.text,
-                        
+                       
                         };
 
                         setState(() {
@@ -415,16 +415,18 @@ class _ProfilePageState extends State<ProfilePage> {
 
                             customerProvider.setCustomerData(data);
 
-                            customerProvider.customerData[0]["mobile_no"] = _phoneNoController.text;
-                            customerProvider.customerData[0]["address"] = _addressController.text;
-                            print(" _pinNoController.text ${ _pinNoController.text}");
-                            customerProvider.customerData[0]["pincode"] = _pinNoController.text;
-                            print(" birthdateController.text ${ birthdateController.text}");
-                            customerProvider.customerData[0]["birthday"] = birthdateController.text;
-                            print(" anniversarydateController.text ${ anniversarydateController.text}");
-                            customerProvider.customerData[0]["anniversary"] = anniversarydateController.text;
-                            print(" spousebirthdateController.text ${ spousebirthdateController.text}");
-                            customerProvider.customerData[0]["spouse_birthday"] = spousebirthdateController.text;
+                            Map<String, String> updatedData2 = {
+                          "mobile_no": _phoneNoController.text,
+                          "fulladdress": _addressController.text,
+                          "pincode": _pinNoController.text,
+                          "birthday": _birthdateController.text,
+                          "anniversary": _anniversarydateController.text,
+                          "spouse_birthday": _spousebirthdateController.text,
+                          
+                       
+                        };
+
+                            customerProvider.addCustomerData(updatedData2);
 
                             print("updated customerData list ${customerProvider.customerData[0]}");
                             Navigator.pop(context);

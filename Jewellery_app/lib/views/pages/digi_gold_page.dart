@@ -150,7 +150,8 @@ bool isDigiGoldPlanLoading = true;
 
                 
 
-                isDigiGoldPlanLoading ? 
+                isDigiGoldPlanLoading 
+                ? 
                 Padding(
                   padding: const EdgeInsets.only(top: 20.0),
                   child: Center(
@@ -158,20 +159,32 @@ bool isDigiGoldPlanLoading = true;
                       color: Theme.of(context).primaryColor
                     )
                   ),
-                ):
-                SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height,
-                  child: ListView.builder(
-                      itemCount: ApiService.listOfDigiGoldPlan.length,
-                      itemBuilder: (context, index) {
-                        DigiGoldPlan.DigiGoldPlanModel digiGoldPlan = ApiService.listOfDigiGoldPlan[index];
-                        return DigiGoldCard(digiGoldPlan: digiGoldPlan,);
-                      }),
                 )
+                :
+
+                Column(
+                  children: getGoldPlanList(),
+                )
+               
+                
               ],
             )),
       ),
     );
   }
+  
+List<Widget> getGoldPlanList() {
+   
+    return ApiService.listOfDigiGoldPlan.map((e) => DigiGoldCard(digiGoldPlan: e)).toList();
+  }
 }
+ // SizedBox(
+                //   width: MediaQuery.of(context).size.width,
+                //   height: MediaQuery.of(context).size.height,
+                //   child: ListView.builder(
+                //       itemCount: ApiService.listOfDigiGoldPlan.length,
+                //       itemBuilder: (context, index) {
+                //         DigiGoldPlan.DigiGoldPlanModel digiGoldPlan = ApiService.listOfDigiGoldPlan[index];
+                //         return DigiGoldCard(digiGoldPlan: digiGoldPlan,);
+                //       }),
+                // )

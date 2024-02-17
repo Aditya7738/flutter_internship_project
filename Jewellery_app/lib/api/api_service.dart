@@ -1499,6 +1499,7 @@ class ApiService {
       }
       return null;
     }
+    return null;
   }
 
   static Future<http.Response> createProductReview(
@@ -1855,6 +1856,41 @@ class ApiService {
       }
     } else {
       print("response.body listOfDigiGoldPlan null");
+    }
+  }
+
+  static Future<http.Response> createDigiGoldOrder(Map<String, dynamic> billingData, int customerId,
+  List<Map<String, dynamic>> line_items, List<Map<String, dynamic>> meta_data ) async {
+    final url =  "https://tiarabytj.com/wp-json/wc/v3/orders?consumer_key=${Strings.consumerKey}&consumer_secret=${Strings.consumerSecret}";
+
+     Uri uri = Uri.parse(url);
+
+     final body = json.encode({
+          "customer_id": customerId,
+          "billing": billingData,
+          "line_items": line_items,
+          "meta_data": meta_data
+        });
+
+        print("REQUEST BODY $body");
+
+    http.Response response = await http.post(uri,
+        headers: {'Content-Type': 'application/json'},
+        body: body
+        );
+
+    print("STATUS ${response.statusCode}");
+
+    print("RECIEVE BODY ${response.body}");
+
+    if (response.statusCode == 201) {
+      final json = jsonDecode(response.body);
+      print("JSON $json");
+
+      return response;
+    } else {
+      print("REASON ${response.reasonPhrase}");
+      return response;
     }
   }
 }
