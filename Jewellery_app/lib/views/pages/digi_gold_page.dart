@@ -12,8 +12,7 @@ class DigiGoldPage extends StatefulWidget {
 }
 
 class _DigiGoldPageState extends State<DigiGoldPage> {
-
-bool isDigiGoldPlanLoading = true;
+  bool isDigiGoldPlanLoading = true;
   @override
   void initState() {
     // TODO: implement initState
@@ -41,7 +40,9 @@ bool isDigiGoldPlanLoading = true;
             child: Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 30.0,),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 30.0,
+                  ),
                   child: Card(
                     color: Theme.of(context).primaryColor,
                     child: Padding(
@@ -52,11 +53,14 @@ bool isDigiGoldPlanLoading = true;
                         children: [
                           Text(
                             "Flexi Plan",
-                            style: Theme.of(context).textTheme.headline2,
+                            style: Theme.of(context).textTheme.headline1,
                           ),
-                          SizedBox(height: 10.0,),
+                          SizedBox(
+                            height: 10.0,
+                          ),
                           Text(
                             "Buy Gold Worth",
+                            style: TextStyle(fontSize: 16.0),
                             // style: Theme.of(context).textTheme.headline2,
                           ),
                           TextField(),
@@ -88,10 +92,20 @@ bool isDigiGoldPlanLoading = true;
                           SizedBox(
                             height: 10.0,
                           ),
-                          Text("Buy Gold By Grams"),
+                          Text(
+                            "Buy Gold By Grams",
+                            style: TextStyle(fontSize: 16.0),
+                          ),
                           TextField(),
                           SizedBox(
                             height: 20.0,
+                          ),
+                          Text(
+                            "Terms & Conditions",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          SizedBox(
+                            height: 30.0,
                           ),
                           Container(
                             margin: EdgeInsets.symmetric(horizontal: 20.0),
@@ -117,13 +131,6 @@ bool isDigiGoldPlanLoading = true;
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    "Terms & Conditions",
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                  SizedBox(
-                                    height: 10.0,
-                                  ),
                                   Row(
                                     children: [
                                       Image.asset(
@@ -147,35 +154,26 @@ bool isDigiGoldPlanLoading = true;
                     ),
                   ),
                 ),
-
-                
-
-                isDigiGoldPlanLoading 
-                ? 
-                Padding(
-                  padding: const EdgeInsets.only(top: 20.0),
-                  child: Center(
-                    child: CircularProgressIndicator(
-                      color: Theme.of(context).primaryColor
-                    )
-                  ),
-                )
-                :
-
-                Column(
-                  children: getGoldPlanList(),
-                )
-               
-                
+                isDigiGoldPlanLoading
+                    ? Padding(
+                        padding: const EdgeInsets.only(top: 20.0),
+                        child: Center(
+                            child: CircularProgressIndicator(
+                                color: Theme.of(context).primaryColor)),
+                      )
+                    : Column(
+                        children: getGoldPlanList(),
+                      )
               ],
             )),
       ),
     );
   }
-  
-List<Widget> getGoldPlanList() {
-   
-    return ApiService.listOfDigiGoldPlan.map((e) => DigiGoldCard(digiGoldPlan: e)).toList();
+
+  List<Widget> getGoldPlanList() {
+    return ApiService.listOfDigiGoldPlan
+        .map((e) => DigiGoldCard(digiGoldPlan: e))
+        .toList();
   }
 }
  // SizedBox(

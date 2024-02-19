@@ -32,7 +32,7 @@ class CartTotalRow extends StatelessWidget {
                   Text(value, style: Theme.of(context).textTheme.headline3)
                 ],
               )
-            : Text(value, style: Theme.of(context).textTheme.headline3)
+            : Text(value[0].toUpperCase() + value.substring(1).toLowerCase(), style: Theme.of(context).textTheme.headline3)
       ],
     );
   }

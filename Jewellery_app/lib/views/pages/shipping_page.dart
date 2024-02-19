@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:ffi';
 
+import 'package:Tiara_by_TJ/providers/order_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:Tiara_by_TJ/api/api_service.dart';
 import 'package:Tiara_by_TJ/constants/strings.dart';
@@ -146,6 +147,7 @@ class _ShippingPageState extends State<ShippingPage> {
     final customerProvider =
         Provider.of<CustomerProvider>(context, listen: false);
     final cartProvider = Provider.of<CartProvider>(context, listen: false);
+    final orderProvider = Provider.of<OrderProvider>(context);
     final customerData = customerProvider.customerData[0];
 
     String productName = "";
@@ -368,13 +370,13 @@ class _ShippingPageState extends State<ShippingPage> {
                                   }
                                 : shippingData = billingData;
 
-                            List<Map<String, dynamic>> productData =
+                            List<Map<String, dynamic>> lineItems =
                                 <Map<String, dynamic>>[];
 
                             final cartList = cartProvider.cart;
 
                             for (int i = 0; i < cartList.length; i++) {
-                              productData.add({
+                              lineItems.add({
                                 "name": cartList[i].productName ?? "Jewellery",
                                 "product_id": cartList[i].cartProductid,
                                 "quantity": int.parse(cartList[i].quantity!),
@@ -388,18 +390,28 @@ class _ShippingPageState extends State<ShippingPage> {
                               });
                             }
 
-                            print("STORED PRODUCT $productData");
+                            print("STORED PRODUCT $lineItems");
 
                             setState(() {
                               creatingOrder = true;
                             });
                             //do it after payment successful - redirect user to this page and modify this page where login, shipping ajd paymet will be on same page
+                            orderProvider.setBillingData(billingData);
+                            orderProvider.setShippingData(shippingData);
+                            orderProvider.setCustomerId(customerId);
+                            orderProvider.setLineItems(lineItems);
+                            orderProvider.setCustomerId(customerId);
+                            orderProvider.setPrice(cartProvider.calculateTotalPrice().toString());
+                            
+                            
                             // await ApiService.createOrder(
                             //     billingData,
                             //     shippingData,
-                            //     productData,
+                            //     lineItems,
                             //     customerId,
                             //     cartProvider.calculateTotalPrice());
+
+
 
                             List<Map<String, dynamic>> razorpayOrderData =
                                 await uiCreateRazorpayOrder();
@@ -429,6 +441,7 @@ class _ShippingPageState extends State<ShippingPage> {
                             Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => PaymentPage(
                                   orderId: razorpayOrderData[0]["id"],
+                                  fromCart: true,
                                  // cashFreeData: impCashFreeData
                                   ),
                             ));

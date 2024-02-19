@@ -4,6 +4,8 @@ import 'package:Tiara_by_TJ/api/api_service.dart';
 import 'package:Tiara_by_TJ/helpers/validation_helper.dart';
 import 'package:Tiara_by_TJ/model/digi_gold_plan_model.dart';
 import 'package:Tiara_by_TJ/providers/customer_provider.dart';
+import 'package:Tiara_by_TJ/providers/digigold_provider.dart';
+import 'package:Tiara_by_TJ/providers/order_provider.dart';
 import 'package:Tiara_by_TJ/views/pages/payment_page.dart';
 import 'package:Tiara_by_TJ/views/widgets/cart_total_row.dart';
 import 'package:Tiara_by_TJ/views/widgets/shipping_form.dart';
@@ -195,6 +197,7 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
   Widget build(BuildContext context) {
     final customerProvider =
         Provider.of<CustomerProvider>(context, listen: false);
+         final orderProvider = Provider.of<OrderProvider>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -329,6 +332,28 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
                 ),
                 getSelectedProofWidget(selectedProof),
                 const SizedBox(
+                  height: 20.0,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Container(
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: Theme.of(context).primaryColor,
+                                    style: BorderStyle.solid),
+                                borderRadius: BorderRadius.circular(5.0)),
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 10.0, horizontal: 20.0),
+                            child: Text(
+                              "Upload document",
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColor,
+                                  fontSize: 17.0),
+                            )),
+                  ],
+                ),
+                        const SizedBox(
                   height: 30.0,
                 ),
                 Text("Nominee Details",
@@ -366,7 +391,7 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
                       setState(() {
                         isOrderCreating = true;
                       });
-                      Map<String, dynamic> billingData = {
+                      Map<String, String> billingData = {
                         "first_name": _firstNameController.text,
                         "last_name": _lastNameController.text,
                         "company": _companyNameController.text,
@@ -404,12 +429,16 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
                       print(
                           "customerProvider.customerId ${customerProvider.customerData[0]["id"]}");
 
-                      http.Response response =
-                          await ApiService.createDigiGoldOrder(
-                              billingData,
-                              customerProvider.customerData[0]["id"],
-                              line_items,
-                              meta_data);
+                  
+
+                      orderProvider.setBillingData(billingData);
+                      orderProvider.setCustomerId(customerProvider.customerData[0]["id"]);
+                      orderProvider.setLineItems(line_items);
+                      orderProvider.setMetaData(meta_data);
+                      orderProvider.setPrice(widget.digiGoldPlanModel.price ?? "");
+
+
+
 
                       List<Map<String, dynamic>> razorpayOrderData =
                           await uiCreateRazorpayOrder();
@@ -456,7 +485,10 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
                       customerProvider.addCustomerData({
                         "address_1": _addressController1.text,
                         "address_2": _addressController2.text,
-                        "city": _cityController.text
+                        "city": _cityController.text,
+                        "digi_gold_billing_email": _emailController.text,
+                         "digi_gold_billing_phone": _phoneNoController.text,
+                      "digi_gold_plan_name" : widget.digiGoldPlanModel.name ?? "Digi Gold Plan"
                       });
 
                       if (_nomineeNameController.text != "" &&
@@ -474,10 +506,11 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
                         isOrderCreating = false;
                       });
 
-                      if (response.statusCode == 201) {
+                      if (razorpayOrderData.isNotEmpty) {
                         Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => PaymentPage(
                             orderId: razorpayOrderData[0]["id"],
+                            fromCart: false,
                             // cashFreeData: impCashFreeData
                           ),
                         ));

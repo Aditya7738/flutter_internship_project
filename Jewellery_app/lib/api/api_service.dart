@@ -454,8 +454,8 @@ class ApiService {
 ///////////////////////////////////////////////////////
       for (int j = 0; j < filterList.length; j++) {
         if (filterList[j]["parent"] == "price_range") {
-       endpoint += "&min_price=${filterList[j]["price_range"]["min_price"]}&max_price=${filterList[j]["price_range"]["max_price"]}";
-
+          endpoint +=
+              "&min_price=${filterList[j]["price_range"]["min_price"]}&max_price=${filterList[j]["price_range"]["max_price"]}";
         }
       }
     }
@@ -1139,24 +1139,42 @@ class ApiService {
   static Future<http.Response> createOrder(
       Map<String, String> billingData,
       Map<String, String> shippingData,
-      List<Map<String, dynamic>> productData,
+      List<Map<String, dynamic>> line_items,
       int customerId,
-      double totalPrice) async {
+      String totalPrice,
+      List<Map<String, dynamic>>? meta_data) async {
     print("CUSTOMERID $customerId");
     const endpoint =
         "https://tiarabytj.com/wp-json/wc/v3/orders?consumer_key=${Strings.consumerKey}&consumer_secret=${Strings.consumerSecret}";
 
     Uri uri = Uri.parse(endpoint);
 
-    http.Response response = await http.post(uri,
-        headers: {'Content-Type': 'application/json'},
-        body: json.encode({
-          "customer_id": customerId,
-          "billing": billingData,
-          "shipping": shippingData,
-          // "date_paid": DateTime.now().toIso8601String(),
-          "line_items": productData
-        }));
+    http.Response response;
+
+    if (meta_data != null) {
+      response = await http.post(uri,
+          headers: {'Content-Type': 'application/json'},
+          body: json.encode({
+            "customer_id": customerId,
+            "total": totalPrice,
+            "billing": billingData,
+            "shipping": billingData,
+            // "date_paid": DateTime.now().toIso8601String(),
+            "line_items": line_items,
+            "meta_data": meta_data
+          }));
+    } else {
+      response = await http.post(uri,
+          headers: {'Content-Type': 'application/json'},
+          body: json.encode({
+            "customer_id": customerId,
+            "total": totalPrice,
+            "billing": billingData,
+            "shipping": shippingData,
+            // "date_paid": DateTime.now().toIso8601String(),
+            "line_items": line_items
+          }));
+    }
 
     print("STATUS ${response.statusCode}");
 
@@ -1196,8 +1214,10 @@ class ApiService {
       int customerId, int pageNo) async {
     tempCustomerId = customerId;
 
+    print("CUSTOMERID $customerId");
+
     String endpoint =
-        "https://tiarabytj.com/wp-json/wc/v3/orders?consumer_key=${Strings.consumerKey}&consumer_secret=${Strings.consumerSecret}&customer=$customerId&page=$pageNo&per_page=5";
+        "https://tiarabytj.com/wp-json/wc/v3/orders?consumer_key=${Strings.consumerKey}&consumer_secret=${Strings.consumerSecret}&customer=$customerId&page=$pageNo&per_page=10";
 
     Uri uri = Uri.parse(endpoint);
 
@@ -1458,6 +1478,8 @@ class ApiService {
         final jsonBody = jsonDecode(body);
 
         print("paymentbody $jsonBody");
+
+        paymentGateways.clear();
 
         for (var i = 0; i < jsonBody.length; i++) {
           if (jsonBody[i]["enabled"] == true) {
@@ -1859,25 +1881,27 @@ class ApiService {
     }
   }
 
-  static Future<http.Response> createDigiGoldOrder(Map<String, dynamic> billingData, int customerId,
-  List<Map<String, dynamic>> line_items, List<Map<String, dynamic>> meta_data ) async {
-    final url =  "https://tiarabytj.com/wp-json/wc/v3/orders?consumer_key=${Strings.consumerKey}&consumer_secret=${Strings.consumerSecret}";
+  static Future<http.Response> createDigiGoldOrder(
+      Map<String, dynamic> billingData,
+      int customerId,
+      List<Map<String, dynamic>> line_items,
+      List<Map<String, dynamic>> meta_data) async {
+    final url =
+        "https://tiarabytj.com/wp-json/wc/v3/orders?consumer_key=${Strings.consumerKey}&consumer_secret=${Strings.consumerSecret}";
 
-     Uri uri = Uri.parse(url);
+    Uri uri = Uri.parse(url);
 
-     final body = json.encode({
-          "customer_id": customerId,
-          "billing": billingData,
-          "line_items": line_items,
-          "meta_data": meta_data
-        });
+    final body = json.encode({
+      "customer_id": customerId,
+      "billing": billingData,
+      "line_items": line_items,
+      "meta_data": meta_data
+    });
 
-        print("REQUEST BODY $body");
+    print("REQUEST BODY $body");
 
     http.Response response = await http.post(uri,
-        headers: {'Content-Type': 'application/json'},
-        body: body
-        );
+        headers: {'Content-Type': 'application/json'}, body: body);
 
     print("STATUS ${response.statusCode}");
 

@@ -1,5 +1,7 @@
 import 'package:Tiara_by_TJ/providers/customize_options_provider.dart';
+import 'package:Tiara_by_TJ/providers/digigold_provider.dart';
 import 'package:Tiara_by_TJ/providers/filteroptions_provider.dart';
+import 'package:Tiara_by_TJ/providers/order_provider.dart';
 import 'package:Tiara_by_TJ/views/pages/digi_gold_page.dart';
 import 'package:Tiara_by_TJ/views/pages/filter.dart';
 import 'package:Tiara_by_TJ/views/pages/home_screen.dart';
@@ -146,7 +148,9 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(create: (context) => ProfileProvider()),
         ChangeNotifierProvider(create: (context) => CustomerProvider()),
         ChangeNotifierProvider(create: (context) => CustomizeOptionsProvider()),
-        ChangeNotifierProvider(create: (context) => FilterOptionsProvider())
+        ChangeNotifierProvider(create: (context) => FilterOptionsProvider()),
+        ChangeNotifierProvider(create: (context) => DigiGoldProvider()),
+        ChangeNotifierProvider(create: (context) => OrderProvider())
       ],
       child: MaterialApp(
         title: Strings.app_name,

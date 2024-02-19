@@ -1,4 +1,6 @@
-import 'package:Tiara_by_TJ/views/pages/digigold_order_page.dart';
+
+import 'package:Tiara_by_TJ/providers/digigold_provider.dart';
+import 'package:Tiara_by_TJ/views/pages/digigold_plan_order.dart';
 import 'package:flutter/material.dart';
 import 'package:Tiara_by_TJ/views/pages/dashboard_page.dart';
 import 'package:Tiara_by_TJ/views/pages/payment_page.dart';
@@ -6,7 +8,7 @@ import 'package:Tiara_by_TJ/views/pages/search_page.dart';
 import 'package:Tiara_by_TJ/views/pages/shipping_page.dart';
 import 'package:Tiara_by_TJ/views/widgets/empty_list_widget.dart';
 import 'package:lottie/lottie.dart';
-
+import 'package:provider/provider.dart';
 class PaymentFailedPage extends StatelessWidget {
 
     final bool fromCart;
@@ -14,6 +16,8 @@ class PaymentFailedPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+     final digiGoldProvider =
+        Provider.of<DigiGoldProvider>(context, listen: true);
     return Scaffold(
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -34,7 +38,7 @@ class PaymentFailedPage extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => ShippingPage()))
                   :
                   Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (context) => DigiGoldOrderPage()));
+                  MaterialPageRoute(builder: (context) => DigiGoldPlanOrderPage(digiGoldPlanModel: digiGoldProvider.digiGoldPlanModel!,)));
             },
             child: Container(
                 decoration: BoxDecoration(

@@ -1,5 +1,6 @@
 import 'package:Tiara_by_TJ/model/digi_gold_plan_model.dart' as DigiGoldPlan;
 import 'package:Tiara_by_TJ/providers/customer_provider.dart';
+import 'package:Tiara_by_TJ/providers/digigold_provider.dart';
 import 'package:Tiara_by_TJ/views/pages/digigold_plan_order.dart';
 import 'package:Tiara_by_TJ/views/pages/login_page.dart';
 import 'package:Tiara_by_TJ/views/widgets/digi_gold_plan_subcard.dart';
@@ -39,7 +40,6 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
         setState(() {
           jeweller_contribution = widget.digiGoldPlan.metaData[i].value;
           isJewellerContributing = true;
-          
         });
       }
     }
@@ -61,6 +61,8 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
   Widget build(BuildContext context) {
     final customerProvider =
         Provider.of<CustomerProvider>(context, listen: true);
+    final digiGoldProvider =
+        Provider.of<DigiGoldProvider>(context, listen: true);
     bool isCustomerDataEmpty = customerProvider.customerData.isEmpty;
     print("termsConditions $termsConditions");
     return Padding(
@@ -254,11 +256,12 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                       : GestureDetector(
                           onTap: () {
                             if (checkBoxChecked) {
+                              digiGoldProvider.setDigiGoldPlanModel(widget.digiGoldPlan);
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) =>
-                                        DigiGoldPlanOrderPage(digiGoldPlanModel: widget.digiGoldPlan),
+                                    builder: (context) => DigiGoldPlanOrderPage(
+                                        digiGoldPlanModel: widget.digiGoldPlan),
                                   ));
                             }
                           },

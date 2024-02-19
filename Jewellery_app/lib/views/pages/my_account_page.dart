@@ -1,3 +1,4 @@
+import 'package:Tiara_by_TJ/views/pages/my_gold_plans.dart';
 import 'package:flutter/material.dart';
 import 'package:Tiara_by_TJ/providers/cart_provider.dart';
 import 'package:Tiara_by_TJ/providers/customer_provider.dart';
@@ -16,10 +17,11 @@ class MyAccountPage extends StatelessWidget {
   MyAccountPage({super.key});
 
   List<String> icons = [
-    "assets/images/to_do_list.png",
+    "assets/images/order_delivery.png",
     "assets/images/credit_card.png",
     //"assets/images/refund.png",
     "assets/images/wishlist.png",
+    "assets/images/gold_bars_menu.png",
     //  "assets/images/home.png",
     //"assets/images/discount.png",
     //  "assets/images/pin.png",
@@ -30,13 +32,14 @@ class MyAccountPage extends StatelessWidget {
     "Payment",
     // "Manage Refunds",
     "My Wishlist",
+    "My Gold plans",
     // "My Free Try at Home",
     // "My Offers",
     // "Address",
     "Logout"
   ];
 
-  void showCouponDialog(BuildContext context) {
+  void showLogoutDialog(BuildContext context) {
     //TextEditingController textEditingController = TextEditingController();
     final customerProvider =
         Provider.of<CustomerProvider>(context, listen: false);
@@ -222,11 +225,11 @@ class MyAccountPage extends StatelessWidget {
                               Navigator.of(context).push(MaterialPageRoute(
                                   builder: (context) => const WishListPage()));
                               break;
-                            // case 3:
-                            // Navigator.of(context).push(MaterialPageRoute(builder: (context) => const WishListPage()));
-                            // break;
                             case 3:
-                              showCouponDialog(context);
+                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => const MyGoldPlans()));
+                            break;
+                            case 4:
+                              showLogoutDialog(context);
                               break;
                             default:
                           }
@@ -251,25 +254,5 @@ class MyAccountPage extends StatelessWidget {
     );
   }
 
-  Card MyAccountListItem(int index) {
-    return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-      child: Padding(
-        padding: const EdgeInsets.all(18.0),
-        child: Row(
-          children: [
-            Image.asset(
-              icons[index],
-              width: 40.0,
-              height: 40.0,
-            ),
-            const SizedBox(
-              width: 10.0,
-            ),
-            Text(titles[index], style: const TextStyle(fontSize: 18.0))
-          ],
-        ),
-      ),
-    );
-  }
+ 
 }
