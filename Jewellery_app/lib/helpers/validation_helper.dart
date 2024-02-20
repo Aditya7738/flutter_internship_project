@@ -69,10 +69,10 @@ class ValidationHelper {
     if (nullOrEmptyString(pass) == null) {
       //"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
       RegExp regExp = RegExp(
-          r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$');
+          r'^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&-+=()])(?=\\S+$).{8, 20}$');
       print("${regExp.hasMatch(pass!)}");
       print(pass);
-      if (!regExp.hasMatch(pass)) {
+      if (regExp.hasMatch(pass)) {
         return "Password don't contain uppercase, lowercase, number, symbol and length is below 6";
       }
       return null;

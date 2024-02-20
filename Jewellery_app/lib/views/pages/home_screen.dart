@@ -64,7 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
     });
 
     // Fetch more data (e.g., using ApiService)
-    await ApiService.showNextPageOfCategories();
+    await ApiService.showNextPageOfCategories(context);
 
     setState(() {
       isNewCategoryLoading = false;
@@ -81,7 +81,7 @@ class _HomeScreenState extends State<HomeScreen> {
   // }
 
   Future<void> getRequest() async {
-    await ApiService.fetchCategories(1);
+    await ApiService.fetchCategories(1, context);
 
     setState(() {
       isLoading = false;

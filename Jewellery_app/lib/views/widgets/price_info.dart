@@ -16,7 +16,7 @@ class PriceInfo extends StatelessWidget {
                       ),
                     
                       Text(
-                        price,
+                        "₹ $price",
                         style: const TextStyle(
                           fontSize: 16.0,
                         ),

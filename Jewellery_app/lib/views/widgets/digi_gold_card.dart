@@ -1,7 +1,7 @@
 import 'package:Tiara_by_TJ/model/digi_gold_plan_model.dart' as DigiGoldPlan;
 import 'package:Tiara_by_TJ/providers/customer_provider.dart';
 import 'package:Tiara_by_TJ/providers/digigold_provider.dart';
-import 'package:Tiara_by_TJ/views/pages/digigold_plan_order.dart';
+import 'package:Tiara_by_TJ/views/pages/digigold_plan_bill.dart';
 import 'package:Tiara_by_TJ/views/pages/login_page.dart';
 import 'package:Tiara_by_TJ/views/widgets/digi_gold_plan_subcard.dart';
 import 'package:Tiara_by_TJ/views/widgets/price_info.dart';
@@ -24,6 +24,7 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
   String termsConditions = "";
   bool checkBoxChecked = false;
   bool termsSeen = false;
+  int planDuration = 0;
 
   @override
   void initState() {
@@ -32,6 +33,14 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
 
     checkIsJewellerContributing();
     getTermsConditions();
+
+    for (var i = 0; i < widget.digiGoldPlan.metaData.length; i++) {
+      if (widget.digiGoldPlan.metaData[i].key == "digi_plan_duration") {
+        planDuration = int.parse(widget.digiGoldPlan.metaData[i].value);
+      }
+    }
+
+    print("planDuration $planDuration");
   }
 
   checkIsJewellerContributing() {
@@ -99,26 +108,28 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                       children: [
                         Text(
                           "Plan Type: ",
-                          style: Theme.of(context).textTheme.headline4,
+                          style: Theme.of(context).textTheme.headline3,
                         ),
-                        Text("Amount")
+                        Text(
+                          "Amount",
+                          style: TextStyle(fontSize: 16.0),
+                        )
                       ],
                     ),
                   ),
                   Container(
-                    width: MediaQuery.of(context).size.width / 2,
+                    width: MediaQuery.of(context).size.width / 1.8,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
                           "Plan Duration: ",
-                          style: Theme.of(context).textTheme.headline4,
+                          style: Theme.of(context).textTheme.headline3,
                         ),
-                        Text(widget.digiGoldPlan.price != null
-                            ? widget.digiGoldPlan.price == "10"
-                                ? "12 Months"
-                                : "11 months"
-                            : "11 months")
+                        Text(
+                          "$planDuration months",
+                          style: TextStyle(fontSize: 16.0),
+                        )
                       ],
                     ),
                   ),
@@ -128,25 +139,13 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                       height: 20.0,
                     ),
                   ),
-                  widget.digiGoldPlan.price != null
-                      ? widget.digiGoldPlan.price == "10"
-                          ? PriceInfo(label: "Total Grams: ", price: "10 grams")
-                          : PriceInfo(
-                              label: "You Pay Per Month: ",
-                              price: widget.digiGoldPlan.price ?? "0")
-                      : PriceInfo(
-                          label: "You Pay Per Month: ",
-                          price: widget.digiGoldPlan.price ?? "0"),
-                  widget.digiGoldPlan.price != null
-                      ? widget.digiGoldPlan.price == "10"
-                          ? PriceInfo(
-                              label: "Total Grams Per Month: ",
-                              price: "0.833 grams")
-                          : PriceInfo(
-                              label: "Total Amount You Pay: ",
-                              price:
-                                  "${int.parse(widget.digiGoldPlan.price!) * 11}")
-                      : PriceInfo(label: "Total Amount You Pay: ", price: "0"),
+                  PriceInfo(
+                      label: "You Pay Per Month: ",
+                      price: widget.digiGoldPlan.price ?? "0"),
+                  PriceInfo(
+                      label: "Total Amount You Pay: ",
+                      price:
+                          "${int.parse(widget.digiGoldPlan.price ?? "0") * planDuration}"),
                   isJewellerContributing
                       ? PriceInfo(
                           label: "Jeweller Contribution: ",
@@ -159,7 +158,7 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                       ? PriceInfo(
                           label: "You Get Jewellery Worth: ",
                           price:
-                              "${int.parse(jeweller_contribution) + int.parse(widget.digiGoldPlan.price!) * 11}")
+                              "${int.parse(jeweller_contribution) + int.parse(widget.digiGoldPlan.price!) * planDuration}")
                       : SizedBox(
                           height: 10.0,
                         ),
@@ -207,8 +206,9 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                           },
                           child: Text(
                             "Terms & Conditions",
-                            style:
-                                TextStyle(decoration: TextDecoration.underline),
+                            style: TextStyle(
+                                decoration: TextDecoration.underline,
+                                fontSize: 17.0),
                           ))
                     ],
                   ),
@@ -256,7 +256,8 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                       : GestureDetector(
                           onTap: () {
                             if (checkBoxChecked) {
-                              digiGoldProvider.setDigiGoldPlanModel(widget.digiGoldPlan);
+                              digiGoldProvider
+                                  .setDigiGoldPlanModel(widget.digiGoldPlan);
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(

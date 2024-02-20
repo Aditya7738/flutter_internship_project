@@ -235,7 +235,7 @@ class _MyOrderTabState extends State<MyOrderTab> {
                                   "Order Received ",
                                   style: Theme.of(context).textTheme.headline3
                                 ),
-                                Text("(21-May-2021)")
+                                Text("(${DateHelper.dateFormatForOrder(orderModel.dateCreated!)})")
                               ],
                             ),
                             Column(
@@ -269,7 +269,7 @@ class _MyOrderTabState extends State<MyOrderTab> {
                                   children: [
                                    
                                     
-                                    Text("Placed on \n${formatDate(orderModel.dateCreated!)}"),
+                                    Text("Placed on \n${DateHelper.dateFormatForOrder(orderModel.dateCreated!)}"),
                                     SizedBox(width: 80.0,
                                       child: Text(
                                           "Expected Delivery on ${DateHelper.getCurrentDateInWords()}", maxLines: 5,),
@@ -289,10 +289,6 @@ class _MyOrderTabState extends State<MyOrderTab> {
           );
   }
 
-  String formatDate(DateTime dateTime){
-    final DateFormat formatter = DateFormat('dd-MMM-yyyy');
-    
-    return formatter.format(dateTime);
-  }
+  
 
 }

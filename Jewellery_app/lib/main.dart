@@ -54,6 +54,30 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     initPlatformState();
+    requestPermissions();
+  }
+
+  Future<void> requestPermissions() async {
+    try {
+      Map<Permission, PermissionStatus> status =
+          await [Permission.notification, Permission.storage].request();
+
+      if (status[Permission.notification] == PermissionStatus.denied) {
+        Permission.notification.request();
+      } else if (status[Permission.notification] ==
+          PermissionStatus.permanentlyDenied) {
+        await openAppSettings();
+      }
+
+      if (status[Permission.storage] == PermissionStatus.denied) {
+        Permission.storage.request();
+      } else if (status[Permission.storage] ==
+          PermissionStatus.permanentlyDenied) {
+        await openAppSettings();
+      }
+    } catch (e) {
+      print("Error requesting permissions: $e");
+    }
   }
 
   Future<void> initPlatformState() async {
@@ -71,11 +95,41 @@ class _MyAppState extends State<MyApp> {
 
     OneSignal.Notifications.clearAll();
 
-    await Permission.notification.isDenied.then((value) {
-      if (value) {
-        Permission.notification.request();
-      }
-    });
+    // await Permission.notification.isDenied.then((value) {
+    //   if (value) {
+    //     Permission.notification.request();
+    //   }
+    // });
+
+    // await Permission.mediaLibrary.isDenied.then((value){
+    //   if (value) {
+    //     Permission.mediaLibrary.request();
+    //   }
+    // });
+
+    // await Permission.accessMediaLocation.isDenied.then((value){
+    //   if (value) {
+    //     Permission.accessMediaLocation.request();
+    //   }
+    // });
+
+    // await Permission.storage.isDenied.then((value) {
+    //   if (value) {
+    //     Permission.storage.request();
+    //   }
+    // });
+
+    // await Permission.notification.isPermanentlyDenied.then((value) async {
+    //   if (value) {
+    //     await openAppSettings();
+    //   }
+    // });
+
+    // await Permission.storage.isPermanentlyDenied.then((value) async {
+    //   if (value) {
+    //     await openAppSettings();
+    //   }
+    // });
 
     OneSignal.User.pushSubscription.addObserver((state) {
       print("PERMISSION STATE ${state.current.optedIn}");
@@ -133,13 +187,15 @@ class _MyAppState extends State<MyApp> {
   }
 
 ////////////////////////////////////////////////////////
-
+ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 
-    getBasicAuthForRazorPay();
+    getBasicAuthForRazorPay(context);
+
+
 
     return MultiProvider(
       providers: [
@@ -153,6 +209,7 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(create: (context) => OrderProvider())
       ],
       child: MaterialApp(
+        navigatorKey: navigatorKey,
         title: Strings.app_name,
         theme: ThemeData(
             primaryColor: Color(0xffCC868A),
@@ -180,8 +237,8 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-  void getBasicAuthForRazorPay() async {
+  void getBasicAuthForRazorPay(BuildContext context) async {
     print("getBasicAuthForRazorPay");
-    await ApiService.generateBasicAuthForRazorPay();
+    await ApiService.generateBasicAuthForRazorPay(context);
   }
 }

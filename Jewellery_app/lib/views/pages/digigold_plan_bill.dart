@@ -1,6 +1,7 @@
 import 'dart:convert';
-
+import 'package:image_picker/image_picker.dart';
 import 'package:Tiara_by_TJ/api/api_service.dart';
+import 'package:Tiara_by_TJ/helpers/date_helper.dart';
 import 'package:Tiara_by_TJ/helpers/validation_helper.dart';
 import 'package:Tiara_by_TJ/model/digi_gold_plan_model.dart';
 import 'package:Tiara_by_TJ/providers/customer_provider.dart';
@@ -13,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:provider/provider.dart';
+import 'package:path/path.dart' as path;
 
 class DigiGoldPlanOrderPage extends StatefulWidget {
   final DigiGoldPlanModel digiGoldPlanModel;
@@ -123,6 +125,14 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
 
   bool isOrderCreating = false;
 
+  int planDuration = 0;
+
+  bool isImageUploading = false;
+  
+  bool showFileName = false;
+
+  String imagePath = "";
+
   @override
   void initState() {
     // TODO: implement initState
@@ -164,32 +174,42 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
 
     if (customerProvider.customerData[0].containsKey("city")) {
       _cityController.text = customerProvider.customerData[0]["city"];
+      print("CITY ${_cityController.text}");
     }
 
     if (customerProvider.customerData[0].containsKey("aadhar_card_no")) {
-      _cityController.text = customerProvider.customerData[0]["aadhar_card_no"];
+      _aadharCardController.text =
+          customerProvider.customerData[0]["aadhar_card_no"];
     }
 
     if (customerProvider.customerData[0].containsKey("pan_card_no")) {
-      _cityController.text = customerProvider.customerData[0]["pan_card_no"];
+      _panCardController.text = customerProvider.customerData[0]["pan_card_no"];
     }
 
     if (customerProvider.customerData[0].containsKey("passport_no")) {
-      _cityController.text = customerProvider.customerData[0]["passport_no"];
+      _passportController.text =
+          customerProvider.customerData[0]["passport_no"];
     }
 
     if (customerProvider.customerData[0].containsKey("driving_license_no")) {
-      _cityController.text =
+      _licenseNoController.text =
           customerProvider.customerData[0]["driving_license_no"];
     }
 
     if (customerProvider.customerData[0].containsKey("nominee_name")) {
-      _cityController.text = customerProvider.customerData[0]["nominee_name"];
+      _nomineeNameController.text =
+          customerProvider.customerData[0]["nominee_name"];
     }
 
     if (customerProvider.customerData[0].containsKey("nominee_relation")) {
-      _cityController.text =
+      _nomineeRelationController.text =
           customerProvider.customerData[0]["nominee_relation"];
+    }
+
+    for (var i = 0; i < widget.digiGoldPlanModel.metaData.length; i++) {
+      if (widget.digiGoldPlanModel.metaData[i].key == "digi_plan_duration") {
+        planDuration = int.parse(widget.digiGoldPlanModel.metaData[i].value);
+      }
     }
   }
 
@@ -197,7 +217,7 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
   Widget build(BuildContext context) {
     final customerProvider =
         Provider.of<CustomerProvider>(context, listen: false);
-         final orderProvider = Provider.of<OrderProvider>(context);
+    final orderProvider = Provider.of<OrderProvider>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -332,28 +352,95 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
                 ),
                 getSelectedProofWidget(selectedProof),
                 const SizedBox(
-                  height: 20.0,
+                  height: 10.0,
                 ),
+                
+                showFileName ?
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0),
+                  child: Column(
+                    children: [
+                      Text("Uploaded file name: ${path.basename(imagePath)}", style: TextStyle(fontWeight: FontWeight.bold),),
+                      const SizedBox(
+                    height: 20.0,
+                  ),
+                    ],
+                  ),
+                ):
+                SizedBox(),
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Container(
-                            decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: Theme.of(context).primaryColor,
-                                    style: BorderStyle.solid),
-                                borderRadius: BorderRadius.circular(5.0)),
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 10.0, horizontal: 20.0),
-                            child: Text(
-                              "Upload document",
-                              style: TextStyle(
+                    GestureDetector(
+                      onTap: () async {
+                        var image = await ImagePicker()
+                            .pickImage(source: ImageSource.gallery);
+                        if (image != null) {
+                          setState(() {
+                            imagePath = image.path;
+                          });
+                          print("imagePath $imagePath");
+
+                          setState(() {
+                            isImageUploading = true;
+                          });
+
+                          http.StreamedResponse response =
+                              await ApiService.uploadDocumentImage(imagePath);
+
+                          setState(() {
+                            isImageUploading = false;
+                          });
+
+                          if (response.statusCode == 201) {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                padding: EdgeInsets.all(15.0),
+                                backgroundColor: Theme.of(context).primaryColor,
+                                content: Text(
+                                    "Image upload successfully", style: TextStyle(color: Colors.white),)));
+
+                                    setState(() {
+                                      showFileName = true;
+                                    });
+                          }else{
+                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                padding: EdgeInsets.all(15.0),
+                                backgroundColor: Colors.red,
+                                content: Text(
+                                    "Failed upload image", style: TextStyle(color: Colors.white),)));
+                          }
+                        }
+                      },
+                      child: Container(
+                          decoration: BoxDecoration(
+                              border: Border.all(
                                   color: Theme.of(context).primaryColor,
-                                  fontSize: 17.0),
-                            )),
+                                  style: BorderStyle.solid),
+                              borderRadius: BorderRadius.circular(5.0)),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 10.0, horizontal: 20.0),
+                          child: 
+                          isImageUploading ?
+                          SizedBox(
+                            width: 200.0,
+                            child: Center(
+                              child: CircularProgressIndicator(
+                                strokeWidth: 3.0,
+                                color: Theme.of(context).primaryColor,
+                              ),
+                            ),
+                          ) :
+                          Text(
+                            "Upload document image",
+                            style: TextStyle(
+                                color: Theme.of(context).primaryColor,
+                                fontSize: 17.0),
+                          )),
+                    ),
                   ],
                 ),
-                        const SizedBox(
+                const SizedBox(
                   height: 30.0,
                 ),
                 Text("Nominee Details",
@@ -391,6 +478,8 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
                       setState(() {
                         isOrderCreating = true;
                       });
+
+                      print("CITY1 ${_cityController.text}");
                       Map<String, String> billingData = {
                         "first_name": _firstNameController.text,
                         "last_name": _lastNameController.text,
@@ -419,26 +508,31 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
                           "key": "virtual_order",
                           "value": "digigold",
                         },
-                   
                         {
                           "key": "gold_gross",
                           "value": widget.digiGoldPlanModel.weight,
+                        },
+                        {"key": "digi_plan_duration", "value": "$planDuration"},
+                        {
+                          "key": "digi_plan_name",
+                          "value": widget.digiGoldPlanModel.name ?? "Gold plan"
+                        },
+                        {
+                          "key": "payment_date",
+                          "value": DateTime.now().toString()
                         },
                       ];
 
                       print(
                           "customerProvider.customerId ${customerProvider.customerData[0]["id"]}");
 
-                  
-
                       orderProvider.setBillingData(billingData);
-                      orderProvider.setCustomerId(customerProvider.customerData[0]["id"]);
+                      orderProvider.setCustomerId(
+                          customerProvider.customerData[0]["id"]);
                       orderProvider.setLineItems(line_items);
                       orderProvider.setMetaData(meta_data);
-                      orderProvider.setPrice(widget.digiGoldPlanModel.price ?? "");
-
-
-
+                      orderProvider
+                          .setPrice(widget.digiGoldPlanModel.price ?? "");
 
                       List<Map<String, dynamic>> razorpayOrderData =
                           await uiCreateRazorpayOrder();
@@ -482,13 +576,16 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
                           break;
                       }
 
+                      print("CITY2 ${_cityController.text}");
+
                       customerProvider.addCustomerData({
                         "address_1": _addressController1.text,
                         "address_2": _addressController2.text,
                         "city": _cityController.text,
                         "digi_gold_billing_email": _emailController.text,
-                         "digi_gold_billing_phone": _phoneNoController.text,
-                      "digi_gold_plan_name" : widget.digiGoldPlanModel.name ?? "Digi Gold Plan"
+                        "digi_gold_billing_phone": _phoneNoController.text,
+                        "digi_gold_plan_name":
+                            widget.digiGoldPlanModel.name ?? "Digi Gold Plan"
                       });
 
                       if (_nomineeNameController.text != "" &&

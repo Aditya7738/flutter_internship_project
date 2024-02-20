@@ -1,6 +1,6 @@
 
 import 'package:Tiara_by_TJ/providers/digigold_provider.dart';
-import 'package:Tiara_by_TJ/views/pages/digigold_plan_order.dart';
+import 'package:Tiara_by_TJ/views/pages/digigold_plan_bill.dart';
 import 'package:flutter/material.dart';
 import 'package:Tiara_by_TJ/views/pages/dashboard_page.dart';
 import 'package:Tiara_by_TJ/views/pages/payment_page.dart';

@@ -2,6 +2,7 @@ import 'package:Tiara_by_TJ/api/api_service.dart';
 import 'package:Tiara_by_TJ/model/order_model.dart';
 import 'package:Tiara_by_TJ/providers/customer_provider.dart';
 import 'package:Tiara_by_TJ/providers/order_provider.dart';
+import 'package:Tiara_by_TJ/views/widgets/my_gold_plan_list_item.dart';
 import 'package:Tiara_by_TJ/views/widgets/price_info.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -14,7 +15,6 @@ class MyGoldPlans extends StatefulWidget {
 }
 
 class _MyGoldPlansState extends State<MyGoldPlans> {
-  List<OrderModel> listOfOrders = <OrderModel>[];
   List<OrderModel> listOfGoldPlans = <OrderModel>[];
 
   bool isOrderFetching = false;
@@ -33,13 +33,29 @@ class _MyGoldPlansState extends State<MyGoldPlans> {
     setState(() {
       isOrderFetching = true;
     });
-    listOfOrders =
-        await ApiService.fetchOrders(customerProvider.customerData[0]["id"], 1);
 
-List<OrderModelMetaDatum> listOfmetaData = <OrderModelMetaDatum>[];
-    for (var i = 0; i < listOfOrders.length; i++) {
-      listOfmetaData = listOfOrders[i].metaData; 
+    ApiService.listOfOrders.clear();
+    await ApiService.fetchOrders(customerProvider.customerData[0]["id"], 1);
+
+//List<OrderModelMetaDatum> listOfMetaData = <OrderModelMetaDatum>[];
+    for (var i = 0; i < ApiService.listOfOrders.length; i++) {
+      for (var j = 0; j < ApiService.listOfOrders[i].metaData.length; j++) {
+        if (ApiService.listOfOrders[i].metaData[j].key == "virtual_order" &&
+            ApiService.listOfOrders[i].metaData[j].value == "digigold") {
+          listOfGoldPlans.add(ApiService.listOfOrders[i]);
+        }
+      }
     }
+
+    // for (var i = 0; i < listOfGoldPlans.length; i++) {
+    //   print("listOfGoldPlans ${listOfGoldPlans[i].id}");
+    // }
+
+    // for (var i = 0; i < listOfMetaData.length; i++) {
+    //   if(listOfMetaData[i].key == "virtual_order" && listOfMetaData[i].value == "digigold"){
+
+    //   }
+    // }
 
     // if (listOfOrders[i].metaData[i].key == "virtual_order" &&
     //       listOfOrders[i].metaData[i].value == "digigold") {
@@ -50,7 +66,7 @@ List<OrderModelMetaDatum> listOfmetaData = <OrderModelMetaDatum>[];
       isOrderFetching = false;
     });
 
-    print("listOfGoldPlans $listOfGoldPlans");
+    // print("listOfGoldPlans $listOfGoldPlans");
   }
 
   @override
@@ -70,118 +86,10 @@ List<OrderModelMetaDatum> listOfmetaData = <OrderModelMetaDatum>[];
           : Padding(
               padding: const EdgeInsets.all(8.0),
               child: ListView.builder(
-                itemCount: 2,
+                itemCount: listOfGoldPlans.length,
                 itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 8.0),
-                    child: Card(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  children: [
-                                    Text(
-                                      "₹ 1000",
-                                      style: TextStyle(
-                                          fontSize: 18.0,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    SizedBox(
-                                      width: 5.0,
-                                    ),
-                                    Image.asset(
-                                      "assets/images/gold_coin.png",
-                                      width: 24.0,
-                                      height: 24.0,
-                                    )
-                                  ],
-                                ),
-                                Container(
-                                    height: 30.0,
-
-                                    // height: 40.0,
-                                    decoration: BoxDecoration(
-                                        color: Colors.blue,
-                                        borderRadius:
-                                            BorderRadius.circular(12.0)),
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 2.5, horizontal: 15.0),
-                                    child: Center(
-                                      child: const Text(
-                                        "On going",
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 17.0,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    )),
-                              ],
-                            ),
-                            Divider(
-                              thickness: 1.0,
-                            ),
-                            Column(
-                              children: [
-                                Table(
-                                  children: [
-                                    TableRow(children: [
-                                      Text(
-                                        "Plan name: ",
-                                        style: TextStyle(
-                                            fontSize: 17.0,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      Text(
-                                        "Golden Varsha 1000",
-                                        style: TextStyle(
-                                          fontSize: 17.0,
-                                        ),
-                                        maxLines: 2,
-                                      )
-                                    ]),
-                                    TableRow(children: [
-                                      Text(
-                                        "Payment date: ",
-                                        style: TextStyle(
-                                            fontSize: 17.0,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      Text(
-                                        "February 19, 2024, 13:10:20",
-                                        style: TextStyle(
-                                          fontSize: 17.0,
-                                        ),
-                                        maxLines: 2,
-                                      )
-                                    ]),
-                                    TableRow(children: [
-                                      Text(
-                                        "Duration: ",
-                                        style: TextStyle(
-                                            fontSize: 17.0,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      Text(
-                                        "2/12 months",
-                                        style: TextStyle(
-                                          fontSize: 17.0,
-                                        ),
-                                        maxLines: 2,
-                                      )
-                                    ]),
-                                  ],
-                                )
-                              ],
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
+                  OrderModel orderModel = listOfGoldPlans[index];
+                  return MyGoldPlanListItem(orderModel: orderModel);
                 },
               ),
             ),

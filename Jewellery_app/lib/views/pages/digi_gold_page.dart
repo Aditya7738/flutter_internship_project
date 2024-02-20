@@ -67,28 +67,8 @@ class _DigiGoldPageState extends State<DigiGoldPage> {
                           SizedBox(
                             height: 5.0,
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Text("Min : "),
-                              Image.asset(
-                                "assets/images/rupee.png",
-                                width: 15.0,
-                                height: 15.0,
-                              ),
-                              Text(
-                                "1 / Max : ",
-                              ),
-                              Image.asset(
-                                "assets/images/rupee.png",
-                                width: 15.0,
-                                height: 15.0,
-                              ),
-                              Text(
-                                "199999",
-                              ),
-                            ],
-                          ),
+                          Text("Min : ₹ 1 / Max : ₹ 199999", style: TextStyle(fontSize: 15.0),),
+                         
                           SizedBox(
                             height: 10.0,
                           ),
@@ -102,7 +82,7 @@ class _DigiGoldPageState extends State<DigiGoldPage> {
                           ),
                           Text(
                             "Terms & Conditions",
-                            style: TextStyle(color: Colors.white),
+                            style: TextStyle(color: Colors.white, fontSize: 18.0, decoration: TextDecoration.underline), 
                           ),
                           SizedBox(
                             height: 30.0,
@@ -139,12 +119,8 @@ class _DigiGoldPageState extends State<DigiGoldPage> {
                                         height: 25.0,
                                       ),
                                       Text("Today's Gold Rate: "),
-                                      Image.asset(
-                                        "assets/images/rupee.png",
-                                        width: 15.0,
-                                        height: 15.0,
-                                      ),
-                                      Text("Price")
+                                      
+                                      Text("₹ Price")
                                     ],
                                   )
                                 ],

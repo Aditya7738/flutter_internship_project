@@ -63,7 +63,7 @@ class _HomeScreen2State extends State<HomeScreen2> {
 
     // Fetch more data (e.g., using ApiService)
     ApiService.listOfCategory.clear();
-    await ApiService.showNextPageOfCategories();
+    await ApiService.showNextPageOfCategories(context);
 
     //categories = ApiService.listOfCategory;
     setState(() {
@@ -72,7 +72,7 @@ class _HomeScreen2State extends State<HomeScreen2> {
   }
 
   Future<void> getCategories() async {
-    await ApiService.fetchCategories(1);
+    await ApiService.fetchCategories(1, context);
 
     //categories = ApiService.listOfCategory;
 

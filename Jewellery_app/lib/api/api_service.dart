@@ -7,6 +7,8 @@ import 'package:Tiara_by_TJ/model/filter_options_model.dart' as FilterOptions;
 import 'package:Tiara_by_TJ/model/product_customization_option_model.dart';
 import 'package:Tiara_by_TJ/model/reviews_model.dart';
 import 'package:Tiara_by_TJ/providers/filteroptions_provider.dart';
+import 'package:Tiara_by_TJ/views/pages/no_internet_connection.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:Tiara_by_TJ/model/order_model.dart' as CustomersOrder;
@@ -23,18 +25,26 @@ class ApiService {
   static int categoriesPageNo = 1;
 
   static int responseofCategoriesPages = 1;
-  static Future<bool> showNextPageOfCategories() async {
+  static Future<bool> showNextPageOfCategories( BuildContext context) async {
     categoriesPageNo++;
     if (categoriesPageNo <= responseofCategoriesPages) {
-      await fetchCategories(categoriesPageNo);
+      await fetchCategories(categoriesPageNo, context);
       return true;
     }
 
     return false;
   }
 
-  static Future<List<CategoriesModel>> fetchCategories(int pageNo) async {
+  static Future<List<CategoriesModel>> fetchCategories(int pageNo, BuildContext context) async {
     //https://tiarabytj.com/wp-json/wc/v3/products/categories?consumer_key=ck_33882e17eeaff38b20ac7c781156024bc2d6af4a&consumer_secret=cs_df67b056d05606c05275b571ab39fa508fcdd7b9
+     bool isThereInternet = false;
+    final connectivityResult = await (Connectivity().checkConnectivity());
+if (connectivityResult == ConnectivityResult.none) {
+  isThereInternet = await Navigator.push(context, MaterialPageRoute(builder: (context) => NoInternetConnectionPage(),));
+
+}
+     if (isThereInternet) {
+   
     String categoryUri =
         "${Strings.baseUrl}/wp-json/wc/v3/products/categories?consumer_key=${Strings.consumerKey}&consumer_secret=${Strings.consumerSecret}&page=$pageNo&per_page=50";
     Uri uri = Uri.parse(categoryUri);
@@ -69,6 +79,8 @@ class ApiService {
     } else {
       return [];
     }
+     }
+     return [];
   }
 
   static List<ProductsModel> listOfProductsCategoryWise = [];
@@ -1323,7 +1335,10 @@ class ApiService {
   static List<Map<String, dynamic>> woocommerce_razorpay_settings =
       <Map<String, dynamic>>[];
 
-  static Future<void> generateBasicAuthForRazorPay() async {
+  static Future<void> generateBasicAuthForRazorPay(BuildContext context) async {
+   
+
+
     final endpoint =
         "https://tiarabytj.com/wp-json/store/v1/settings?options=woocommerce_razorpay_settings";
 
@@ -1362,6 +1377,10 @@ class ApiService {
     } else {
       print(response.reasonPhrase);
     }
+  
+
+
+    
   }
 
   static Future<http.StreamedResponse?> createRazorpayOrder() async {
@@ -1916,5 +1935,38 @@ class ApiService {
       print("REASON ${response.reasonPhrase}");
       return response;
     }
+  }
+
+  static Future<http.StreamedResponse> uploadDocumentImage(String imagePath) async {
+    final url = "https://tiarabytj.com/wp-json/wp/v2/media";
+    Uri uri = Uri.parse(url);
+    String userName = "tiarabytj@gmail.com";
+    String password = "October@Jwero";
+
+    String basicAuth =
+        "Basic " + base64Encode(utf8.encode('$userName:$password'));
+
+    print("image upload basicAuth $basicAuth");
+
+    var headers = {
+      'Authorization': basicAuth,
+    };
+
+    var request = http.MultipartRequest('POST', uri);
+
+    request.files.add(await http.MultipartFile.fromPath('file', imagePath));
+
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    print("upload status ${response.statusCode}");
+
+    if (response.statusCode == 201) {
+      print("upload response ${await response.stream.bytesToString()}");
+    } else {
+      print(response.reasonPhrase);
+    }
+    return response;
   }
 }
