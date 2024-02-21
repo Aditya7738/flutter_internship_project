@@ -16,7 +16,7 @@ class MyOrderTab extends StatefulWidget {
 
 class _MyOrderTabState extends State<MyOrderTab> {
   double shippingProgress = 0.0;
-  bool pageLoading = true;
+  bool pageLoading = false;
 
   bool isThereMoreOrders = false;
 
@@ -34,15 +34,21 @@ class _MyOrderTabState extends State<MyOrderTab> {
         Provider.of<CustomerProvider>(context, listen: false);
     int customerId = customerProvider.customerData[0]["id"];
 
-    ApiService.listOfOrders.clear();
+    bool isThereInternet = await ApiService.checkInternetConnection(context);
+    if (isThereInternet) {
+      setState(() {
+        pageLoading = true;
+      });
 
-    await ApiService.fetchOrders(customerId, 1);
+      ApiService.listOfOrders.clear();
 
-    setState(() {
-      pageLoading = false;
-    });
+      await ApiService.fetchOrders(customerId, 1);
+
+      setState(() {
+        pageLoading = false;
+      });
+    }
   }
-  
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +65,6 @@ class _MyOrderTabState extends State<MyOrderTab> {
               itemCount: ApiService.listOfOrders.length,
               itemBuilder: (context, index) {
                 OrderModel orderModel = ApiService.listOfOrders[index];
-                
 
                 return Card(
                   child: Column(
@@ -77,10 +82,9 @@ class _MyOrderTabState extends State<MyOrderTab> {
                                     fontSize: 17.0,
                                   ),
                                 ),
-                                Text(
-                                  orderModel.id.toString(),
-                                  style: Theme.of(context).textTheme.headline3
-                                )
+                                Text(orderModel.id.toString(),
+                                    style:
+                                        Theme.of(context).textTheme.headline3)
                               ],
                             ),
                             InkWell(
@@ -110,11 +114,12 @@ class _MyOrderTabState extends State<MyOrderTab> {
                             itemCount: orderModel.lineItems.length,
                             itemBuilder: (context, index) {
                               LineItem order = orderModel.lineItems[index];
-                          
+
                               return Container(
-                              padding: EdgeInsets.only(left: 10.0),
+                                padding: EdgeInsets.only(left: 10.0),
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Row(
                                         crossAxisAlignment:
@@ -158,12 +163,16 @@ class _MyOrderTabState extends State<MyOrderTab> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Container(
-                                               
-                                                width: MediaQuery.of(context).size.width/2 - 20,
+                                                width: MediaQuery.of(context)
+                                                            .size
+                                                            .width /
+                                                        2 -
+                                                    20,
                                                 child: Text(
                                                   order.name!,
                                                   maxLines: 2,
-                                                  overflow: TextOverflow.ellipsis,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
                                                   style: TextStyle(
                                                     fontSize: 17.0,
                                                   ),
@@ -184,8 +193,8 @@ class _MyOrderTabState extends State<MyOrderTab> {
                                                     // productsModel.regularPrice ??
                                                     //     "20,000",
                                                     style: TextStyle(
-                                                    fontSize: 17.0,
-                                                  ),
+                                                      fontSize: 17.0,
+                                                    ),
                                                   ),
                                                 ],
                                               ),
@@ -193,9 +202,9 @@ class _MyOrderTabState extends State<MyOrderTab> {
                                                 children: [
                                                   Text(
                                                     "Sku: ",
-                                                     style: TextStyle(
-                                                    fontSize: 17.0,
-                                                  ),
+                                                    style: TextStyle(
+                                                      fontSize: 17.0,
+                                                    ),
                                                   ),
                                                   Text(
                                                     // productsModel.regularPrice != ""
@@ -204,16 +213,16 @@ class _MyOrderTabState extends State<MyOrderTab> {
                                                     // : "0.0",
                                                     // productsModel.regularPrice ??
                                                     //     "20,000",
-                                                     style: TextStyle(
-                                                    fontSize: 17.0,
-                                                  ),
+                                                    style: TextStyle(
+                                                      fontSize: 17.0,
+                                                    ),
                                                   ),
                                                 ],
                                               )
                                             ],
                                           ),
                                         ]),
-                                                          
+
                                     //const Icon(Icons.chevron_right_outlined)
                                   ],
                                 ),
@@ -231,11 +240,11 @@ class _MyOrderTabState extends State<MyOrderTab> {
                           children: [
                             Row(
                               children: [
+                                Text("Order Received ",
+                                    style:
+                                        Theme.of(context).textTheme.headline3),
                                 Text(
-                                  "Order Received ",
-                                  style: Theme.of(context).textTheme.headline3
-                                ),
-                                Text("(${DateHelper.dateFormatForOrder(orderModel.dateCreated!)})")
+                                    "(${DateHelper.dateFormatForOrder(orderModel.dateCreated!)})")
                               ],
                             ),
                             Column(
@@ -267,12 +276,14 @@ class _MyOrderTabState extends State<MyOrderTab> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                   
-                                    
-                                    Text("Placed on \n${DateHelper.dateFormatForOrder(orderModel.dateCreated!)}"),
-                                    SizedBox(width: 80.0,
+                                    Text(
+                                        "Placed on \n${DateHelper.dateFormatForOrder(orderModel.dateCreated!)}"),
+                                    SizedBox(
+                                      width: 80.0,
                                       child: Text(
-                                          "Expected Delivery on ${DateHelper.getCurrentDateInWords()}", maxLines: 5,),
+                                        "Expected Delivery on ${DateHelper.getCurrentDateInWords()}",
+                                        maxLines: 5,
+                                      ),
                                     )
                                   ],
                                 )
@@ -288,7 +299,4 @@ class _MyOrderTabState extends State<MyOrderTab> {
             ),
           );
   }
-
-  
-
 }

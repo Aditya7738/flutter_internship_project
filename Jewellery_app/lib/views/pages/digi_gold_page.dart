@@ -12,7 +12,7 @@ class DigiGoldPage extends StatefulWidget {
 }
 
 class _DigiGoldPageState extends State<DigiGoldPage> {
-  bool isDigiGoldPlanLoading = true;
+  bool isDigiGoldPlanLoading = false;
   @override
   void initState() {
     // TODO: implement initState
@@ -21,11 +21,18 @@ class _DigiGoldPageState extends State<DigiGoldPage> {
   }
 
   Future<void> getDigiGoldPlanList() async {
-    await ApiService.getListOfDigiGoldPlan();
+    bool isThereInternet = await ApiService.checkInternetConnection(context);
+    if (isThereInternet) {
+      setState(() {
+        isDigiGoldPlanLoading = true;
+      });
 
-    setState(() {
-      isDigiGoldPlanLoading = false;
-    });
+      await ApiService.getListOfDigiGoldPlan();
+
+      setState(() {
+        isDigiGoldPlanLoading = false;
+      });
+    }
   }
 
   @override
@@ -67,8 +74,10 @@ class _DigiGoldPageState extends State<DigiGoldPage> {
                           SizedBox(
                             height: 5.0,
                           ),
-                          Text("Min : ₹ 1 / Max : ₹ 199999", style: TextStyle(fontSize: 15.0),),
-                         
+                          Text(
+                            "Min : ₹ 1 / Max : ₹ 199999",
+                            style: TextStyle(fontSize: 15.0),
+                          ),
                           SizedBox(
                             height: 10.0,
                           ),
@@ -82,7 +91,10 @@ class _DigiGoldPageState extends State<DigiGoldPage> {
                           ),
                           Text(
                             "Terms & Conditions",
-                            style: TextStyle(color: Colors.white, fontSize: 18.0, decoration: TextDecoration.underline), 
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18.0,
+                                decoration: TextDecoration.underline),
                           ),
                           SizedBox(
                             height: 30.0,
@@ -119,7 +131,6 @@ class _DigiGoldPageState extends State<DigiGoldPage> {
                                         height: 25.0,
                                       ),
                                       Text("Today's Gold Rate: "),
-                                      
                                       Text("₹ Price")
                                     ],
                                   )

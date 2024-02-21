@@ -37,7 +37,7 @@ class _LoginPageState extends State<LoginPage> {
   String password = "";
 
   bool isLoginUnSuccessful = false;
-  
+
   String errorMsg = "";
 
   @override
@@ -56,20 +56,15 @@ class _LoginPageState extends State<LoginPage> {
                       builder: (context) => CartPage(),
                     ));
               } else {
-              
-                if(Navigator.canPop(context)){
+                if (Navigator.canPop(context)) {
                   Navigator.pop(context);
-
-                }else{
-                    Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const DashboardPage(),
-                    ));
-
+                } else {
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const DashboardPage(),
+                      ));
                 }
-
-                
               }
             },
           ),
@@ -118,7 +113,7 @@ class _LoginPageState extends State<LoginPage> {
                       //       )
                       //     : const SizedBox(),
 
-                            isLoginUnSuccessful
+                      isLoginUnSuccessful
                           ? Container(
                               padding: const EdgeInsets.symmetric(
                                   vertical: 15.0, horizontal: 25.0),
@@ -126,7 +121,8 @@ class _LoginPageState extends State<LoginPage> {
                               decoration: BoxDecoration(
                                   shape: BoxShape.rectangle,
                                   borderRadius: BorderRadius.circular(20.0),
-                                  color: const Color.fromARGB(255, 253, 233, 231),
+                                  color:
+                                      const Color.fromARGB(255, 253, 233, 231),
                                   border: Border.all(
                                       color: Colors.red,
                                       style: BorderStyle.solid)),
@@ -134,17 +130,16 @@ class _LoginPageState extends State<LoginPage> {
                                 child: Text(
                                   errorMsg,
                                   maxLines: 3,
-                                  style: TextStyle(color: Colors.red, fontSize: 17.0),
+                                  style: TextStyle(
+                                      color: Colors.red, fontSize: 17.0),
                                 ),
                               ),
                             )
                           : const SizedBox(),
 
-                          const SizedBox(
+                      const SizedBox(
                         height: 30.0,
                       ),
-
-                    
 
                       TextFormField(
                         controller: _emailController,
@@ -163,7 +158,7 @@ class _LoginPageState extends State<LoginPage> {
                       const SizedBox(
                         height: 30.0,
                       ),
-                      
+
                       TextFormField(
                         controller: _passwordController,
                         obscureText: isObscured,
@@ -212,66 +207,70 @@ class _LoginPageState extends State<LoginPage> {
                             // };
 
                             // print("LOGIN DATA $data");
+                            bool isThereInternet =
+                                await ApiService.checkInternetConnection(
+                                    context);
+                            if (isThereInternet) {
+                              setState(() {
+                                isLoading = true;
+                              });
 
-                            setState(() {
-                              isLoading = true;
-                            });
+                              final response = await ApiService.loginCustomer(
+                                  email, password, username);
 
-                            final response = await ApiService.loginCustomer(
-                                email, password, username);
+                              if (response != null) {
+                                if (response.statusCode == 200) {
+                                  String body =
+                                      await response.stream.bytesToString();
 
-                            if (response != null) {
-                              if (response.statusCode == 200) {
-                                String body =
-                                    await response.stream.bytesToString();
+                                  print("BODY LOGIN $body");
 
-                                print("BODY LOGIN $body");
+                                  List<Map<String, dynamic>> data =
+                                      <Map<String, dynamic>>[];
+                                  try {
+                                    data = List<Map<String, dynamic>>.from(
+                                        jsonDecode(body));
+                                    print("LOGIN JSON DECODE DATA $data");
+                                  } catch (e) {
+                                    print('Error decoding: $e');
+                                  }
 
-                                List<Map<String, dynamic>> data =
-                                    <Map<String, dynamic>>[];
-                                try {
-                                  data = List<Map<String, dynamic>>.from(
-                                      jsonDecode(body));
-                                  print("LOGIN JSON DECODE DATA $data");
-                                } catch (e) {
-                                  print('Error decoding: $e');
-                                }
-
-                                customerProvider.setCustomerData(data);
-
-
-
-                                setState(() {
-                                  isLoading = false;
-                                });
-
-                                widget.isComeFromCart
-                                    ? Navigator.of(context).pushReplacement(
-                                        MaterialPageRoute(
-                                            builder: (context) => CartPage()))
-                                    : Navigator.pop(context);
-                              } else {
-                                String body =
-                                    await response.stream.bytesToString();
-                                Map<String, dynamic> data = <String, dynamic>{};
-
-                                try {
-                                  data = jsonDecode(body);
-
-                                  print("LOGIN ERROR DATA ${data["message"]}");
+                                  customerProvider.setCustomerData(data);
 
                                   setState(() {
-                                    isLoginUnSuccessful = true;
-                                    errorMsg = data["message"];
+                                    isLoading = false;
                                   });
-                                  print("JSON DECODE DATA $data");
-                                } catch (e) {
-                                  print('Error decoding: $e');
-                                }
 
-                                setState(() {
-                                  isLoading = false;
-                                });
+                                  widget.isComeFromCart
+                                      ? Navigator.of(context).pushReplacement(
+                                          MaterialPageRoute(
+                                              builder: (context) => CartPage()))
+                                      : Navigator.pop(context);
+                                } else {
+                                  String body =
+                                      await response.stream.bytesToString();
+                                  Map<String, dynamic> data =
+                                      <String, dynamic>{};
+
+                                  try {
+                                    data = jsonDecode(body);
+
+                                    print(
+                                        "LOGIN ERROR DATA ${data["message"]}");
+
+                                    setState(() {
+                                      isLoginUnSuccessful = true;
+                                      errorMsg = data["message"];
+                                    });
+                                    print("JSON DECODE DATA $data");
+                                  } catch (e) {
+                                    print('Error decoding: $e');
+                                  }
+
+                                  setState(() {
+                                    isLoading = false;
+                                  });
+                                }
                               }
                             }
                           }

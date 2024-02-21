@@ -27,14 +27,15 @@ class _SearchProductsOfCategoryState extends State<SearchProductsOfCategory> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(padding: EdgeInsets.only(bottom: 15.0, left: 15.0,right: 10.0),
+    return Container(
+      padding: EdgeInsets.only(bottom: 15.0, left: 15.0, right: 10.0),
       color: Colors.white,
       width: MediaQuery.of(context).size.width,
       child: Row(
         children: [
           SizedBox(
             height: 46.0,
-            width:  MediaQuery.of(context).size.width - 80,
+            width: MediaQuery.of(context).size.width - 80,
             child: TextField(
               onSubmitted: (value) async {
                 if (value == "") {
@@ -43,30 +44,34 @@ class _SearchProductsOfCategoryState extends State<SearchProductsOfCategory> {
                   //   isSearchFieldEmpty = true;
                   // });
                 }
-          
+
                 setState(() {
                   isSearchFieldEmpty = false;
                 });
-          
+
                 if (value.length >= 3 && !newListLoading) {
-                  ApiService.listOfProductsModel.clear();
-                  setState(() {
-                    newListLoading = true;
-                  });
-          
-                  List<ProductsModel> listOfProducts =
-                      await ApiService.fetchProducts(value, 1, context);
-          
-                  setState(() {
-                    newListLoading = false;
-                    isProductListEmpty = listOfProducts.length == 0;
-                  });
-                  //ApiService.searchProduct(value);
-                  print("ONCHANGED CALLED");
-                  setState(() {
-                    isSearchBarUsed = true;
-                    searchText = value;
-                  });
+                  bool isThereInternet =
+                      await ApiService.checkInternetConnection(context);
+                  if (isThereInternet) {
+                    ApiService.listOfProductsModel.clear();
+                    setState(() {
+                      newListLoading = true;
+                    });
+
+                    List<ProductsModel> listOfProducts =
+                        await ApiService.fetchProducts(value, 1);
+
+                    setState(() {
+                      newListLoading = false;
+                      isProductListEmpty = listOfProducts.length == 0;
+                    });
+                    //ApiService.searchProduct(value);
+                    print("ONCHANGED CALLED");
+                    setState(() {
+                      isSearchBarUsed = true;
+                      searchText = value;
+                    });
+                  }
                 }
               },
               showCursor: true,
@@ -84,31 +89,29 @@ class _SearchProductsOfCategoryState extends State<SearchProductsOfCategory> {
                   hintText: "Search for jewelleries",
                   hintStyle: TextStyle(color: Colors.grey, fontSize: 18.0)),
             ),
-            
           ),
           GestureDetector(
-              onTap: () {
-                showModalBottomSheet(
-                  context: context,
-                  isScrollControlled: true,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(20.0),
-                          topRight: Radius.circular(20.0))),
-                  builder: (context) {
-                    return Filter(searchText: searchText);
-                  },
-                );
-              },
-              child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                  child: Icon(
-                    Icons.filter_list,
-                    color: Colors.grey,
-                    size: 30.0,
-                  )),
-            ),
-
+            onTap: () {
+              showModalBottomSheet(
+                context: context,
+                isScrollControlled: true,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(20.0),
+                        topRight: Radius.circular(20.0))),
+                builder: (context) {
+                  return Filter(searchText: searchText);
+                },
+              );
+            },
+            child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                child: Icon(
+                  Icons.filter_list,
+                  color: Colors.grey,
+                  size: 30.0,
+                )),
+          ),
         ],
       ),
     );

@@ -35,7 +35,7 @@ class _HomeScreen2State extends State<HomeScreen2> {
   //List<CategoriesModel> categories = <CategoriesModel>[];
   final CarouselController carouselController = CarouselController();
 
-  bool isSalesLoading = true;
+  bool isSalesLoading = false;
 
   @override
   void initState() {
@@ -87,18 +87,24 @@ class _HomeScreen2State extends State<HomeScreen2> {
   }
 
   Future<void> getProductsOnSale() async {
-    await ApiService.getOnSaleProducts(1);
+    bool isThereInternet = await ApiService.checkInternetConnection(context);
+    if (isThereInternet) {
+      setState(() {
+        isSalesLoading = true;
+      });
+      await ApiService.getOnSaleProducts(1);
 
-    //categories = ApiService.listOfCategory;
+      //categories = ApiService.listOfCategory;
 
-    // for (var i = 0; i < ApiService.listOfCategory.length; i++) {
-    //   images.add(
-    //       ApiService.listOfCategory[i].image?.src ?? Strings.defaultImageUrl);
-    // }
+      // for (var i = 0; i < ApiService.listOfCategory.length; i++) {
+      //   images.add(
+      //       ApiService.listOfCategory[i].image?.src ?? Strings.defaultImageUrl);
+      // }
 
-    setState(() {
-      isSalesLoading = false;
-    });
+      setState(() {
+        isSalesLoading = false;
+      });
+    }
   }
 
   @override
@@ -203,7 +209,7 @@ class _HomeScreen2State extends State<HomeScreen2> {
               height: 10.0,
             ),
             // isSalesLoading
-            //     ? 
+            //     ?
             //     SizedBox(
             //         height: MediaQuery.of(context).size.width / 2,
             //         child: Center(
@@ -212,68 +218,61 @@ class _HomeScreen2State extends State<HomeScreen2> {
             //           ),
             //         ),
             //       )
-            //     : 
-                CarouselSlider.builder(
-                    itemCount: ApiService.listOfCategory.length ~/ 2,
-                    itemBuilder: (context, index, realIndex) {
-                      // final image1Label = ApiService.listOfCategory[index * 2].name;
-                      // final image2Label = ApiService.listOfCategory[index * 2 + 1].name;
-                      return Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                              color: Colors.yellow,
-                              child: isNewCategoryLoading
-                                  ? SizedBox(
-                                      width:
-                                          MediaQuery.of(context).size.width / 2,
-                                      height:
-                                          MediaQuery.of(context).size.width / 2,
-                                      child: const Center(
-                                        child: CircularProgressIndicator(
-                                          color: Colors.black,
-                                        ),
-                                      ),
-                                    )
-                                  : ProductItem(
-                                      productsModel:
-                                          ApiService.onSaleProducts[index],
-                                    )),
-                          Container(
-                              color: Colors.red,
-                              child: isNewCategoryLoading
-                                  ? SizedBox(
-                                      width:
-                                          MediaQuery.of(context).size.width / 2,
-                                      height:
-                                          MediaQuery.of(context).size.width / 2,
-                                      child: const Center(
-                                        child: CircularProgressIndicator(
-                                          color: Colors.black,
-                                        ),
-                                      ),
-                                    )
-                                  : ProductItem(
-                                      productsModel:
-                                          ApiService.onSaleProducts[index],
-                                    )),
-                        ],
-                      );
-                    },
-                    options: CarouselOptions(
-                        viewportFraction: 1.0,
-
-                        height: 340,
-                        enlargeCenterPage: true,
-                        autoPlay: true,
-                        aspectRatio: 16/9,
-                        autoPlayInterval: const Duration(seconds: 3),
-                        onPageChanged: (index, reason) {
-                          setState(() {
-                            currentIndex = index;
-                          });
-                        }),
-                  ),
+            //     :
+            CarouselSlider.builder(
+              itemCount: ApiService.listOfCategory.length ~/ 2,
+              itemBuilder: (context, index, realIndex) {
+                // final image1Label = ApiService.listOfCategory[index * 2].name;
+                // final image2Label = ApiService.listOfCategory[index * 2 + 1].name;
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                        color: Colors.yellow,
+                        child: isNewCategoryLoading
+                            ? SizedBox(
+                                width: MediaQuery.of(context).size.width / 2,
+                                height: MediaQuery.of(context).size.width / 2,
+                                child: const Center(
+                                  child: CircularProgressIndicator(
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              )
+                            : ProductItem(
+                                productsModel: ApiService.onSaleProducts[index],
+                              )),
+                    Container(
+                        color: Colors.red,
+                        child: isNewCategoryLoading
+                            ? SizedBox(
+                                width: MediaQuery.of(context).size.width / 2,
+                                height: MediaQuery.of(context).size.width / 2,
+                                child: const Center(
+                                  child: CircularProgressIndicator(
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              )
+                            : ProductItem(
+                                productsModel: ApiService.onSaleProducts[index],
+                              )),
+                  ],
+                );
+              },
+              options: CarouselOptions(
+                  viewportFraction: 1.0,
+                  height: 340,
+                  enlargeCenterPage: true,
+                  autoPlay: true,
+                  aspectRatio: 16 / 9,
+                  autoPlayInterval: const Duration(seconds: 3),
+                  onPageChanged: (index, reason) {
+                    setState(() {
+                      currentIndex = index;
+                    });
+                  }),
+            ),
             SizedBox(
               height: 40.0,
             ),
@@ -294,41 +293,41 @@ class _HomeScreen2State extends State<HomeScreen2> {
             //           ),
             //         ),
             //       )
-            //     : 
-                CarouselSlider.builder(
-                    itemCount: ApiService.listOfCategory.length ~/ 2,
-                    itemBuilder: (context, index, realIndex) {
-                      // final image1Label = ApiService.listOfCategory[index * 2].name;
-                      // final image2Label = ApiService.listOfCategory[index * 2 + 1].name;
-                      return Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                              color: Colors.yellow,
-                              child: ProductItem(
-                                productsModel: ApiService.onSaleProducts[index],
-                              )),
-                          Container(
-                              color: Colors.red,
-                              child: ProductItem(
-                                productsModel: ApiService.onSaleProducts[index],
-                              )),
-                        ],
-                      );
-                    },
-                    options: CarouselOptions(
-                        viewportFraction: 1.03,
-                        height: 255,
-                        enlargeCenterPage: true,
-                        autoPlay: true,
-                        aspectRatio: 16 / 9,
-                        autoPlayInterval: const Duration(seconds: 3),
-                        onPageChanged: (index, reason) {
-                          setState(() {
-                            currentIndex = index;
-                          });
-                        }),
-                  ),
+            //     :
+            CarouselSlider.builder(
+              itemCount: ApiService.listOfCategory.length ~/ 2,
+              itemBuilder: (context, index, realIndex) {
+                // final image1Label = ApiService.listOfCategory[index * 2].name;
+                // final image2Label = ApiService.listOfCategory[index * 2 + 1].name;
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                        color: Colors.yellow,
+                        child: ProductItem(
+                          productsModel: ApiService.onSaleProducts[index],
+                        )),
+                    Container(
+                        color: Colors.red,
+                        child: ProductItem(
+                          productsModel: ApiService.onSaleProducts[index],
+                        )),
+                  ],
+                );
+              },
+              options: CarouselOptions(
+                  viewportFraction: 1.03,
+                  height: 255,
+                  enlargeCenterPage: true,
+                  autoPlay: true,
+                  aspectRatio: 16 / 9,
+                  autoPlayInterval: const Duration(seconds: 3),
+                  onPageChanged: (index, reason) {
+                    setState(() {
+                      currentIndex = index;
+                    });
+                  }),
+            ),
             SizedBox(
               height: 40.0,
             ),
@@ -340,7 +339,7 @@ class _HomeScreen2State extends State<HomeScreen2> {
               height: 10.0,
             ),
             // isCategoryLoading || isNewCategoryLoading
-            //     ? 
+            //     ?
             //     SizedBox(
             //         height: MediaQuery.of(context).size.width / 2,
             //         child: Center(
@@ -350,101 +349,96 @@ class _HomeScreen2State extends State<HomeScreen2> {
             //         ),
             //       )
             //     :
-                 CarouselSlider.builder(
-                    itemCount: ApiService.listOfCategory.length ~/ 2,
-                    itemBuilder: (context, index, realIndex) {
-                      // final image1Label = ApiService.listOfCategory[index * 2].name;
-                      // final image2Label = ApiService.listOfCategory[index * 2 + 1].name;
-                      return Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            CarouselSlider.builder(
+              itemCount: ApiService.listOfCategory.length ~/ 2,
+              itemBuilder: (context, index, realIndex) {
+                // final image1Label = ApiService.listOfCategory[index * 2].name;
+                // final image2Label = ApiService.listOfCategory[index * 2 + 1].name;
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      color: Colors.yellow,
+                      child: Column(
                         children: [
-                          Container(
-                            color: Colors.yellow,
-                            child: Column(
-                              children: [
-                                CachedNetworkImage(
-                                  fit: BoxFit.fill,
-                                  imageUrl: images[index * 2],
-                                  width: MediaQuery.of(context).size.width / 2,
-                                  height: MediaQuery.of(context).size.width / 2,
-                                  placeholder: (context, url) {
-                                    return SizedBox(
-                                      width:
-                                          MediaQuery.of(context).size.width / 2,
-                                      height:
-                                          MediaQuery.of(context).size.width / 2,
-                                      child: const Center(
-                                        child: CircularProgressIndicator(
-                                          color: Colors.black,
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                ),
-                                const SizedBox(
-                                  height: 5.0,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(2.0),
-                                  child: Text(
-                                    ApiService.listOfCategory[index * 2].name ??
-                                        "Jewellery",
-                                    style: const TextStyle(fontSize: 16.0),
+                          CachedNetworkImage(
+                            fit: BoxFit.fill,
+                            imageUrl: images[index * 2],
+                            width: MediaQuery.of(context).size.width / 2,
+                            height: MediaQuery.of(context).size.width / 2,
+                            placeholder: (context, url) {
+                              return SizedBox(
+                                width: MediaQuery.of(context).size.width / 2,
+                                height: MediaQuery.of(context).size.width / 2,
+                                child: const Center(
+                                  child: CircularProgressIndicator(
+                                    color: Colors.black,
                                   ),
                                 ),
-                              ],
-                            ),
+                              );
+                            },
                           ),
-                          Container(
-                            color: Colors.red,
-                            child: Column(
-                              children: [
-                                CachedNetworkImage(
-                                  fit: BoxFit.fill,
-                                  imageUrl: images[index * 2 + 1],
-                                  width: MediaQuery.of(context).size.width / 2,
-                                  height: MediaQuery.of(context).size.width / 2,
-                                  placeholder: (context, url) {
-                                    return SizedBox(
-                                      width:
-                                          MediaQuery.of(context).size.width / 2,
-                                      height:
-                                          MediaQuery.of(context).size.width / 2,
-                                      child: const Center(
-                                        child: CircularProgressIndicator(
-                                          color: Colors.black,
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(2.0),
-                                  child: Text(
-                                    ApiService.listOfCategory[index * 2 + 1]
-                                            .name ??
-                                        "Jewellery",
-                                    style: const TextStyle(fontSize: 16.0),
-                                  ),
-                                ),
-                              ],
+                          const SizedBox(
+                            height: 5.0,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(2.0),
+                            child: Text(
+                              ApiService.listOfCategory[index * 2].name ??
+                                  "Jewellery",
+                              style: const TextStyle(fontSize: 16.0),
                             ),
                           ),
                         ],
-                      );
-                    },
-                    options: CarouselOptions(
-                        viewportFraction: 1.03,
-                        height: 255,
-                        enlargeCenterPage: true,
-                        autoPlay: true,
-                        aspectRatio: 16 / 9,
-                        //autoPlayInterval: const Duration(seconds: 3),
-                        onPageChanged: (index, reason) {
-                          print("ON PAGE CHANGED CALL");
-                          handleCarouselSlide(index);
-                        }),
-                  ),
+                      ),
+                    ),
+                    Container(
+                      color: Colors.red,
+                      child: Column(
+                        children: [
+                          CachedNetworkImage(
+                            fit: BoxFit.fill,
+                            imageUrl: images[index * 2 + 1],
+                            width: MediaQuery.of(context).size.width / 2,
+                            height: MediaQuery.of(context).size.width / 2,
+                            placeholder: (context, url) {
+                              return SizedBox(
+                                width: MediaQuery.of(context).size.width / 2,
+                                height: MediaQuery.of(context).size.width / 2,
+                                child: const Center(
+                                  child: CircularProgressIndicator(
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(2.0),
+                            child: Text(
+                              ApiService.listOfCategory[index * 2 + 1].name ??
+                                  "Jewellery",
+                              style: const TextStyle(fontSize: 16.0),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                );
+              },
+              options: CarouselOptions(
+                  viewportFraction: 1.03,
+                  height: 255,
+                  enlargeCenterPage: true,
+                  autoPlay: true,
+                  aspectRatio: 16 / 9,
+                  //autoPlayInterval: const Duration(seconds: 3),
+                  onPageChanged: (index, reason) {
+                    print("ON PAGE CHANGED CALL");
+                    handleCarouselSlide(index);
+                  }),
+            ),
             SizedBox(
               height: 40.0,
             ),

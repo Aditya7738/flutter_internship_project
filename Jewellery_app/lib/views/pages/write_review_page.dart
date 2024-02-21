@@ -157,6 +157,9 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
             "reviewer_email": "${customerProvider.customerData[0]["email"]}",
             "rating": selectedRate
           };
+          bool isThereInternet = await ApiService.checkInternetConnection(context);
+    if (isThereInternet) {
+          
 
           setState(() {
             isCreatingReview = true;
@@ -181,6 +184,7 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
                 backgroundColor: Colors.red,
                 content: Text("Don't able to send review", style: TextStyle(fontSize: 17.0),)));
           }
+    }
         },
         child: Container(
           height: 50.0,

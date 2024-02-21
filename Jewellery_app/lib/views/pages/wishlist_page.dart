@@ -43,12 +43,16 @@ class _WishListPageState extends State<WishListPage> {
     if (wishlistProvider.wishlistProducts.isEmpty ||
         wishlistProvider.wishlistProducts.length !=
             wishlistProvider.favProductIds.length) {
-      ApiService.listOfFavProductsModel.clear();
-      wishlistProvider.listLoading = true;
+      bool isThereInternet = await ApiService.checkInternetConnection(context);
+      if (isThereInternet) {
+        ApiService.listOfFavProductsModel.clear();
+        wishlistProvider.listLoading = true;
 
-      final wishlistProducts = await ApiService.fetchFavProducts(wishlist);
-      wishlistProvider.setWishlistProducts(wishlistProducts);
-      wishlistProvider.listLoading = false;
+        final wishlistProducts =
+            await ApiService.fetchFavProducts(wishlist);
+        wishlistProvider.setWishlistProducts(wishlistProducts);
+        wishlistProvider.listLoading = false;
+      }
     }
 
     // setState(() {
@@ -199,17 +203,18 @@ class _WishListPageState extends State<WishListPage> {
                                                     height: 17.0,
                                                   ),
                                                   Text(
-                                                    wishListItem.regularPrice !=
-                                                            ""
-                                                        ? wishListItem
-                                                                .regularPrice ??
-                                                            "20000"
-                                                        : "20000",
-                                                    softWrap: true,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    style: Theme.of(context).textTheme.headline3
-                                                  )
+                                                      wishListItem.regularPrice !=
+                                                              ""
+                                                          ? wishListItem
+                                                                  .regularPrice ??
+                                                              "20000"
+                                                          : "20000",
+                                                      softWrap: true,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .headline3)
                                                 ],
                                               ),
                                             ],

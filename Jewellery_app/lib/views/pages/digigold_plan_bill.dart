@@ -127,11 +127,15 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
 
   int planDuration = 0;
 
+  String digiPlanType = "";
+
   bool isImageUploading = false;
-  
+
   bool showFileName = false;
 
   String imagePath = "";
+  
+  String goldGross = "";
 
   @override
   void initState() {
@@ -209,6 +213,14 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
     for (var i = 0; i < widget.digiGoldPlanModel.metaData.length; i++) {
       if (widget.digiGoldPlanModel.metaData[i].key == "digi_plan_duration") {
         planDuration = int.parse(widget.digiGoldPlanModel.metaData[i].value);
+      }
+
+      if (widget.digiGoldPlanModel.metaData[i].key == "digi_plan_type") {
+        digiPlanType = widget.digiGoldPlanModel.metaData[i].value;
+      }
+
+       if (widget.digiGoldPlanModel.metaData[i].key == "gold_gross") {
+        goldGross = widget.digiGoldPlanModel.metaData[i].value;
       }
     }
   }
@@ -354,20 +366,23 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
                 const SizedBox(
                   height: 10.0,
                 ),
-                
-                showFileName ?
-                Padding(
-                  padding: const EdgeInsets.only(left: 8.0),
-                  child: Column(
-                    children: [
-                      Text("Uploaded file name: ${path.basename(imagePath)}", style: TextStyle(fontWeight: FontWeight.bold),),
-                      const SizedBox(
-                    height: 20.0,
-                  ),
-                    ],
-                  ),
-                ):
-                SizedBox(),
+
+                showFileName
+                    ? Padding(
+                        padding: const EdgeInsets.only(left: 8.0),
+                        child: Column(
+                          children: [
+                            Text(
+                              "Uploaded file name: ${path.basename(imagePath)}",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(
+                              height: 20.0,
+                            ),
+                          ],
+                        ),
+                      )
+                    : SizedBox(),
 
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -382,33 +397,44 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
                           });
                           print("imagePath $imagePath");
 
-                          setState(() {
-                            isImageUploading = true;
-                          });
+                          bool isThereInternet =
+                              await ApiService.checkInternetConnection(context);
+                          if (isThereInternet) {
+                            setState(() {
+                              isImageUploading = true;
+                            });
 
-                          http.StreamedResponse response =
-                              await ApiService.uploadDocumentImage(imagePath);
+                            http.StreamedResponse response =
+                                await ApiService.uploadDocumentImage(imagePath);
 
-                          setState(() {
-                            isImageUploading = false;
-                          });
+                            setState(() {
+                              isImageUploading = false;
+                            });
 
-                          if (response.statusCode == 201) {
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                padding: EdgeInsets.all(15.0),
-                                backgroundColor: Theme.of(context).primaryColor,
-                                content: Text(
-                                    "Image upload successfully", style: TextStyle(color: Colors.white),)));
+                            if (response.statusCode == 201) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                      padding: EdgeInsets.all(15.0),
+                                      backgroundColor:
+                                          Theme.of(context).primaryColor,
+                                      content: Text(
+                                        "Image upload successfully",
+                                        style: TextStyle(color: Colors.white),
+                                      )));
 
-                                    setState(() {
-                                      showFileName = true;
-                                    });
-                          }else{
-                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                padding: EdgeInsets.all(15.0),
-                                backgroundColor: Colors.red,
-                                content: Text(
-                                    "Failed upload image", style: TextStyle(color: Colors.white),)));
+                              setState(() {
+                                showFileName = true;
+                              });
+                            } else {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(SnackBar(
+                                      padding: EdgeInsets.all(15.0),
+                                      backgroundColor: Colors.red,
+                                      content: Text(
+                                        "Failed upload image",
+                                        style: TextStyle(color: Colors.white),
+                                      )));
+                            }
                           }
                         }
                       },
@@ -420,23 +446,22 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
                               borderRadius: BorderRadius.circular(5.0)),
                           padding: const EdgeInsets.symmetric(
                               vertical: 10.0, horizontal: 20.0),
-                          child: 
-                          isImageUploading ?
-                          SizedBox(
-                            width: 200.0,
-                            child: Center(
-                              child: CircularProgressIndicator(
-                                strokeWidth: 3.0,
-                                color: Theme.of(context).primaryColor,
-                              ),
-                            ),
-                          ) :
-                          Text(
-                            "Upload document image",
-                            style: TextStyle(
-                                color: Theme.of(context).primaryColor,
-                                fontSize: 17.0),
-                          )),
+                          child: isImageUploading
+                              ? SizedBox(
+                                  width: 200.0,
+                                  child: Center(
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 3.0,
+                                      color: Theme.of(context).primaryColor,
+                                    ),
+                                  ),
+                                )
+                              : Text(
+                                  "Upload document image",
+                                  style: TextStyle(
+                                      color: Theme.of(context).primaryColor,
+                                      fontSize: 17.0),
+                                )),
                     ),
                   ],
                 ),
@@ -510,7 +535,7 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
                         },
                         {
                           "key": "gold_gross",
-                          "value": widget.digiGoldPlanModel.weight,
+                          "value": goldGross,
                         },
                         {"key": "digi_plan_duration", "value": "$planDuration"},
                         {
@@ -520,6 +545,14 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
                         {
                           "key": "payment_date",
                           "value": DateTime.now().toString()
+                        },
+                        {
+                          "key": "digi_plan_type",
+                          "value": digiPlanType
+                        },
+                        {
+                          "key": "description",
+                          "value": widget.digiGoldPlanModel.description
                         },
                       ];
 
@@ -717,20 +750,23 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
 
   Future<List<Map<String, dynamic>>> uiCreateRazorpayOrder() async {
     List<Map<String, dynamic>> data = <Map<String, dynamic>>[];
-    final response = await ApiService.createRazorpayOrder();
+    bool isThereInternet = await ApiService.checkInternetConnection(context);
+    if (isThereInternet) {
+      final response = await ApiService.createRazorpayOrder();
 
-    if (response != null) {
-      String body = await response.stream.bytesToString();
-      print("Razorpay Payment body $body");
+      if (response != null) {
+        String body = await response.stream.bytesToString();
+        print("Razorpay Payment body $body");
 
-      try {
-        print("${body.runtimeType}");
-        print("Razorpay JSON DECODE DATA $data");
-        data.add(jsonDecode(body));
-        return data;
-      } catch (e) {
-        print('Razorpay Error decoding: $e');
-        return <Map<String, dynamic>>[];
+        try {
+          print("${body.runtimeType}");
+          print("Razorpay JSON DECODE DATA $data");
+          data.add(jsonDecode(body));
+          return data;
+        } catch (e) {
+          print('Razorpay Error decoding: $e');
+          return <Map<String, dynamic>>[];
+        }
       }
     }
     return <Map<String, dynamic>>[];

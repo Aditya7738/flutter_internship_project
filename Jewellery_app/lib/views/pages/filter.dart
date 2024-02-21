@@ -37,11 +37,12 @@ class _FilterState extends State<Filter> {
   @override
   Widget build(BuildContext context) {
     final filterOptionsProvider = Provider.of<FilterOptionsProvider>(context);
-   /// if (selectedFilterIndex != -1) {
-      final filtersToSend = map[selectedFilterIndex];
 
-      print("filtersToSendValue ${filtersToSend["id"]!}");
-   // }
+    /// if (selectedFilterIndex != -1) {
+    final filtersToSend = map[selectedFilterIndex];
+
+    print("filtersToSendValue ${filtersToSend["id"]!}");
+    // }
 
     return Container(
         width: MediaQuery.of(context).size.width,
@@ -100,15 +101,15 @@ class _FilterState extends State<Filter> {
                 ),
                 // selectedFilterIndex == -1
                 //     ? SizedBox()
-                //     : 
-                    FilterOptions(
-                        selectedFilterIndex: selectedFilterIndex,
-                        filterKey: 
+                //     :
+                FilterOptions(
+                    selectedFilterIndex: selectedFilterIndex,
+                    filterKey:
                         // selectedFilterIndex != -1
                         //     ?
-                             map[selectedFilterIndex]["id"]!
-                            //: ""
-                            ),
+                        map[selectedFilterIndex]["id"]!
+                    //: ""
+                    ),
               ],
             ),
             Divider(
@@ -121,41 +122,47 @@ class _FilterState extends State<Filter> {
                 children: [
                   GestureDetector(
                     onTap: () async {
-                       Navigator.pop(context, true);
-                      filterOptionsProvider.setFilteredListLoading(true);
+                      Navigator.pop(context, true);
+                      bool isThereInternet =
+                          await ApiService.checkInternetConnection(context);
 
-                      // Map<String, dynamic> selectedSubOptionsdata =
-                      //     filterOptionsProvider.selectedSubOptionsdata;
+                      if (isThereInternet) {
+                        filterOptionsProvider.setFilteredListLoading(true);
 
-                      // if (selectedSubOptionsdata.containsKey("collection")) {
-                      //   selectedSubOptionsdata["collection"] = "";
-                      // }
+                        // Map<String, dynamic> selectedSubOptionsdata =
+                        //     filterOptionsProvider.selectedSubOptionsdata;
 
-                      // if (selectedSubOptionsdata.containsKey("categories")) {
-                      //   selectedSubOptionsdata["categories"] = "";
-                      // }
+                        // if (selectedSubOptionsdata.containsKey("collection")) {
+                        //   selectedSubOptionsdata["collection"] = "";
+                        // }
 
-                      // if (selectedSubOptionsdata
-                      //     .containsKey("sub-categories")) {
-                      //   selectedSubOptionsdata["sub-categories"] = "";
-                      // }
+                        // if (selectedSubOptionsdata.containsKey("categories")) {
+                        //   selectedSubOptionsdata["categories"] = "";
+                        // }
 
-                      // if (selectedSubOptionsdata.containsKey("tags")) {
-                      //   selectedSubOptionsdata["tags"] = "";
-                      // }
+                        // if (selectedSubOptionsdata
+                        //     .containsKey("sub-categories")) {
+                        //   selectedSubOptionsdata["sub-categories"] = "";
+                        // }
 
-                      // if (selectedSubOptionsdata.containsKey("price_range")) {
-                      //   selectedSubOptionsdata["price_range"] = "";
-                      // }
+                        // if (selectedSubOptionsdata.containsKey("tags")) {
+                        //   selectedSubOptionsdata["tags"] = "";
+                        // }
 
-                      //filterOptionsProvider.list.clear();
-                       filterOptionsProvider.clearFilterList;
-                       print("filterOptionsProvider.list ${filterOptionsProvider.list.length}");
+                        // if (selectedSubOptionsdata.containsKey("price_range")) {
+                        //   selectedSubOptionsdata["price_range"] = "";
+                        // }
 
-                      ApiService.listOfProductsModel.clear();
-                      await ApiService.fetchProducts(
-                          widget.searchText, 1, context, filterList: filterOptionsProvider.list);
-                      filterOptionsProvider.setFilteredListLoading(false);
+                        //filterOptionsProvider.list.clear();
+                        filterOptionsProvider.clearFilterList;
+                        print(
+                            "filterOptionsProvider.list ${filterOptionsProvider.list.length}");
+
+                        ApiService.listOfProductsModel.clear();
+                        await ApiService.fetchProducts(widget.searchText, 1,
+                            filterList: filterOptionsProvider.list);
+                        filterOptionsProvider.setFilteredListLoading(false);
+                      }
                     },
                     child: Container(
                         decoration: BoxDecoration(
@@ -178,15 +185,20 @@ class _FilterState extends State<Filter> {
                   GestureDetector(
                     onTap: () async {
                       Navigator.pop(context, true);
-                      filterOptionsProvider.setFilteredListLoading(true);
-                      ApiService.listOfProductsModel.clear();
-                      await ApiService.fetchProducts(
-                          widget.searchText, 1, context, filterList: filterOptionsProvider.list);
-                      filterOptionsProvider.setFilteredListLoading(false);
-// setState(() {
-  
-// });
+                      bool isThereInternet =
+                          await ApiService.checkInternetConnection(context);
 
+                      if (isThereInternet) {
+                        filterOptionsProvider.setFilteredListLoading(true);
+                        ApiService.listOfProductsModel.clear();
+                        await ApiService.fetchProducts(
+                            widget.searchText, 1,
+                            filterList: filterOptionsProvider.list);
+                        filterOptionsProvider.setFilteredListLoading(false);
+                      }
+// setState(() {
+
+// });
                     },
                     child: Container(
                         decoration: BoxDecoration(

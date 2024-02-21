@@ -24,7 +24,7 @@ class _SignupPageState extends State<SignupPage> {
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
-      TextEditingController();  
+      TextEditingController();
 
   String phone = "";
   String email = "";
@@ -40,7 +40,7 @@ class _SignupPageState extends State<SignupPage> {
   bool isObscured2 = true;
 
   bool isLoading = false;
-  
+
   bool isRegisterUnSuccessful = false;
   String errorMsg = "";
 
@@ -72,7 +72,6 @@ class _SignupPageState extends State<SignupPage> {
                       const SizedBox(
                         height: 20.0,
                       ),
-
                       isRegisterUnSuccessful
                           ? Container(
                               padding: const EdgeInsets.symmetric(
@@ -81,7 +80,8 @@ class _SignupPageState extends State<SignupPage> {
                               decoration: BoxDecoration(
                                   shape: BoxShape.rectangle,
                                   borderRadius: BorderRadius.circular(20.0),
-                                  color: const Color.fromARGB(255, 253, 233, 231),
+                                  color:
+                                      const Color.fromARGB(255, 253, 233, 231),
                                   border: Border.all(
                                       color: Colors.red,
                                       style: BorderStyle.solid)),
@@ -89,17 +89,15 @@ class _SignupPageState extends State<SignupPage> {
                                 child: Text(
                                   errorMsg,
                                   maxLines: 3,
-                                  style: TextStyle(color: Colors.red, fontSize: 17.0),
+                                  style: TextStyle(
+                                      color: Colors.red, fontSize: 17.0),
                                 ),
                               ),
                             )
                           : const SizedBox(),
-
-                          const SizedBox(
+                      const SizedBox(
                         height: 30.0,
                       ),
-
-
                       SizedBox(
                         height: 75.0,
                         child: TextFormField(
@@ -109,7 +107,6 @@ class _SignupPageState extends State<SignupPage> {
                             return ValidationHelper.isPhoneNoValid(value);
                           },
                           decoration: InputDecoration(
-                       
                               border: const OutlineInputBorder(
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(20.0))),
@@ -321,58 +318,58 @@ class _SignupPageState extends State<SignupPage> {
                               "password": password
                             };
 
-                            
-
                             print("SAVED DATA $data");
+                            bool isThereInternet =
+                                await ApiService.checkInternetConnection(
+                                    context);
+                            if (isThereInternet) {
+                              setState(() {
+                                isLoading = true;
+                              });
 
-                            setState(() {
-                              isLoading = true;
-                            });
+                              final response = await ApiService.createCustomer(
+                                  data);
 
-                            final response =
-                                await ApiService.createCustomer(data);
+                              setState(() {
+                                isLoading = false;
+                              });
 
-                            setState(() {
-                              isLoading = false;
-                            });
+                              if (response.statusCode == 201) {
+                                String body = response.body;
+                                List<Map<String, dynamic>> data =
+                                    <Map<String, dynamic>>[];
 
-                            if (response.statusCode == 201) {
-                              String body = response.body;
-                              List<Map<String, dynamic>> data =
-                                  <Map<String, dynamic>>[];
+                                try {
+                                  data = jsonDecode(body);
+                                  print("JSON DECODE DATA $data");
+                                } catch (e) {
+                                  print('Error decoding: $e');
+                                }
 
-                              try {
-                                data = jsonDecode(body);
-                                print("JSON DECODE DATA $data");
-                              } catch (e) {
-                                print('Error decoding: $e');
-                              }
+                                customerProvider.setCustomerData(data);
 
-                              customerProvider.setCustomerData(data);
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => LoginPage(
+                                        isComeFromCart: false,
+                                      ),
+                                    ));
+                              } else {
+                                String body = response.body;
+                                Map<String, dynamic> data = <String, dynamic>{};
 
-                              Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => LoginPage(isComeFromCart: false,),
-                                  ));
-                            }else{
-                               String body = response.body;
-                              Map<String, dynamic> data =
-                                  <String, dynamic>{};
+                                try {
+                                  data = jsonDecode(body);
 
-                              try {
-                                data = jsonDecode(body);
-
-                                
-
-                                setState(() {
-                                  isRegisterUnSuccessful = true;
-                                  errorMsg = data["message"];
-
-                                });
-                                print("JSON DECODE DATA $data");
-                              } catch (e) {
-                                print('Error decoding: $e');
+                                  setState(() {
+                                    isRegisterUnSuccessful = true;
+                                    errorMsg = data["message"];
+                                  });
+                                  print("JSON DECODE DATA $data");
+                                } catch (e) {
+                                  print('Error decoding: $e');
+                                }
                               }
                             }
                           }
@@ -424,7 +421,9 @@ class _SignupPageState extends State<SignupPage> {
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
                                   Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => const LoginPage(isComeFromCart: false,),
+                                    builder: (context) => const LoginPage(
+                                      isComeFromCart: false,
+                                    ),
                                   ));
                                 },
                             ),

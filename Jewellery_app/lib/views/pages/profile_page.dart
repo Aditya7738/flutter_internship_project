@@ -29,8 +29,6 @@ class _ProfilePageState extends State<ProfilePage> {
 
   final TextEditingController _addressController = TextEditingController();
 
-
-
   final TextEditingController _phoneNoController = TextEditingController();
 
   final TextEditingController _cityController = TextEditingController();
@@ -79,15 +77,14 @@ class _ProfilePageState extends State<ProfilePage> {
     _firstNameController.text = customerProvider.customerData[0]["first_name"];
     _lastNameController.text = customerProvider.customerData[0]["last_name"];
     _emailController.text = customerProvider.customerData[0]["email"];
-   _phoneNoController.text = customerProvider.customerData[0]["mobile_no"];
-   _addressController.text = customerProvider.customerData[0]["fulladdress"];
-   _pinNoController.text = customerProvider.customerData[0]["pincode"];
-   _birthdateController.text = customerProvider.customerData[0]["birthday"];
-   _anniversarydateController.text = customerProvider.customerData[0]["anniversary"];
-   _spousebirthdateController.text = customerProvider.customerData[0]["spouse_birthday"];
-
-
-  
+    _phoneNoController.text = customerProvider.customerData[0]["mobile_no"];
+    _addressController.text = customerProvider.customerData[0]["fulladdress"];
+    _pinNoController.text = customerProvider.customerData[0]["pincode"];
+    _birthdateController.text = customerProvider.customerData[0]["birthday"];
+    _anniversarydateController.text =
+        customerProvider.customerData[0]["anniversary"];
+    _spousebirthdateController.text =
+        customerProvider.customerData[0]["spouse_birthday"];
   }
 
   @override
@@ -378,34 +375,33 @@ class _ProfilePageState extends State<ProfilePage> {
                   GestureDetector(
                     onTap: () async {
                       if (_formKey.currentState!.validate()) {
-                       
-
                         Map<String, String> updatedData = {
                           "email": _emailController.text,
                           "first_name": _firstNameController.text,
                           "last_name": _lastNameController.text,
-                       
                         };
 
-                        setState(() {
-                          isUpdating = true;
-                        });
+                        bool isThereInternet =
+                            await ApiService.checkInternetConnection(context);
+                        if (isThereInternet) {
+                          setState(() {
+                            isUpdating = true;
+                          });
 
-                        final response = await ApiService.updateCustomerProfile(
-                            customerId, updatedData);
-                       
+                          final response =
+                              await ApiService.updateCustomerProfile(
+                                  customerId, updatedData);
 
-                        if (response != null) {
-                          if (response.statusCode == 200) {
+                          if (response != null) {
+                            if (response.statusCode == 200) {
+                              List<Map<String, dynamic>> data =
+                                  <Map<String, dynamic>>[];
 
-                            List<Map<String, dynamic>> data = <Map<String, dynamic>>[];
+                              String body =
+                                  await response.stream.bytesToString();
+                              print(body);
 
-
-
-                            String body = await response.stream.bytesToString();
-                            print(body);
-
-                             try {
+                              try {
                                 data.add(jsonDecode(body));
                                 print("${body.runtimeType}");
                                 print("JSON DECODE DATA $data");
@@ -413,28 +409,29 @@ class _ProfilePageState extends State<ProfilePage> {
                                 print('Error decoding: $e');
                               }
 
-                            customerProvider.setCustomerData(data);
+                              customerProvider.setCustomerData(data);
 
-                            Map<String, String> updatedData2 = {
-                          "mobile_no": _phoneNoController.text,
-                          "fulladdress": _addressController.text,
-                          "pincode": _pinNoController.text,
-                          "birthday": _birthdateController.text,
-                          "anniversary": _anniversarydateController.text,
-                          "spouse_birthday": _spousebirthdateController.text,
-                          
-                       
-                        };
+                              Map<String, String> updatedData2 = {
+                                "mobile_no": _phoneNoController.text,
+                                "fulladdress": _addressController.text,
+                                "pincode": _pinNoController.text,
+                                "birthday": _birthdateController.text,
+                                "anniversary": _anniversarydateController.text,
+                                "spouse_birthday":
+                                    _spousebirthdateController.text,
+                              };
 
-                            customerProvider.addCustomerData(updatedData2);
+                              customerProvider.addCustomerData(updatedData2);
 
-                            print("updated customerData list ${customerProvider.customerData[0]}");
-                            Navigator.pop(context);
+                              print(
+                                  "updated customerData list ${customerProvider.customerData[0]}");
+                              Navigator.pop(context);
+                            }
                           }
+                          setState(() {
+                            isUpdating = false;
+                          });
                         }
-                         setState(() {
-                          isUpdating = false;
-                        });
                       }
                     },
                     child: Container(

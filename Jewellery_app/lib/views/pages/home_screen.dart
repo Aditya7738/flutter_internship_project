@@ -36,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   // List<CategoriesModel> listOfCategories = [];
 
-  bool isLoading = true;
+  bool isLoading = false;
 
   bool isNewCategoryLoading = false;
 
@@ -51,8 +51,6 @@ class _HomeScreenState extends State<HomeScreen> {
           "CONDITION ${_scrollController.position.pixels == _scrollController.position.maxScrollExtent}");
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
-
-
         loadMoreData();
       }
     });
@@ -81,19 +79,24 @@ class _HomeScreenState extends State<HomeScreen> {
   // }
 
   Future<void> getRequest() async {
-    await ApiService.fetchCategories(1, context);
+    bool isThereInternet = await ApiService.checkInternetConnection(context);
+    if (isThereInternet) {
+      setState(() {
+        isLoading = true;
+      });
+      await ApiService.fetchCategories(1, context);
 
-    setState(() {
-      isLoading = false;
-    });
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 
   // @override
   // void dispose() {
-  
+
   //   super.dispose();
   //    _scrollController.dispose();
-     
 
   // }
   @override
@@ -175,42 +178,41 @@ class _HomeScreenState extends State<HomeScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            isLoading ?
-            SizedBox(
-              height: MediaQuery.of(context).size.height / 6,
-              child: Center(
-                child: CircularProgressIndicator(
-                  color: Theme.of(context).primaryColor,
-                ),
-              ),
-            )
-
-            :
-            Container(
-              margin:
-                  const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-              height: MediaQuery.of(context).size.height / 6,
-              child: Scrollbar(
-                child: ListView.builder(
-                    controller: _scrollController,
-                    scrollDirection: Axis.horizontal,
-                    itemCount: ApiService.listOfCategory.length +
-                        (isNewCategoryLoading ? 1 : 0),
-                    itemBuilder: (context, index) {
-                      if (index < ApiService.listOfCategory.length) {
-                        return FeatureWidget(
-                          categoriesModel: ApiService.listOfCategory[index],
-                          isLoading: isLoading,
-                        );
-                      } else {
-                        return const Center(
-                            child: CircularProgressIndicator(
-                          color: Color(0xffCC868A),
-                        ));
-                      }
-                    }),
-              ),
-            ),
+            isLoading
+                ? SizedBox(
+                    height: MediaQuery.of(context).size.height / 6,
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        color: Theme.of(context).primaryColor,
+                      ),
+                    ),
+                  )
+                : Container(
+                    margin: const EdgeInsets.symmetric(
+                        horizontal: 10.0, vertical: 10.0),
+                    height: MediaQuery.of(context).size.height / 6,
+                    child: Scrollbar(
+                      child: ListView.builder(
+                          controller: _scrollController,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: ApiService.listOfCategory.length +
+                              (isNewCategoryLoading ? 1 : 0),
+                          itemBuilder: (context, index) {
+                            if (index < ApiService.listOfCategory.length) {
+                              return FeatureWidget(
+                                categoriesModel:
+                                    ApiService.listOfCategory[index],
+                                isLoading: isLoading,
+                              );
+                            } else {
+                              return const Center(
+                                  child: CircularProgressIndicator(
+                                color: Color(0xffCC868A),
+                              ));
+                            }
+                          }),
+                    ),
+                  ),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
               child: PincodeWidget(),
@@ -373,7 +375,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
-      
     );
   }
 }

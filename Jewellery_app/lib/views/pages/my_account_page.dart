@@ -145,110 +145,112 @@ class MyAccountPage extends StatelessWidget {
               width: 12,
             ),
           ]),
-      body: Container(
-        color: const Color.fromARGB(255, 236, 236, 236),
-        child: Column(
-          children: [
-            const SizedBox(
-              height: 20.0,
-            ),
-            Container(
-              color: Colors.white,
-              padding:
-                  const EdgeInsets.symmetric(vertical: 20.0, horizontal: 30.0),
-              child: Row(children: [
-                Container(
-                  color: Colors.red,
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 35.0, vertical: 20.0),
-                  child: const Text(
-                    "A",
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                        fontSize: 30.0),
-                  ),
-                ),
-                const SizedBox(
-                  width: 20.0,
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    
-                    Text(customerProvider.customerData[0]["first_name"],
-                        style: Theme.of(context).textTheme.headline1),
-                    Text(customerProvider.customerData[0]["last_name"],
-                        style: Theme.of(context).textTheme.headline1),
-                    const SizedBox(
-                      height: 15.0,
-                    ),
-                    InkWell(
-                        onTap: () => Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (context) => const ProfilePage())),
-                        child: const Text(
-                          "Edit Profile",
-                          style: TextStyle(color: Colors.green),
-                        ))
-                  ],
-                )
-              ]),
-            ),
-            const SizedBox(
-              height: 10.0,
-            ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width,
-              height:
-                  MediaQuery.of(context).size.height - (kToolbarHeight + 190.0),
-              child: ListView.builder(
-                itemCount: icons.length,
-                itemBuilder: (context, index) {
-                  return Card(
-                    margin: const EdgeInsets.symmetric(
-                        horizontal: 10.0, vertical: 5.0),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ListTile(
-                        onTap: () {
-                          switch (index) {
-                            case 0:
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => const OrderPage()));
-                              break;
-                            case 1:
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => const ActivePayments()));
-                              break;
-                            case 2:
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => const WishListPage()));
-                              break;
-                            case 3:
-                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => const MyGoldPlans()));
-                            break;
-                            case 4:
-                              showLogoutDialog(context);
-                              break;
-                            default:
-                          }
-                        },
-                        leading: Image.asset(
-                          icons[index],
-                          width: 40.0,
-                          height: 40.0,
-                        ),
-                        title: Text(titles[index],
-                            style: const TextStyle(fontSize: 18.0)),
-                        trailing: const Icon(Icons.chevron_right_outlined),
-                      ),
-                    ),
-                  );
-                },
+      body: SingleChildScrollView(
+        child: Container(
+          color: const Color.fromARGB(255, 236, 236, 236),
+          child: Column(
+            children: [
+              const SizedBox(
+                height: 20.0,
               ),
-            )
-          ],
+              Container(
+                color: Colors.white,
+                padding:
+                    const EdgeInsets.symmetric(vertical: 20.0, horizontal: 30.0),
+                child: Row(children: [
+                  Container(
+                    color: Colors.red,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 35.0, vertical: 20.0),
+                    child: const Text(
+                      "A",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          fontSize: 30.0),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 20.0,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      
+                      Text(customerProvider.customerData[0]["first_name"],
+                          style: Theme.of(context).textTheme.headline1),
+                      Text(customerProvider.customerData[0]["last_name"],
+                          style: Theme.of(context).textTheme.headline1),
+                      const SizedBox(
+                        height: 15.0,
+                      ),
+                      InkWell(
+                          onTap: () => Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (context) => const ProfilePage())),
+                          child: const Text(
+                            "Edit Profile",
+                            style: TextStyle(color: Colors.green),
+                          ))
+                    ],
+                  )
+                ]),
+              ),
+              const SizedBox(
+                height: 10.0,
+              ),
+              SizedBox(
+                width: MediaQuery.of(context).size.width,
+                height:
+                    MediaQuery.of(context).size.height - (kToolbarHeight + 190.0),
+                child: ListView.builder(
+                  itemCount: icons.length,
+                  itemBuilder: (context, index) {
+                    return Card(
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 10.0, vertical: 5.0),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ListTile(
+                          onTap: () {
+                            switch (index) {
+                              case 0:
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => const OrderPage()));
+                                break;
+                              case 1:
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => const ActivePayments()));
+                                break;
+                              case 2:
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => const WishListPage()));
+                                break;
+                              case 3:
+                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const MyGoldPlans()));
+                              break;
+                              case 4:
+                                showLogoutDialog(context);
+                                break;
+                              default:
+                            }
+                          },
+                          leading: Image.asset(
+                            icons[index],
+                            width: 40.0,
+                            height: 40.0,
+                          ),
+                          title: Text(titles[index],
+                              style: const TextStyle(fontSize: 18.0)),
+                          trailing: const Icon(Icons.chevron_right_outlined),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

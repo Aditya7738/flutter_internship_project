@@ -29,7 +29,7 @@ class _ProductPageState extends State<ProductPage> {
 
   bool isThereMoreProducts = false;
 
-  bool newListLoading = true;
+  bool newListLoading = false;
 
   @override
   void initState() {
@@ -55,7 +55,8 @@ class _ProductPageState extends State<ProductPage> {
     });
 
     // Fetch more data (e.g., using ApiService)
-    isThereMoreProducts = await ApiService.showNextPagesCategoryProduct();
+    isThereMoreProducts =
+        await ApiService.showNextPagesCategoryProduct(context);
 
     setState(() {
       isLoading = false;
@@ -63,12 +64,19 @@ class _ProductPageState extends State<ProductPage> {
   }
 
   Future<void> getProducts() async {
-    ApiService.listOfProductsCategoryWise.clear();
-    await ApiService.fetchProductsCategoryWise(id: widget.id, pageNo: 1);
+    bool isThereInternet = await ApiService.checkInternetConnection(context);
+    if (isThereInternet) {
+      setState(() {
+        newListLoading = true;
+      });
+      ApiService.listOfProductsCategoryWise.clear();
+      await ApiService.fetchProductsCategoryWise(context,
+          id: widget.id, pageNo: 1);
 
-    setState(() {
-      newListLoading = false;
-    });
+      setState(() {
+        newListLoading = false;
+      });
+    }
   }
 
   @override
@@ -78,73 +86,70 @@ class _ProductPageState extends State<ProductPage> {
     super.dispose();
   }
 
- 
   bool isSearchBarUsed = false;
- 
+
   bool isSearchFieldEmpty = false;
-   String searchText = "";
-  
+  String searchText = "";
+
   bool isProductListEmpty = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Products"), 
-      actions: <Widget>[
-        SizedBox(
-          height: 40.0,
-          width: 32.0,
-          child: badges.Badge(
-            badgeStyle: const badges.BadgeStyle(badgeColor: Colors.purple),
-            badgeContent:
-                Consumer<WishlistProvider>(builder: (context, value, child) {
-              print("LENGTH OF FAV: ${value.favProductIds}");
-              return Text(
-                value.favProductIds.length.toString(),
-                style: const TextStyle(color: Colors.white),
-              );
-            }),
-            child: IconButton(
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const WishListPage()));
-              },
-              icon: const Icon(Icons.favorite_sharp, color: Colors.black),
+      appBar: AppBar(
+          title: Text("Products"),
+          actions: <Widget>[
+            SizedBox(
+              height: 40.0,
+              width: 32.0,
+              child: badges.Badge(
+                badgeStyle: const badges.BadgeStyle(badgeColor: Colors.purple),
+                badgeContent: Consumer<WishlistProvider>(
+                    builder: (context, value, child) {
+                  print("LENGTH OF FAV: ${value.favProductIds}");
+                  return Text(
+                    value.favProductIds.length.toString(),
+                    style: const TextStyle(color: Colors.white),
+                  );
+                }),
+                child: IconButton(
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const WishListPage()));
+                  },
+                  icon: const Icon(Icons.favorite_sharp, color: Colors.black),
+                ),
+              ),
             ),
-          ),
-        ),
-        const SizedBox(
-          width: 12,
-        ),
-        SizedBox(
-          height: 40.0,
-          width: 32.0,
-          child: badges.Badge(
-            badgeStyle: const badges.BadgeStyle(badgeColor: Colors.purple),
-            badgeContent: Consumer<CartProvider>(
-                builder: (context, value, child) => Text(
-                      value.cart.length.toString(),
-                      style: const TextStyle(color: Colors.white),
-                    )),
-            child: IconButton(
-              onPressed: () {
-                print("CART CLICKED");
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) => CartPage()));
-              },
-              icon: const Icon(Icons.shopping_cart),
-              color: Colors.black,
+            const SizedBox(
+              width: 12,
             ),
-          ),
-        ),
-        const SizedBox(
-          width: 12,
-        ),
-      ],
-      bottom: SearchProductsOfCategory()
-
-      
-      ),
+            SizedBox(
+              height: 40.0,
+              width: 32.0,
+              child: badges.Badge(
+                badgeStyle: const badges.BadgeStyle(badgeColor: Colors.purple),
+                badgeContent: Consumer<CartProvider>(
+                    builder: (context, value, child) => Text(
+                          value.cart.length.toString(),
+                          style: const TextStyle(color: Colors.white),
+                        )),
+                child: IconButton(
+                  onPressed: () {
+                    print("CART CLICKED");
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => CartPage()));
+                  },
+                  icon: const Icon(Icons.shopping_cart),
+                  color: Colors.black,
+                ),
+              ),
+            ),
+            const SizedBox(
+              width: 12,
+            ),
+          ],
+          bottom: SearchProductsOfCategory()),
       body: newListLoading
           ? const Center(
               child: CircularProgressIndicator(
@@ -168,7 +173,8 @@ class _ProductPageState extends State<ProductPage> {
                     itemBuilder: (BuildContext context, int index) {
                       if (index <
                           ApiService.listOfProductsCategoryWise.length) {
-                        return ProductItem(productIndex: index, 
+                        return ProductItem(
+                          productIndex: index,
                           productsModel:
                               ApiService.listOfProductsCategoryWise[index],
                         );

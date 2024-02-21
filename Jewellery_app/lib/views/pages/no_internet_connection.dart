@@ -2,8 +2,16 @@ import 'package:Tiara_by_TJ/views/pages/dashboard_page.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 
-class NoInternetConnectionPage extends StatelessWidget {
+class NoInternetConnectionPage extends StatefulWidget {
   const NoInternetConnectionPage({super.key});
+
+  @override
+  State<NoInternetConnectionPage> createState() =>
+      _NoInternetConnectionPageState();
+}
+
+class _NoInternetConnectionPageState extends State<NoInternetConnectionPage> {
+  bool isInternetChecking = false;
 
   @override
   Widget build(BuildContext context) {
@@ -26,8 +34,9 @@ class NoInternetConnectionPage extends StatelessWidget {
               Text(
                 "No internet connection!",
                 style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                    fontSize: 18.0, color: Theme.of(context).primaryColor),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18.0,
+                    color: Theme.of(context).primaryColor),
               ),
               const SizedBox(
                 height: 20.0,
@@ -42,21 +51,28 @@ class NoInternetConnectionPage extends StatelessWidget {
               ),
               GestureDetector(
                 onTap: () async {
+                  setState(() {
+                    isInternetChecking = true;
+                  });
                   final connectivityResult =
                       await (Connectivity().checkConnectivity());
-                  if (connectivityResult == ConnectivityResult.none) {
-                    if(Navigator.canPop(context) == false){
-                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => DashboardPage(),));
-                    }
-                    Navigator.pop(context, false);
-                  } else {
-                    if(Navigator.canPop(context) == false){
-                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => DashboardPage(),));
+                  setState(() {
+                    isInternetChecking = false;
+                  });
+
+                  if (connectivityResult != ConnectivityResult.none) {
+                    if (Navigator.canPop(context) == false) {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DashboardPage(),
+                          ));
                     }
                     Navigator.pop(context, true);
                   }
                 },
                 child: Container(
+                width: 155,
                     decoration: BoxDecoration(
                         border: Border.all(
                             color: Theme.of(context).primaryColor,
@@ -64,11 +80,29 @@ class NoInternetConnectionPage extends StatelessWidget {
                         borderRadius: BorderRadius.circular(5.0)),
                     padding: const EdgeInsets.symmetric(
                         vertical: 10.0, horizontal: 20.0),
-                    child: Text(
-                      "Try again",
-                      style: TextStyle(
-                          color: Theme.of(context).primaryColor,
-                          fontSize: 17.0),
+                    child: Row(
+                      children: [
+                        isInternetChecking
+                            ? CircularProgressIndicator(
+                            color: Theme.of(context).primaryColor,
+                                strokeWidth: 2.0,
+                              )
+                            : Image.asset(
+                                "assets/images/reload.png",
+                              color: Theme.of(context).primaryColor,
+                                width: 20.0,
+                                height: 20.0,
+                              ),
+                        SizedBox(
+                          width: 10.0,
+                        ),
+                        Text(
+                          "Try again",
+                          style: TextStyle(
+                              color: Theme.of(context).primaryColor,
+                              fontSize: 17.0),
+                        ),
+                      ],
                     )),
               )
             ],

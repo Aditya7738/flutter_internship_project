@@ -286,16 +286,21 @@ class _ShippingPageState extends State<ShippingPage> {
                                   }
                                 : shippingData = billingData;
 
-                            setState(() {
-                              isUpdateLoading = true;
-                            });
+                            bool isThereInternet =
+                                await ApiService.checkInternetConnection(
+                                    context);
+                            if (isThereInternet) {
+                              setState(() {
+                                isUpdateLoading = true;
+                              });
 
-                            await ApiService.updateCustomer(
-                                customerId, billingData, shippingData);
+                              await ApiService.updateCustomer(
+                                  customerId, billingData, shippingData);
 
-                            setState(() {
-                              isUpdateLoading = false;
-                            });
+                              setState(() {
+                                isUpdateLoading = false;
+                              });
+                            }
                           }
                         },
                         child: Container(
@@ -350,10 +355,10 @@ class _ShippingPageState extends State<ShippingPage> {
                               "address_1": _addressController1.text,
                               "address_2": _addressController2.text,
                               "city": _cityController.text,
-                             
                             };
 
-                            customerProvider.addCustomerData(customerBillingData);
+                            customerProvider
+                                .addCustomerData(customerBillingData);
 
                             differentShippingAddress
                                 ? shippingData = {
@@ -401,17 +406,15 @@ class _ShippingPageState extends State<ShippingPage> {
                             orderProvider.setCustomerId(customerId);
                             orderProvider.setLineItems(lineItems);
                             orderProvider.setCustomerId(customerId);
-                            orderProvider.setPrice(cartProvider.calculateTotalPrice().toString());
-                            
-                            
+                            orderProvider.setPrice(
+                                cartProvider.calculateTotalPrice().toString());
+
                             // await ApiService.createOrder(
                             //     billingData,
                             //     shippingData,
                             //     lineItems,
                             //     customerId,
                             //     cartProvider.calculateTotalPrice());
-
-
 
                             List<Map<String, dynamic>> razorpayOrderData =
                                 await uiCreateRazorpayOrder();
@@ -440,10 +443,10 @@ class _ShippingPageState extends State<ShippingPage> {
 
                             Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => PaymentPage(
-                                  orderId: razorpayOrderData[0]["id"],
-                                  fromCart: true,
-                                 // cashFreeData: impCashFreeData
-                                  ),
+                                orderId: razorpayOrderData[0]["id"],
+                                fromCart: true,
+                                // cashFreeData: impCashFreeData
+                              ),
                             ));
                           }
                         },
@@ -481,20 +484,23 @@ class _ShippingPageState extends State<ShippingPage> {
 
   Future<List<Map<String, dynamic>>> uiCreateRazorpayOrder() async {
     List<Map<String, dynamic>> data = <Map<String, dynamic>>[];
-    final response = await ApiService.createRazorpayOrder();
+    bool isThereInternet = await ApiService.checkInternetConnection(context);
+    if (isThereInternet) {
+      final response = await ApiService.createRazorpayOrder();
 
-    if (response != null) {
-      String body = await response.stream.bytesToString();
-      print("Razorpay Payment body $body");
+      if (response != null) {
+        String body = await response.stream.bytesToString();
+        print("Razorpay Payment body $body");
 
-      try {
-        print("${body.runtimeType}");
-        print("Razorpay JSON DECODE DATA $data");
-        data.add(jsonDecode(body));
-        return data;
-      } catch (e) {
-        print('Razorpay Error decoding: $e');
-        return <Map<String, dynamic>>[];
+        try {
+          print("${body.runtimeType}");
+          print("Razorpay JSON DECODE DATA $data");
+          data.add(jsonDecode(body));
+          return data;
+        } catch (e) {
+          print('Razorpay Error decoding: $e');
+          return <Map<String, dynamic>>[];
+        }
       }
     }
     return <Map<String, dynamic>>[];
@@ -502,20 +508,23 @@ class _ShippingPageState extends State<ShippingPage> {
 
   Future<List<Map<String, dynamic>>> uiCreateCashFreeOrder() async {
     List<Map<String, dynamic>> data = <Map<String, dynamic>>[];
-    final response = await ApiService.createCashFreeOrder();
+    bool isThereInternet = await ApiService.checkInternetConnection(context);
+    if (isThereInternet) {
+      final response = await ApiService.createCashFreeOrder();
 
-    if (response != null) {
-      String body = await response.stream.bytesToString();
-      print("CashFree Payment body $body");
+      if (response != null) {
+        String body = await response.stream.bytesToString();
+        print("CashFree Payment body $body");
 
-      try {
-        print("${body.runtimeType}");
-        print("CashFree JSON DECODE DATA $data");
-        data.add(jsonDecode(body));
-        return data;
-      } catch (e) {
-        print('CashFree Error decoding: $e');
-        return <Map<String, dynamic>>[];
+        try {
+          print("${body.runtimeType}");
+          print("CashFree JSON DECODE DATA $data");
+          data.add(jsonDecode(body));
+          return data;
+        } catch (e) {
+          print('CashFree Error decoding: $e');
+          return <Map<String, dynamic>>[];
+        }
       }
     }
     return <Map<String, dynamic>>[];

@@ -125,19 +125,22 @@ class _PaymentPageState extends State<PaymentPage>
   }
 
   createOrderHelper(OrderProvider orderProvider) async {
-    orderProvider.setIsOrderCreating(true);
-    http.Response response = await ApiService.createOrder(
-        orderProvider.billingData,
-        orderProvider.shippingData,
-        orderProvider.lineItems,
-        orderProvider.customerId,
-        orderProvider.price,
-        orderProvider.metaData);
+    bool isThereInternet = await ApiService.checkInternetConnection(context);
+    if (isThereInternet) {
+      orderProvider.setIsOrderCreating(true);
+      http.Response response = await ApiService.createOrder(
+          orderProvider.billingData,
+          orderProvider.shippingData,
+          orderProvider.lineItems,
+          orderProvider.customerId,
+          orderProvider.price,
+          orderProvider.metaData);
 
-    orderProvider.setIsOrderCreating(false);
+      orderProvider.setIsOrderCreating(false);
 
-    if (response.statusCode == 201) {
-      print("DigiGoldOrder CREATED SUCCESSFULLY");
+      if (response.statusCode == 201) {
+        print("DigiGoldOrder CREATED SUCCESSFULLY");
+      }
     }
   }
 
@@ -272,28 +275,32 @@ class _PaymentPageState extends State<PaymentPage>
 
   Future<List<ExpansionListItemModel>> getSteps() async {
     //ApiService.paymentGateways.clear();
-    await ApiService.getPaymentGateways();
+    bool isThereInternet = await ApiService.checkInternetConnection(context);
+    if (isThereInternet) {
+      await ApiService.getPaymentGateways();
 
-    List<ExpansionListItemModel> list = <ExpansionListItemModel>[];
+      List<ExpansionListItemModel> list = <ExpansionListItemModel>[];
 
-    for (int i = 0; i < ApiService.paymentGateways.length; i++) {
-      list.add(ExpansionListItemModel(
-          ApiService.paymentGateways[i].id ?? "0",
-          ApiService.paymentGateways[i].title ?? "Payment method",
-          ApiService.paymentGateways[i].description ?? ""));
+      for (int i = 0; i < ApiService.paymentGateways.length; i++) {
+        list.add(ExpansionListItemModel(
+            ApiService.paymentGateways[i].id ?? "0",
+            ApiService.paymentGateways[i].title ?? "Payment method",
+            ApiService.paymentGateways[i].description ?? ""));
+      }
+
+      print("list length ${list.length}");
+
+      // var _items = [
+      //   ExpansionListItemModel('Step 0: Install Flutter',
+      //       'Install Flutter development tools according to the official documentation.'),
+      //   ExpansionListItemModel('Step 1: Create a project',
+      //       'Open your terminal, run `flutter create <project_name>` to create a new project.'),
+      //   ExpansionListItemModel('Step 2: Run the app',
+      //       'Change your terminal directory to the project directory, enter `flutter run`.'),
+      // ];
+      return list;
     }
-
-    print("list length ${list.length}");
-
-    // var _items = [
-    //   ExpansionListItemModel('Step 0: Install Flutter',
-    //       'Install Flutter development tools according to the official documentation.'),
-    //   ExpansionListItemModel('Step 1: Create a project',
-    //       'Open your terminal, run `flutter create <project_name>` to create a new project.'),
-    //   ExpansionListItemModel('Step 2: Run the app',
-    //       'Change your terminal directory to the project directory, enter `flutter run`.'),
-    // ];
-    return list;
+    return <ExpansionListItemModel>[];
   }
 
   @override

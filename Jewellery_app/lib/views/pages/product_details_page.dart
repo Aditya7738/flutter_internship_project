@@ -302,6 +302,8 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
   }
 
   Future<void> getReviews() async {
+    bool isThereInternet = await ApiService.checkInternetConnection(context);
+    if (isThereInternet) {
     setState(() {
       isReviewLoading = true;
     });
@@ -310,6 +312,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
     setState(() {
       isReviewLoading = false;
     });
+    }
   }
 
   @override

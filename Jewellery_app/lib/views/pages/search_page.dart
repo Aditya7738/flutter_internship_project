@@ -38,7 +38,8 @@ class _SearchPageState extends State<SearchPage> {
 
     final filterOptionsProvider =
         Provider.of<FilterOptionsProvider>(context, listen: false);
-        print("filterOptionsProvider.list.length ${filterOptionsProvider.list.length}");
+    print(
+        "filterOptionsProvider.list.length ${filterOptionsProvider.list.length}");
     filterOptionsProvider.clearFilterList();
     ApiService.listOfProductsModel.clear();
     _scrollController.addListener(() async {
@@ -48,13 +49,11 @@ class _SearchPageState extends State<SearchPage> {
           _scrollController.position.maxScrollExtent) {
         print("REACHED END OF LIST");
 
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-                  // This code will run after the layout and rendering are complete
-                  // Access the size or position of the widget
-                  loadMoreData();
-                });
-
-       
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          // This code will run after the layout and rendering are complete
+          // Access the size or position of the widget
+          loadMoreData();
+        });
       }
     });
   }
@@ -88,8 +87,7 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
-    final filterOptionsProvider =
-        Provider.of<FilterOptionsProvider>(context);
+    final filterOptionsProvider = Provider.of<FilterOptionsProvider>(context);
 
     return Scaffold(
         appBar: AppBar(
@@ -113,24 +111,30 @@ class _SearchPageState extends State<SearchPage> {
                 });
 
                 if (value.length >= 3 && !newListLoading) {
-                  ApiService.listOfProductsModel.clear();
-                  setState(() {
-                    newListLoading = true;
-                  });
+                  bool isThereInternet =
+                      await ApiService.checkInternetConnection(context);
 
-                  List<ProductsModel> listOfProducts =
-                      await ApiService.fetchProducts(value, 1, context);
+                  if (isThereInternet) {
+                    ApiService.listOfProductsModel.clear();
+                    setState(() {
+                      newListLoading = true;
+                    });
 
-                  setState(() {
-                    newListLoading = false;
-                    isProductListEmpty = listOfProducts.length == 0;
-                  });
-                  //ApiService.searchProduct(value);
-                  print("ONCHANGED CALLED");
-                  setState(() {
-                    isSearchBarUsed = true;
-                    searchText = value;
-                  });
+                    List<ProductsModel> listOfProducts =
+                        await ApiService.fetchProducts(value, 1);
+
+                    setState(() {
+                      newListLoading = false;
+                      isProductListEmpty = listOfProducts.length == 0;
+                    });
+
+                    //ApiService.searchProduct(value);
+                    print("ONCHANGED CALLED");
+                    setState(() {
+                      isSearchBarUsed = true;
+                      searchText = value;
+                    });
+                  }
                 }
               },
               showCursor: true,
@@ -157,7 +161,8 @@ class _SearchPageState extends State<SearchPage> {
                   return;
                 } //- uncomment it
                 showModalBottomSheet(
-                  isDismissible: filterOptionsProvider.list.isEmpty ? true: false,
+                  isDismissible:
+                      filterOptionsProvider.list.isEmpty ? true : false,
                   enableDrag: true,
                   context: context,
                   isScrollControlled: true,
@@ -213,13 +218,15 @@ class _SearchPageState extends State<SearchPage> {
 
                               // print( "₹${value.list[index]["price_range"]["min_price"]}");
                               return Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8.0),
                                 child: Chip(
                                     padding: EdgeInsets.all(7.0),
                                     label: Text(
-                                      value.list[index]["parent"] == "price_range" ?
-                                      "₹${value.list[index]["price_range"]["min_price"]} - ₹${value.list[index]["price_range"]["max_price"]}"
-                                      : value.list[index]["label"],
+                                      value.list[index]["parent"] ==
+                                              "price_range"
+                                          ? "₹${value.list[index]["price_range"]["min_price"]} - ₹${value.list[index]["price_range"]["max_price"]}"
+                                          : value.list[index]["label"],
                                       style: TextStyle(
                                           fontSize: 16.0,
                                           fontWeight: FontWeight.bold),
@@ -237,54 +244,57 @@ class _SearchPageState extends State<SearchPage> {
                                     ),
                                     onDeleted: () async {
                                       print("ONDELETED CALLED");
-                                
+
                                       print("index to remove $index");
-                                
+
                                       value.removeFromList(index);
-                                
-                                          print("_list ${value.list}");
-                                
+
+                                      print("_list ${value.list}");
+
                                       //value.setFilteredListLoading(true);
-                                
+
                                       // Map<String, dynamic> selectedSubOptionsdata =
                                       //     value.selectedSubOptionsdata;
-                                
+
                                       // if (selectedSubOptionsdata
                                       //     .containsKey("collection")) {
                                       //   selectedSubOptionsdata["collection"] =
                                       //       "";
                                       // }
-                                
+
                                       // if (selectedSubOptionsdata
                                       //     .containsKey("categories")) {
                                       //   selectedSubOptionsdata["categories"] =
                                       //       "";
                                       // }
-                                
+
                                       // if (selectedSubOptionsdata
                                       //     .containsKey("sub-categories")) {
                                       //   selectedSubOptionsdata[
                                       //       "sub-categories"] = "";
                                       // }
-                                
+
                                       // if (selectedSubOptionsdata
                                       //     .containsKey("tags")) {
                                       //   selectedSubOptionsdata["tags"] = "";
                                       // }
-                                
+
                                       // if (selectedSubOptionsdata
                                       //     .containsKey("price_range")) {
                                       //   selectedSubOptionsdata["price_range"] =
                                       //       "";
                                       // }
-                                      value.setFilteredListLoading(true);
-                                
-                                      ApiService.listOfProductsModel.clear();
-                                      await ApiService.fetchProducts(
-                                          textEditingController.text,
-                                          1,
-                                          context, filterList: value.list);
-                                      value.setFilteredListLoading(false);
+                                      bool isThereInternet = await ApiService
+                                          .checkInternetConnection(context);
+                                      if (isThereInternet) {
+                                        value.setFilteredListLoading(true);
+
+                                        ApiService.listOfProductsModel.clear();
+                                        await ApiService.fetchProducts(
+                                            textEditingController.text, 1,
+                                            filterList: value.list);
+                                        value.setFilteredListLoading(false);
+                                      }
                                     }),
                               );
                             },
@@ -339,17 +349,17 @@ class _SearchPageState extends State<SearchPage> {
 
                           // print("appliedFilter length ${appliedFilter.length}");
                         })),
-                        value.list.isEmpty
-                    ? SizedBox():
-                        Divider(thickness: 2.0,),
-                        Container(
-                          padding: EdgeInsets.all(8.0),
-                          alignment: Alignment.centerRight,
-                          width: MediaQuery.of(context).size.width,
-                          child: Text("Showing ${ApiService.listOfProductsModel.length} results")),
-
-                        
-              
+                value.list.isEmpty
+                    ? SizedBox()
+                    : Divider(
+                        thickness: 2.0,
+                      ),
+                Container(
+                    padding: EdgeInsets.all(8.0),
+                    alignment: Alignment.centerRight,
+                    width: MediaQuery.of(context).size.width,
+                    child: Text(
+                        "Showing ${ApiService.listOfProductsModel.length} results")),
                 newListLoading || value.isFilteredListLoading
                     ? Expanded(
                         child: SizedBox(

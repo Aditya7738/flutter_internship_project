@@ -25,7 +25,22 @@ class ApiService {
   static int categoriesPageNo = 1;
 
   static int responseofCategoriesPages = 1;
-  static Future<bool> showNextPageOfCategories( BuildContext context) async {
+
+  static Future<bool> checkInternetConnection(BuildContext context) async {
+   
+    final connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.none) {
+      return await Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => NoInternetConnectionPage(),
+          ));
+    }else{
+      return true;
+    }
+  }
+
+  static Future<bool> showNextPageOfCategories(BuildContext context) async {
     categoriesPageNo++;
     if (categoriesPageNo <= responseofCategoriesPages) {
       await fetchCategories(categoriesPageNo, context);
@@ -35,16 +50,11 @@ class ApiService {
     return false;
   }
 
-  static Future<List<CategoriesModel>> fetchCategories(int pageNo, BuildContext context) async {
+  static Future<List<CategoriesModel>> fetchCategories(
+      int pageNo, BuildContext context) async {
     //https://tiarabytj.com/wp-json/wc/v3/products/categories?consumer_key=ck_33882e17eeaff38b20ac7c781156024bc2d6af4a&consumer_secret=cs_df67b056d05606c05275b571ab39fa508fcdd7b9
-     bool isThereInternet = false;
-    final connectivityResult = await (Connectivity().checkConnectivity());
-if (connectivityResult == ConnectivityResult.none) {
-  isThereInternet = await Navigator.push(context, MaterialPageRoute(builder: (context) => NoInternetConnectionPage(),));
+    //checkInternetConnection(context);
 
-}
-     if (isThereInternet) {
-   
     String categoryUri =
         "${Strings.baseUrl}/wp-json/wc/v3/products/categories?consumer_key=${Strings.consumerKey}&consumer_secret=${Strings.consumerSecret}&page=$pageNo&per_page=50";
     Uri uri = Uri.parse(categoryUri);
@@ -79,8 +89,6 @@ if (connectivityResult == ConnectivityResult.none) {
     } else {
       return [];
     }
-     }
-     return [];
   }
 
   static List<ProductsModel> listOfProductsCategoryWise = [];
@@ -89,10 +97,11 @@ if (connectivityResult == ConnectivityResult.none) {
   static late int categoryId;
 
   static int responseofCategoryPages = 1;
-  static Future<bool> showNextPagesCategoryProduct() async {
+  static Future<bool> showNextPagesCategoryProduct(BuildContext context) async {
     categoryPageNo++;
     if (categoryPageNo <= responseofCategoryPages) {
-      await fetchProductsCategoryWise(id: categoryId, pageNo: categoryPageNo);
+      await fetchProductsCategoryWise(context,
+          id: categoryId, pageNo: categoryPageNo);
       return true;
     }
 
@@ -100,9 +109,11 @@ if (connectivityResult == ConnectivityResult.none) {
   }
 
   static Future<List<ProductsModel>> fetchProductsCategoryWise(
-      {required int id, required int pageNo}) async {
+      BuildContext context,
+      {required int id,
+      required int pageNo}) async {
     categoryId = id;
-
+    //checkInternetConnection(context);
     //https://tiarabytj.com/wp-json/wc/v3/products?consumer_key=ck_33882e17eeaff38b20ac7c781156024bc2d6af4a&consumer_secret=cs_df67b056d05606c05275b571ab39fa508fcdd7b9&category=230
     String categoryUri =
         "${Strings.baseUrl}/wp-json/wc/v3/products?consumer_key=${Strings.consumerKey}&consumer_secret=${Strings.consumerSecret}&category=$id&per_page=30&page=$pageNo";
@@ -260,7 +271,7 @@ if (connectivityResult == ConnectivityResult.none) {
   static Future<bool> showNextPagesProduct(BuildContext context) async {
     pageNo++;
     if (pageNo <= pagesOfResponse) {
-      await fetchProducts(searchString, pageNo, context);
+      await fetchProducts(searchString, pageNo);
       return true;
     }
 
@@ -268,72 +279,14 @@ if (connectivityResult == ConnectivityResult.none) {
   }
 
   static Future<List<AllProducts.ProductsModel>> fetchProducts(
-      String searchText, int pageNo, BuildContext context,
+      String searchText, int pageNo,
       {List<Map<String, dynamic>>? filterList}) async {
     searchString = searchText;
+   // checkInternetConnection(context);
 
-    //https: //tiarabytj.com/wp-json/wc/v3/products?consumer_key=ck_33882e17eeaff38b20ac7c781156024bc2d6af4a&consumer_secret=cs_df67b056d05606c05275b571ab39fa508fcdd7b9
     String endpoint =
         "${Strings.baseUrl}/wp-json/wc/v3/products?consumer_key=${Strings.consumerKey}&consumer_secret=${Strings.consumerSecret}&per_page=100&search=$searchText&page=$pageNo";
 
-    // final filterProvider =
-    //     Provider.of<FilterOptionsProvider>(context, listen: false);
-
-    // List<Map<String, dynamic>> selectedSubOptionsList = filterProvider.list;
-
-    // for (var i = 0; i < selectedSubOptionsList.length; i++) {
-    //   print("selectedSubOptionsList item$i ${selectedSubOptionsList[i]}");
-    //   switch (selectedSubOptionsList[i]["parent"]) {
-    //     case "collection":
-    //       if (selectedSubOptionsList[i]["count"] > 0) {
-    //         endpoint +=
-    //             "&collections=${selectedSubOptionsList[i]["id"]}";
-    //       }
-    //       break;
-    //     case "categories":
-    //       if (selectedSubOptionsList[i]["count"] > 0) {
-    //         endpoint += "&category=${selectedSubOptionsList[i]["id"]}";
-    //       }
-    //       break;
-
-    //     case "sub-categories":
-    //       if (selectedSubOptionsList[i]["count"] > 0) {
-    //         endpoint +=
-    //             "&subcategory=${selectedSubOptionsList[i]["id"]}";
-    //       }
-    //       break;
-
-    //     case "tags":
-    //       if (selectedSubOptionsList[i]["count"] > 0) {
-    //         endpoint += "&tag=${selectedSubOptionsList[i]["id"]}";
-    //       }
-    //       break;
-    //     case "diamond_wt":
-    //       if (selectedSubOptionsList[i]["count"] > 0) {
-    //         endpoint +=
-    //             "&subcategory=${selectedSubOptionsList[i]["id"]}";
-    //       }
-    //       break;
-    //     case "gold_wt":
-    //       if (selectedSubOptionsList[i]["count"] > 0) {
-    //         endpoint +=
-    //             "&subcategory=${selectedSubOptionsList[i]["id"]}";
-    //       }
-    //       break;
-    //     case "gender":
-    //       if (selectedSubOptionsList[i]["count"] > 0) {
-    //         endpoint += "&gender=${selectedSubOptionsList[i]["id"]}";
-    //       }
-    //       break;
-    //     case "price_range":
-    //       endpoint +=
-    //           "&min_price=${selectedSubOptionsList[i]["price_range"]["min_price"]}&max_price=${selectedSubOptionsList[i]["price_range"]["max_price"]}";
-
-    //       break;
-
-    //     default:
-    //   }
-    // }
     if (filterList != null) {
       //1/////////////////
       List<Map<String, dynamic>> collections = <Map<String, dynamic>>[];
@@ -471,46 +424,6 @@ if (connectivityResult == ConnectivityResult.none) {
         }
       }
     }
-
-    //       case "diamond_wt":
-    //         if (filterList[i]["count"] > 0) {
-    //           endpoint += "&subcategory=${filterList[i]["id"]}";
-    //         }
-    //         break;
-    //       case "gold_wt":
-    //         if (filterList[i]["count"] > 0) {
-    //           endpoint += "&subcategory=${filterList[i]["id"]}";
-    //         }
-    //         break;
-    //       case "gender":
-    //         if (filterList[i]["count"] > 0) {
-    //           endpoint += "&gender=${filterList[i]["id"]}";
-    //         }
-    //         break;
-    //       case "price_range":
-    //         endpoint +=
-    //             "&min_price=${filterList[i]["price_range"]["min_price"]}&max_price=${filterList[i]["price_range"]["max_price"]}";
-
-    //         break;
-
-    //       default:
-    //     }
-    //   }
-    // }
-
-    // Map<String, dynamic> selectedSubOptionsdata = filterProvider.selectedSubOptionsdata;
-
-    //  if (selectedSubOptionsdata.containsKey("tags")) {
-    //   if (selectedSubOptionsdata["tagsCount"] > 0) {
-    //     endpoint += "&tag=${selectedSubOptionsdata["tags"]}";
-    //   }
-    // }
-
-    //  if (selectedSubOptionsdata.containsKey("price_range")) {
-
-    //     endpoint += "&min_price=${selectedSubOptionsdata["price_range"]["min_price"]}&max_price=${selectedSubOptionsdata["price_range"]["max_price"]}";
-
-    // }
 
     print("filtered url $endpoint");
 
@@ -659,7 +572,6 @@ if (connectivityResult == ConnectivityResult.none) {
 
   static Future<List<AllProducts.ProductsModel>> getOnSaleProducts(
       int pageNo) async {
-    //https: //tiarabytj.com/wp-json/wc/v3/products?consumer_key=ck_33882e17eeaff38b20ac7c781156024bc2d6af4a&consumer_secret=cs_df67b056d05606c05275b571ab39fa508fcdd7b9
     String endpoint =
         "${Strings.baseUrl}/wp-json/wc/v3/products?consumer_key=${Strings.consumerKey}&consumer_secret=${Strings.consumerSecret}&per_page=100&on_sale=true";
 
@@ -808,6 +720,7 @@ if (connectivityResult == ConnectivityResult.none) {
 
   static Future<List<AllProducts.ProductsModel>> getNewlyArrivalProducts(
       int pageNo) async {
+    //checkInternetConnection(context);
     //https: //tiarabytj.com/wp-json/wc/v3/products?consumer_key=ck_33882e17eeaff38b20ac7c781156024bc2d6af4a&consumer_secret=cs_df67b056d05606c05275b571ab39fa508fcdd7b9
     String endpoint =
         "${Strings.baseUrl}/wp-json/wc/v3/products?consumer_key=${Strings.consumerKey}&consumer_secret=${Strings.consumerSecret}&per_page=100&on_sale=true";
@@ -957,6 +870,7 @@ if (connectivityResult == ConnectivityResult.none) {
 
   static Future<List<AllProducts.ProductsModel>> fetchFavProducts(
       List<int> ids) async {
+   // checkInternetConnection(context);
     var endpoint =
         "${Strings.baseUrl}/wp-json/wc/v3/products?consumer_key=${Strings.consumerKey}&consumer_secret=${Strings.consumerSecret}&include=";
 
@@ -999,6 +913,7 @@ if (connectivityResult == ConnectivityResult.none) {
 
   static Future<http.Response> createCustomer(
       Map<String, dynamic> customerData) async {
+   // checkInternetConnection(context);
     const endpoint =
         "https://tiarabytj.com/wp-json/wc/v3/customers?consumer_key=${Strings.consumerKey}&consumer_secret=${Strings.consumerSecret}";
 
@@ -1020,8 +935,9 @@ if (connectivityResult == ConnectivityResult.none) {
     }
   }
 
-  static Future<http.StreamedResponse?> loginCustomer(
-      String email, String password, String username) async {
+  static Future<http.StreamedResponse?> loginCustomer(String email,
+      String password, String username) async {
+   // checkInternetConnection(context);
     const endpoint =
         "https://tiarabytj.com/wp-json/wc/v3/customers?consumer_key=${Strings.consumerKey}&consumer_secret=${Strings.consumerSecret}";
 
@@ -1052,8 +968,11 @@ if (connectivityResult == ConnectivityResult.none) {
     }
   }
 
-  static Future<http.StreamedResponse?> updateCustomer(int customerId,
-      Map<String, String> billingData, Map<String, String> shippingData) async {
+  static Future<http.StreamedResponse?> updateCustomer(
+      int customerId,
+      Map<String, String> billingData,
+      Map<String, String> shippingData) async {
+    //checkInternetConnection(context);
     final endpoint =
         "https://tiarabytj.com/wp-json/wc/v3/customers/$customerId?consumer_key=${Strings.consumerKey}&consumer_secret=${Strings.consumerSecret}";
 
@@ -1093,9 +1012,6 @@ if (connectivityResult == ConnectivityResult.none) {
       },
     });
 
-    // request.body = json
-    //     .encode({"email": email, "password": password, "username": username});
-
     request.headers.addAll(headers);
 
     http.StreamedResponse response = await request.send();
@@ -1112,9 +1028,10 @@ if (connectivityResult == ConnectivityResult.none) {
     }
   }
 
-  static Future<http.StreamedResponse?> updateCustomerProfile(
-      int customerId, Map<String, String> updatedProfileData) async {
+  static Future<http.StreamedResponse?> updateCustomerProfile(int customerId,
+      Map<String, String> updatedProfileData) async {
     print("$customerId");
+    //checkInternetConnection(context);
     final endpoint =
         "https://tiarabytj.com/wp-json/wc/v3/customers/$customerId?consumer_key=${Strings.consumerKey}&consumer_secret=${Strings.consumerSecret}";
 
@@ -1156,6 +1073,7 @@ if (connectivityResult == ConnectivityResult.none) {
       String totalPrice,
       List<Map<String, dynamic>>? meta_data) async {
     print("CUSTOMERID $customerId");
+   // checkInternetConnection(context);
     const endpoint =
         "https://tiarabytj.com/wp-json/wc/v3/orders?consumer_key=${Strings.consumerKey}&consumer_secret=${Strings.consumerSecret}";
 
@@ -1335,10 +1253,7 @@ if (connectivityResult == ConnectivityResult.none) {
   static List<Map<String, dynamic>> woocommerce_razorpay_settings =
       <Map<String, dynamic>>[];
 
-  static Future<void> generateBasicAuthForRazorPay(BuildContext context) async {
-   
-
-
+  static Future<void> generateBasicAuthForRazorPay() async {
     final endpoint =
         "https://tiarabytj.com/wp-json/store/v1/settings?options=woocommerce_razorpay_settings";
 
@@ -1377,10 +1292,6 @@ if (connectivityResult == ConnectivityResult.none) {
     } else {
       print(response.reasonPhrase);
     }
-  
-
-
-    
   }
 
   static Future<http.StreamedResponse?> createRazorpayOrder() async {
@@ -1707,67 +1618,7 @@ if (connectivityResult == ConnectivityResult.none) {
     return null;
   }
 
-  static Future<void> getFilteredProducts(BuildContext context) async {
-    String url =
-        "https://tiarabytj.com/wp-json/wc/v3/products?consumer_key=${Strings.consumerKey}&consumer_secret=${Strings.consumerSecret}&per_page=100";
-
-    final filterProvider =
-        Provider.of<FilterOptionsProvider>(context, listen: false);
-
-    // Map<String, dynamic> selectedSubOptionsdata =
-    //     filterProvider.selectedSubOptionsdata;
-
-    // if (selectedSubOptionsdata.containsKey("collection")) {
-    //   if (selectedSubOptionsdata["collectionCount"] > 0) {
-    //     url += "&collection=${selectedSubOptionsdata["collection"]}";
-    //   }
-    // }
-
-    List<Map<String, dynamic>> selectedSubOptions = filterProvider.list;
-
-    for (var i = 0; i < selectedSubOptions.length; i++) {
-      if (selectedSubOptions[i]["parent"] == "collection") {
-        url += "&collections=${selectedSubOptions[i]["collection"]}";
-      }
-    }
-
-    for (var i = 0; i < selectedSubOptions.length; i++) {
-      if (selectedSubOptions[i]["parent"] == "categories") {
-        url += "&category=${selectedSubOptions[i]["categories"]}";
-      }
-    }
-
-    for (var i = 0; i < selectedSubOptions.length; i++) {
-      if (selectedSubOptions[i]["parent"] == "collection") {
-        url += "&category=${selectedSubOptions[i]["collection"]}";
-      }
-    }
-
-    for (var i = 0; i < selectedSubOptions.length; i++) {
-      if (selectedSubOptions[i]["parent"] == "collection") {
-        url += "&category=${selectedSubOptions[i]["collection"]}";
-      }
-    }
-
-    for (var i = 0; i < selectedSubOptions.length; i++) {
-      if (selectedSubOptions[i]["parent"] == "collection") {
-        url += "&category=${selectedSubOptions[i]["collection"]}";
-      }
-    }
-
-    print("filtered url $url");
-    // else if(selectedSubOptionsdata.containsKey("categories")){
-    //   url += "&category=${selectedSubOptionsdata["categories"]}";
-    // }
-
-    Uri uri = Uri.parse(url);
-    final response = await http.get(uri);
-
-    if (response.statusCode == 200) {
-      print("response.body filtered ${response.body}");
-    }
-  }
-
+  
   static List<DigiGoldPlans.DigiGoldPlanModel> listOfDigiGoldPlan =
       <DigiGoldPlans.DigiGoldPlanModel>[];
 
@@ -1900,44 +1751,9 @@ if (connectivityResult == ConnectivityResult.none) {
     }
   }
 
-  static Future<http.Response> createDigiGoldOrder(
-      Map<String, dynamic> billingData,
-      int customerId,
-      List<Map<String, dynamic>> line_items,
-      List<Map<String, dynamic>> meta_data) async {
-    final url =
-        "https://tiarabytj.com/wp-json/wc/v3/orders?consumer_key=${Strings.consumerKey}&consumer_secret=${Strings.consumerSecret}";
-
-    Uri uri = Uri.parse(url);
-
-    final body = json.encode({
-      "customer_id": customerId,
-      "billing": billingData,
-      "line_items": line_items,
-      "meta_data": meta_data
-    });
-
-    print("REQUEST BODY $body");
-
-    http.Response response = await http.post(uri,
-        headers: {'Content-Type': 'application/json'}, body: body);
-
-    print("STATUS ${response.statusCode}");
-
-    print("RECIEVE BODY ${response.body}");
-
-    if (response.statusCode == 201) {
-      final json = jsonDecode(response.body);
-      print("JSON $json");
-
-      return response;
-    } else {
-      print("REASON ${response.reasonPhrase}");
-      return response;
-    }
-  }
-
-  static Future<http.StreamedResponse> uploadDocumentImage(String imagePath) async {
+ 
+  static Future<http.StreamedResponse> uploadDocumentImage(
+      String imagePath) async {
     final url = "https://tiarabytj.com/wp-json/wp/v2/media";
     Uri uri = Uri.parse(url);
     String userName = "tiarabytj@gmail.com";

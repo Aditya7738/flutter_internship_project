@@ -1,4 +1,5 @@
 import 'package:Tiara_by_TJ/model/order_model.dart';
+import 'package:Tiara_by_TJ/views/pages/gold_plan_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -84,7 +85,7 @@ class MyGoldPlanListItem extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 8.0),
       child: Card(
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
               Row(
@@ -112,7 +113,7 @@ class MyGoldPlanListItem extends StatelessWidget {
 
                       // height: 40.0,
                       decoration: BoxDecoration(
-                          color: Colors.blue,
+                          color: Color.fromARGB(255, 106, 181, 241),
                           borderRadius: BorderRadius.circular(12.0)),
                       padding: const EdgeInsets.symmetric(
                           vertical: 2.5, horizontal: 15.0),
@@ -178,6 +179,57 @@ class MyGoldPlanListItem extends StatelessWidget {
                       ]),
                     ],
                   )
+                ],
+              ),
+              SizedBox(
+                height: 10.0,
+              ),
+              Row(
+             
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => GoldPlanDetail(orderModel: orderModel),));
+                    },
+                    child: Container(
+                      width: MediaQuery.of(context).size.width/2 - 34,
+                        // height: 40.0,
+                        decoration: BoxDecoration(
+                                      border: Border.all(
+                                          width: 2.0,
+                                          color: Theme.of(context).primaryColor,
+                                          style: BorderStyle.solid),
+                                      borderRadius: BorderRadius.circular(12.0)),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 8.0, horizontal: 20.0),
+                        child: Center(
+                          child: Text(
+                            "Details",
+                            style: TextStyle(
+                                color:  Theme.of(context).primaryColor,
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        )),
+                  ),
+                      SizedBox(width: 10.0,),
+                      Container(
+                   width: MediaQuery.of(context).size.width/2 - 34,
+                      // height: 40.0,
+                      decoration: BoxDecoration(
+                          color: const Color(0xffCC868A),
+                          borderRadius: BorderRadius.circular(12.0)),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 9.0, horizontal: 20.0),
+                      child: Center(
+                        child: const Text(
+                          "Pay now",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 19.0,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ))
                 ],
               )
             ],

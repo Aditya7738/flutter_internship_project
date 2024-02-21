@@ -37,7 +37,7 @@ class _ProductListInTabState extends State<ProductListInTab> {
     });
 
     // Fetch more data (e.g., using ApiService)
-    isThereMoreProducts = await ApiService.showNextPagesCategoryProduct();
+    isThereMoreProducts = await ApiService.showNextPagesCategoryProduct(context);
 
     setState(() {
       isLoading = false;

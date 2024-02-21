@@ -30,41 +30,44 @@ class _MyGoldPlansState extends State<MyGoldPlans> {
     final customerProvider =
         Provider.of<CustomerProvider>(context, listen: false);
 
-    setState(() {
-      isOrderFetching = true;
-    });
+    bool isThereInternet = await ApiService.checkInternetConnection(context);
+    if (isThereInternet) {
+      setState(() {
+        isOrderFetching = true;
+      });
 
-    ApiService.listOfOrders.clear();
-    await ApiService.fetchOrders(customerProvider.customerData[0]["id"], 1);
+      ApiService.listOfOrders.clear();
+      await ApiService.fetchOrders(customerProvider.customerData[0]["id"], 1);
 
 //List<OrderModelMetaDatum> listOfMetaData = <OrderModelMetaDatum>[];
-    for (var i = 0; i < ApiService.listOfOrders.length; i++) {
-      for (var j = 0; j < ApiService.listOfOrders[i].metaData.length; j++) {
-        if (ApiService.listOfOrders[i].metaData[j].key == "virtual_order" &&
-            ApiService.listOfOrders[i].metaData[j].value == "digigold") {
-          listOfGoldPlans.add(ApiService.listOfOrders[i]);
+      for (var i = 0; i < ApiService.listOfOrders.length; i++) {
+        for (var j = 0; j < ApiService.listOfOrders[i].metaData.length; j++) {
+          if (ApiService.listOfOrders[i].metaData[j].key == "virtual_order" &&
+              ApiService.listOfOrders[i].metaData[j].value == "digigold") {
+            listOfGoldPlans.add(ApiService.listOfOrders[i]);
+          }
         }
       }
+
+      // for (var i = 0; i < listOfGoldPlans.length; i++) {
+      //   print("listOfGoldPlans ${listOfGoldPlans[i].id}");
+      // }
+
+      // for (var i = 0; i < listOfMetaData.length; i++) {
+      //   if(listOfMetaData[i].key == "virtual_order" && listOfMetaData[i].value == "digigold"){
+
+      //   }
+      // }
+
+      // if (listOfOrders[i].metaData[i].key == "virtual_order" &&
+      //       listOfOrders[i].metaData[i].value == "digigold") {
+      //     listOfGoldPlans.add(listOfOrders[i]);
+      //   }
+
+      setState(() {
+        isOrderFetching = false;
+      });
     }
-
-    // for (var i = 0; i < listOfGoldPlans.length; i++) {
-    //   print("listOfGoldPlans ${listOfGoldPlans[i].id}");
-    // }
-
-    // for (var i = 0; i < listOfMetaData.length; i++) {
-    //   if(listOfMetaData[i].key == "virtual_order" && listOfMetaData[i].value == "digigold"){
-
-    //   }
-    // }
-
-    // if (listOfOrders[i].metaData[i].key == "virtual_order" &&
-    //       listOfOrders[i].metaData[i].value == "digigold") {
-    //     listOfGoldPlans.add(listOfOrders[i]);
-    //   }
-
-    setState(() {
-      isOrderFetching = false;
-    });
 
     // print("listOfGoldPlans $listOfGoldPlans");
   }

@@ -187,15 +187,11 @@ class _MyAppState extends State<MyApp> {
   }
 
 ////////////////////////////////////////////////////////
- final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+  final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-
-    getBasicAuthForRazorPay(context);
-
-
 
     return MultiProvider(
       providers: [
@@ -235,10 +231,5 @@ class _MyAppState extends State<MyApp> {
         debugShowCheckedModeBanner: false,
       ),
     );
-  }
-
-  void getBasicAuthForRazorPay(BuildContext context) async {
-    print("getBasicAuthForRazorPay");
-    await ApiService.generateBasicAuthForRazorPay(context);
   }
 }
