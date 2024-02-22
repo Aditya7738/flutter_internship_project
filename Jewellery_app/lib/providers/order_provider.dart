@@ -50,6 +50,13 @@ class OrderProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void addToMetaData(List<Map<String,dynamic>> paymentData){
+    _metaData.addAll(paymentData);
+     notifyListeners();
+  }
+
+
+
   void setIsOrderCreating(bool isOrderCreating) {
     _isOrderCreating = isOrderCreating;
   }

@@ -9,14 +9,14 @@ import 'package:badges/badges.dart' as badges;
 import 'package:provider/provider.dart';
 
 class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
-  final IconData menuIcon;
+ // final IconData menuIcon;
   final VoidCallback? onPressed;
   final bool isNeededForHome;
   final bool isNeededForProductPage;
 
   const AppBarWidget(
       {super.key,
-      required this.menuIcon,
+    //  required this.menuIcon,
       required this.onPressed,
       required this.isNeededForHome,
       required this.isNeededForProductPage});
@@ -24,19 +24,19 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      leading: isNeededForHome
-          ? IconButton(
-              onPressed: onPressed,
-              icon: Icon(
-                menuIcon,
-                color: Colors.black,
-              ))
-          : IconButton(
-              onPressed: onPressed,
-              icon: Icon(
-                menuIcon,
-                color: Colors.black,
-              )),
+      // leading: isNeededForHome
+      //     ? IconButton(
+      //         onPressed: onPressed,
+      //         icon: Icon(
+      //           menuIcon,
+      //           color: Colors.black,
+      //         ))
+      //     : IconButton(
+      //         onPressed: onPressed,
+      //         icon: Icon(
+      //           menuIcon,
+      //           color: Colors.black,
+      //         )),
       //leadingWidth: 15.0,
       title: isNeededForHome
           ? Image.network(

@@ -18,6 +18,9 @@ class _MyGoldPlansState extends State<MyGoldPlans> {
   List<OrderModel> listOfGoldPlans = <OrderModel>[];
 
   bool isOrderFetching = false;
+  Map<String, List<OrderModel>> digiPlanModelMap = {};
+
+  List<OrderModel> purchasedPlans = <OrderModel>[];
 
   @override
   void initState() {
@@ -37,6 +40,7 @@ class _MyGoldPlansState extends State<MyGoldPlans> {
       });
 
       ApiService.listOfOrders.clear();
+      print("customerId ${customerProvider.customerData[0]["id"]}");
       await ApiService.fetchOrders(customerProvider.customerData[0]["id"], 1);
 
 //List<OrderModelMetaDatum> listOfMetaData = <OrderModelMetaDatum>[];
@@ -49,28 +53,76 @@ class _MyGoldPlansState extends State<MyGoldPlans> {
         }
       }
 
+      // Map<String, dynamic> plan_counter = <String, String>{};
+
       // for (var i = 0; i < listOfGoldPlans.length; i++) {
-      //   print("listOfGoldPlans ${listOfGoldPlans[i].id}");
+      //   String digi_plan_name = "";
+
+      //   for (var j = 0; j < listOfGoldPlans[i].metaData.length; j++) {
+      //    if (listOfGoldPlans[i].metaData[j].key == "digi_plan_name") {
+      //     if (listOfGoldPlans[i].metaData[j].value == plan_counter["digi_plan"]) {
+      //       plan_counter["${plan_counter["digi_plan"]}_counter"] += 1;
+      //     }
+      //     plan_counter["digi_plan$i"] = listOfGoldPlans[i].metaData[j].value!;
+      //      digi_plan_name = listOfGoldPlans[i].metaData[j].value!;
+      //     }
+      //   }
+      //    listOfGoldPlans.add(listOfGoldPlans[i]);
       // }
 
-      // for (var i = 0; i < listOfMetaData.length; i++) {
-      //   if(listOfMetaData[i].key == "virtual_order" && listOfMetaData[i].value == "digigold"){
+      for (OrderModel orderModel in listOfGoldPlans) {
+        for (OrderModelMetaDatum map in orderModel.metaData) {
+          String digiPlanName = "";
+          if (map.key == "digi_plan_name") {
+            digiPlanName = map.value!;
+            print("digiPlanName $digiPlanName");
+            print(
+                "!digiPlanModelMap.containsKey(digiPlanName) ${!digiPlanModelMap.containsKey(digiPlanName)}");
 
-      //   }
-      // }
+            if (!digiPlanModelMap.containsKey(digiPlanName)) {
+              // If it doesn't exist, create a new list for that digi plan name
+              digiPlanModelMap[digiPlanName] = [];
 
-      // if (listOfOrders[i].metaData[i].key == "virtual_order" &&
-      //       listOfOrders[i].metaData[i].value == "digigold") {
-      //     listOfGoldPlans.add(listOfOrders[i]);
-      //   }
+              print("digiPlanModelMap in $digiPlanModelMap");
+            }
 
-      setState(() {
-        isOrderFetching = false;
+            digiPlanModelMap[digiPlanName]!.add(orderModel);
+
+            print("digiPlanModelMap out $digiPlanModelMap");
+          }
+        }
+      }
+
+      // digiPlanModelMap.forEach((key, value) {
+
+      //   value.forEach((element) {
+      //     for (var i = 0; i < element.metaData.length; i++) {
+      //       if (element.metaData[i].key == "payment_date") {
+      //         print("payment_date$i ${element.metaData[i].value}");
+      //       }
+      //     }
+      //   });
+      // });
+
+      digiPlanModelMap.forEach((key, value) {
+        purchasedPlans.add(value.last);
+      });
+
+      purchasedPlans.forEach((element) {
+        for (var i = 0; i < element.metaData.length; i++) {
+          if (element.metaData[i].key == "payment_date") {
+            print("payment_date$i ${element.metaData[i].value}");
+          }
+        }
       });
     }
 
-    // print("listOfGoldPlans $listOfGoldPlans");
+    setState(() {
+      isOrderFetching = false;
+    });
   }
+
+  // print("listOfGoldPlans $listOfGoldPlans");
 
   @override
   Widget build(BuildContext context) {
@@ -89,10 +141,25 @@ class _MyGoldPlansState extends State<MyGoldPlans> {
           : Padding(
               padding: const EdgeInsets.all(8.0),
               child: ListView.builder(
-                itemCount: listOfGoldPlans.length,
+                itemCount: digiPlanModelMap.keys.length,
                 itemBuilder: (context, index) {
-                  OrderModel orderModel = listOfGoldPlans[index];
-                  return MyGoldPlanListItem(orderModel: orderModel);
+                  OrderModel orderModel = purchasedPlans[index];
+                  String digiPlanName = "";
+                  for (var i = 0; i < orderModel.metaData.length; i++) {
+                    if (orderModel.metaData[i].key == "digi_plan_name") {
+                      print("digi_plan_name$i ${orderModel.metaData[i].value}");
+                      digiPlanName = orderModel.metaData[i].value!;
+                    }
+                  }
+
+                  print("in widget digiPlanName $digiPlanName");
+
+                  List<OrderModel> allOrdersOfThatPlan =
+                      digiPlanModelMap[digiPlanName]!;
+
+                  return MyGoldPlanListItem(
+                      orderModel: orderModel,
+                      allOrdersList: allOrdersOfThatPlan);
                 },
               ),
             ),

@@ -69,14 +69,6 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  // void getDataFromProvider() async {
-  //   print("Callig shared prefs");
-
-  //   Provider.of<CartProvider>(context, listen: false).getSharedPrefs();
-  //   Provider.of<WishlistProvider>(context, listen: false)
-  //       .getWishListSharedPrefs();
-  //   print("call wishlist shared prefs");
-  // }
 
   Future<void> getRequest() async {
     bool isThereInternet = await ApiService.checkInternetConnection(context);
@@ -92,80 +84,74 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  // @override
-  // void dispose() {
 
-  //   super.dispose();
-  //    _scrollController.dispose();
-
-  // }
   @override
   Widget build(BuildContext context) {
     double width = 20.0;
     double height = 20.0;
 
-    List<NavigationModel> listOfNavigationModel = <NavigationModel>[];
-    listOfNavigationModel.add(NavigationModel(
-        Image.asset("assets/images/notification.png",
-            width: width, height: height, color: Colors.white),
-        "Notifications"));
-    listOfNavigationModel.add(NavigationModel(
-        Image.asset("assets/images/gold_bars.png",
-            width: width, height: height),
-        "Gold Rate"));
-    listOfNavigationModel.add(NavigationModel(
-        Image.asset(
-          "assets/images/gift.png",
-          width: width,
-          height: height,
-        ),
-        "Promotions"));
-    listOfNavigationModel.add(NavigationModel(
-        Image.asset("assets/images/branding.jpg",
-            width: width, height: height, color: Colors.white),
-        "Brands"));
-    listOfNavigationModel.add(NavigationModel(
-        Image.asset("assets/images/roadmap.png",
-            width: width, height: height, color: Colors.white),
-        "Plans"));
-    listOfNavigationModel.add(NavigationModel(
-        Image.asset(
-          "assets/images/info.png",
-          width: width,
-          height: height,
-          color: Colors.white,
-        ),
-        "About us"));
-    listOfNavigationModel.add(NavigationModel(
-        Image.asset("assets/images/account.png", width: width, height: height),
-        "My Account"));
-    listOfNavigationModel.add(NavigationModel(
-        Image.asset("assets/images/gears.png", width: width, height: height),
-        "Settings"));
-    listOfNavigationModel.add(NavigationModel(
-        Image.asset("assets/images/terms_and_conditions.png",
-            width: width, height: height, color: Colors.white),
-        "Terms and Conditions"));
-    listOfNavigationModel.add(NavigationModel(
-        Image.asset(
-          "assets/images/login.png",
-          width: width,
-          height: height,
-          color: Colors.white,
-        ),
-        "Login"));
+    // List<NavigationModel> listOfNavigationModel = <NavigationModel>[];
+    // listOfNavigationModel.add(NavigationModel(
+    //     Image.asset("assets/images/notification.png",
+    //         width: width, height: height, color: Colors.white),
+    //     "Notifications"));
+    // listOfNavigationModel.add(NavigationModel(
+    //     Image.asset("assets/images/gold_bars.png",
+    //         width: width, height: height),
+    //     "Gold Rate"));
+    // listOfNavigationModel.add(NavigationModel(
+    //     Image.asset(
+    //       "assets/images/gift.png",
+    //       width: width,
+    //       height: height,
+    //     ),
+    //     "Promotions"));
+    // listOfNavigationModel.add(NavigationModel(
+    //     Image.asset("assets/images/branding.jpg",
+    //         width: width, height: height, color: Colors.white),
+    //     "Brands"));
+    // listOfNavigationModel.add(NavigationModel(
+    //     Image.asset("assets/images/roadmap.png",
+    //         width: width, height: height, color: Colors.white),
+    //     "Plans"));
+    // listOfNavigationModel.add(NavigationModel(
+    //     Image.asset(
+    //       "assets/images/info.png",
+    //       width: width,
+    //       height: height,
+    //       color: Colors.white,
+    //     ),
+    //     "About us"));
+    // listOfNavigationModel.add(NavigationModel(
+    //     Image.asset("assets/images/account.png", width: width, height: height),
+    //     "My Account"));
+    // listOfNavigationModel.add(NavigationModel(
+    //     Image.asset("assets/images/gears.png", width: width, height: height),
+    //     "Settings"));
+    // listOfNavigationModel.add(NavigationModel(
+    //     Image.asset("assets/images/terms_and_conditions.png",
+    //         width: width, height: height, color: Colors.white),
+    //     "Terms and Conditions"));
+    // listOfNavigationModel.add(NavigationModel(
+    //     Image.asset(
+    //       "assets/images/login.png",
+    //       width: width,
+    //       height: height,
+    //       color: Colors.white,
+    //     ),
+    //     "Login"));
 
     return Scaffold(
       key: scaffoldKey,
-      drawer: NavDrawer(
-          backgroundColor: const Color(0xFF9A0056),
-          fontColor: Colors.white,
-          fontSize: 15.0,
-          fontFamily: 'Montserrat',
-          listOfNavigationModel: listOfNavigationModel,
-          fontWeight: FontWeight.bold),
+      // drawer: NavDrawer(
+      //     backgroundColor: const Color(0xFF9A0056),
+      //     fontColor: Colors.white,
+      //     fontSize: 15.0,
+      //     fontFamily: 'Montserrat',
+      //     listOfNavigationModel: listOfNavigationModel,
+      //     fontWeight: FontWeight.bold),
       appBar: AppBarWidget(
-          menuIcon: Icons.menu,
+        //  menuIcon: Icons.menu,
           onPressed: () {
             if (scaffoldKey.currentState!.isDrawerOpen) {
               scaffoldKey.currentState!.closeDrawer();
@@ -213,10 +199,10 @@ class _HomeScreenState extends State<HomeScreen> {
                           }),
                     ),
                   ),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-              child: PincodeWidget(),
-            ),
+            // const Padding(
+            //   padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+            //   child: PincodeWidget(),
+            // ),
 
             CarouselSlider(
               carouselController: carouselController,
@@ -280,79 +266,79 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 )),
 
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10.0),
-              child: Stack(alignment: AlignmentDirectional.center, children: [
-                Card(
-                  elevation: 0.0,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0)),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20.0),
-                    child: Image.asset(
-                      "assets/images/banner_web.png",
-                      fit: BoxFit.fill,
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height / 3,
-                    ),
-                  ),
-                ),
-                Column(
-                  children: [
-                    Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        Image.asset(
-                          "assets/images/heart.png",
-                          color: const Color.fromRGBO(0, 0, 0, 0.1),
-                          width: 45.0,
-                          height: 45.0,
-                        ),
-                        Image.asset(
-                          "assets/images/caratlane_transparent.png",
-                          color: Colors.white,
-                          width: 20.0,
-                          height: 20.0,
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 30.0,
-                    ),
-                    const Text(
-                      "Launching Refer & Earn",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 15.0,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(
-                      height: 10.0,
-                    ),
-                    const Text(
-                      "Inspire your friends & family and \n ear upto Rs 750 xCLusive points!",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 10.0,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 30.0,
-                    ),
-                    Container(
-                      width: 400.0,
-                      child: ButtonWidget(
-                          btnString: "Get Started",
-                          imagePath: "assets/images/right_arrow.png"),
-                    )
-                  ],
-                ),
-              ]),
-            ),
+            // Padding(
+            //   padding: const EdgeInsets.symmetric(horizontal: 10.0),
+            //   child: Stack(alignment: AlignmentDirectional.center, children: [
+            //     Card(
+            //       elevation: 0.0,
+            //       shape: RoundedRectangleBorder(
+            //           borderRadius: BorderRadius.circular(20.0)),
+            //       child: ClipRRect(
+            //         borderRadius: BorderRadius.circular(20.0),
+            //         child: Image.asset(
+            //           "assets/images/banner_web.png",
+            //           fit: BoxFit.fill,
+            //           width: MediaQuery.of(context).size.width,
+            //           height: MediaQuery.of(context).size.height / 3,
+            //         ),
+            //       ),
+            //     ),
+            //     Column(
+            //       children: [
+            //         Stack(
+            //           alignment: Alignment.center,
+            //           children: [
+            //             Image.asset(
+            //               "assets/images/heart.png",
+            //               color: const Color.fromRGBO(0, 0, 0, 0.1),
+            //               width: 45.0,
+            //               height: 45.0,
+            //             ),
+            //             Image.asset(
+            //               "assets/images/caratlane_transparent.png",
+            //               color: Colors.white,
+            //               width: 20.0,
+            //               height: 20.0,
+            //             ),
+            //           ],
+            //         ),
+            //         const SizedBox(
+            //           height: 30.0,
+            //         ),
+            //         const Text(
+            //           "Launching Refer & Earn",
+            //           style: TextStyle(
+            //               color: Colors.white,
+            //               fontSize: 15.0,
+            //               fontWeight: FontWeight.bold),
+            //         ),
+            //         const SizedBox(
+            //           height: 10.0,
+            //         ),
+            //         const Text(
+            //           "Inspire your friends & family and \n ear upto Rs 750 xCLusive points!",
+            //           style: TextStyle(
+            //             color: Colors.white,
+            //             fontSize: 15.0,
+            //           ),
+            //         ),
+            //         const SizedBox(
+            //           height: 30.0,
+            //         ),
+            //         Container(
+            //           width: 400.0,
+            //           child: ButtonWidget(
+            //               btnString: "Get Started",
+            //               imagePath: "assets/images/right_arrow.png"),
+            //         )
+            //       ],
+            //     ),
+            //   ]),
+            // ),
 
-            const SizedBox(
-              height: 10.0,
-            ),
+            // const SizedBox(
+            //   height: 10.0,
+            // ),
 
             //error
             // Container(

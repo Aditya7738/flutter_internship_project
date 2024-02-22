@@ -86,11 +86,13 @@ class _PaymentPageState extends State<PaymentPage>
   Razorpay _razorpay = Razorpay();
   late String order_id;
   // late Map<String, String> cashFreeData;
-  late String payableAmount;
+  //late String payableAmount;
   bool isLoading = false;
   late PayUCheckoutProFlutter _checkoutPro;
 
   int _expandedIndex = -1;
+
+  String selectedPaymentMethod = "";
 
   //var cfPaymentGatewayService = CFPaymentGatewayService();
 
@@ -117,17 +119,25 @@ class _PaymentPageState extends State<PaymentPage>
 
 //write method to call and create order at everytime payment get successful
 
-    createOrderHelper(orderProvider);
+    if (widget.fromCart == false) {
+      createOrderHelper(orderProvider, response.paymentId);
+    }
 
     Navigator.of(context).push(MaterialPageRoute(
       builder: (context) => PaymentSucessfulPage(),
     ));
   }
 
-  createOrderHelper(OrderProvider orderProvider) async {
+  createOrderHelper(OrderProvider orderProvider, String? paymentId) async {
     bool isThereInternet = await ApiService.checkInternetConnection(context);
     if (isThereInternet) {
       orderProvider.setIsOrderCreating(true);
+      print("selectedPaymentMethod $selectedPaymentMethod");
+      orderProvider.addToMetaData([
+        {"key": "payment_method", "value": selectedPaymentMethod},
+        {"key": "payment_ref_id", "value": paymentId ?? "paymentId"},
+        {"key": "payment_date", "value": DateTime.now().toString()},
+      ]);
       http.Response response = await ApiService.createOrder(
           orderProvider.billingData,
           orderProvider.shippingData,
@@ -439,6 +449,12 @@ class _PaymentPageState extends State<PaymentPage>
                                                         break;
                                                       case "razorpay":
                                                         makeRazorPayment();
+                                                        setState(() {
+                                                          selectedPaymentMethod =
+                                                              expansionListItemModel
+                                                                  .title;
+                                                        });
+
                                                         break;
 
                                                       case "ccavenue":

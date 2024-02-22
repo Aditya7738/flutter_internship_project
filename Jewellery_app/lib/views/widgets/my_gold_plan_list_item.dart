@@ -1,11 +1,16 @@
+import 'dart:convert';
+
+import 'package:Tiara_by_TJ/api/api_service.dart';
 import 'package:Tiara_by_TJ/model/order_model.dart';
 import 'package:Tiara_by_TJ/views/pages/gold_plan_detail.dart';
+import 'package:Tiara_by_TJ/views/pages/payment_page.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class MyGoldPlanListItem extends StatelessWidget {
   final OrderModel orderModel;
-  MyGoldPlanListItem({super.key, required this.orderModel});
+  final List<OrderModel> allOrdersList;
+  MyGoldPlanListItem({super.key, required this.orderModel, required this.allOrdersList});
 
   String getPlaneName() {
     for (var i = 0; i < orderModel.metaData.length; i++) {
@@ -151,9 +156,9 @@ class MyGoldPlanListItem extends StatelessWidget {
                       ]),
                       TableRow(children: [
                         Text(
-                          "Payment date: ",
+                          "Plan purchased date: ",
                           style: TextStyle(
-                              fontSize: 17.0, fontWeight: FontWeight.bold),
+                              fontSize: 17.5, fontWeight: FontWeight.bold),
                         ),
                         Text(
                           getPaymentDate(),
@@ -170,7 +175,7 @@ class MyGoldPlanListItem extends StatelessWidget {
                               fontSize: 17.0, fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          "${getCurrentMonthIndexPlanWise()}/${getPlanDuration()} months",
+                          "${allOrdersList.length}/${getPlanDuration()} months",
                           style: TextStyle(
                             fontSize: 17.0,
                           ),
@@ -189,7 +194,7 @@ class MyGoldPlanListItem extends StatelessWidget {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => GoldPlanDetail(orderModel: orderModel),));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => GoldPlanDetail(orderModel: orderModel, allOrdersList: allOrdersList),));
                     },
                     child: Container(
                       width: MediaQuery.of(context).size.width/2 - 34,
@@ -213,23 +218,38 @@ class MyGoldPlanListItem extends StatelessWidget {
                         )),
                   ),
                       SizedBox(width: 10.0,),
-                      Container(
-                   width: MediaQuery.of(context).size.width/2 - 34,
-                      // height: 40.0,
-                      decoration: BoxDecoration(
-                          color: const Color(0xffCC868A),
-                          borderRadius: BorderRadius.circular(12.0)),
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 9.0, horizontal: 20.0),
-                      child: Center(
-                        child: const Text(
-                          "Pay now",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 19.0,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ))
+                      GestureDetector(
+                        onTap: () async {
+                            List<Map<String, dynamic>> razorpayOrderData =
+                          await uiCreateRazorpayOrder(context);
+                          if (razorpayOrderData.isNotEmpty) {
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => PaymentPage(
+                            orderId: razorpayOrderData[0]["id"],
+                            fromCart: false,
+                            // cashFreeData: impCashFreeData
+                          ),
+                        ));
+                      }
+                        },
+                        child: Container(
+                                           width: MediaQuery.of(context).size.width/2 - 34,
+                        // height: 40.0,
+                        decoration: BoxDecoration(
+                            color: const Color(0xffCC868A),
+                            borderRadius: BorderRadius.circular(12.0)),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 9.0, horizontal: 20.0),
+                        child: Center(
+                          child: const Text(
+                            "Pay now",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 19.0,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        )),
+                      )
                 ],
               )
             ],
@@ -237,5 +257,29 @@ class MyGoldPlanListItem extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<List<Map<String, dynamic>>> uiCreateRazorpayOrder(BuildContext context) async {
+    List<Map<String, dynamic>> data = <Map<String, dynamic>>[];
+    bool isThereInternet = await ApiService.checkInternetConnection(context);
+    if (isThereInternet) {
+      final response = await ApiService.createRazorpayOrder();
+
+      if (response != null) {
+        String body = await response.stream.bytesToString();
+        print("Razorpay Payment body $body");
+
+        try {
+          print("${body.runtimeType}");
+          print("Razorpay JSON DECODE DATA $data");
+          data.add(jsonDecode(body));
+          return data;
+        } catch (e) {
+          print('Razorpay Error decoding: $e');
+          return <Map<String, dynamic>>[];
+        }
+      }
+    }
+    return <Map<String, dynamic>>[];
   }
 }

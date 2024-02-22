@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:image_picker/image_picker.dart';
 import 'package:Tiara_by_TJ/api/api_service.dart';
 import 'package:Tiara_by_TJ/helpers/date_helper.dart';
@@ -136,6 +137,8 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
   String imagePath = "";
   
   String goldGross = "";
+  
+  bool isProofSelected = false;
 
   @override
   void initState() {
@@ -152,12 +155,12 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
       _lastNameController.text = customerProvider.customerData[0]["last_name"];
     }
 
-    if (customerProvider.customerData[0].containsKey("email")) {
-      _emailController.text = customerProvider.customerData[0]["email"];
+    if (customerProvider.customerData[0].containsKey("digi_gold_billing_email")) {
+      _emailController.text = customerProvider.customerData[0]["digi_gold_billing_email"];
     }
 
-    if (customerProvider.customerData[0].containsKey("mobile_no")) {
-      _phoneNoController.text = customerProvider.customerData[0]["mobile_no"];
+    if (customerProvider.customerData[0].containsKey("digi_gold_billing_phone")) {
+      _phoneNoController.text = customerProvider.customerData[0]["digi_gold_billing_phone"];
     }
 
     if (customerProvider.customerData[0].containsKey("address_1")) {
@@ -354,7 +357,9 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
                         );
                       }).toList(),
                       onChanged: (String? newValue) {
+                      
                         setState(() {
+                          isProofSelected = true;
                           selectedProof = newValue!;
                         });
                       }),
@@ -362,6 +367,14 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
                 const SizedBox(
                   height: 20.0,
                 ),
+
+              isProofSelected ?
+
+              Column(
+                children: [
+
+              
+
                 getSelectedProofWidget(selectedProof),
                 const SizedBox(
                   height: 10.0,
@@ -374,7 +387,7 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
                           children: [
                             Text(
                               "Uploaded file name: ${path.basename(imagePath)}",
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0),
                             ),
                             const SizedBox(
                               height: 20.0,
@@ -465,6 +478,10 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
                     ),
                   ],
                 ),
+
+                  ],
+              ) :
+              SizedBox(),
                 const SizedBox(
                   height: 30.0,
                 ),
@@ -542,10 +559,7 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
                           "key": "digi_plan_name",
                           "value": widget.digiGoldPlanModel.name ?? "Gold plan"
                         },
-                        {
-                          "key": "payment_date",
-                          "value": DateTime.now().toString()
-                        },
+                     
                         {
                           "key": "digi_plan_type",
                           "value": digiPlanType
@@ -615,6 +629,7 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
                         "address_1": _addressController1.text,
                         "address_2": _addressController2.text,
                         "city": _cityController.text,
+                        "pincode": _pinNoController.text,
                         "digi_gold_billing_email": _emailController.text,
                         "digi_gold_billing_phone": _phoneNoController.text,
                         "digi_gold_plan_name":
@@ -685,6 +700,7 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
     switch (selectedProof) {
       case "Aadhar card":
         return TextFormField(
+      
           controller: _aadharCardController,
           keyboardType: TextInputType.number,
           validator: (value) {
