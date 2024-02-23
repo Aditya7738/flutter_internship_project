@@ -8,8 +8,10 @@ class FilterOptionsProvider with ChangeNotifier {
 
   void setCategoryFilterOptionsdata(
       List<Map<String, dynamic>> filterCategoryOptionsdata) {
-    _filterCategoryOptionsdata = filterCategoryOptionsdata;
-    notifyListeners();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _filterCategoryOptionsdata = filterCategoryOptionsdata;
+      notifyListeners();
+    });
   }
 
   List<Map<String, dynamic>> _filterCollectionsOptionsdata =
@@ -19,12 +21,14 @@ class FilterOptionsProvider with ChangeNotifier {
 
   void setCollectionsFilterOptionsdata(
       List<Map<String, dynamic>> filterCollectionsOptionsdata) {
-    _filterCollectionsOptionsdata = filterCollectionsOptionsdata;
-    print(
-        "filterCollectionsOptionsdata length ${filterCollectionsOptionsdata.length}");
-    print(
-        "private filterCollectionsOptionsdata length ${_filterCollectionsOptionsdata.length}");
-    notifyListeners();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _filterCollectionsOptionsdata = filterCollectionsOptionsdata;
+      print(
+          "filterCollectionsOptionsdata length ${filterCollectionsOptionsdata.length}");
+      print(
+          "private filterCollectionsOptionsdata length ${_filterCollectionsOptionsdata.length}");
+      notifyListeners();
+    });
   }
 
   List<Map<String, dynamic>> _filterDiamondWtOptionsdata =
@@ -34,8 +38,10 @@ class FilterOptionsProvider with ChangeNotifier {
 
   void setDiamondWtFilterOptionsdata(
       List<Map<String, dynamic>> filterDiamondWtOptionsdata) {
-    _filterDiamondWtOptionsdata = filterDiamondWtOptionsdata;
-    notifyListeners();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _filterDiamondWtOptionsdata = filterDiamondWtOptionsdata;
+      notifyListeners();
+    });
   }
 
   List<Map<String, dynamic>> _filterGoldWtOptionsdata =
@@ -45,8 +51,10 @@ class FilterOptionsProvider with ChangeNotifier {
 
   void setGoldWtFilterOptionsdata(
       List<Map<String, dynamic>> filterGoldWtOptionsdata) {
-    _filterGoldWtOptionsdata = filterGoldWtOptionsdata;
-    notifyListeners();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _filterGoldWtOptionsdata = filterGoldWtOptionsdata;
+      notifyListeners();
+    });
   }
 
   List<Map<String, dynamic>> _filterGenderOptionsdata =
@@ -56,8 +64,10 @@ class FilterOptionsProvider with ChangeNotifier {
 
   void setGenderFilterOptionsdata(
       List<Map<String, dynamic>> filterGenderOptionsdata) {
-    _filterGenderOptionsdata = filterGenderOptionsdata;
-    notifyListeners();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _filterGenderOptionsdata = filterGenderOptionsdata;
+      notifyListeners();
+    });
   }
 
   List<Map<String, dynamic>> _filterTagsOptionsdata = <Map<String, dynamic>>[];
@@ -66,8 +76,10 @@ class FilterOptionsProvider with ChangeNotifier {
 
   void setTagsFilterOptionsdata(
       List<Map<String, dynamic>> filterTagsOptionsdata) {
-    _filterTagsOptionsdata = filterTagsOptionsdata;
-    notifyListeners();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _filterTagsOptionsdata = filterTagsOptionsdata;
+      notifyListeners();
+    });
   }
 
   List<Map<String, dynamic>> _filterSubCategoriesOptionsdata =
@@ -77,8 +89,10 @@ class FilterOptionsProvider with ChangeNotifier {
 
   void setSubCategoriesFilterOptionsdata(
       List<Map<String, dynamic>> filterSubCategoriesOptionsdata) {
-    _filterSubCategoriesOptionsdata = filterSubCategoriesOptionsdata;
-    notifyListeners();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _filterSubCategoriesOptionsdata = filterSubCategoriesOptionsdata;
+      notifyListeners();
+    });
   }
 
   // "price_range": "Price",
@@ -99,80 +113,84 @@ class FilterOptionsProvider with ChangeNotifier {
 
   void addSelectedSubOptionsdataInList(
       Map<String, dynamic> selectedSubOptionsdata) {
-    _list.add(selectedSubOptionsdata);
-    // _selectedSubOptionsdata.addAll(selectedSubOptionsdata);
-    notifyListeners();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _list.add(selectedSubOptionsdata);
+      // _selectedSubOptionsdata.addAll(selectedSubOptionsdata);
+      notifyListeners();
+    });
   }
 
   void setSelectedSubOptionsdata(Map<String, dynamic> selectedSubOptionsdata) {
-    if (_list.length > 0) {
-      for (var i = 0; i < _list.length; i++) {
-        print(
-            "_list[i].containsValue(selectedSubOptionsdataid ${_list[i].containsValue(selectedSubOptionsdata["id"])}");
-
-        print(
-            "_list[i].containsValue(selectedSubOptionsdataparent) ${_list[i].containsValue(selectedSubOptionsdata["parent"])}");
-        if (_list[i].containsValue(selectedSubOptionsdata["id"]) &&
-            _list[i].containsValue(selectedSubOptionsdata["parent"])) {
-          print("list $_list");
-          removeFromList(i);
-
-          return;
-        }
-      }
-    }
-
-    if (selectedSubOptionsdata["parent"] == "price_range") {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_list.length > 0) {
         for (var i = 0; i < _list.length; i++) {
-          if (_list[i].containsValue(selectedSubOptionsdata["parent"])) {
+          print(
+              "_list[i].containsValue(selectedSubOptionsdataid ${_list[i].containsValue(selectedSubOptionsdata["id"])}");
+
+          print(
+              "_list[i].containsValue(selectedSubOptionsdataparent) ${_list[i].containsValue(selectedSubOptionsdata["parent"])}");
+          if (_list[i].containsValue(selectedSubOptionsdata["id"]) &&
+              _list[i].containsValue(selectedSubOptionsdata["parent"])) {
+            print("list $_list");
             removeFromList(i);
+
+            return;
           }
         }
       }
-    }
 
-    _list.add(selectedSubOptionsdata);
-    // print("before $_list");
-    // dynamic temp = _list;
-    // temp.add(selectedSubOptionsdata);
-    // _list = temp;
-    // print("after $_list");
-    //_selectedSubOptionsdata.addAll(selectedSubOptionsdata);
-    notifyListeners();
+      if (selectedSubOptionsdata["parent"] == "price_range") {
+        if (_list.length > 0) {
+          for (var i = 0; i < _list.length; i++) {
+            if (_list[i].containsValue(selectedSubOptionsdata["parent"])) {
+              removeFromList(i);
+            }
+          }
+        }
+      }
+
+      _list.add(selectedSubOptionsdata);
+
+      notifyListeners();
+    });
   }
 
   bool _isFilteredListLoading = false;
   bool get isFilteredListLoading => _isFilteredListLoading;
 
   void setFilteredListLoading(bool listLoading) {
-    _isFilteredListLoading = listLoading;
-    print("_isFilteredListLoading $_isFilteredListLoading");
-    notifyListeners();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _isFilteredListLoading = listLoading;
+      print("_isFilteredListLoading $_isFilteredListLoading");
+      notifyListeners();
+    });
   }
 
   void removeFromList(int index) {
     print("index to remove $index");
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _list.removeAt(index);
 
-    _list.removeAt(index);
+      print("_list $_list");
 
-    print("_list $_list");
-
-    notifyListeners();
+      notifyListeners();
+    });
   }
 
   void clearFilterList() {
-    try {
-      print("filter list ${_list.length}");
-      if (_list.length > 0) {
-        _list.clear();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      try {
+        print("filter list ${_list.length}");
+        if (_list.length > 0) {
+          _list.clear();
+        }
+
+        print("filter list cleared ${_list.length}");
+      } catch (e) {
+        print(e.toString());
       }
 
-      print("filter list cleared ${_list.length}");
-    } catch (e) {
-      print(e.toString());
-    }
-
-    notifyListeners();
+      notifyListeners();
+    });
   }
 }

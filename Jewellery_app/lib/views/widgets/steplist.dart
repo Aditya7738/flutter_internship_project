@@ -23,9 +23,11 @@ class _StepListState extends State<StepList> {
   Widget build(BuildContext context) {
     return ExpansionPanelList(
       expansionCallback: (panelIndex, isExpanded) {
-        setState(() {
+        if (mounted) {
+      setState(() {
           steps[panelIndex].isExpanded = !isExpanded;
         });
+        }
       },
       children: steps
           .map<ExpansionPanel>((ExpansionListItemModel expansionListItemModel) {

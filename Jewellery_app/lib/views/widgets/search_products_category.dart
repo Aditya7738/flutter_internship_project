@@ -40,37 +40,46 @@ class _SearchProductsOfCategoryState extends State<SearchProductsOfCategory> {
               onSubmitted: (value) async {
                 if (value == "") {
                   ApiService.listOfProductsModel.clear();
-                  // setState(() {
+                  // if (mounted) {
+      // setState(() {
                   //   isSearchFieldEmpty = true;
                   // });
                 }
 
-                setState(() {
+                if (mounted) {
+      setState(() {
                   isSearchFieldEmpty = false;
                 });
+                }
 
                 if (value.length >= 3 && !newListLoading) {
                   bool isThereInternet =
                       await ApiService.checkInternetConnection(context);
                   if (isThereInternet) {
                     ApiService.listOfProductsModel.clear();
-                    setState(() {
+                    if (mounted) {
+      setState(() {
                       newListLoading = true;
                     });
+                    }
 
                     List<ProductsModel> listOfProducts =
                         await ApiService.fetchProducts(value, 1);
 
-                    setState(() {
+                    if (mounted) {
+      setState(() {
                       newListLoading = false;
                       isProductListEmpty = listOfProducts.length == 0;
                     });
+                    }
                     //ApiService.searchProduct(value);
                     print("ONCHANGED CALLED");
-                    setState(() {
+                    if (mounted) {
+      setState(() {
                       isSearchBarUsed = true;
                       searchText = value;
                     });
+                    }
                   }
                 }
               },

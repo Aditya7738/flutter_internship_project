@@ -8,8 +8,8 @@ class OrderPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<Widget> tabs = [
-      const Tab(text: "My Orders",),
-      const Tab(text: "Cancelled Orders",)
+      const Tab(child: Text("Pending orders", style: TextStyle(fontSize: 16.0),),),
+      const Tab(child: Text("Cancelled Orders", style: TextStyle(fontSize: 16.0)),)
     ];
 
 
@@ -21,6 +21,8 @@ class OrderPage extends StatelessWidget {
             "My Orders"
           ),
           bottom: TabBar(
+            unselectedLabelColor: Colors.black,
+            labelColor: Theme.of(context).primaryColor,
           indicatorColor: Theme.of(context).primaryColor,
           tabs: tabs
           ),
@@ -33,7 +35,7 @@ class OrderPage extends StatelessWidget {
           //EmptyListWidget(imagePath: "assets/images/delivery_service.png", message: "Oops! You haven't placed an order yet!"),
           MyOrderTab(),
 
-          EmptyListWidget(imagePath: "assets/images/cancel.png", message: "You don't have ay completely cancelled order.", forCancelledOrder: true,),
+          EmptyListWidget(imagePath: "assets/images/cancel.png", message: "You don't have any completely cancelled order.", forCancelledOrder: true,),
           ]
 
           )

@@ -148,10 +148,12 @@ class _MyAppState extends State<MyApp> {
 
     OneSignal.Notifications.addClickListener((event) {
       print('NOTIFICATION CLICK LISTENER CALLED WITH EVENT: $event');
+      if (mounted) {
       setState(() {
         _debugLabelString =
             " \n${event.notification.jsonRepresentation().replaceAll("\\n", "\n")}";
       });
+      }
     });
 
     OneSignal.Notifications.addForegroundWillDisplayListener((event) {
@@ -166,10 +168,12 @@ class _MyAppState extends State<MyApp> {
       /// notification.display() to display after preventing default
       event.notification.display();
 
+      if (mounted) {
       setState(() {
         _debugLabelString =
             "Notification received in foreground notification: \n${event.notification.jsonRepresentation().replaceAll("\\n", "\n")}";
       });
+      }
     });
   }
 

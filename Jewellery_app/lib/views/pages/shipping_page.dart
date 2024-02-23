@@ -218,9 +218,11 @@ class _ShippingPageState extends State<ShippingPage> {
                             value: differentShippingAddress,
                             activeColor: const Color(0xffCC868A),
                             onChanged: (value) {
-                              setState(() {
-                                differentShippingAddress = value!;
-                              });
+                              if (mounted) {
+                                setState(() {
+                                  differentShippingAddress = value!;
+                                });
+                              }
                             },
                           ),
                           const Text(
@@ -290,16 +292,20 @@ class _ShippingPageState extends State<ShippingPage> {
                                 await ApiService.checkInternetConnection(
                                     context);
                             if (isThereInternet) {
-                              setState(() {
-                                isUpdateLoading = true;
-                              });
+                              if (mounted) {
+                                setState(() {
+                                  isUpdateLoading = true;
+                                });
+                              }
 
                               await ApiService.updateCustomer(
                                   customerId, billingData, shippingData);
 
-                              setState(() {
-                                isUpdateLoading = false;
-                              });
+                              if (mounted) {
+                                setState(() {
+                                  isUpdateLoading = false;
+                                });
+                              }
                             }
                           }
                         },
@@ -397,9 +403,11 @@ class _ShippingPageState extends State<ShippingPage> {
 
                             print("STORED PRODUCT $lineItems");
 
-                            setState(() {
-                              creatingOrder = true;
-                            });
+                            if (mounted) {
+                              setState(() {
+                                creatingOrder = true;
+                              });
+                            }
                             //do it after payment successful - redirect user to this page and modify this page where login, shipping ajd paymet will be on same page
                             orderProvider.setBillingData(billingData);
                             orderProvider.setShippingData(shippingData);
@@ -422,9 +430,11 @@ class _ShippingPageState extends State<ShippingPage> {
                             // List<Map<String, dynamic>> cashFreeOrderData =
                             //     await uiCreateCashFreeOrder();
 
-                            setState(() {
-                              creatingOrder = false;
-                            });
+                            if (mounted) {
+                              setState(() {
+                                creatingOrder = false;
+                              });
+                            }
 
                             // Map<String, String> impCashFreeData =
                             //     <String, String>{};

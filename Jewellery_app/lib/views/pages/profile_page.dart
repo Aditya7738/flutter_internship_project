@@ -55,6 +55,7 @@ class _ProfilePageState extends State<ProfilePage> {
         lastDate: DateTime(2025));
 
     if (picked != null && picked != selectedDate) {
+      // if (mounted) {
       // setState(() {
       //   print("CALENDAR PRESSED");
       //   // selectedDate = picked;
@@ -196,9 +197,11 @@ class _ProfilePageState extends State<ProfilePage> {
                                 );
                               }).toList(),
                               onChanged: (String? newValue) {
-                                setState(() {
-                                  selectedOption = newValue!;
-                                });
+                                if (mounted) {
+                                  setState(() {
+                                    selectedOption = newValue!;
+                                  });
+                                }
                               }),
                           labelText: "Mobile number*"),
                       maxLines: 1,
@@ -384,9 +387,11 @@ class _ProfilePageState extends State<ProfilePage> {
                         bool isThereInternet =
                             await ApiService.checkInternetConnection(context);
                         if (isThereInternet) {
-                          setState(() {
-                            isUpdating = true;
-                          });
+                          if (mounted) {
+                            setState(() {
+                              isUpdating = true;
+                            });
+                          }
 
                           final response =
                               await ApiService.updateCustomerProfile(
@@ -428,9 +433,11 @@ class _ProfilePageState extends State<ProfilePage> {
                               Navigator.pop(context);
                             }
                           }
-                          setState(() {
-                            isUpdating = false;
-                          });
+                          if (mounted) {
+                            setState(() {
+                              isUpdating = false;
+                            });
+                          }
                         }
                       }
                     },

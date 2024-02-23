@@ -50,12 +50,14 @@ class _FilterSubOptionsWidgetState extends State<FilterSubOptionsWidget> {
     //     print("selectedSubOptions[i][id] ${selectedSubOptions[i]["id"]}");
     //     print("widget.subOptionsid ${widget.subOptions["id"]}");
     //     if (selectedSubOptions[i]["id"] == widget.subOptions["id"]) {
-    //       setState(() {
+    //       if (mounted) {
+      //setState(() {});
     //         isSelected = true;
     //       });
     //     }
     //   } else {
-    //     setState(() {
+    //     if (mounted) {
+      //setState(() {});
     //       isSelected = false;
     //     });
     //   }
@@ -91,12 +93,14 @@ class _FilterSubOptionsWidgetState extends State<FilterSubOptionsWidget> {
         //     if (filterOptionsProvider.list[i]
         //             .containsValue(widget.subOptions["id"]) &&
         //         filterOptionsProvider.list[i].containsValue(widget.filterKey)) {
-        //       setState(() {
+        //       if (mounted) {
+      //setState(() {});
         //         filterAlreadyThere = true;
         //       });
         //       filterOptionsProvider.removeFromList(i);
         //     } else {
-        //       // setState(() {
+        //       // if (mounted) {
+      //setState(() {});
         //       //   filterAlreadyThere = false;
         //       // });
         filterOptionsProvider.setSelectedSubOptionsdata({
@@ -109,7 +113,8 @@ class _FilterSubOptionsWidgetState extends State<FilterSubOptionsWidget> {
         //     }
         //   }
         // } else {
-        //   // setState(() {
+        //   // if (mounted) {
+      //setState(() {});
         //   //   filterAlreadyThere = false;
         //   // });
         //   filterOptionsProvider.setSelectedSubOptionsdata({

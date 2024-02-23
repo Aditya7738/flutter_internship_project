@@ -123,7 +123,7 @@ class _PaymentPageState extends State<PaymentPage>
       createOrderHelper(orderProvider, response.paymentId);
     }
 
-    Navigator.of(context).push(MaterialPageRoute(
+    Navigator.of(context).pushReplacement(MaterialPageRoute(
       builder: (context) => PaymentSucessfulPage(),
     ));
   }
@@ -138,6 +138,13 @@ class _PaymentPageState extends State<PaymentPage>
         {"key": "payment_ref_id", "value": paymentId ?? "paymentId"},
         {"key": "payment_date", "value": DateTime.now().toString()},
       ]);
+
+      print("digi billingData ${orderProvider.billingData}");
+      print("digi lineItems ${orderProvider.lineItems}");
+      print("digi customerId ${orderProvider.customerId}");
+      print("digi price ${orderProvider.price}");
+      print("digi metaData ${orderProvider.metaData}");
+
       http.Response response = await ApiService.createOrder(
           orderProvider.billingData,
           orderProvider.shippingData,
@@ -147,6 +154,8 @@ class _PaymentPageState extends State<PaymentPage>
           orderProvider.metaData);
 
       orderProvider.setIsOrderCreating(false);
+
+      print("digi pay status ${response.statusCode}");
 
       if (response.statusCode == 201) {
         print("DigiGoldOrder CREATED SUCCESSFULLY");
@@ -170,8 +179,9 @@ class _PaymentPageState extends State<PaymentPage>
 
   @override
   void dispose() {
-    super.dispose();
+    
     _razorpay.clear();
+    super.dispose();
   }
 
   makeRazorPayment() {
@@ -340,7 +350,7 @@ class _PaymentPageState extends State<PaymentPage>
             // :
             SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(16.0),
             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -351,174 +361,170 @@ class _PaymentPageState extends State<PaymentPage>
                       style: Theme.of(context).textTheme.headline2,
                     ),
                   ),
-                  Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10.0),
-                      child: FutureBuilder(
-                        future: getSteps(),
-                        builder: (BuildContext context,
-                            AsyncSnapshot<List<ExpansionListItemModel>>
-                                snapshot) {
-                          if (snapshot.hasData && snapshot.data != null) {
-                            List<ExpansionListItemModel>? expansionListItem =
-                                snapshot.data;
-                            //return SizedBox();
-                            return Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  ExpansionPanelList(
-                                    expansionCallback:
-                                        (panelIndex, isExpanded) {
-                                      print("pressed $panelIndex");
-                                      if (expansionListItem != null) {
-                                        //    ExpansionListItemModel expansionListItemModel = expansionListItem[panelIndex];
+                  SizedBox(
+                    height: 15.0,
+                  ),
+                  FutureBuilder(
+                    future: getSteps(),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<List<ExpansionListItemModel>> snapshot) {
+                      if (snapshot.hasData && snapshot.data != null) {
+                        List<ExpansionListItemModel>? expansionListItem =
+                            snapshot.data;
+                        //return SizedBox();
+                        return Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              ExpansionPanelList(
+                                expansionCallback: (panelIndex, isExpanded) {
+                                  print("pressed $panelIndex");
+                                  if (expansionListItem != null) {
+                                    //    ExpansionListItemModel expansionListItemModel = expansionListItem[panelIndex];
 
-                                        // switch (expansionListItemModel.id) {
-                                        //       case "cod":
-                                        //         break;
-                                        //       case "cashfree":
-                                        //          //webCheckout();
-                                        //         break;
-                                        //       case "razorpay":
-                                        //         makeRazorPayment();
-                                        //         break;
+                                    // switch (expansionListItemModel.id) {
+                                    //       case "cod":
+                                    //         break;
+                                    //       case "cashfree":
+                                    //          //webCheckout();
+                                    //         break;
+                                    //       case "razorpay":
+                                    //         makeRazorPayment();
+                                    //         break;
 
-                                        //       case "ccavenue":
+                                    //       case "ccavenue":
 
-                                        //       //Navigate to PaymentScreen - ccavenue _paymet_page.dart
-                                        //         initPlatformState();
-                                        //         break;
-                                        //       case "stripe":
-                                        //         break;
+                                    //       //Navigate to PaymentScreen - ccavenue _paymet_page.dart
+                                    //         initPlatformState();
+                                    //         break;
+                                    //       case "stripe":
+                                    //         break;
 
-                                        //         // case "payubiz":
-                                        //         // openPayUCheckoutScreen();
-                                        //         // break;
+                                    //         // case "payubiz":
+                                    //         // openPayUCheckoutScreen();
+                                    //         // break;
 
-                                        //       default:
-                                        //     }
+                                    //       default:
+                                    //     }
 
-                                        setState(() {
-                                          print(
-                                              " ExpansionPanelList $isExpanded");
-                                          expansionListItem[panelIndex]
-                                              .isExpanded = isExpanded;
-                                        });
-                                      }
-                                    },
-                                    children: expansionListItem!
-                                        .map<ExpansionPanel>(
-                                            (ExpansionListItemModel
-                                                expansionListItemModel) {
-                                      return ExpansionPanel(
-                                          headerBuilder: (context, isExpanded) {
-                                            expansionListItemModel.isExpanded =
-                                                isExpanded;
-                                            print(
-                                                " ExpansionPanel $isExpanded");
-                                            return ListTile(
-                                              title: Text(
-                                                expansionListItemModel.title,
-                                                style:
-                                                    TextStyle(fontSize: 18.0),
-                                              ),
-                                            );
-                                          },
-                                          body: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              children: [
-                                                HtmlWidget(
-                                                  expansionListItemModel.body,
-                                                  textStyle:
-                                                      TextStyle(fontSize: 17.0),
-                                                ),
-                                                SizedBox(
-                                                  height: 10.0,
-                                                ),
-                                                GestureDetector(
-                                                  onTap: () {
-                                                    switch (
-                                                        expansionListItemModel
-                                                            .id) {
-                                                      case "cod":
-                                                        break;
-                                                      case "cashfree":
-                                                        //webCheckout();
-                                                        break;
-                                                      case "razorpay":
-                                                        makeRazorPayment();
-                                                        setState(() {
-                                                          selectedPaymentMethod =
-                                                              expansionListItemModel
-                                                                  .title;
-                                                        });
-
-                                                        break;
-
-                                                      case "ccavenue":
-
-                                                        //Navigate to PaymentScreen - ccavenue _paymet_page.dart
-                                                        initPlatformState();
-                                                        break;
-                                                      case "stripe":
-                                                        break;
-
-                                                      // case "payubiz":
-                                                      // openPayUCheckoutScreen();
-                                                      // break;
-
-                                                      default:
-                                                    }
-                                                  },
-                                                  child: Container(
-                                                      width: 150.0,
-                                                      // height: 40.0,
-                                                      decoration: BoxDecoration(
-                                                          color: const Color(
-                                                              0xffCC868A),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      12.0)),
-                                                      padding: const EdgeInsets
-                                                          .symmetric(
-                                                          vertical: 10.0,
-                                                          horizontal: 20.0),
-                                                      child: Center(
-                                                        child: const Text(
-                                                          "Pay now",
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontSize: 17.0,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold),
-                                                        ),
-                                                      )),
-                                                ),
-                                                SizedBox(
-                                                  height: 10.0,
-                                                ),
-                                              ],
-                                            ),
+                                    if (mounted) {
+                                      setState(() {
+                                        print(
+                                            " ExpansionPanelList $isExpanded");
+                                        expansionListItem[panelIndex]
+                                            .isExpanded = isExpanded;
+                                      });
+                                    }
+                                  }
+                                },
+                                children: expansionListItem!
+                                    .map<ExpansionPanel>((ExpansionListItemModel
+                                        expansionListItemModel) {
+                                  return ExpansionPanel(
+                                      headerBuilder: (context, isExpanded) {
+                                        expansionListItemModel.isExpanded =
+                                            isExpanded;
+                                        print(" ExpansionPanel $isExpanded");
+                                        return ListTile(
+                                          title: Text(
+                                            expansionListItemModel.title,
+                                            style: TextStyle(fontSize: 18.0),
                                           ),
-                                          isExpanded: expansionListItemModel
-                                              .isExpanded);
-                                    }).toList(),
-                                  ),
-                                ]);
-                          } else {
-                            return Center(
-                              child: CircularProgressIndicator(
-                                color: Colors.black,
+                                        );
+                                      },
+                                      body: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            HtmlWidget(
+                                              expansionListItemModel.body,
+                                              textStyle:
+                                                  TextStyle(fontSize: 17.0),
+                                            ),
+                                            SizedBox(
+                                              height: 10.0,
+                                            ),
+                                            GestureDetector(
+                                              onTap: () {
+                                                switch (
+                                                    expansionListItemModel.id) {
+                                                  case "cod":
+                                                    break;
+                                                  case "cashfree":
+                                                    //webCheckout();
+                                                    break;
+                                                  case "razorpay":
+                                                    makeRazorPayment();
+                                                    if (mounted) {
+                                                      setState(() {
+                                                        selectedPaymentMethod =
+                                                            expansionListItemModel
+                                                                .title;
+                                                      });
+                                                    }
+
+                                                    break;
+
+                                                  case "ccavenue":
+
+                                                    //Navigate to PaymentScreen - ccavenue _paymet_page.dart
+                                                    initPlatformState();
+                                                    break;
+                                                  case "stripe":
+                                                    break;
+
+                                                  // case "payubiz":
+                                                  // openPayUCheckoutScreen();
+                                                  // break;
+
+                                                  default:
+                                                }
+                                              },
+                                              child: Container(
+                                                  width: 150.0,
+                                                  // height: 40.0,
+                                                  decoration: BoxDecoration(
+                                                      color: const Color(
+                                                          0xffCC868A),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              12.0)),
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                      vertical: 10.0,
+                                                      horizontal: 20.0),
+                                                  child: Center(
+                                                    child: const Text(
+                                                      "Pay now",
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 17.0,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                  )),
+                                            ),
+                                            SizedBox(
+                                              height: 10.0,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      isExpanded:
+                                          expansionListItemModel.isExpanded);
+                                }).toList(),
                               ),
-                            );
-                          }
-                        },
-                      )),
+                            ]);
+                      } else {
+                        return Center(
+                          child: CircularProgressIndicator(
+                            color: Colors.black,
+                          ),
+                        );
+                      }
+                    },
+                  ),
                 ]),
           ),
         ));

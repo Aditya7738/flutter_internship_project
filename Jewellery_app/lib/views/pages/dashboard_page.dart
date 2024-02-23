@@ -218,9 +218,11 @@ class _DashboardPageState extends State<DashboardPage> {
           type: BottomNavigationBarType.fixed,
           onTap: (index) {
             print("TAB O: $index");
-            setState(() {
+            if (mounted) {
+      setState(() {
               _currentIndex = index;
             });
+            }
           },
           currentIndex: _currentIndex,
           items: <BottomNavigationBarItem>[

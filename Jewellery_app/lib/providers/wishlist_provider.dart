@@ -16,13 +16,12 @@ class WishlistProvider with ChangeNotifier {
 
   bool listLoading = false;
 
-
-  setWishlistProducts(List<ProductsModel> wishedProductList){
-    _wishlistProducts = wishedProductList;
-    notifyListeners();
+  setWishlistProducts(List<ProductsModel> wishedProductList) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _wishlistProducts = wishedProductList;
+      notifyListeners();
+    });
   }
-
- 
 
   // void addToWishlist(ProductOfCategoryModel productOfCategoryModel) {
   //   WishlistProductModel wishlistProductModel = WishlistProductModel(
@@ -40,53 +39,54 @@ class WishlistProvider with ChangeNotifier {
   // }
 
   void addToWishlist(int productId) {
-    _favProductIds.add(productId);
-    notifyListeners();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _favProductIds.add(productId);
+      notifyListeners();
 
-    _setWishListSharedPrefs();
+      _setWishListSharedPrefs();
+    });
   }
 
   void removeFromWishlist(int productId) {
-     _favProductIds.remove(productId);
-    notifyListeners();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _favProductIds.remove(productId);
+      notifyListeners();
 
-    print("start removeFromWishlist");
-    _setWishListSharedPrefs();
-    print("end removeFromWishlist");
+      print("start removeFromWishlist");
+      _setWishListSharedPrefs();
+      print("end removeFromWishlist");
+    });
   }
 
   void addToLocalWishlist(ProductsModel productsModel) {
-    _wishlistProducts.add(productsModel);
-    notifyListeners();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _wishlistProducts.add(productsModel);
+      notifyListeners();
 
-    _setWishListSharedPrefs();
+      _setWishListSharedPrefs();
+    });
   }
 
   void removeFromLocalWishlist(int id) {
     //  _wishlistProducts.remove(productsModel);
-    
 
     //bool isRevomed= listOfWish.remove(productsModel);
-
-
-    for(int i = 0; i < _wishlistProducts.length; i++){
-      if(_wishlistProducts[i].id == id){
-        _wishlistProducts.removeAt(i); 
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      for (int i = 0; i < _wishlistProducts.length; i++) {
+        if (_wishlistProducts[i].id == id) {
+          _wishlistProducts.removeAt(i);
+        }
       }
-      
-    }
-    // print("isRevomed $isRevomed");
+      // print("isRevomed $isRevomed");
 
-    //  _wishlistProducts = listOfWish;
+      //  _wishlistProducts = listOfWish;
 
-    // setWishlistProducts(_wishlistProducts);
-    notifyListeners();
+      // setWishlistProducts(_wishlistProducts);
+      notifyListeners();
 
-    print("start removeFromLocalWishlist");
-   
+      print("start removeFromLocalWishlist");
+    });
   }
-
-
 
   // void removeFromWishlist(ProductOfCategoryModel productOfCategoryModel) {
   //   WishlistProductModel wishlistProductModel = WishlistProductModel(
@@ -104,27 +104,27 @@ class WishlistProvider with ChangeNotifier {
   void _setWishListSharedPrefs() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
 
-    bool savingWishlist = await sharedPreferences.setString("wish_list", jsonEncode(favProductIds));
+    bool savingWishlist = await sharedPreferences.setString(
+        "wish_list", jsonEncode(favProductIds));
     print("Saved wishlist $savingWishlist");
   }
 
   Future<void> getWishListSharedPrefs() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      String? wishlist = sharedPreferences.getString("wish_list");
 
-    String? wishlist = sharedPreferences.getString("wish_list");
+      print("WISHLIST LIST $wishlist");
+      if (wishlist != null) {
+        var dynamicfavProductIds = jsonDecode(wishlist) as List<dynamic>;
 
-    print("WISHLIST LIST $wishlist");
-    if (wishlist != null) {
-      var dynamicfavProductIds = jsonDecode(wishlist) as List<dynamic>;
+        _favProductIds = dynamicfavProductIds.whereType<int>().toList();
+        print("FAV IDS : $_favProductIds");
+      } else {
+        print("NULL WISHLIST");
+      }
 
-      _favProductIds = dynamicfavProductIds.whereType<int>().toList();
-      print("FAV IDS : $_favProductIds");
-    } else {
-      print("NULL WISHLIST");
-    }
-
-    notifyListeners();
+      notifyListeners();
+    });
   }
-
-
 }

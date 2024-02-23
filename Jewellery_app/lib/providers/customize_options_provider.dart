@@ -5,7 +5,9 @@ class CustomizeOptionsProvider with ChangeNotifier {
   Map<String, dynamic> get customizeOptionsdata => _customizeOptionsdata;
 
   void setCustomizeOptionsdata(Map<String, dynamic> customizeOptionsdata) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
     _customizeOptionsdata = customizeOptionsdata;
     notifyListeners();
+    });
   }
 }

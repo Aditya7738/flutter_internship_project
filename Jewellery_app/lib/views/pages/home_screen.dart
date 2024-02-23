@@ -57,33 +57,39 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void loadMoreData() async {
-    setState(() {
-      isNewCategoryLoading = true;
-    });
+    if (mounted) {
+      setState(() {
+        isNewCategoryLoading = true;
+      });
+    }
 
     // Fetch more data (e.g., using ApiService)
     await ApiService.showNextPageOfCategories(context);
 
-    setState(() {
-      isNewCategoryLoading = false;
-    });
-  }
-
-
-  Future<void> getRequest() async {
-    bool isThereInternet = await ApiService.checkInternetConnection(context);
-    if (isThereInternet) {
+    if (mounted) {
       setState(() {
-        isLoading = true;
-      });
-      await ApiService.fetchCategories(1, context);
-
-      setState(() {
-        isLoading = false;
+        isNewCategoryLoading = false;
       });
     }
   }
 
+  Future<void> getRequest() async {
+    bool isThereInternet = await ApiService.checkInternetConnection(context);
+    if (isThereInternet) {
+      if (mounted) {
+        setState(() {
+          isLoading = true;
+        });
+      }
+      await ApiService.fetchCategories(1, context);
+
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -151,7 +157,7 @@ class _HomeScreenState extends State<HomeScreen> {
       //     listOfNavigationModel: listOfNavigationModel,
       //     fontWeight: FontWeight.bold),
       appBar: AppBarWidget(
-        //  menuIcon: Icons.menu,
+          //  menuIcon: Icons.menu,
           onPressed: () {
             if (scaffoldKey.currentState!.isDrawerOpen) {
               scaffoldKey.currentState!.closeDrawer();
@@ -244,9 +250,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   aspectRatio: 16 / 9,
                   autoPlayInterval: const Duration(seconds: 3),
                   onPageChanged: (index, reason) {
-                    setState(() {
-                      currentIndex = index;
-                    });
+                    if (mounted) {
+                      setState(() {
+                        currentIndex = index;
+                      });
+                    }
                   }),
             ),
 

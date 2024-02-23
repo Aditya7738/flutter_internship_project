@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:Tiara_by_TJ/helpers/validation_helper.dart';
 
 class ShippingForm extends StatefulWidget {
-
   final TextEditingController firstNameController2;
 
   final List<String> countryOptions;
@@ -26,22 +25,33 @@ class ShippingForm extends StatefulWidget {
   final List<String> countryCodeOptions;
   final String formHeading;
 
-
-
-  ShippingForm({super.key, required this.firstNameController2, required this.lastNameController2, required this.companyNameController2, required this.address2Controller1, required this.address2Controller2, required this.cityController2, required this.pinNoController2, required this.phoneNoController2, required this.countryOptions, required this.stateOptions, required this.countryCodeOptions, required this.formHeading});
+  ShippingForm(
+      {super.key,
+      required this.firstNameController2,
+      required this.lastNameController2,
+      required this.companyNameController2,
+      required this.address2Controller1,
+      required this.address2Controller2,
+      required this.cityController2,
+      required this.pinNoController2,
+      required this.phoneNoController2,
+      required this.countryOptions,
+      required this.stateOptions,
+      required this.countryCodeOptions,
+      required this.formHeading});
 
   @override
   State<ShippingForm> createState() => _ShippingFormState();
 }
 
 class _ShippingFormState extends State<ShippingForm> {
-String selectedState2 = "Maharashtra";
-String selectedCountry2 = "India";
-String selectedCountryCodeOption = "+91";
+  String selectedState2 = "Maharashtra";
+  String selectedCountry2 = "India";
+  String selectedCountryCodeOption = "+91";
 
-late TextEditingController firstNameController2;
+  late TextEditingController firstNameController2;
 
-   late List<String> countryOptions;
+  late List<String> countryOptions;
 
   late TextEditingController lastNameController2;
 
@@ -57,12 +67,12 @@ late TextEditingController firstNameController2;
 
   late TextEditingController phoneNoController2;
 
-   late List<String> stateOptions;
+  late List<String> stateOptions;
 
-   late List<String> countryCodeOptions;
-   late String formHeading;
+  late List<String> countryCodeOptions;
+  late String formHeading;
 
-@override
+  @override
   void initState() {
     // TODO: implement initState
     super.initState();
@@ -72,30 +82,23 @@ late TextEditingController firstNameController2;
 
     formHeading = widget.formHeading;
 
-  
-
     stateOptions = widget.stateOptions;
 
     countryCodeOptions = widget.countryCodeOptions;
 
-    
+    lastNameController2 = widget.lastNameController2;
 
+    companyNameController2 = widget.companyNameController2;
 
+    address2Controller1 = widget.address2Controller1;
 
-  lastNameController2 = widget.lastNameController2;
+    address2Controller2 = widget.address2Controller2;
 
-  companyNameController2 = widget.companyNameController2;
+    cityController2 = widget.cityController2;
 
-  address2Controller1 = widget.address2Controller1;
+    pinNoController2 = widget.pinNoController2;
 
-  address2Controller2 = widget.address2Controller2;
-
-  cityController2 = widget.cityController2;
-
-  pinNoController2 = widget.pinNoController2;
-
-  phoneNoController2 = widget.phoneNoController2;
-
+    phoneNoController2 = widget.phoneNoController2;
   }
 
   @override
@@ -103,10 +106,7 @@ late TextEditingController firstNameController2;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-         Text(
-          formHeading,
-          style: Theme.of(context).textTheme.headline1
-        ),
+        Text(formHeading, style: Theme.of(context).textTheme.headline1),
         const SizedBox(
           height: 20.0,
         ),
@@ -187,9 +187,11 @@ late TextEditingController firstNameController2;
                 );
               }).toList(),
               onChanged: (String? newValue) {
-                setState(() {
-                  selectedCountry2 = newValue!;
-                });
+                if (mounted) {
+                  setState(() {
+                    selectedCountry2 = newValue!;
+                  });
+                }
               }),
         ),
         const SizedBox(
@@ -273,9 +275,11 @@ late TextEditingController firstNameController2;
                 );
               }).toList(),
               onChanged: (String? newValue) {
-                setState(() {
-                  selectedState2 = newValue!;
-                });
+                if (mounted) {
+                  setState(() {
+                    selectedState2 = newValue!;
+                  });
+                }
               }),
         ),
         const SizedBox(
@@ -318,17 +322,19 @@ late TextEditingController firstNameController2;
                       );
                     }).toList(),
                     onChanged: (String? newValue) {
-                      setState(() {
-                        selectedCountryCodeOption = newValue!;
-                      });
+                      if (mounted) {
+                        setState(() {
+                          selectedCountryCodeOption = newValue!;
+                        });
+                      }
                     }),
                 labelText: "Mobile number*"),
             maxLines: 1,
           ),
         ),
-         const SizedBox(
-                        height: 30.0,
-                      ),
+        const SizedBox(
+          height: 30.0,
+        ),
       ],
     );
   }

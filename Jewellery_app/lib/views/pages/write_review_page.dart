@@ -42,7 +42,7 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(16.0),
           child: Form(
             key: _formKey,
             child: Column(
@@ -98,10 +98,12 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
                       ),
                       updateOnDrag: true,
                       onRatingUpdate: (value) {
-                        setState(() {
-                          print("selectedRate $selectedRate");
-                          selectedRate = value;
-                        });
+                        if (mounted) {
+                          setState(() {
+                            print("selectedRate $selectedRate");
+                            selectedRate = value;
+                          });
+                        }
                       },
                     ),
                     SizedBox(
@@ -137,54 +139,65 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
       floatingActionButton: GestureDetector(
         onTap: () async {
           if (_formKey.currentState!.validate()) {
-            setState(() {
-              review = _reviewController.text;
-            });
+            if (mounted) {
+              setState(() {
+                review = _reviewController.text;
+              });
+            }
+
+            if (selectedRate == 0.0) {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  padding: EdgeInsets.all(15.0),
+                  backgroundColor: Theme.of(context).primaryColor,
+                  content: Text("Please select rating")));
+            }
+
+            Map<String, dynamic> data = {
+              "product_id": widget.productsModel.id,
+              "review": review,
+              "reviewer":
+                  "${customerProvider.customerData[0]["first_name"]}  ${customerProvider.customerData[0]["last_name"]}",
+              "reviewer_email": "${customerProvider.customerData[0]["email"]}",
+              "rating": selectedRate
+            };
+            bool isThereInternet =
+                await ApiService.checkInternetConnection(context);
+            if (isThereInternet) {
+              if (mounted) {
+                setState(() {
+                  isCreatingReview = true;
+                });
+              }
+              final response = await ApiService.createProductReview(data);
+              if (mounted) {
+                setState(() {
+                  isCreatingReview = false;
+                });
+              }
+
+              print("REVIEW response.statusCode ${response.statusCode}");
+
+              if (response.statusCode == 201) {
+                print(jsonDecode(response.body));
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    padding: EdgeInsets.all(15.0),
+                    backgroundColor: Colors.green,
+                    content: Text(
+                      "Thanks for your review",
+                      style: TextStyle(fontSize: 17.0),
+                    )));
+                Navigator.pop(context, true);
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    padding: EdgeInsets.all(15.0),
+                    backgroundColor: Colors.red,
+                    content: Text(
+                      "Don't able to send review",
+                      style: TextStyle(fontSize: 17.0),
+                    )));
+              }
+            }
           }
-
-          if (selectedRate == 0.0) {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                padding: EdgeInsets.all(15.0),
-                backgroundColor: Theme.of(context).primaryColor,
-                content: Text("Please select rating")));
-          }
-
-          Map<String, dynamic> data = {
-            "product_id": widget.productsModel.id,
-            "review": review,
-            "reviewer":
-                "${customerProvider.customerData[0]["first_name"]}  ${customerProvider.customerData[0]["last_name"]}",
-            "reviewer_email": "${customerProvider.customerData[0]["email"]}",
-            "rating": selectedRate
-          };
-          bool isThereInternet = await ApiService.checkInternetConnection(context);
-    if (isThereInternet) {
-          
-
-          setState(() {
-            isCreatingReview = true;
-          });
-          final response = await ApiService.createProductReview(data);
-          setState(() {
-            isCreatingReview = false;
-          });
-
-          print("REVIEW response.statusCode ${response.statusCode}");
-
-          if (response.statusCode == 201) {
-            print(jsonDecode(response.body));
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                padding: EdgeInsets.all(15.0),
-                backgroundColor: Colors.green,
-                content: Text("Thanks for your review", style: TextStyle(fontSize: 17.0),)));
-            Navigator.pop(context, true);
-          } else {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                padding: EdgeInsets.all(15.0),
-                backgroundColor: Colors.red,
-                content: Text("Don't able to send review", style: TextStyle(fontSize: 17.0),)));
-          }
-    }
         },
         child: Container(
           height: 50.0,

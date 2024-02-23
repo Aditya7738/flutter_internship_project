@@ -9,17 +9,21 @@ class CustomerProvider with ChangeNotifier {
   List<Map<String, dynamic>> get customerData => _customerData;
 
   void setCustomerData(List<Map<String, dynamic>> customerData) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
     _customerData = customerData;
     notifyListeners();
     _setCustomerSharedPrefs();
+    });
   }
 
   void addCustomerData(Map<String, dynamic> customerData){
+    WidgetsBinding.instance.addPostFrameCallback((_) {
     customerData.forEach((key, value) {
       _customerData[0][key] = value;
     });
     notifyListeners();
     _setCustomerSharedPrefs();
+    });
   }
 
   void _setCustomerSharedPrefs() async {
@@ -35,6 +39,7 @@ class CustomerProvider with ChangeNotifier {
 
   Future<void> getCustomerSharedPrefs() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
     String? customerDataString = sharedPreferences.getString("customer_data");
 
     if (customerDataString != null) {
@@ -57,5 +62,6 @@ class CustomerProvider with ChangeNotifier {
     print("customerDataString $customerDataString");
 
     notifyListeners();
+    });
   }
 }

@@ -45,18 +45,21 @@
 //       errorMessage = "";
 //       loadingMessage =
 //           "Please Do not close window,\nprocessing your request....";
-//       setState(() {});
+//       if (mounted) {
+      //setState(() {});
 //       final res = await initPayment((widget.amount ~/ 100).toString());
 //       url =
 //           "https://${isTesting ? "test" : "secure"}.ccavenue.com/transaction.do?command=initiateTransaction&encRequest=${res['enc_val']}&access_code=${res['access_code']}";
 //       initializedPayment = true;
 
-//       setState(() {});
+//       if (mounted) {
+      //setState(() {});
 //     } catch (e) {
 //       errorMessage = "Something went wrong";
 //     } finally {
 //       loadingMessage = "";
-//       setState(() {});
+//       if (mounted) {
+      //setState(() {});
 //     }
 //   }
 
@@ -89,7 +92,8 @@
 //               javascriptChannels: jsChannels,
 //               onWebViewCreated: (c) async {
 //                 controller = c;
-//                 setState(() {});
+//                 if (mounted) {
+      //setState(() {});
 //               },
 //               onPageFinished: (url) async {
 //                 if (url == redirectUrl) {

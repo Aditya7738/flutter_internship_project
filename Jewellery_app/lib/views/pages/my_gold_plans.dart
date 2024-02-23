@@ -35,9 +35,11 @@ class _MyGoldPlansState extends State<MyGoldPlans> {
 
     bool isThereInternet = await ApiService.checkInternetConnection(context);
     if (isThereInternet) {
+      if (mounted) {
       setState(() {
         isOrderFetching = true;
       });
+      }
 
       ApiService.listOfOrders.clear();
       print("customerId ${customerProvider.customerData[0]["id"]}");
@@ -117,9 +119,11 @@ class _MyGoldPlansState extends State<MyGoldPlans> {
       });
     }
 
-    setState(() {
+    if (mounted) {
+      setState(() {
       isOrderFetching = false;
     });
+    }
   }
 
   // print("listOfGoldPlans $listOfGoldPlans");

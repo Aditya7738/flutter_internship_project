@@ -57,18 +57,22 @@ class _HomeScreen2State extends State<HomeScreen2> {
   }
 
   void loadMoreData() async {
-    setState(() {
+    if (mounted) {
+      setState(() {
       isNewCategoryLoading = true;
     });
+    }
 
     // Fetch more data (e.g., using ApiService)
     ApiService.listOfCategory.clear();
     await ApiService.showNextPageOfCategories(context);
 
     //categories = ApiService.listOfCategory;
-    setState(() {
+    if (mounted) {
+      setState(() {
       isNewCategoryLoading = false;
     });
+    }
   }
 
   Future<void> getCategories() async {
@@ -81,17 +85,21 @@ class _HomeScreen2State extends State<HomeScreen2> {
           ApiService.listOfCategory[i].image?.src ?? Strings.defaultImageUrl);
     }
 
-    setState(() {
+    if (mounted) {
+      setState(() {
       isCategoryLoading = false;
     });
+    }
   }
 
   Future<void> getProductsOnSale() async {
     bool isThereInternet = await ApiService.checkInternetConnection(context);
     if (isThereInternet) {
+      if (mounted) {
       setState(() {
         isSalesLoading = true;
       });
+      }
       await ApiService.getOnSaleProducts(1);
 
       //categories = ApiService.listOfCategory;
@@ -101,9 +109,11 @@ class _HomeScreen2State extends State<HomeScreen2> {
       //       ApiService.listOfCategory[i].image?.src ?? Strings.defaultImageUrl);
       // }
 
+      if (mounted) {
       setState(() {
         isSalesLoading = false;
       });
+      }
     }
   }
 
@@ -268,9 +278,11 @@ class _HomeScreen2State extends State<HomeScreen2> {
                   aspectRatio: 16 / 9,
                   autoPlayInterval: const Duration(seconds: 3),
                   onPageChanged: (index, reason) {
-                    setState(() {
+                    if (mounted) {
+      setState(() {
                       currentIndex = index;
                     });
+                    }
                   }),
             ),
             SizedBox(
@@ -323,9 +335,11 @@ class _HomeScreen2State extends State<HomeScreen2> {
                   aspectRatio: 16 / 9,
                   autoPlayInterval: const Duration(seconds: 3),
                   onPageChanged: (index, reason) {
-                    setState(() {
+                    if (mounted) {
+      setState(() {
                       currentIndex = index;
                     });
+                    }
                   }),
             ),
             SizedBox(

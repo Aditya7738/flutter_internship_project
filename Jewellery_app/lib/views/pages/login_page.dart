@@ -169,9 +169,11 @@ class _LoginPageState extends State<LoginPage> {
                         decoration: InputDecoration(
                           suffixIcon: IconButton(
                             onPressed: () {
-                              setState(() {
+                              if (mounted) {
+      setState(() {
                                 isObscured = !isObscured;
                               });
+                              }
                             },
                             icon: Icon(isObscured
                                 ? Icons.visibility
@@ -191,10 +193,12 @@ class _LoginPageState extends State<LoginPage> {
                       GestureDetector(
                         onTap: () async {
                           if (_formKey.currentState!.validate()) {
-                            setState(() {
+                            if (mounted) {
+      setState(() {
                               email = _emailController.text;
                               password = _passwordController.text;
                             });
+                            }
                             print("$email $password");
 
                             List<String> list = email.split('@');
@@ -211,9 +215,11 @@ class _LoginPageState extends State<LoginPage> {
                                 await ApiService.checkInternetConnection(
                                     context);
                             if (isThereInternet) {
-                              setState(() {
+                              if (mounted) {
+      setState(() {
                                 isLoading = true;
                               });
+                              }
 
                               final response = await ApiService.loginCustomer(
                                   email, password, username);
@@ -237,9 +243,11 @@ class _LoginPageState extends State<LoginPage> {
 
                                   customerProvider.setCustomerData(data);
 
-                                  setState(() {
+                                  if (mounted) {
+      setState(() {
                                     isLoading = false;
                                   });
+                                  }
 
                                   widget.isComeFromCart
                                       ? Navigator.of(context).pushReplacement(
@@ -258,18 +266,22 @@ class _LoginPageState extends State<LoginPage> {
                                     print(
                                         "LOGIN ERROR DATA ${data["message"]}");
 
-                                    setState(() {
+                                    if (mounted) {
+      setState(() {
                                       isLoginUnSuccessful = true;
                                       errorMsg = data["message"];
                                     });
+                                    }
                                     print("JSON DECODE DATA $data");
                                   } catch (e) {
                                     print('Error decoding: $e');
                                   }
 
-                                  setState(() {
+                                  if (mounted) {
+      setState(() {
                                     isLoading = false;
                                   });
+                                  }
                                 }
                               }
                             }

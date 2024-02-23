@@ -17,7 +17,7 @@ class WishListPage extends StatefulWidget {
 }
 
 class _WishListPageState extends State<WishListPage> {
-  //bool newListLoading = true;
+  bool isWishListLoading = false;
   @override
   void initState() {
     super.initState();
@@ -45,19 +45,22 @@ class _WishListPageState extends State<WishListPage> {
             wishlistProvider.favProductIds.length) {
       bool isThereInternet = await ApiService.checkInternetConnection(context);
       if (isThereInternet) {
+        if (mounted) {
+          setState(() {
+            isWishListLoading = true;
+          });
+        }
         ApiService.listOfFavProductsModel.clear();
-        wishlistProvider.listLoading = true;
 
-        final wishlistProducts =
-            await ApiService.fetchFavProducts(wishlist);
+        final wishlistProducts = await ApiService.fetchFavProducts(wishlist);
         wishlistProvider.setWishlistProducts(wishlistProducts);
-        wishlistProvider.listLoading = false;
+        if (mounted) {
+          setState(() {
+            isWishListLoading = false;
+          });
+        }
       }
     }
-
-    // setState(() {
-    //   newListLoading = false;
-    // });
   }
 
   @override
@@ -72,7 +75,7 @@ class _WishListPageState extends State<WishListPage> {
 
         return Padding(
             padding: const EdgeInsets.all(8.0),
-            child: value.listLoading
+            child: isWishListLoading
                 ? const Center(
                     child: CircularProgressIndicator(
                       backgroundColor: Colors.black,
@@ -91,36 +94,45 @@ class _WishListPageState extends State<WishListPage> {
                             child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Image.network(
-                                    wishListItem.images.isEmpty
-                                        ? Strings.defaultImageUrl
-                                        : wishListItem.images[0].src ??
-                                            Strings.defaultImageUrl,
-                                    width:
-                                        MediaQuery.of(context).size.width / 3,
-                                    height: 170.0,
-                                    loadingBuilder:
-                                        (context, child, loadingProgress) {
-                                      if (loadingProgress == null) {
-                                        return child;
-                                      }
-                                      return SizedBox(
+                                  Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      child: Image.network(
+                                        wishListItem.images.isEmpty
+                                            ? Strings.defaultImageUrl
+                                            : wishListItem.images[0].src ??
+                                                Strings.defaultImageUrl,
                                         width:
                                             MediaQuery.of(context).size.width /
                                                 3,
-                                        height: 160.0,
-                                        child: const Center(
-                                          child: CircularProgressIndicator(
-                                            color: Colors.black,
-                                          ),
-                                        ),
-                                      );
-                                    },
+                                        height: 130.0,
+                                        fit: BoxFit.cover,
+                                        loadingBuilder:
+                                            (context, child, loadingProgress) {
+                                          if (loadingProgress == null) {
+                                            return child;
+                                          }
+                                          return SizedBox(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width /
+                                                3,
+                                            height: 130.0,
+                                            child: const Center(
+                                              child: CircularProgressIndicator(
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    ),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(
-                                        left: 10.0,
-                                        right: 0.0,
+                                        left: 0.0,
+                                        right: 10.0,
                                         top: 10.0,
                                         bottom: 20.0),
                                     child: SizedBox(
@@ -130,7 +142,7 @@ class _WishListPageState extends State<WishListPage> {
                                                           .size
                                                           .width /
                                                       3)) -
-                                              44,
+                                              54,
                                       height: 130.0,
                                       child: Column(
                                         mainAxisAlignment:
@@ -141,6 +153,8 @@ class _WishListPageState extends State<WishListPage> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Row(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
                                                 mainAxisAlignment:
                                                     MainAxisAlignment
                                                         .spaceBetween,
@@ -151,15 +165,16 @@ class _WishListPageState extends State<WishListPage> {
                                                                     .size
                                                                     .width /
                                                                 2) -
-                                                            10,
+                                                            20,
                                                     child: Text(
                                                       wishListItem.name ??
                                                           "Jewellery",
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      softWrap: true,
+                                                      // overflow:
+                                                      //     TextOverflow.ellipsis,
+                                                      // softWrap: true,
+                                                      maxLines: 2,
                                                       style: const TextStyle(
-                                                          fontSize: 16.0),
+                                                          fontSize: 18.0),
                                                     ),
                                                   ),
                                                   GestureDetector(
@@ -200,7 +215,7 @@ class _WishListPageState extends State<WishListPage> {
                                                   Image.asset(
                                                     "assets/images/rupee.png",
                                                     width: 19.0,
-                                                    height: 17.0,
+                                                    height: 19.0,
                                                   ),
                                                   Text(
                                                       wishListItem.regularPrice !=
@@ -214,7 +229,7 @@ class _WishListPageState extends State<WishListPage> {
                                                           TextOverflow.ellipsis,
                                                       style: Theme.of(context)
                                                           .textTheme
-                                                          .headline3)
+                                                          .headline2)
                                                 ],
                                               ),
                                             ],
@@ -284,7 +299,8 @@ class _WishListPageState extends State<WishListPage> {
                                                     child: Text(
                                                       "Move to Cart",
                                                       style: TextStyle(
-                                                          color: Colors.white),
+                                                          color: Colors.white,
+                                                          fontSize: 17.0),
                                                     ),
                                                   ),
                                                 ),

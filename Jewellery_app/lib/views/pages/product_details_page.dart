@@ -304,21 +304,25 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
   Future<void> getReviews() async {
     bool isThereInternet = await ApiService.checkInternetConnection(context);
     if (isThereInternet) {
-    setState(() {
-      isReviewLoading = true;
-    });
-    ApiService.reviewsList.clear();
-    await ApiService.getReviews(productsModel.id.toString());
-    setState(() {
-      isReviewLoading = false;
-    });
+      if (mounted) {
+        setState(() {
+          isReviewLoading = true;
+        });
+      }
+      ApiService.reviewsList.clear();
+      await ApiService.getReviews(productsModel.id.toString());
+      if (mounted) {
+        setState(() {
+          isReviewLoading = false;
+        });
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final cartProvider = Provider.of<CartProvider>(context, listen: false);
-   
+
     final customerProvider =
         Provider.of<CustomerProvider>(context, listen: false);
 
@@ -605,16 +609,18 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         print(
                             "customerData.isNotEmpty ${customerProvider.customerData.isNotEmpty}");
                         if (customerProvider.customerData.length != 0) {
-                          bool isReviewUploaded = await Navigator.push(
+                          bool? isReviewUploaded = await Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => WriteReviewPage(
                                       productsModel: productsModel)));
 
-                          if (isReviewUploaded) {
-                            setState(() {
-                              getReviews();
-                            });
+                          if (isReviewUploaded != null && isReviewUploaded) {
+                            if (mounted) {
+                              setState(() {
+                                getReviews();
+                              });
+                            }
                           }
                         } else {
                           Navigator.push(

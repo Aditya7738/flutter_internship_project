@@ -35,7 +35,8 @@ class _CartPageState extends State<CartPage> {
   @override
   Widget build(BuildContext context) {
     final cartProvider = Provider.of<CartProvider>(context, listen: false);
-    final customerProvider = Provider.of<CustomerProvider>(context, listen: false);
+    final customerProvider =
+        Provider.of<CustomerProvider>(context, listen: false);
     final cart = cartProvider.cart;
 
     List<String> quantityList = [
@@ -98,189 +99,203 @@ class _CartPageState extends State<CartPage> {
                             itemBuilder: (context, index) {
                               final cartData = cartList[index];
                               return Card(
-                                  child: Row(children: [
-                                Image.network(
-                                  cartData.imageUrl ?? Strings.defaultImageUrl,
-                                  width: MediaQuery.of(context).size.width / 3,
-                                  height: 170,
-                                  loadingBuilder:
-                                      (context, child, loadingProgress) {
-                                    if (loadingProgress == null) {
-                                      return child;
-                                    }
-                                    return SizedBox(
-                                      width:
-                                          MediaQuery.of(context).size.width / 3,
-                                      height: 200,
-                                      child: const Center(
-                                        child: CircularProgressIndicator(
-                                          color: Colors.black,
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 10.0),
-                                  child: Column(
+                                  child: Container(
+                                padding: EdgeInsets.all(10.0),
+                                child: Row(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      SizedBox(
-                                        width:
-                                            (MediaQuery.of(context).size.width -
-                                                    (MediaQuery.of(context)
-                                                            .size
-                                                            .width /
-                                                        3)) -
-                                                44,
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
+                                      ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                        child: Image.network(
+                                          cartData.imageUrl ??
+                                              Strings.defaultImageUrl,
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              3,
+                                          fit: BoxFit.cover,
+                                          loadingBuilder: (context, child,
+                                              loadingProgress) {
+                                            if (loadingProgress == null) {
+                                              return child;
+                                            }
+                                            return const Center(
+                                              child: CircularProgressIndicator(
+                                                color: Colors.black,
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 10.0),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Row(
                                               children: [
                                                 Image.asset(
                                                   "assets/images/rupee.png",
                                                   width: 19.0,
-                                                  height: 17.0,
+                                                  height: 19.0,
                                                 ),
-                                                Text(cartData.price ?? "20,000",
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .headline3)
+                                                Text(
+                                                    cartData.price ??
+                                                        "20,000",
+                                                    style:
+                                                        Theme.of(context)
+                                                            .textTheme
+                                                            .headline2)
                                               ],
                                             ),
-                                            GestureDetector(
-                                              onTap: () {
-                                                value.removeFromCart(cartData);
-
-                                                value.removeFromCartId(
-                                                    cartData.cartProductid!);
-
-                                                print(
-                                                    "CART IDS : ${value.cartProductIds}");
-                                              },
-                                              child: Container(
-                                                decoration: const BoxDecoration(
-                                                  color: Colors.black,
-                                                  shape: BoxShape.circle,
+                                            SizedBox(
+                                              
+                                                width:178.0,
+                                                //  (MediaQuery.of(context)
+                                                //             .size
+                                                //             .width -
+                                                //         (MediaQuery.of(context)
+                                                //                 .size
+                                                //                 .width /
+                                                //             3)) -
+                                                //     67,
+                                                child: Text(
+                                                  cartData.productName ??
+                                                      "Jewellery",
+                                                      maxLines: 2,
+                                                  style: const TextStyle(
+                                                      fontSize: 16.0),
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  softWrap: true,
+                                                )),
+                                            Row(
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    Text("Qty: ",
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .headline4),
+                                                    const SizedBox(
+                                                      width: 5.0,
+                                                    ),
+                                                    DropdownButton<String>(
+                                                        value:
+                                                            cartData.quantity,
+                                                        icon: const Icon(Icons
+                                                            .keyboard_arrow_down_rounded),
+                                                        items: quantityList.map(
+                                                            (String option) {
+                                                          return DropdownMenuItem(
+                                                            value: option,
+                                                            child: Text(option),
+                                                          );
+                                                        }).toList(),
+                                                        onChanged:
+                                                            (String? newValue) {
+                                                          if (mounted) {
+                                                            setState(() {
+                                                              value.updateQuantity(
+                                                                  cartData
+                                                                      .cartProductid!,
+                                                                  newValue!);
+                                                            });
+                                                          }
+                                                        })
+                                                  ],
                                                 ),
-                                                child: const Icon(
-                                                  Icons.close_rounded,
-                                                  color: Colors.white,
-                                                  size: 19.0,
+                                                const SizedBox(
+                                                  width: 11.0,
                                                 ),
-                                              ),
-                                            )
+                                                Row(
+                                                  children: [
+                                                    Text("Size: ",
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .headline4),
+                                                    const SizedBox(
+                                                      width: 5.0,
+                                                    ),
+                                                    DropdownButton<String>(
+                                                        value: selectedSize,
+                                                        icon: const Icon(Icons
+                                                            .keyboard_arrow_down_rounded),
+                                                        items: sizeList.map(
+                                                            (String option) {
+                                                          return DropdownMenuItem(
+                                                            value: option,
+                                                            child: Text(option),
+                                                          );
+                                                        }).toList(),
+                                                        onChanged:
+                                                            (String? newValue) {
+                                                          if (mounted) {
+                                                            setState(() {
+                                                              selectedSize =
+                                                                  newValue!;
+                                                            });
+                                                          }
+                                                        })
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                            const Text(
+                                              "Expected Delivery : ",
+                                              style: TextStyle(fontSize: 17.0),
+                                            ),
+                                            Text(
+                                                cartData.deliveryDate ??
+                                                    "After 5 days",
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .headline4)
                                           ],
                                         ),
                                       ),
-                                      SizedBox(
-                                          width: (MediaQuery.of(context)
-                                                      .size
-                                                      .width -
-                                                  (MediaQuery.of(context)
-                                                          .size
-                                                          .width /
-                                                      3)) -
-                                              45,
-                                          child: Text(
-                                            cartData.productName ?? "Jewellery",
-                                            style:
-                                                const TextStyle(fontSize: 16.0),
-                                            overflow: TextOverflow.ellipsis,
-                                            softWrap: true,
-                                          )),
-                                      Row(
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Text("Qty: ",
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .headline4),
-                                              const SizedBox(
-                                                width: 5.0,
-                                              ),
-                                              DropdownButton<String>(
-                                                  value: cartData.quantity,
-                                                  icon: const Icon(Icons
-                                                      .keyboard_arrow_down_rounded),
-                                                  items: quantityList
-                                                      .map((String option) {
-                                                    return DropdownMenuItem(
-                                                      value: option,
-                                                      child: Text(option),
-                                                    );
-                                                  }).toList(),
-                                                  onChanged:
-                                                      (String? newValue) {
-                                                    setState(() {
-                                                      value.updateQuantity(
-                                                          cartData
-                                                              .cartProductid!,
-                                                          newValue!);
-                                                    });
-                                                  })
-                                            ],
-                                          ),
-                                          const SizedBox(
-                                            width: 20.0,
-                                          ),
-                                          Row(
-                                            children: [
-                                              Text("Size: ",
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .headline4),
-                                              const SizedBox(
-                                                width: 5.0,
-                                              ),
-                                              DropdownButton<String>(
-                                                  value: selectedSize,
-                                                  icon: const Icon(Icons
-                                                      .keyboard_arrow_down_rounded),
-                                                  items: sizeList
-                                                      .map((String option) {
-                                                    return DropdownMenuItem(
-                                                      value: option,
-                                                      child: Text(option),
-                                                    );
-                                                  }).toList(),
-                                                  onChanged:
-                                                      (String? newValue) {
-                                                    setState(() {
-                                                      selectedSize = newValue!;
-                                                    });
-                                                  })
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                      const Text(
-                                        "Expected Delivery : ",
-                                        style: TextStyle(fontSize: 16.0),
-                                      ),
-                                      Text(
-                                          cartData.deliveryDate ??
-                                              "After 5 days",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .headline4)
-                                    ],
-                                  ),
-                                ),
-                              ]));
+                                       Column(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                         children: [
+                                           GestureDetector(
+                                                          onTap: () {
+                                                            value.removeFromCart(
+                                                                cartData);
+                                            
+                                                            value.removeFromCartId(
+                                                                cartData
+                                                                    .cartProductid!);
+                                            
+                                                            print(
+                                                                "CART IDS : ${value.cartProductIds}");
+                                                          },
+                                                          child: Container(
+                                                            decoration:
+                                                                const BoxDecoration(
+                                                              color: Colors.black,
+                                                              shape: BoxShape.circle,
+                                                            ),
+                                                            child: const Icon(
+                                                              Icons.close_rounded,
+                                                              color: Colors.white,
+                                                              size: 19.0,
+                                                            ),
+                                                          ),
+                                                        ),
+                                         ],
+                                       )
+                                    ]),
+                              ));
                             }),
                       ),
                     ),
-
                     const SizedBox(
                       height: 15.0,
                     ),
-
                     Container(
                       width: MediaQuery.of(context).size.width,
                       alignment: Alignment.centerRight,
@@ -296,17 +311,14 @@ class _CartPageState extends State<CartPage> {
                         },
                       ),
                     ),
-
                     const SizedBox(
                       height: 15.0,
                     ),
-
                     Text("Cart totals",
                         style: Theme.of(context).textTheme.headline2),
                     const SizedBox(
                       height: 5.0,
                     ),
-
                     Container(
                       padding: const EdgeInsets.all(10.0),
                       decoration: BoxDecoration(
@@ -355,12 +367,9 @@ class _CartPageState extends State<CartPage> {
                         ],
                       ),
                     ),
-
                     const SizedBox(
                       height: 90.0,
                     ),
-
-                 
                   ]),
             );
           } else {
@@ -437,32 +446,31 @@ class _CartPageState extends State<CartPage> {
                                 Provider.of<CustomerProvider>(context,
                                     listen: false);
 
-                                    //List<Map<String,dynamic>> oldCartDataList = <Map<String,dynamic>>[];
+                            //List<Map<String,dynamic>> oldCartDataList = <Map<String,dynamic>>[];
 
-                                  //user old cart item should be added to cart again when he login and direct to cart page 
-                                    // for (var i = 0; i < cartProvider.cart.length; i++) {
-                                    //   oldCartDataList.add(
-                                        
-                                    //   );
-                                    // } 
+                            //user old cart item should be added to cart again when he login and direct to cart page
+                            // for (var i = 0; i < cartProvider.cart.length; i++) {
+                            //   oldCartDataList.add(
 
-                                    // customerProvider.customerData.addAll(
+                            //   );
+                            // }
 
-                                    // );
+                            // customerProvider.customerData.addAll(
+
+                            // );
 
                             bool isDataEmpty =
                                 customerProvider.customerData.isEmpty;
 
-                                if(isDataEmpty){
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => const LoginPage(isComeFromCart: true,)));
-
-                                }else{
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => const ShippingPage()));
-
-                                }
-                            
+                            if (isDataEmpty) {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => const LoginPage(
+                                        isComeFromCart: true,
+                                      )));
+                            } else {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => const ShippingPage()));
+                            }
                           },
                         ),
                       )

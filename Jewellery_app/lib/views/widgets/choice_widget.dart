@@ -50,9 +50,11 @@ class _ChoiceWidgetState extends State<ChoiceWidget> {
               );
           }).toList(), 
           onChanged: (String? newValue){
-            setState(() {
+            if (mounted) {
+      setState(() {
               selectedOption = newValue!;
             });
+            }
           });
 
     Widget rowddl = Row(
@@ -70,9 +72,11 @@ class _ChoiceWidgetState extends State<ChoiceWidget> {
               );
           }).toList(), 
           onChanged: (String? newValue){
-            setState(() {
+            if (mounted) {
+      setState(() {
               selectedOption = newValue!;
             });
+            }
           })
       ],
     );
@@ -91,9 +95,11 @@ class _ChoiceWidgetState extends State<ChoiceWidget> {
               );
           }).toList(), 
           onChanged: (String? newValue){
-            setState(() {
+            if (mounted) {
+      setState(() {
               selectedOption = newValue!;
             });
+            }
           })
       ],
     ); 

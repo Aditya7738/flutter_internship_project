@@ -32,25 +32,31 @@ class _ProductListInTabState extends State<ProductListInTab> {
     });
   }
     void loadMoreData() async {
-    setState(() {
+    if (mounted) {
+      setState(() {
       isLoading = true;
     });
+    }
 
     // Fetch more data (e.g., using ApiService)
     isThereMoreProducts = await ApiService.showNextPagesCategoryProduct(context);
 
-    setState(() {
+    if (mounted) {
+      setState(() {
       isLoading = false;
     });
+    }
   }
 
   Future<void> getProducts() async {
     ApiService.listOfProductsCategoryWise.clear();
     //await ApiService.fetchProductsCategoryWise(id: widget.id, pageNo: 1);
 
-    setState(() {
+    if (mounted) {
+      setState(() {
       newListLoading = false;
     });
+    }
   }
 
   @override

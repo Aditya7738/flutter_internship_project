@@ -50,32 +50,40 @@ class _ProductPageState extends State<ProductPage> {
   }
 
   void loadMoreData() async {
-    setState(() {
+    if (mounted) {
+      setState(() {
       isLoading = true;
     });
+    }
 
     // Fetch more data (e.g., using ApiService)
     isThereMoreProducts =
         await ApiService.showNextPagesCategoryProduct(context);
 
-    setState(() {
+    if (mounted) {
+      setState(() {
       isLoading = false;
     });
+    }
   }
 
   Future<void> getProducts() async {
     bool isThereInternet = await ApiService.checkInternetConnection(context);
     if (isThereInternet) {
+      if (mounted) {
       setState(() {
         newListLoading = true;
       });
+      }
       ApiService.listOfProductsCategoryWise.clear();
       await ApiService.fetchProductsCategoryWise(context,
           id: widget.id, pageNo: 1);
 
+      if (mounted) {
       setState(() {
         newListLoading = false;
       });
+      }
     }
   }
 

@@ -41,15 +41,11 @@ class YouPage extends StatelessWidget {
     final customerProvider =
         Provider.of<CustomerProvider>(context, listen: false);
 
- 
-
     bool isDataEmpty = customerProvider.customerData.isEmpty;
     print("isDataEmpty $isDataEmpty");
     print("CUSTOMERDATA ${customerProvider.customerData.length}");
     List<String> title = [
-        isDataEmpty
-          ? "Login"
-          : "My Account",
+      isDataEmpty ? "Login" : "My Account",
       "Scan(at store)",
       "Notifications",
       "Track Order",
@@ -65,10 +61,11 @@ class YouPage extends StatelessWidget {
           actions: <Widget>[
             GestureDetector(
               onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => SearchPage(),));
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => SearchPage(),
+                ));
               },
               child: const Icon(
-                
                 Icons.search_rounded,
                 size: 30.0,
               ),
@@ -149,17 +146,15 @@ class YouPage extends StatelessWidget {
                     onTap: () {
                       switch (index) {
                         case 0:
-                        isDataEmpty
-          ? 
-
-                        MaterialPageRoute(
-                                    builder: (context) => LoginPage(isComeFromCart: false,),)
-                          :
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => MyAccountPage(),
-                          ));
-                        
-                          
+                          isDataEmpty
+                              ? MaterialPageRoute(
+                                  builder: (context) => LoginPage(
+                                    isComeFromCart: false,
+                                  ),
+                                )
+                              : Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => MyAccountPage(),
+                                ));
 
                           break;
                         case 2:
@@ -214,7 +209,10 @@ class YouPage extends StatelessWidget {
                             )),
                         child: const Icon(Icons.call),
                       ),
-                      const Text("Call")
+                      const Text(
+                        "Call",
+                        style: TextStyle(fontSize: 17.0),
+                      )
                     ],
                   ),
                 ),
@@ -234,7 +232,7 @@ class YouPage extends StatelessWidget {
                             )),
                         child: const Icon(Icons.forum_sharp),
                       ),
-                      const Text("Chat")
+                      const Text("Chat", style: TextStyle(fontSize: 17.0))
                     ],
                   ),
                 ),
@@ -257,7 +255,7 @@ class YouPage extends StatelessWidget {
                           "assets/images/whatsapp.png",
                         ),
                       ),
-                      const Text("Whatsapp")
+                      const Text("Whatsapp", style: TextStyle(fontSize: 17.0))
                     ],
                   ),
                 )
@@ -279,10 +277,40 @@ class YouPage extends StatelessWidget {
               child: ListView.separated(
                 itemCount: icons2.length,
                 itemBuilder: (context, index) {
-                  return ListTile(
-                    leading: Icon(icons2[index]),
-                    title: Text(title2[index],
-                        style: const TextStyle(fontSize: 17.0)),
+                  return GestureDetector(
+                    onTap: () {
+                      switch (index) {
+                        case 0:
+                          // isDataEmpty
+                          //     ? MaterialPageRoute(
+                          //         builder: (context) => LoginPage(
+                          //           isComeFromCart: false,
+                          //         ),
+                          //       )
+                          //     : Navigator.of(context).push(MaterialPageRoute(
+                          //         builder: (context) => MyAccountPage(),
+                          //       ));
+
+                          break;
+                        case 2:
+                          // Navigator.of(context).push(MaterialPageRoute(
+                          //   builder: (context) => const NotificationPage(),
+                          // ));
+
+                          break;
+                        case 3:
+                          // Navigator.of(context).push(MaterialPageRoute(
+                          //   builder: (context) => const OrderPage(),
+                          // ));
+                          break;
+                        default:
+                      }
+                    },
+                    child: ListTile(
+                      leading: Icon(icons2[index]),
+                      title: Text(title2[index],
+                          style: const TextStyle(fontSize: 17.0)),
+                    ),
                   );
                 },
                 separatorBuilder: (context, index) =>

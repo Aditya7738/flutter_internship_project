@@ -46,10 +46,12 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
   checkIsJewellerContributing() {
     for (var i = 0; i < widget.digiGoldPlan.metaData.length; i++) {
       if (widget.digiGoldPlan.metaData[i].key == "jeweller_contribution") {
-        setState(() {
+        if (mounted) {
+      setState(() {
           jeweller_contribution = widget.digiGoldPlan.metaData[i].value;
           isJewellerContributing = true;
         });
+        }
       }
     }
   }
@@ -59,11 +61,13 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
       print(
           "widget.digiGoldPlan.metaData[i].key ${widget.digiGoldPlan.metaData[i].key == "terms_and_conditions"}");
       if (widget.digiGoldPlan.metaData[i].key == "terms_and_conditions") {
-        setState(() {
+        if (mounted) {
+      setState(() {
           termsConditions = widget.digiGoldPlan.metaData[i].value;
         });
       }
     }
+  }
   }
 
   @override
@@ -173,18 +177,22 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                         onChanged: (value) {
                           print("termsSeen2 ${termsSeen}");
                           if (termsSeen) {
-                            setState(() {
+                            if (mounted) {
+      setState(() {
                               checkBoxChecked = value ?? false;
                             });
+                            }
                             print("checkBoxChecked ${checkBoxChecked}");
                           }
                         },
                       ),
                       GestureDetector(
                           onTap: () {
-                            setState(() {
+                            if (mounted) {
+      setState(() {
                               termsSeen = true;
                             });
+                            }
                             print("termsSeen1 ${termsSeen}");
 
                             showDialog(

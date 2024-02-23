@@ -13,7 +13,7 @@ class DigiGoldProvider with ChangeNotifier {
 
   String get planPrice => _planPrice;
 
-  bool get isOrderCreating => _isOrderCreating; 
+  bool get isOrderCreating => _isOrderCreating;
 
   List<Map<String, dynamic>> get line_items => _line_items;
   List<Map<String, dynamic>> get meta_data => meta_data;
@@ -24,35 +24,43 @@ class DigiGoldProvider with ChangeNotifier {
 
   DigiGoldPlanModel? get digiGoldPlanModel => _digiGoldPlanModel;
 
-  void setDigiGoldPlanModel(DigiGoldPlanModel digiGoldPlanModel){
-_digiGoldPlanModel = digiGoldPlanModel;
+  void setDigiGoldPlanModel(DigiGoldPlanModel digiGoldPlanModel) {
+    _digiGoldPlanModel = digiGoldPlanModel;
   }
 
-  void setPlanPrice(String planPrice){
+  void setPlanPrice(String planPrice) {
     _planPrice = planPrice;
   }
 
-  void setIsOrderCreating(bool isOrderCreating){
+  void setIsOrderCreating(bool isOrderCreating) {
     _isOrderCreating = isOrderCreating;
   }
 
   void setLineItem(List<Map<String, dynamic>> line_items) {
-    _line_items = line_items;
-    notifyListeners();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _line_items = line_items;
+      notifyListeners();
+    });
   }
 
   void setMetaData(List<Map<String, dynamic>> meta_data) {
-    _meta_data = meta_data;
-    notifyListeners();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _meta_data = meta_data;
+      notifyListeners();
+    });
   }
 
   void setBillingData(Map<String, dynamic> billingData) {
-    _billingData = billingData;
-    notifyListeners();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _billingData = billingData;
+      notifyListeners();
+    });
   }
 
   void setCustomerId(int customerId) {
-    _customerId = customerId;
-    notifyListeners();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _customerId = customerId;
+      notifyListeners();
+    });
   }
 }

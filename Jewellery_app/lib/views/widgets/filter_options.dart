@@ -88,10 +88,12 @@ class _FilterOptionsState extends State<FilterOptions> {
             values: RangeValues(selectedMin, selectedMax),
             onChanged: (value) {
               print("SELECTED VALUE $value");
-              setState(() {
+              if (mounted) {
+      setState(() {
                 selectedMin = value.start;
                 selectedMax = value.end;
               });
+              }
             },
             onChangeEnd: (value) {
              

@@ -23,15 +23,19 @@ class _DigiGoldPageState extends State<DigiGoldPage> {
   Future<void> getDigiGoldPlanList() async {
     bool isThereInternet = await ApiService.checkInternetConnection(context);
     if (isThereInternet) {
+      if (mounted) {
       setState(() {
         isDigiGoldPlanLoading = true;
       });
+      }
 
       await ApiService.getListOfDigiGoldPlan();
 
+      if (mounted) {
       setState(() {
         isDigiGoldPlanLoading = false;
       });
+      }
     }
   }
 

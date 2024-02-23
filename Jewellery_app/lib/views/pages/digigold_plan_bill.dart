@@ -135,10 +135,12 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
   bool showFileName = false;
 
   String imagePath = "";
-  
+
   String goldGross = "";
-  
+
   bool isProofSelected = false;
+
+  bool showForgotToUploadFileMsg = false;
 
   @override
   void initState() {
@@ -155,12 +157,16 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
       _lastNameController.text = customerProvider.customerData[0]["last_name"];
     }
 
-    if (customerProvider.customerData[0].containsKey("digi_gold_billing_email")) {
-      _emailController.text = customerProvider.customerData[0]["digi_gold_billing_email"];
+    if (customerProvider.customerData[0]
+        .containsKey("digi_gold_billing_email")) {
+      _emailController.text =
+          customerProvider.customerData[0]["digi_gold_billing_email"];
     }
 
-    if (customerProvider.customerData[0].containsKey("digi_gold_billing_phone")) {
-      _phoneNoController.text = customerProvider.customerData[0]["digi_gold_billing_phone"];
+    if (customerProvider.customerData[0]
+        .containsKey("digi_gold_billing_phone")) {
+      _phoneNoController.text =
+          customerProvider.customerData[0]["digi_gold_billing_phone"];
     }
 
     if (customerProvider.customerData[0].containsKey("address_1")) {
@@ -222,7 +228,7 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
         digiPlanType = widget.digiGoldPlanModel.metaData[i].value;
       }
 
-       if (widget.digiGoldPlanModel.metaData[i].key == "gold_gross") {
+      if (widget.digiGoldPlanModel.metaData[i].key == "gold_gross") {
         goldGross = widget.digiGoldPlanModel.metaData[i].value;
       }
     }
@@ -357,131 +363,166 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
                         );
                       }).toList(),
                       onChanged: (String? newValue) {
-                      
-                        setState(() {
+                        if (mounted) {
+      setState(() {
                           isProofSelected = true;
                           selectedProof = newValue!;
                         });
+                        }
                       }),
                 ),
                 const SizedBox(
                   height: 20.0,
                 ),
 
-              isProofSelected ?
-
-              Column(
-                children: [
-
-              
-
-                getSelectedProofWidget(selectedProof),
-                const SizedBox(
-                  height: 10.0,
-                ),
-
-                showFileName
-                    ? Padding(
-                        padding: const EdgeInsets.only(left: 8.0),
-                        child: Column(
-                          children: [
-                            Text(
-                              "Uploaded file name: ${path.basename(imagePath)}",
-                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0),
-                            ),
-                            const SizedBox(
-                              height: 20.0,
-                            ),
-                          ],
-                        ),
-                      )
-                    : SizedBox(),
-
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    GestureDetector(
-                      onTap: () async {
-                        var image = await ImagePicker()
-                            .pickImage(source: ImageSource.gallery);
-                        if (image != null) {
-                          setState(() {
-                            imagePath = image.path;
-                          });
-                          print("imagePath $imagePath");
-
-                          bool isThereInternet =
-                              await ApiService.checkInternetConnection(context);
-                          if (isThereInternet) {
-                            setState(() {
-                              isImageUploading = true;
-                            });
-
-                            http.StreamedResponse response =
-                                await ApiService.uploadDocumentImage(imagePath);
-
-                            setState(() {
-                              isImageUploading = false;
-                            });
-
-                            if (response.statusCode == 201) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                      padding: EdgeInsets.all(15.0),
-                                      backgroundColor:
-                                          Theme.of(context).primaryColor,
-                                      content: Text(
-                                        "Image upload successfully",
-                                        style: TextStyle(color: Colors.white),
-                                      )));
-
-                              setState(() {
-                                showFileName = true;
-                              });
-                            } else {
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(SnackBar(
-                                      padding: EdgeInsets.all(15.0),
-                                      backgroundColor: Colors.red,
-                                      content: Text(
-                                        "Failed upload image",
-                                        style: TextStyle(color: Colors.white),
-                                      )));
-                            }
-                          }
-                        }
-                      },
-                      child: Container(
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: Theme.of(context).primaryColor,
-                                  style: BorderStyle.solid),
-                              borderRadius: BorderRadius.circular(5.0)),
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 10.0, horizontal: 20.0),
-                          child: isImageUploading
-                              ? SizedBox(
-                                  width: 200.0,
-                                  child: Center(
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 3.0,
-                                      color: Theme.of(context).primaryColor,
-                                    ),
+                isProofSelected
+                    ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          getSelectedProofWidget(selectedProof),
+                          const SizedBox(
+                            height: 10.0,
+                          ),
+                          showFileName
+                              ? Padding(
+                                  padding: const EdgeInsets.only(left: 8.0),
+                                  child: Column(
+                                    children: [
+                                      Text(
+                                        "Uploaded file name: ${path.basename(imagePath)}",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16.0),
+                                      ),
+                                      const SizedBox(
+                                        height: 20.0,
+                                      ),
+                                    ],
                                   ),
                                 )
-                              : Text(
-                                  "Upload document image",
-                                  style: TextStyle(
-                                      color: Theme.of(context).primaryColor,
-                                      fontSize: 17.0),
-                                )),
-                    ),
-                  ],
-                ),
+                              : SizedBox(),
+                              showForgotToUploadFileMsg
+                              ? Padding(
+                                padding: const EdgeInsets.only(left: 8.0),
+                                child: Column(
+                                  children: [
+                                    Text(
+                                        "You have to upload document image",
+                                        style: TextStyle(
+                                            color: Colors.red,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16.0),
+                                      ),
+                                      SizedBox(
+                                        height: 20.0,
+                                      )
+                                  ],
+                                ),
+                              )
+                              : SizedBox(),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              GestureDetector(
+                                onTap: () async {
+                                  var image = await ImagePicker()
+                                      .pickImage(source: ImageSource.gallery);
+                                  if (image != null) {
+                                    if (mounted) {
+      setState(() {
+                                      imagePath = image.path;
+                                    });
+                                    }
+                                    print("imagePath $imagePath");
 
-                  ],
-              ) :
-              SizedBox(),
+                                    bool isThereInternet = await ApiService
+                                        .checkInternetConnection(context);
+                                    if (isThereInternet) {
+                                      if (mounted) {
+      setState(() {
+                                        isImageUploading = true;
+                                      });
+                                      }
+
+                                      http.StreamedResponse response =
+                                          await ApiService.uploadDocumentImage(
+                                              imagePath);
+
+                                      if (mounted) {
+      setState(() {
+                                        isImageUploading = false;
+                                      });
+                                      }
+
+                                      if (response.statusCode == 201) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(SnackBar(
+                                                padding: EdgeInsets.all(15.0),
+                                                backgroundColor:
+                                                    Theme.of(context)
+                                                        .primaryColor,
+                                                content: Text(
+                                                  "Image upload successfully",
+                                                  style: TextStyle(
+                                                      color: Colors.white),
+                                                )));
+
+                                        if (mounted) {
+      setState(() {
+                                          showFileName = true;
+                                          showForgotToUploadFileMsg = false;
+                                        });
+                                        }
+                                      } else {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(SnackBar(
+                                                padding: EdgeInsets.all(15.0),
+                                                backgroundColor: Colors.red,
+                                                content: Text(
+                                                  "Failed upload image",
+                                                  style: TextStyle(
+                                                      color: Colors.white),
+                                                )));
+                                      }
+                                    }
+                                  }
+                                },
+                                child: Container(
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color:
+                                                Theme.of(context).primaryColor,
+                                            style: BorderStyle.solid),
+                                        borderRadius:
+                                            BorderRadius.circular(5.0)),
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 10.0, horizontal: 20.0),
+                                    child: isImageUploading
+                                        ? SizedBox(
+                                            width: 200.0,
+                                            child: Center(
+                                              child: CircularProgressIndicator(
+                                                strokeWidth: 3.0,
+                                                color: Theme.of(context)
+                                                    .primaryColor,
+                                              ),
+                                            ),
+                                          )
+                                        : Text(
+                                            "Upload document image",
+                                            style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .primaryColor,
+                                                fontSize: 17.0),
+                                          )),
+                              ),
+                            ],
+                          ),
+                        
+                          
+                        ],
+                      )
+                    : SizedBox(),
                 const SizedBox(
                   height: 30.0,
                 ),
@@ -516,150 +557,18 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
                 ),
                 GestureDetector(
                   onTap: () async {
-                    if (_formKey.currentState!.validate()) {
-                      setState(() {
-                        isOrderCreating = true;
-                      });
-
-                      print("CITY1 ${_cityController.text}");
-                      Map<String, String> billingData = {
-                        "first_name": _firstNameController.text,
-                        "last_name": _lastNameController.text,
-                        "company": _companyNameController.text,
-                        "country": selectedCountry,
-                        "address_1": _addressController1.text,
-                        "address_2": _addressController2.text,
-                        "city": _cityController.text,
-                        "state": selectedState,
-                        "email": _emailController.text,
-                        "phone": _phoneNoController.text,
-                        "postcode": _pinNoController.text
-                      };
-
-                      List<Map<String, dynamic>> line_items = [
-                        {
-                          "product_id": widget.digiGoldPlanModel.id,
-                          "quantity": 1,
-                          "total": widget.digiGoldPlanModel.price,
-                          "tax_class": "zero-rate",
-                        },
-                      ];
-
-                      List<Map<String, dynamic>> meta_data = [
-                        {
-                          "key": "virtual_order",
-                          "value": "digigold",
-                        },
-                        {
-                          "key": "gold_gross",
-                          "value": goldGross,
-                        },
-                        {"key": "digi_plan_duration", "value": "$planDuration"},
-                        {
-                          "key": "digi_plan_name",
-                          "value": widget.digiGoldPlanModel.name ?? "Gold plan"
-                        },
-                     
-                        {
-                          "key": "digi_plan_type",
-                          "value": digiPlanType
-                        },
-                        {
-                          "key": "description",
-                          "value": widget.digiGoldPlanModel.description
-                        },
-                      ];
-
-                      print(
-                          "customerProvider.customerId ${customerProvider.customerData[0]["id"]}");
-
-                      orderProvider.setBillingData(billingData);
-                      orderProvider.setCustomerId(
-                          customerProvider.customerData[0]["id"]);
-                      orderProvider.setLineItems(line_items);
-                      orderProvider.setMetaData(meta_data);
-                      orderProvider
-                          .setPrice(widget.digiGoldPlanModel.price ?? "");
-
-                      List<Map<String, dynamic>> razorpayOrderData =
-                          await uiCreateRazorpayOrder();
-
-                      Map<String, dynamic> personalData = {};
-
-                      switch (selectedProof) {
-                        case "Aadhar card":
-                          if (_aadharCardController.text == "") {
-                            personalData = {
-                              "aadhar_card_no": _aadharCardController.text
-                            };
-                          }
-
-                          break;
-                        case "Pan card":
-                          if (_panCardController.text == "") {
-                            personalData = {
-                              "pan_card_no": _panCardController.text
-                            };
-                          }
-                          break;
-                        case "Passport":
-                          if (_passportController.text == "") {
-                            personalData = {
-                              "passport_no": _passportController.text
-                            };
-                          }
-                          break;
-
-                        case "Driving License":
-                          if (_licenseNoController.text == "") {
-                            personalData = {
-                              "driving_license_no": _licenseNoController.text
-                            };
-                          }
-                          break;
-
-                        default:
-                          personalData = {};
-                          break;
+                    if (isProofSelected) {
+                      if (!showFileName) {
+                        if (mounted) {
+      setState(() {
+                          showForgotToUploadFileMsg = true;
+                        });
+                        }
+                      } else {
+                        createOrder(customerProvider, orderProvider);
                       }
-
-                      print("CITY2 ${_cityController.text}");
-
-                      customerProvider.addCustomerData({
-                        "address_1": _addressController1.text,
-                        "address_2": _addressController2.text,
-                        "city": _cityController.text,
-                        "pincode": _pinNoController.text,
-                        "digi_gold_billing_email": _emailController.text,
-                        "digi_gold_billing_phone": _phoneNoController.text,
-                        "digi_gold_plan_name":
-                            widget.digiGoldPlanModel.name ?? "Digi Gold Plan"
-                      });
-
-                      if (_nomineeNameController.text != "" &&
-                          _nomineeRelationController.text != "") {
-                        Map<String, dynamic> nomineeData = {
-                          "nominee_name": _nomineeNameController.text,
-                          "nominee_relation": _nomineeRelationController.text
-                        };
-                        customerProvider.addCustomerData(nomineeData);
-                      }
-
-                      customerProvider.addCustomerData(personalData);
-
-                      setState(() {
-                        isOrderCreating = false;
-                      });
-
-                      if (razorpayOrderData.isNotEmpty) {
-                        Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => PaymentPage(
-                            orderId: razorpayOrderData[0]["id"],
-                            fromCart: false,
-                            // cashFreeData: impCashFreeData
-                          ),
-                        ));
-                      }
+                    } else {
+                      createOrder(customerProvider, orderProvider);
                     }
                   },
                   child: Container(
@@ -684,7 +593,9 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
                             : Text(
                                 "Continue",
                                 style: TextStyle(
-                                    color: Colors.white, fontSize: 17.0),
+                                    color: Colors.white,
+                                    fontSize: 17.0,
+                                    fontWeight: FontWeight.bold),
                               ),
                       )),
                 ),
@@ -696,11 +607,147 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
     );
   }
 
+  Future<void> createOrder(
+      CustomerProvider customerProvider, OrderProvider orderProvider) async {
+    if (_formKey.currentState!.validate()) {
+      if (mounted) {
+      setState(() {
+        isOrderCreating = true;
+      });
+      }
+
+      print("CITY1 ${_cityController.text}");
+      Map<String, String> billingData = {
+        "first_name": _firstNameController.text,
+        "last_name": _lastNameController.text,
+        "company": _companyNameController.text,
+        "country": selectedCountry,
+        "address_1": _addressController1.text,
+        "address_2": _addressController2.text,
+        "city": _cityController.text,
+        "state": selectedState,
+        "email": _emailController.text,
+        "phone": _phoneNoController.text,
+        "postcode": _pinNoController.text
+      };
+
+      List<Map<String, dynamic>> line_items = [
+        {
+          "id": widget.digiGoldPlanModel.id,
+          "quantity": 1,
+          "total": widget.digiGoldPlanModel.price,
+          "tax_class": "zero-rate",
+        },
+      ];
+
+      List<Map<String, dynamic>> meta_data = [
+        {
+          "key": "virtual_order",
+          "value": "digigold",
+        },
+        {
+          "key": "gold_gross",
+          "value": goldGross,
+        },
+        {"key": "digi_plan_duration", "value": "$planDuration"},
+        {
+          "key": "digi_plan_name",
+          "value": widget.digiGoldPlanModel.name ?? "Gold plan"
+        },
+        {"key": "digi_plan_type", "value": digiPlanType},
+        {"key": "description", "value": widget.digiGoldPlanModel.description},
+      ];
+
+      print(
+          "customerProvider.customerId ${customerProvider.customerData[0]["id"]}");
+
+      orderProvider.setBillingData(billingData);
+      orderProvider.setCustomerId(customerProvider.customerData[0]["id"]);
+      orderProvider.setLineItems(line_items);
+      orderProvider.setMetaData(meta_data);
+      orderProvider.setPrice(widget.digiGoldPlanModel.price ?? "");
+
+      ///////////////////////////////////////////////////////////////////////////////////////
+
+      List<Map<String, dynamic>> razorpayOrderData =
+          await uiCreateRazorpayOrder();
+
+      Map<String, dynamic> personalData = {};
+
+      switch (selectedProof) {
+        case "Aadhar card":
+          if (_aadharCardController.text == "") {
+            personalData = {"aadhar_card_no": _aadharCardController.text};
+          }
+
+          break;
+        case "Pan card":
+          if (_panCardController.text == "") {
+            personalData = {"pan_card_no": _panCardController.text};
+          }
+          break;
+        case "Passport":
+          if (_passportController.text == "") {
+            personalData = {"passport_no": _passportController.text};
+          }
+          break;
+
+        case "Driving License":
+          if (_licenseNoController.text == "") {
+            personalData = {"driving_license_no": _licenseNoController.text};
+          }
+          break;
+
+        default:
+          personalData = {};
+          break;
+      }
+
+      print("CITY2 ${_cityController.text}");
+
+      customerProvider.addCustomerData({
+        "address_1": _addressController1.text,
+        "address_2": _addressController2.text,
+        "city": _cityController.text,
+        "pincode": _pinNoController.text,
+        "digi_gold_billing_email": _emailController.text,
+        "digi_gold_billing_phone": _phoneNoController.text,
+        "digi_gold_plan_name": widget.digiGoldPlanModel.name ?? "Digi Gold Plan"
+      });
+
+      if (_nomineeNameController.text != "" &&
+          _nomineeRelationController.text != "") {
+        Map<String, dynamic> nomineeData = {
+          "nominee_name": _nomineeNameController.text,
+          "nominee_relation": _nomineeRelationController.text
+        };
+        customerProvider.addCustomerData(nomineeData);
+      }
+
+      customerProvider.addCustomerData(personalData);
+
+      if (mounted) {
+      setState(() {
+        isOrderCreating = false;
+      });
+      }
+
+      if (razorpayOrderData.isNotEmpty) {
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => PaymentPage(
+            orderId: razorpayOrderData[0]["id"],
+            fromCart: false,
+            // cashFreeData: impCashFreeData
+          ),
+        ));
+      }
+    }
+  }
+
   Widget getSelectedProofWidget(String selectedProof) {
     switch (selectedProof) {
       case "Aadhar card":
         return TextFormField(
-      
           controller: _aadharCardController,
           keyboardType: TextInputType.number,
           validator: (value) {

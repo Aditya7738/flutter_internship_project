@@ -47,9 +47,11 @@ class _ProductGridListItemState extends State<ProductGridListItem> {
                       size: 5.0,
                     ),
                     onTap: () {
-                      setState(() {
+                      if (mounted) {
+      setState(() {
                         icon = Icons.favorite;
                       });
+                      }
                     },
                   ),
                 ),

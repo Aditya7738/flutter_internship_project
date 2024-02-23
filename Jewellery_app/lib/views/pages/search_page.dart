@@ -30,13 +30,13 @@ class _SearchPageState extends State<SearchPage> {
 
   bool isProductListEmpty = false;
   //List<Map<String, dynamic>> appliedFilter = <Map<String, dynamic>>[];
-
+late FilterOptionsProvider filterOptionsProvider;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
 
-    final filterOptionsProvider =
+    filterOptionsProvider =
         Provider.of<FilterOptionsProvider>(context, listen: false);
     print(
         "filterOptionsProvider.list.length ${filterOptionsProvider.list.length}");
@@ -59,16 +59,20 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   void loadMoreData() async {
-    setState(() {
-      isLoading = true;
-    });
+    if (mounted) {
+      setState(() {
+        isLoading = true;
+      });
+    }
 
     // Fetch more data (e.g., using ApiService)
     isThereMoreProducts = await ApiService.showNextPagesProduct(context);
 
-    setState(() {
-      isLoading = false;
-    });
+    if (mounted) {
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 
   @override
@@ -76,11 +80,12 @@ class _SearchPageState extends State<SearchPage> {
     // TODO: implement dispose
     print("search page dispose called");
     _scrollController.dispose();
-    super.dispose();
-    final filterOptionsProvider =
-        Provider.of<FilterOptionsProvider>(context, listen: false);
+   
+    // final filterOptionsProvider =
+    //     Provider.of<FilterOptionsProvider>(context, listen: false);
     filterOptionsProvider.setFilteredListLoading(false);
     filterOptionsProvider.clearFilterList();
+     super.dispose();
   }
 
   TextEditingController textEditingController = TextEditingController();
@@ -101,14 +106,17 @@ class _SearchPageState extends State<SearchPage> {
               onSubmitted: (value) async {
                 if (value == "") {
                   ApiService.listOfProductsModel.clear();
+                  // if (mounted) {
                   // setState(() {
                   //   isSearchFieldEmpty = true;
                   // });
                 }
 
-                setState(() {
-                  isSearchFieldEmpty = false;
-                });
+                if (mounted) {
+                  setState(() {
+                    isSearchFieldEmpty = false;
+                  });
+                }
 
                 if (value.length >= 3 && !newListLoading) {
                   bool isThereInternet =
@@ -116,24 +124,30 @@ class _SearchPageState extends State<SearchPage> {
 
                   if (isThereInternet) {
                     ApiService.listOfProductsModel.clear();
-                    setState(() {
-                      newListLoading = true;
-                    });
+                    if (mounted) {
+                      setState(() {
+                        newListLoading = true;
+                      });
+                    }
 
                     List<ProductsModel> listOfProducts =
                         await ApiService.fetchProducts(value, 1);
 
-                    setState(() {
-                      newListLoading = false;
-                      isProductListEmpty = listOfProducts.length == 0;
-                    });
+                    if (mounted) {
+                      setState(() {
+                        newListLoading = false;
+                        isProductListEmpty = listOfProducts.length == 0;
+                      });
+                    }
 
                     //ApiService.searchProduct(value);
                     print("ONCHANGED CALLED");
-                    setState(() {
-                      isSearchBarUsed = true;
-                      searchText = value;
-                    });
+                    if (mounted) {
+                      setState(() {
+                        isSearchBarUsed = true;
+                        searchText = value;
+                      });
+                    }
                   }
                 }
               },
@@ -176,7 +190,8 @@ class _SearchPageState extends State<SearchPage> {
                 );
 
                 // if (filterChanged) {
-                //   setState(() {});
+                //   if (mounted) {
+                setState(() {});
                 // }
               },
               child: Padding(

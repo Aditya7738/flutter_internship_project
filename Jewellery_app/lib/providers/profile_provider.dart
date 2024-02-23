@@ -12,18 +12,24 @@ class ProfileProvider with ChangeNotifier{
   bool get phoneNoVerified => _phoneNoVerified;
 
   setNameError(String? error){
+    WidgetsBinding.instance.addPostFrameCallback((_) {
     _nameError = error;
     notifyListeners();
+    });
   }
 
   setEmailVerified(bool isVerified){
+     WidgetsBinding.instance.addPostFrameCallback((_) {
     _emailVerified = isVerified;
     notifyListeners();
+     });
   }
 
   setPhoneNoVerified(bool isVerified){
+     WidgetsBinding.instance.addPostFrameCallback((_) {
     _phoneNoVerified = isVerified;
     notifyListeners();
+     });
   }
 
   void getProfileSharedPrefs() {}

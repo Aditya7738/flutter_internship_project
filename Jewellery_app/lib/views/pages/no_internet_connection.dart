@@ -51,14 +51,18 @@ class _NoInternetConnectionPageState extends State<NoInternetConnectionPage> {
               ),
               GestureDetector(
                 onTap: () async {
-                  setState(() {
+                  if (mounted) {
+      setState(() {
                     isInternetChecking = true;
                   });
+                  }
                   final connectivityResult =
                       await (Connectivity().checkConnectivity());
-                  setState(() {
+                  if (mounted) {
+      setState(() {
                     isInternetChecking = false;
                   });
+                  }
 
                   if (connectivityResult != ConnectivityResult.none) {
                     if (Navigator.canPop(context) == false) {

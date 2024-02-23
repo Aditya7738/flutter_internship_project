@@ -80,9 +80,11 @@ class _FilterState extends State<Filter> {
                             isFilterTileClicked: index == selectedFilterIndex,
                             option: filters["value"]!,
                             onTap: () {
-                              setState(() {
+                              if (mounted) {
+      setState(() {
                                 selectedFilterIndex = index;
                               });
+                              }
                             },
                           );
                         },
@@ -196,9 +198,11 @@ class _FilterState extends State<Filter> {
                             filterList: filterOptionsProvider.list);
                         filterOptionsProvider.setFilteredListLoading(false);
                       }
-// setState(() {
+// if (mounted) {
+//       setState(() {
 
-// });
+// // });
+//                     },
                     },
                     child: Container(
                         decoration: BoxDecoration(
@@ -210,6 +214,7 @@ class _FilterState extends State<Filter> {
                           "Apply",
                           style: TextStyle(color: Colors.white, fontSize: 17.0),
                         )),
+                    
                   ),
                 ],
               ),

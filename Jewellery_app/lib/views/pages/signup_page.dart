@@ -121,9 +121,11 @@ class _SignupPageState extends State<SignupPage> {
                                     );
                                   }).toList(),
                                   onChanged: (String? newValue) {
-                                    setState(() {
-                                      selectedOption = newValue!;
-                                    });
+                                    if (mounted) {
+                                      setState(() {
+                                        selectedOption = newValue!;
+                                      });
+                                    }
                                   }),
                               labelText: "Mobile number*"),
                           maxLines: 1,
@@ -204,9 +206,11 @@ class _SignupPageState extends State<SignupPage> {
                         decoration: InputDecoration(
                           suffixIcon: IconButton(
                             onPressed: () {
-                              setState(() {
-                                isObscured = !isObscured;
-                              });
+                              if (mounted) {
+                                setState(() {
+                                  isObscured = !isObscured;
+                                });
+                              }
                             },
                             icon: Icon(isObscured
                                 ? Icons.visibility
@@ -233,9 +237,11 @@ class _SignupPageState extends State<SignupPage> {
                         decoration: InputDecoration(
                           suffixIcon: IconButton(
                             onPressed: () {
-                              setState(() {
-                                isObscured2 = !isObscured2;
-                              });
+                              if (mounted) {
+                                setState(() {
+                                  isObscured2 = !isObscured2;
+                                });
+                              }
                             },
                             icon: Icon(isObscured
                                 ? Icons.visibility
@@ -295,13 +301,15 @@ class _SignupPageState extends State<SignupPage> {
                       GestureDetector(
                         onTap: () async {
                           if (_formKey.currentState!.validate()) {
-                            setState(() {
-                              phone = _phoneNoController.text;
-                              email = _emailController.text;
-                              first_name = _firstNameController.text;
-                              last_name = _lastNameController.text;
-                              password = _passwordController.text;
-                            });
+                            if (mounted) {
+                              setState(() {
+                                phone = _phoneNoController.text;
+                                email = _emailController.text;
+                                first_name = _firstNameController.text;
+                                last_name = _lastNameController.text;
+                                password = _passwordController.text;
+                              });
+                            }
 
                             List<String> list = email.split('@');
                             String username = list[0];
@@ -323,16 +331,20 @@ class _SignupPageState extends State<SignupPage> {
                                 await ApiService.checkInternetConnection(
                                     context);
                             if (isThereInternet) {
-                              setState(() {
-                                isLoading = true;
-                              });
+                              if (mounted) {
+                                setState(() {
+                                  isLoading = true;
+                                });
+                              }
 
-                              final response = await ApiService.createCustomer(
-                                  data);
+                              final response =
+                                  await ApiService.createCustomer(data);
 
-                              setState(() {
-                                isLoading = false;
-                              });
+                              if (mounted) {
+                                setState(() {
+                                  isLoading = false;
+                                });
+                              }
 
                               if (response.statusCode == 201) {
                                 String body = response.body;
@@ -362,10 +374,12 @@ class _SignupPageState extends State<SignupPage> {
                                 try {
                                   data = jsonDecode(body);
 
-                                  setState(() {
-                                    isRegisterUnSuccessful = true;
-                                    errorMsg = data["message"];
-                                  });
+                                  if (mounted) {
+                                    setState(() {
+                                      isRegisterUnSuccessful = true;
+                                      errorMsg = data["message"];
+                                    });
+                                  }
                                   print("JSON DECODE DATA $data");
                                 } catch (e) {
                                   print('Error decoding: $e');
