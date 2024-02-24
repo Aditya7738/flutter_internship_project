@@ -18,7 +18,7 @@ class MyAccountPage extends StatelessWidget {
 
   List<String> icons = [
     "assets/images/order_delivery.png",
-    "assets/images/credit_card.png",
+    // "assets/images/credit_card.png",
     //"assets/images/refund.png",
     "assets/images/wishlist.png",
     "assets/images/gold_bars_menu.png",
@@ -29,7 +29,7 @@ class MyAccountPage extends StatelessWidget {
   ];
   List<String> titles = [
     "My Orders",
-    "Payment",
+    // "Payment",
     // "Manage Refunds",
     "My Wishlist",
     "My Gold plans",
@@ -74,11 +74,15 @@ class MyAccountPage extends StatelessWidget {
                 customerProvider.customerData.clear();
                 print(
                     "customerProvider.customerData.length ${customerProvider.customerData.length}");
-                    print(
+                print(
                     "customerProvider.customerData ${customerProvider.customerData}");
-                Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(
-                    builder: (context) => const LoginPage(isComeFromCart: false,)), 
-                    (route) => false,);
+                Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(
+                      builder: (context) => const LoginPage(
+                            isComeFromCart: false,
+                          )),
+                  (route) => false,
+                );
               },
               child: Container(
                   decoration: BoxDecoration(
@@ -101,8 +105,8 @@ class MyAccountPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final customerProvider =
         Provider.of<CustomerProvider>(context, listen: false);
-        String name = customerProvider.customerData[0]["first_name"];
-        print(name);
+    String name = customerProvider.customerData[0]["first_name"];
+    print(name);
     return Scaffold(
       appBar: AppBar(
           title: const Text("My Account"),
@@ -110,7 +114,9 @@ class MyAccountPage extends StatelessWidget {
           actions: <Widget>[
             GestureDetector(
               onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => SearchPage(),));
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => SearchPage(),
+                ));
               },
               child: Icon(
                 Icons.search_rounded,
@@ -155,8 +161,8 @@ class MyAccountPage extends StatelessWidget {
               ),
               Container(
                 color: Colors.white,
-                padding:
-                    const EdgeInsets.symmetric(vertical: 20.0, horizontal: 30.0),
+                padding: const EdgeInsets.symmetric(
+                    vertical: 20.0, horizontal: 30.0),
                 child: Row(children: [
                   Container(
                     color: Colors.red,
@@ -176,7 +182,6 @@ class MyAccountPage extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      
                       Text(customerProvider.customerData[0]["first_name"],
                           style: Theme.of(context).textTheme.headline1),
                       Text(customerProvider.customerData[0]["last_name"],
@@ -201,8 +206,8 @@ class MyAccountPage extends StatelessWidget {
               ),
               SizedBox(
                 width: MediaQuery.of(context).size.width,
-                height:
-                    MediaQuery.of(context).size.height - (kToolbarHeight + 190.0),
+                height: MediaQuery.of(context).size.height -
+                    (kToolbarHeight + 190.0),
                 child: ListView.builder(
                   itemCount: icons.length,
                   itemBuilder: (context, index) {
@@ -218,18 +223,20 @@ class MyAccountPage extends StatelessWidget {
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) => const OrderPage()));
                                 break;
+                              // case 1:
+                              //   Navigator.of(context).push(MaterialPageRoute(
+                              //       builder: (context) => const ActivePayments()));
+                              //   break;
                               case 1:
                                 Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => const ActivePayments()));
+                                    builder: (context) =>
+                                        const WishListPage()));
                                 break;
                               case 2:
                                 Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => const WishListPage()));
+                                    builder: (context) => const MyGoldPlans()));
                                 break;
                               case 3:
-                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const MyGoldPlans()));
-                              break;
-                              case 4:
                                 showLogoutDialog(context);
                                 break;
                               default:
@@ -255,6 +262,4 @@ class MyAccountPage extends StatelessWidget {
       ),
     );
   }
-
- 
 }

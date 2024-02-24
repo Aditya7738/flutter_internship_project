@@ -9,14 +9,14 @@ import 'package:badges/badges.dart' as badges;
 import 'package:provider/provider.dart';
 
 class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
- // final IconData menuIcon;
+  // final IconData menuIcon;
   final VoidCallback? onPressed;
   final bool isNeededForHome;
   final bool isNeededForProductPage;
 
   const AppBarWidget(
       {super.key,
-    //  required this.menuIcon,
+      //  required this.menuIcon,
       required this.onPressed,
       required this.isNeededForHome,
       required this.isNeededForProductPage});
@@ -41,8 +41,8 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
       title: isNeededForHome
           ? Image.network(
               Strings.app_logo,
-               width: 150,
-            height: 80,
+              width: 150,
+              height: 80,
             )
           : const TextField(
               showCursor: true,
@@ -85,7 +85,7 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
                       const badges.BadgeStyle(badgeColor: Colors.purple),
                   badgeContent: Consumer<WishlistProvider>(
                       builder: (context, value, child) {
-                        print("LENGTH OF FAV: ${value.favProductIds}");
+                    print("LENGTH OF FAV: ${value.favProductIds}");
                     return Text(
                       value.favProductIds.length.toString(),
                       style: const TextStyle(color: Colors.white),
@@ -109,11 +109,25 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
                 child: badges.Badge(
                   badgeStyle:
                       const badges.BadgeStyle(badgeColor: Colors.purple),
-                  badgeContent: Consumer<CartProvider>(
-                      builder: (context, value, child) => Text(
-                            value.cart.length.toString(),
-                            style: const TextStyle(color: Colors.white),
-                          )),
+                  badgeContent:
+                      Consumer<CartProvider>(builder: (context, value, child) {
+                    if (value.isOrderCreating) {
+                      return SizedBox(
+                        width: 25.0,
+                        height: 25.0,
+                        child: Center(
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
+                          ),
+                        ),
+                      );
+                    } else {
+                      return Text(
+                        value.cart.length.toString(),
+                        style: const TextStyle(color: Colors.white),
+                      );
+                    }
+                  }),
                   child: IconButton(
                     onPressed: () {
                       print("CART CLICKED");

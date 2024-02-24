@@ -9,6 +9,10 @@ class DigiGoldProvider with ChangeNotifier {
 
   bool _isOrderCreating = false;
 
+  bool _isGoldRateLoading = false;
+
+  bool get isGoldRateLoading => _isGoldRateLoading;
+
   String _planPrice = "";
 
   String get planPrice => _planPrice;
@@ -24,16 +28,32 @@ class DigiGoldProvider with ChangeNotifier {
 
   DigiGoldPlanModel? get digiGoldPlanModel => _digiGoldPlanModel;
 
+  void setGoldRateLoading(bool isGoldRateLoading) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _isGoldRateLoading = isGoldRateLoading;
+      notifyListeners();
+    });
+  }
+
   void setDigiGoldPlanModel(DigiGoldPlanModel digiGoldPlanModel) {
-    _digiGoldPlanModel = digiGoldPlanModel;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _digiGoldPlanModel = digiGoldPlanModel;
+      notifyListeners();
+    });
   }
 
   void setPlanPrice(String planPrice) {
-    _planPrice = planPrice;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _planPrice = planPrice;
+      notifyListeners();
+    });
   }
 
   void setIsOrderCreating(bool isOrderCreating) {
-    _isOrderCreating = isOrderCreating;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _isOrderCreating = isOrderCreating;
+      notifyListeners();
+    });
   }
 
   void setLineItem(List<Map<String, dynamic>> line_items) {

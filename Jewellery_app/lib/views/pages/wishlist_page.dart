@@ -238,6 +238,11 @@ class _WishListPageState extends State<WishListPage> {
                                             children: [
                                               GestureDetector(
                                                 onTap: () {
+                                                  cartProvider.addToCartId(
+                                                      wishListItem.id!);
+                                                  print(
+                                                      "CART IDS : ${cartProvider.cartProductIds}");
+
                                                   cartProvider.addToCart(
                                                       CartProductModel(
                                                     cartProductid:

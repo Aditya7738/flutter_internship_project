@@ -397,8 +397,8 @@ class _MyGoldPlanListItemState extends State<MyGoldPlanListItem> {
                         child: Center(
                           child: isOrderCreating
                               ? SizedBox(
-                               height: 20.0,
-                               width: 20.0,
+                               height: 25.0,
+                               width: 25.0,
                                 child: CircularProgressIndicator(
                                     color: Colors.white,
                                     strokeWidth: 2.0,

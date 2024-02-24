@@ -113,14 +113,16 @@ class _PaymentPageState extends State<PaymentPage>
 
   void _handlePaymentSuccess(PaymentSuccessResponse response) {
     final orderProvider = Provider.of<OrderProvider>(context, listen: false);
-
+    final cartProvider = Provider.of<CartProvider>(context, listen: false);
     //  Toast.show("Payment successful ${response.paymentId}", duration: 2);
     print("Payment successful ${response.paymentId}");
 
 //write method to call and create order at everytime payment get successful
 
     if (widget.fromCart == false) {
-      createOrderHelper(orderProvider, response.paymentId);
+      createDigiGoldOrder(orderProvider, response.paymentId);
+    } else {
+      createCartOrder(orderProvider, cartProvider);
     }
 
     Navigator.of(context).pushReplacement(MaterialPageRoute(
@@ -128,7 +130,34 @@ class _PaymentPageState extends State<PaymentPage>
     ));
   }
 
-  createOrderHelper(OrderProvider orderProvider, String? paymentId) async {
+  createCartOrder(
+      OrderProvider orderProvider, CartProvider cartProvider) async {
+    bool isThereInternet = await ApiService.checkInternetConnection(context);
+    if (isThereInternet) {
+      cartProvider.setIsOrderCreating(true);
+      orderProvider.setIsOrderCreating(true);
+      http.Response response = await ApiService.createOrder(
+          orderProvider.billingData,
+          orderProvider.shippingData,
+          orderProvider.lineItems,
+          orderProvider.customerId,
+          orderProvider.price,
+          null);
+
+      orderProvider.setIsOrderCreating(false);
+      cartProvider.setIsOrderCreating(false);
+
+      print("cart pay status ${response.statusCode}");
+
+      if (response.statusCode == 201) {
+        print("CartOrder CREATED SUCCESSFULLY");
+        cartProvider.clearCartList();
+        cartProvider.clearCartProductIds();
+      }
+    }
+  }
+
+  createDigiGoldOrder(OrderProvider orderProvider, String? paymentId) async {
     bool isThereInternet = await ApiService.checkInternetConnection(context);
     if (isThereInternet) {
       orderProvider.setIsOrderCreating(true);
@@ -179,7 +208,6 @@ class _PaymentPageState extends State<PaymentPage>
 
   @override
   void dispose() {
-    
     _razorpay.clear();
     super.dispose();
   }

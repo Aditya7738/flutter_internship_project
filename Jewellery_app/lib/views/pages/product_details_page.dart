@@ -363,7 +363,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
             badgeStyle: const badges.BadgeStyle(badgeColor: Colors.purple),
             badgeContent: Consumer<CartProvider>(
                 builder: (context, value, child) => Text(
-                      value.cart.length.toString(),
+                      value.cartProductIds.length.toString(),
                       style: const TextStyle(color: Colors.white),
                     )),
             child: IconButton(
@@ -861,32 +861,32 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         cartProvider.addToCartId(productsModel.id!);
                         print("CART IDS : ${cartProvider.cartProductIds}");
 
-                        if (customerProvider.customerData.isNotEmpty ||
-                            customerProvider.customerData.length != 0) {
-                          print(
-                              "customerData.isNotEmpty ${customerProvider.customerData.isNotEmpty}");
+                        // if (customerProvider.customerData.isNotEmpty ||
+                        //     customerProvider.customerData.length != 0) {
+                        //   print(
+                        //       "customerData.isNotEmpty ${customerProvider.customerData.isNotEmpty}");
 
-                          List<CartProductModel> cart = <CartProductModel>[];
-                          cart.add(CartProductModel(
-                              cartProductid: productsModel.id,
-                              price: productsModel.regularPrice != ""
-                                  ? productsModel.regularPrice ?? "20000"
-                                  : "0.0",
-                              productName: productsModel.name ?? "Jewellery",
-                              quantity: "1",
-                              size: 5,
-                              deliveryDate: DateHelper.getCurrentDateInWords(),
-                              imageUrl: productsModel.images.isEmpty
-                                  ? Strings.defaultImageUrl
-                                  : productsModel.images[0].src ??
-                                      Strings.defaultImageUrl,
-                              sku: productsModel.sku ?? "ABC",
-                              imageId: productsModel.images.isNotEmpty
-                                  ? productsModel.images[0].id
-                                  : 0));
+                        //   List<CartProductModel> cart = <CartProductModel>[];
+                        //   cart.add(CartProductModel(
+                        //       cartProductid: productsModel.id,
+                        //       price: productsModel.regularPrice != ""
+                        //           ? productsModel.regularPrice ?? "20000"
+                        //           : "0.0",
+                        //       productName: productsModel.name ?? "Jewellery",
+                        //       quantity: "1",
+                        //       size: 5,
+                        //       deliveryDate: DateHelper.getCurrentDateInWords(),
+                        //       imageUrl: productsModel.images.isEmpty
+                        //           ? Strings.defaultImageUrl
+                        //           : productsModel.images[0].src ??
+                        //               Strings.defaultImageUrl,
+                        //       sku: productsModel.sku ?? "ABC",
+                        //       imageId: productsModel.images.isNotEmpty
+                        //           ? productsModel.images[0].id
+                        //           : 0));
 
-                          customerProvider.customerData[0]["cartList"] = cart;
-                        }
+                        //   customerProvider.customerData[0]["cartList"] = cart;
+                        // }
 
                         cartProvider.addToCart(CartProductModel(
                             cartProductid: productsModel.id,

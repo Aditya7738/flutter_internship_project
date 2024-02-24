@@ -22,56 +22,57 @@ class OrderProvider with ChangeNotifier {
 
   void setBillingData(Map<String, String> billingData) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-    _billingData = billingData;
-    notifyListeners();
+      _billingData = billingData;
+      notifyListeners();
     });
   }
 
   void setShippingData(Map<String, String> shippingData) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-    _shippingData = shippingData;
-    notifyListeners();
+      _shippingData = shippingData;
+      notifyListeners();
     });
   }
 
   void setLineItems(List<Map<String, dynamic>> lineItems) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-    _lineItems = lineItems;
-    notifyListeners();
+      _lineItems = lineItems;
+      notifyListeners();
     });
   }
 
   void setCustomerId(int customerId) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-    _customerId = customerId;
-    notifyListeners();
+      _customerId = customerId;
+      notifyListeners();
     });
   }
 
   void setPrice(String price) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-    _price = price;
-    notifyListeners();
+      _price = price;
+      notifyListeners();
     });
   }
 
   void setMetaData(List<Map<String, dynamic>> meta_data) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-    _metaData = meta_data;
-    notifyListeners();
+      _metaData = meta_data;
+      notifyListeners();
     });
   }
 
-  void addToMetaData(List<Map<String,dynamic>> paymentData){
+  void addToMetaData(List<Map<String, dynamic>> paymentData) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-    _metaData.addAll(paymentData);
-     notifyListeners();
+      _metaData.addAll(paymentData);
+      notifyListeners();
     });
   }
-
-
 
   void setIsOrderCreating(bool isOrderCreating) {
-    _isOrderCreating = isOrderCreating;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _isOrderCreating = isOrderCreating;
+      notifyListeners();
+    });
   }
 }

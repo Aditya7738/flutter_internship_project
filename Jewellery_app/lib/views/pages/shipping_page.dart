@@ -254,186 +254,108 @@ class _ShippingPageState extends State<ShippingPage> {
                             )
                           : const SizedBox(),
                       const SizedBox(
-                        height: 30.0,
+                        height: 20.0,
                       ),
                       GestureDetector(
                         onTap: () async {
                           if (_formKey.currentState!.validate()) {
-                            billingData = {
-                              "first_name": _firstNameController.text,
-                              "last_name": _lastNameController.text,
-                              "company": _companyNameController.text,
-                              "country": selectedCountry,
-                              "address_1": _addressController1.text,
-                              "address_2": _addressController2.text,
-                              "city": _cityController.text,
-                              "state": selectedState,
-                              "email": _emailController.text,
-                              "phone": _phoneNoController.text,
-                              "postcode": _pinNoController.text
-                            };
-
-                            differentShippingAddress
-                                ? shippingData = {
-                                    "first_name": _firstNameController2.text,
-                                    "last_name": _lastNameController2.text,
-                                    "company": _companyNameController2.text,
-                                    "address_1": _address2Controller1.text,
-                                    "address_2": _address2Controller2.text,
-                                    "city": _cityController2.text,
-                                    "postcode": _pinNoController2.text,
-                                    "country": selectedCountry2,
-                                    "state": selectedState2,
-                                    "phone": _phoneNoController2.text
-                                  }
-                                : shippingData = billingData;
-
+                            List<Map<String, dynamic>> razorpayOrderData =
+                                <Map<String, dynamic>>[];
                             bool isThereInternet =
                                 await ApiService.checkInternetConnection(
                                     context);
                             if (isThereInternet) {
                               if (mounted) {
                                 setState(() {
-                                  isUpdateLoading = true;
+                                  creatingOrder = true;
+                                });
+                              }
+                              billingData = {
+                                "first_name": _firstNameController.text,
+                                "last_name": _lastNameController.text,
+                                "company": _companyNameController.text,
+                                "country": selectedCountry,
+                                "address_1": _addressController1.text,
+                                "address_2": _addressController2.text,
+                                "city": _cityController.text,
+                                "state": selectedState,
+                                "email": _emailController.text,
+                                "phone": _phoneNoController.text,
+                                "postcode": _pinNoController.text
+                              };
+
+                              Map<String, dynamic> customerBillingData = {
+                                "company": _companyNameController.text,
+                                "address_1": _addressController1.text,
+                                "address_2": _addressController2.text,
+                                "city": _cityController.text,
+                              };
+
+                              customerProvider
+                                  .addCustomerData(customerBillingData);
+
+                              differentShippingAddress
+                                  ? shippingData = {
+                                      "first_name": _firstNameController2.text,
+                                      "last_name": _lastNameController2.text,
+                                      "company": _companyNameController2.text,
+                                      "address_1": _address2Controller1.text,
+                                      "address_2": _address2Controller2.text,
+                                      "city": _cityController2.text,
+                                      "postcode": _pinNoController2.text,
+                                      "country": selectedCountry2,
+                                      "state": selectedState2,
+                                      "phone": _phoneNoController2.text
+                                    }
+                                  : shippingData = billingData;
+
+                              List<Map<String, dynamic>> lineItems =
+                                  <Map<String, dynamic>>[];
+
+                              final cartList = cartProvider.cart;
+
+                              for (int i = 0; i < cartList.length; i++) {
+                                lineItems.add({
+                                  "name":
+                                      cartList[i].productName ?? "Jewellery",
+                                  "product_id": cartList[i].cartProductid,
+                                  "quantity": int.parse(cartList[i].quantity!),
+                                  "sku": cartList[i].sku,
+                                  "price": int.parse(cartList[i].price!),
+                                  "image": {
+                                    "id": cartList[i].imageId,
+                                    "src": cartList[i].imageUrl
+                                  },
+                                  "parent_name": ""
                                 });
                               }
 
+                              print("STORED PRODUCT $lineItems");
+
+                              //do it after payment successful - redirect user to this page and modify this page where login, shipping ajd paymet will be on same page
+                              orderProvider.setBillingData(billingData);
+                              orderProvider.setShippingData(shippingData);
+                              orderProvider.setCustomerId(customerId);
+                              orderProvider.setLineItems(lineItems);
+                              orderProvider.setCustomerId(customerId);
+                              orderProvider.setPrice(cartProvider
+                                  .calculateTotalPrice()
+                                  .toString());
+
+                             
                               await ApiService.updateCustomer(
                                   customerId, billingData, shippingData);
 
+                              razorpayOrderData = await uiCreateRazorpayOrder();
+
+                              // List<Map<String, dynamic>> cashFreeOrderData =
+                              //     await uiCreateCashFreeOrder();
+
                               if (mounted) {
                                 setState(() {
-                                  isUpdateLoading = false;
+                                  creatingOrder = false;
                                 });
                               }
-                            }
-                          }
-                        },
-                        child: Container(
-                            width: MediaQuery.of(context).size.width,
-                            decoration: BoxDecoration(
-                                color: const Color(0xffCC868A),
-                                borderRadius: BorderRadius.circular(15.0)),
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 10.0, horizontal: 20.0),
-                            child: Center(
-                              child: isUpdateLoading
-                                  ? const SizedBox(
-                                      width: 20.0,
-                                      height: 20.0,
-                                      child: CircularProgressIndicator(
-                                        color: Colors.white,
-                                        strokeWidth: 2.0,
-                                        backgroundColor: Color(0xffCC868A),
-                                      ),
-                                    )
-                                  : const Text(
-                                      "CONTINUE",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 17.0,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                            )),
-                      ),
-                      const SizedBox(
-                        height: 30.0,
-                      ),
-                      GestureDetector(
-                        onTap: () async {
-                          if (_formKey.currentState!.validate()) {
-                            billingData = {
-                              "first_name": _firstNameController.text,
-                              "last_name": _lastNameController.text,
-                              "company": _companyNameController.text,
-                              "country": selectedCountry,
-                              "address_1": _addressController1.text,
-                              "address_2": _addressController2.text,
-                              "city": _cityController.text,
-                              "state": selectedState,
-                              "email": _emailController.text,
-                              "phone": _phoneNoController.text,
-                              "postcode": _pinNoController.text
-                            };
-
-                            Map<String, dynamic> customerBillingData = {
-                              "company": _companyNameController.text,
-                              "address_1": _addressController1.text,
-                              "address_2": _addressController2.text,
-                              "city": _cityController.text,
-                            };
-
-                            customerProvider
-                                .addCustomerData(customerBillingData);
-
-                            differentShippingAddress
-                                ? shippingData = {
-                                    "first_name": _firstNameController2.text,
-                                    "last_name": _lastNameController2.text,
-                                    "company": _companyNameController2.text,
-                                    "address_1": _address2Controller1.text,
-                                    "address_2": _address2Controller2.text,
-                                    "city": _cityController2.text,
-                                    "postcode": _pinNoController2.text,
-                                    "country": selectedCountry2,
-                                    "state": selectedState2,
-                                    "phone": _phoneNoController2.text
-                                  }
-                                : shippingData = billingData;
-
-                            List<Map<String, dynamic>> lineItems =
-                                <Map<String, dynamic>>[];
-
-                            final cartList = cartProvider.cart;
-
-                            for (int i = 0; i < cartList.length; i++) {
-                              lineItems.add({
-                                "name": cartList[i].productName ?? "Jewellery",
-                                "product_id": cartList[i].cartProductid,
-                                "quantity": int.parse(cartList[i].quantity!),
-                                "sku": cartList[i].sku,
-                                "price": int.parse(cartList[i].price!),
-                                "image": {
-                                  "id": cartList[i].imageId,
-                                  "src": cartList[i].imageUrl
-                                },
-                                "parent_name": ""
-                              });
-                            }
-
-                            print("STORED PRODUCT $lineItems");
-
-                            if (mounted) {
-                              setState(() {
-                                creatingOrder = true;
-                              });
-                            }
-                            //do it after payment successful - redirect user to this page and modify this page where login, shipping ajd paymet will be on same page
-                            orderProvider.setBillingData(billingData);
-                            orderProvider.setShippingData(shippingData);
-                            orderProvider.setCustomerId(customerId);
-                            orderProvider.setLineItems(lineItems);
-                            orderProvider.setCustomerId(customerId);
-                            orderProvider.setPrice(
-                                cartProvider.calculateTotalPrice().toString());
-
-                            // await ApiService.createOrder(
-                            //     billingData,
-                            //     shippingData,
-                            //     lineItems,
-                            //     customerId,
-                            //     cartProvider.calculateTotalPrice());
-
-                            List<Map<String, dynamic>> razorpayOrderData =
-                                await uiCreateRazorpayOrder();
-
-                            // List<Map<String, dynamic>> cashFreeOrderData =
-                            //     await uiCreateCashFreeOrder();
-
-                            if (mounted) {
-                              setState(() {
-                                creatingOrder = false;
-                              });
                             }
 
                             // Map<String, String> impCashFreeData =
@@ -470,8 +392,8 @@ class _ShippingPageState extends State<ShippingPage> {
                             child: Center(
                               child: creatingOrder
                                   ? const SizedBox(
-                                      width: 20.0,
-                                      height: 20.0,
+                                      width: 25.0,
+                                      height: 25.0,
                                       child: CircularProgressIndicator(
                                         color: Colors.white,
                                         strokeWidth: 2.0,

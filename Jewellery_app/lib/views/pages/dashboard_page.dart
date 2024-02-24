@@ -2,6 +2,7 @@ import 'package:Tiara_by_TJ/api/api_service.dart';
 import 'package:Tiara_by_TJ/model/filter_options_model.dart';
 import 'package:Tiara_by_TJ/model/product_customization_option_model.dart';
 import 'package:Tiara_by_TJ/providers/customize_options_provider.dart';
+import 'package:Tiara_by_TJ/providers/digigold_provider.dart';
 import 'package:Tiara_by_TJ/providers/filteroptions_provider.dart';
 import 'package:Tiara_by_TJ/views/pages/digi_gold_page.dart';
 import 'package:flutter/material.dart';
@@ -31,12 +32,15 @@ class _DashboardPageState extends State<DashboardPage> {
     getProductCustomizeOptions();
     getFilterOptions();
     getBasicAuthForRazorPay();
+   
   }
+
+ 
 
   Future<void> getBasicAuthForRazorPay() async {
     bool isThereInternet = await ApiService.checkInternetConnection(context);
     if (isThereInternet) {
-      print("getBasicAuthForRazorPay");
+    
       await ApiService.generateBasicAuthForRazorPay();
     }
   }

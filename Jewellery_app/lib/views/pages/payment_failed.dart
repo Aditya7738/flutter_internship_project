@@ -17,7 +17,7 @@ class PaymentFailedPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
      final digiGoldProvider =
-        Provider.of<DigiGoldProvider>(context, listen: true);
+        Provider.of<DigiGoldProvider>(context, listen: false);
     return Scaffold(
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -33,12 +33,13 @@ class PaymentFailedPage extends StatelessWidget {
           ),
           GestureDetector(
             onTap: () {
-              fromCart ?
-              Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (context) => ShippingPage()))
-                  :
-                  Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (context) => DigiGoldPlanOrderPage(digiGoldPlanModel: digiGoldProvider.digiGoldPlanModel!,)));
+              // fromCart ?
+              // Navigator.of(context).pushReplacement(
+              //     MaterialPageRoute(builder: (context) => ShippingPage()))
+              //     :
+                  Navigator.pop(context);
+                  // Navigator.of(context).pushReplacement(
+                  // MaterialPageRoute(builder: (context) => DigiGoldPlanOrderPage(digiGoldPlanModel: digiGoldProvider.digiGoldPlanModel!,)));
             },
             child: Container(
                 decoration: BoxDecoration(

@@ -9,6 +9,17 @@ class CartProvider with ChangeNotifier {
 
   List<CartProductModel> _cart = [];
 
+  bool _isOrderCreating = false;
+
+  bool get isOrderCreating => _isOrderCreating;
+
+  void setIsOrderCreating(bool isOrderCreating) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _isOrderCreating = isOrderCreating;
+      notifyListeners();
+    });
+  }
+
   // double _totalPrice = 0.0;
   // double get totalPrice => _totalPrice;
 
@@ -16,8 +27,6 @@ class CartProvider with ChangeNotifier {
 
   List<int> _cartProductIds = <int>[];
   List<int> get cartProductIds => _cartProductIds;
-
-
 
   double calculateTotalPrice() {
     var totalPrice = 0.0;
@@ -28,57 +37,89 @@ class CartProvider with ChangeNotifier {
     }
     return totalPrice;
     //_totalPrice = totalPrice;
-    
   }
 
   void addToCartId(int id) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
     _cartProductIds.add(id);
     notifyListeners();
 
     _setSharedPrefs();
-    });
+    // });
   }
 
   void removeFromCartId(int id) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
     bool remove = _cartProductIds.remove(id);
+    print("CartProductIds");
+    _cartProductIds.forEach((element) {
+      print(element);
+    });
     print("CART REMOVED $remove");
     notifyListeners();
-
+    print("removeFromCartId");
     _setSharedPrefs();
-    });
+    // });
   }
 
   void addToCart(CartProductModel cartProductModel) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
     _cart.add(cartProductModel);
     notifyListeners();
 
     _setSharedPrefs();
-    });
+    // });
   }
 
   void removeFromCart(CartProductModel cartProductModel) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-    _cart.remove(cartProductModel);
+    //  WidgetsBinding.instance.addPostFrameCallback((_) {
+    print("CartProductModel ${cartProductModel.toMap()}");
+    print(" Cart list before remove");
+    _cart.forEach((element) {
+      print(element.toMap());
+    });
+    bool isRemoved = _cart.remove(cartProductModel);
+    print("isRemoved $isRemoved");
+    print(" Cart list After remove");
+    _cart.forEach((element) {
+      print(element.toMap());
+    });
     notifyListeners();
-
+    print("cart length ${_cart.length}");
+    print("removeFromCart");
     _setSharedPrefs();
+    // });
+  }
+
+  void clearCartList() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _cart.clear();
+      notifyListeners();
+
+      _setSharedPrefs();
+    });
+  }
+
+  void clearCartProductIds() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _cartProductIds.clear();
+      notifyListeners();
+
+      _setSharedPrefs();
     });
   }
 
   void updateQuantity(int productId, String selectedQuantity) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-    for (int i = 0; i < _cart.length; i++) {
-      if (_cart[i].cartProductid == productId) {
-        _cart[i].quantity = selectedQuantity;
+      for (int i = 0; i < _cart.length; i++) {
+        if (_cart[i].cartProductid == productId) {
+          _cart[i].quantity = selectedQuantity;
+        }
       }
-    }
 
-    notifyListeners();
+      notifyListeners();
 
-    _setSharedPrefs();
+      _setSharedPrefs();
     });
   }
 
@@ -93,34 +134,33 @@ class CartProvider with ChangeNotifier {
   }
 
   Future<void> getSharedPrefs() async {
-    
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
 
-WidgetsBinding.instance.addPostFrameCallback((_) {
-    String? res = sharedPreferences.getString("cart_list");
-    String? cardtIds = sharedPreferences.getString("cartid_list");
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      String? res = sharedPreferences.getString("cart_list");
+      String? cardtIds = sharedPreferences.getString("cartid_list");
 
-    print("cartid_list $cardtIds");
-    if (cardtIds != null) {
-      var dynamicCartProductIds = jsonDecode(cardtIds) as List<dynamic>;
+      print("cartid_list $cardtIds");
+      if (cardtIds != null) {
+        var dynamicCartProductIds = jsonDecode(cardtIds) as List<dynamic>;
 
-      _cartProductIds = dynamicCartProductIds.whereType<int>().toList();
-      print("cartid_list : $_cartProductIds");
-    } else {
-      print("NULL cartid_list");
-    }
+        _cartProductIds = dynamicCartProductIds.whereType<int>().toList();
+        print("cartid_list : $_cartProductIds");
+      } else {
+        print("NULL cartid_list");
+      }
 
-    print("CART LIST $res");
-    if (res != null) {
-      var data = jsonDecode(res);
-      _cart = data
-          .map<CartProductModel>((e) => CartProductModel.fromMap(e))
-          .toList();
-    } else {
-      _cart = [];
-    }
+      print("CART LIST $res");
+      if (res != null) {
+        var data = jsonDecode(res);
+        _cart = data
+            .map<CartProductModel>((e) => CartProductModel.fromMap(e))
+            .toList();
+      } else {
+        _cart = [];
+      }
 
-    notifyListeners();
-});
+      notifyListeners();
+    });
   }
 }

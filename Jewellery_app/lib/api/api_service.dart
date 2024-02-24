@@ -4,7 +4,9 @@ import 'package:Tiara_by_TJ/constants/strings.dart';
 import 'package:Tiara_by_TJ/model/category_model.dart';
 import 'package:Tiara_by_TJ/model/digi_gold_plan_model.dart' as DigiGoldPlans;
 import 'package:Tiara_by_TJ/model/filter_options_model.dart' as FilterOptions;
-import 'package:Tiara_by_TJ/model/product_customization_option_model.dart';
+import 'package:Tiara_by_TJ/model/gold_rate_model.dart';
+import 'package:Tiara_by_TJ/model/product_customization_option_model.dart'
+    as CustomizationOption;
 import 'package:Tiara_by_TJ/model/reviews_model.dart';
 import 'package:Tiara_by_TJ/providers/filteroptions_provider.dart';
 import 'package:Tiara_by_TJ/views/pages/no_internet_connection.dart';
@@ -27,7 +29,6 @@ class ApiService {
   static int responseofCategoriesPages = 1;
 
   static Future<bool> checkInternetConnection(BuildContext context) async {
-   
     final connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.none) {
       return await Navigator.push(
@@ -35,7 +36,7 @@ class ApiService {
           MaterialPageRoute(
             builder: (context) => NoInternetConnectionPage(),
           ));
-    }else{
+    } else {
       return true;
     }
   }
@@ -282,7 +283,7 @@ class ApiService {
       String searchText, int pageNo,
       {List<Map<String, dynamic>>? filterList}) async {
     searchString = searchText;
-   // checkInternetConnection(context);
+    // checkInternetConnection(context);
 
     String endpoint =
         "${Strings.baseUrl}/wp-json/wc/v3/products?consumer_key=${Strings.consumerKey}&consumer_secret=${Strings.consumerSecret}&per_page=100&search=$searchText&page=$pageNo";
@@ -870,7 +871,7 @@ class ApiService {
 
   static Future<List<AllProducts.ProductsModel>> fetchFavProducts(
       List<int> ids) async {
-   // checkInternetConnection(context);
+    // checkInternetConnection(context);
     var endpoint =
         "${Strings.baseUrl}/wp-json/wc/v3/products?consumer_key=${Strings.consumerKey}&consumer_secret=${Strings.consumerSecret}&include=";
 
@@ -913,7 +914,7 @@ class ApiService {
 
   static Future<http.Response> createCustomer(
       Map<String, dynamic> customerData) async {
-   // checkInternetConnection(context);
+    // checkInternetConnection(context);
     const endpoint =
         "https://tiarabytj.com/wp-json/wc/v3/customers?consumer_key=${Strings.consumerKey}&consumer_secret=${Strings.consumerSecret}";
 
@@ -935,9 +936,9 @@ class ApiService {
     }
   }
 
-  static Future<http.StreamedResponse?> loginCustomer(String email,
-      String password, String username) async {
-   // checkInternetConnection(context);
+  static Future<http.StreamedResponse?> loginCustomer(
+      String email, String password, String username) async {
+    // checkInternetConnection(context);
     const endpoint =
         "https://tiarabytj.com/wp-json/wc/v3/customers?consumer_key=${Strings.consumerKey}&consumer_secret=${Strings.consumerSecret}";
 
@@ -968,10 +969,8 @@ class ApiService {
     }
   }
 
-  static Future<http.StreamedResponse?> updateCustomer(
-      int customerId,
-      Map<String, String> billingData,
-      Map<String, String> shippingData) async {
+  static Future<http.StreamedResponse?> updateCustomer(int customerId,
+      Map<String, String> billingData, Map<String, String> shippingData) async {
     //checkInternetConnection(context);
     final endpoint =
         "https://tiarabytj.com/wp-json/wc/v3/customers/$customerId?consumer_key=${Strings.consumerKey}&consumer_secret=${Strings.consumerSecret}";
@@ -1028,8 +1027,8 @@ class ApiService {
     }
   }
 
-  static Future<http.StreamedResponse?> updateCustomerProfile(int customerId,
-      Map<String, String> updatedProfileData) async {
+  static Future<http.StreamedResponse?> updateCustomerProfile(
+      int customerId, Map<String, String> updatedProfileData) async {
     print("$customerId");
     //checkInternetConnection(context);
     final endpoint =
@@ -1073,7 +1072,7 @@ class ApiService {
       String totalPrice,
       List<Map<String, dynamic>>? meta_data) async {
     print("CUSTOMERID $customerId");
-   // checkInternetConnection(context);
+    // checkInternetConnection(context);
     const endpoint =
         "https://tiarabytj.com/wp-json/wc/v3/orders?consumer_key=${Strings.consumerKey}&consumer_secret=${Strings.consumerSecret}";
 
@@ -1517,9 +1516,10 @@ class ApiService {
     return reviewsList;
   }
 
-  static ProductCustomizationOptionsModel? productCustomizationOptionsModel;
+  static CustomizationOption.ProductCustomizationOptionsModel?
+      productCustomizationOptionsModel;
 
-  static Future<ProductCustomizationOptionsModel?>
+  static Future<CustomizationOption.ProductCustomizationOptionsModel?>
       getProductCustomizeOptions() async {
     final url =
         "https://tiarabytj.com/wp-json/store/v1/settings/Show_product_customize";
@@ -1538,9 +1538,12 @@ class ApiService {
 
       print("CUSTOM JSON $json");
 
-      productCustomizationOptionsModel = ProductCustomizationOptionsModel(
+      productCustomizationOptionsModel =
+          CustomizationOption.ProductCustomizationOptionsModel(
         type: json["type"],
-        data: json["data"] == null ? null : Data.fromJson(json["data"]),
+        data: json["data"] == null
+            ? null
+            : CustomizationOption.Data.fromJson(json["data"]),
       );
 
       return productCustomizationOptionsModel;
@@ -1618,7 +1621,6 @@ class ApiService {
     return null;
   }
 
-  
   static List<DigiGoldPlans.DigiGoldPlanModel> listOfDigiGoldPlan =
       <DigiGoldPlans.DigiGoldPlanModel>[];
 
@@ -1751,7 +1753,6 @@ class ApiService {
     }
   }
 
- 
   static Future<http.StreamedResponse> uploadDocumentImage(
       String imagePath) async {
     final url = "https://tiarabytj.com/wp-json/wp/v2/media";
@@ -1783,6 +1784,41 @@ class ApiService {
     } else {
       print(response.reasonPhrase);
     }
+    return response;
+  }
+
+  // static late GoldRateModel goldRateModel;
+
+  static Future<http.Response> getGoldRate() async {
+    final url =
+        "https://tiarabytj.com/wp-json/store/v1/settings/master_pricing";
+    Uri uri = Uri.parse(url);
+    String userName = "tiarabytj@gmail.com";
+    String password = "October@Jwero";
+
+    String basicAuth =
+        "Basic " + base64Encode(utf8.encode('$userName:$password'));
+
+    print("image upload basicAuth $basicAuth");
+
+    var headers = {
+      'Authorization': basicAuth,
+    };
+
+    http.Response response = await http.get(uri, headers: headers);
+
+    print("gold rate response.statusCode ${response.statusCode}");
+    print("gold rate response.body ${response.body}");
+
+    // if (response.statusCode == 200) {
+    //   final json = jsonDecode(response.body);
+
+    //   print("gold json $json");
+    //   return GoldRateModel(
+    //     type: json["type"],
+    //     data: json["data"] == null ? null : Data.fromJson(json["data"]),
+    //   );
+    // }
     return response;
   }
 }

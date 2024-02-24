@@ -13,7 +13,8 @@ import 'package:Tiara_by_TJ/views/pages/product_details_page.dart';
 class ProductItem extends StatefulWidget {
   final ProductsModel productsModel;
   final int? productIndex;
-  const ProductItem({super.key, required this.productsModel, this.productIndex});
+  const ProductItem(
+      {super.key, required this.productsModel, this.productIndex});
 
   @override
   State<ProductItem> createState() => _ProductItemState();
@@ -28,7 +29,6 @@ class _ProductItemState extends State<ProductItem> {
   void initState() {
     super.initState();
     productsModel = widget.productsModel;
-    
   }
 
   @override
@@ -37,13 +37,14 @@ class _ProductItemState extends State<ProductItem> {
     final cartProvider = Provider.of<CartProvider>(context);
 
     print(productsModel.toJson());
+    String deliveryDate = DateHelper.getCurrentDateInWords();
     return GestureDetector(
       onTap: () {
         print("CATEGORY PRODUCT PRESSED");
         if (widget.productIndex != null) {
           Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) =>
-                DetailsView(productIndex: widget.productIndex!)));
+              builder: (context) =>
+                  DetailsView(productIndex: widget.productIndex!)));
         }
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) =>
@@ -51,46 +52,41 @@ class _ProductItemState extends State<ProductItem> {
       },
       child: Container(
         decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey, style: BorderStyle.solid, width: 0.5),
+          border: Border.all(
+              color: Colors.grey, style: BorderStyle.solid, width: 0.5),
           shape: BoxShape.rectangle,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            productsModel.images.isEmpty ||
-                    productsModel.images[0].src == null
+            productsModel.images.isEmpty || productsModel.images[0].src == null
                 ? ClipRRect(
-                    child:
-                     Image.asset(
-                        "assets/images/image_placeholder.jpg",
-                        width:
-                            (MediaQuery.of(context).size.width / 2) - 1.0,
-                        height:
-                            (MediaQuery.of(context).size.width / 2) + 10.0),
+                    child: Image.asset("assets/images/image_placeholder.jpg",
+                        width: (MediaQuery.of(context).size.width / 2) - 1.0,
+                        height: (MediaQuery.of(context).size.width / 2) + 10.0),
                   )
-                : 
-       
-             
-             CachedNetworkImage(imageUrl: productsModel.images.isEmpty
+                : CachedNetworkImage(
+                    imageUrl: productsModel.images.isEmpty
                         ? Strings.defaultImageUrl
                         : productsModel.images[0].src ??
                             Strings.defaultImageUrl,
-                            placeholder: (context, url) {
-                               return SizedBox(
-                        width:
-                            (MediaQuery.of(context).size.width / 2) + 16.0,
-                        height:
-                            (MediaQuery.of(context).size.width / 2) + 10.0,
+                    placeholder: (context, url) {
+                      return SizedBox(
+                        width: (MediaQuery.of(context).size.width / 2) + 16.0,
+                        height: (MediaQuery.of(context).size.width / 2) + 10.0,
                         child: const Center(
                           child: CircularProgressIndicator(
                             color: Colors.black,
                           ),
                         ),
                       );
-                            },
-                            ),
+                    },
+                  ),
             Padding(
-              padding: const EdgeInsets.only(right: 12.0, left: 5.0,),
+              padding: const EdgeInsets.only(
+                right: 12.0,
+                left: 5.0,
+              ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -139,7 +135,8 @@ class _ProductItemState extends State<ProductItem> {
                                     productsModel.salePrice == ""
                                         ? "10,000"
                                         : productsModel.salePrice ?? "10,000",
-                                    style: Theme.of(context).textTheme.headline3),
+                                    style:
+                                        Theme.of(context).textTheme.headline3),
                                 const SizedBox(
                                   width: 5.0,
                                 ),
@@ -154,57 +151,70 @@ class _ProductItemState extends State<ProductItem> {
                             ),
                     ],
                   ),
-                  
                   Column(
                     children: [
-                      GestureDetector(
-                        onTap: () {
-                          if (cartProvider.cartProductIds
-                              .contains(productsModel.id)) {
-                            cartProvider.removeFromCartId(productsModel.id!);
-              
-                            cartProvider.removeFromCart(CartProductModel(
-                                cartProductid: productsModel.id,
-                                price: productsModel.regularPrice != ""
-                                    ? productsModel.regularPrice ?? "20000"
-                                    : "0.0",
-                                productName: productsModel.name,
-                                quantity: "1",
-                                size: 5,
-                                deliveryDate: DateHelper.getCurrentDateInWords(),
-                                imageUrl: productsModel.images.isEmpty
-                                    ? Strings.defaultImageUrl
-                                    : productsModel.images[0].src ??
-                                        Strings.defaultImageUrl,
-                                sku: productsModel.sku,
-                                imageId: productsModel.images.isNotEmpty
-                                    ? productsModel.images[0].id
-                                    : 0));
-                          } else {
-                            cartProvider.addToCartId(productsModel.id!);
-                            cartProvider.addToCart(CartProductModel(
-                                cartProductid: productsModel.id,
-                                price: productsModel.regularPrice != ""
-                                    ? productsModel.regularPrice ?? "20000"
-                                    : "0.0",
-                                productName: productsModel.name ?? "Jewellery",
-                                quantity: "1",
-                                size: 5,
-                                deliveryDate: DateHelper.getCurrentDateInWords(),
-                                imageUrl: productsModel.images.isEmpty
-                                    ? Strings.defaultImageUrl
-                                    : productsModel.images[0].src ??
-                                        Strings.defaultImageUrl,
-                                sku: productsModel.sku,
-                                imageId: productsModel.images.isNotEmpty
-                                    ? productsModel.images[0].id
-                                    : 0));
-                          }
+                      Consumer<CartProvider>(
+                        builder: (BuildContext context, CartProvider value,
+                            Widget? child) {
+                          return GestureDetector(
+                            onTap: () {
+                              CartProductModel cartProductModel =
+                                  CartProductModel(
+                                      cartProductid: productsModel.id,
+                                      price: productsModel.regularPrice != ""
+                                          ? productsModel.regularPrice ??
+                                              "20000"
+                                          : "0.0",
+                                      productName: productsModel.name,
+                                      quantity: "1",
+                                      size: 5,
+                                      deliveryDate: deliveryDate,
+                                      imageUrl: productsModel.images.isEmpty
+                                          ? Strings.defaultImageUrl
+                                          : productsModel.images[0].src ??
+                                              Strings.defaultImageUrl,
+                                      sku: productsModel.sku,
+                                      imageId: productsModel.images.isNotEmpty
+                                          ? productsModel.images[0].id
+                                          : 0);
+
+                              if (value.cartProductIds
+                                  .contains(productsModel.id)) {
+                                value.removeFromCartId(productsModel.id!);
+
+                                value.removeFromCart(cartProductModel);
+                              } else {
+                                value.addToCartId(productsModel.id!);
+                                value.addToCart(cartProductModel
+                                    // CartProductModel(
+                                    //   cartProductid: productsModel.id,
+                                    //   price: productsModel.regularPrice != ""
+                                    //       ? productsModel.regularPrice ?? "20000"
+                                    //       : "0.0",
+                                    //   productName:
+                                    //       productsModel.name ?? "Jewellery",
+                                    //   quantity: "1",
+                                    //   size: 5,
+                                    //   deliveryDate:
+                                    //       deliveryDate,
+                                    //   imageUrl: productsModel.images.isEmpty
+                                    //       ? Strings.defaultImageUrl
+                                    //       : productsModel.images[0].src ??
+                                    //           Strings.defaultImageUrl,
+                                    //   sku: productsModel.sku,
+                                    //   imageId: productsModel.images.isNotEmpty
+                                    //       ? productsModel.images[0].id
+                                    //       : 0)
+                                    );
+                              }
+                            },
+                            child: value.cartProductIds
+                                    .contains(productsModel.id)
+                                ? const Icon(Icons.shopping_cart)
+                                : const Icon(Icons.add_shopping_cart_rounded),
+                          );
                         },
-                        child: cartProvider.cartProductIds
-                                .contains(productsModel.id)
-                            ? const Icon(Icons.shopping_cart)
-                            : const Icon(Icons.add_shopping_cart_rounded),
+                        //  child:
                       ),
                     ],
                   )
@@ -212,73 +222,70 @@ class _ProductItemState extends State<ProductItem> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(right: 0.0, left: 5.0,bottom: 5.0),
+              padding:
+                  const EdgeInsets.only(right: 0.0, left: 5.0, bottom: 5.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  productsModel.averageRating == null ?
-                            
-                            
-                  Center(
-                    child: Container(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 5.0, horizontal: 10.0),
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Colors.black, // Border color
-                      width: 2, // Border width
-                    ),
-                    borderRadius:
-                        BorderRadius.circular(18), // Border radius
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        productsModel.averageRating ?? "3.5",
-                        style: const TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold),
+                  productsModel.averageRating == null
+                      ? Center(
+                          child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 5.0, horizontal: 10.0),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.black, // Border color
+                              width: 2, // Border width
+                            ),
+                            borderRadius:
+                                BorderRadius.circular(18), // Border radius
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                productsModel.averageRating ?? "3.5",
+                                style: const TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              const SizedBox(
+                                width: 5.0,
+                              ),
+                              const Icon(
+                                Icons.star,
+                                color: Colors.yellow,
+                              )
+                            ],
+                          ),
+                        ))
+                      : SizedBox(
+                          width: MediaQuery.of(context).size.width / 2 - 60,
+                        ),
+                  IconButton(
+                      icon: Icon(
+                        wishListProvider.favProductIds
+                                .contains(productsModel.id)
+                            ? Icons.favorite
+                            : Icons.favorite_border_outlined,
+                        color: Colors.red,
+                        size: 30.0,
                       ),
-                      const SizedBox(
-                        width: 5.0,
-                      ),
-                      const Icon(
-                        Icons.star,
-                        color: Colors.yellow,
-                      )
-                    ],
-                  ),
-                )
-                ) :
-                            
-                SizedBox(width: MediaQuery.of(context).size.width / 2 - 60,),
-                 IconButton(
-                    icon: Icon(
-                      wishListProvider.favProductIds
-                              .contains(productsModel.id)
-                          ? Icons.favorite
-                          : Icons.favorite_border_outlined,
-                      color: Colors.red,
-                      size: 30.0,
-                    ),
-                    onPressed: () {
-                      print("PRESSED");
-                      if (wishListProvider.favProductIds
-                          .contains(productsModel.id)) {
-                        wishListProvider
-                            .removeFromWishlist(productsModel.id!);
-                        print("Product is removed from wishlist");
-                      } else {
-                        wishListProvider.addToWishlist(productsModel.id!);
-                        print("Product is added to wishlist");
-                      }
-                    }),
-                            
-                            
+                      onPressed: () {
+                        print("PRESSED");
+                        if (wishListProvider.favProductIds
+                            .contains(productsModel.id)) {
+                          wishListProvider
+                              .removeFromWishlist(productsModel.id!);
+                          print("Product is removed from wishlist");
+                        } else {
+                          wishListProvider.addToWishlist(productsModel.id!);
+                          print("Product is added to wishlist");
+                        }
+                      }),
                 ],
               ),
-              ),
+            ),
           ],
         ),
       ),

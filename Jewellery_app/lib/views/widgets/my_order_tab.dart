@@ -1,3 +1,4 @@
+import 'package:Tiara_by_TJ/providers/order_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:Tiara_by_TJ/api/api_service.dart';
 import 'package:Tiara_by_TJ/constants/strings.dart';
@@ -37,30 +38,27 @@ class _MyOrderTabState extends State<MyOrderTab> {
     bool isThereInternet = await ApiService.checkInternetConnection(context);
     if (isThereInternet) {
       if (mounted) {
-       
-      setState(() {
+        setState(() {
           pageLoading = true;
         });
-        
       }
 
       ApiService.listOfOrders.clear();
 
       await ApiService.fetchOrders(customerId, 1);
 
-     
-        if (mounted) {
-      setState(() {
+      if (mounted) {
+        setState(() {
           pageLoading = false;
         });
       }
     }
-    
   }
 
   @override
   Widget build(BuildContext context) {
-    return pageLoading
+    final orderProvider = Provider.of<OrderProvider>(context, listen: false);
+    return orderProvider.isOrderCreating || pageLoading
         ? const Center(
             child: CircularProgressIndicator(
               backgroundColor: Colors.black,
@@ -124,7 +122,7 @@ class _MyOrderTabState extends State<MyOrderTab> {
                               itemCount: orderModel.lineItems.length,
                               itemBuilder: (context, index) {
                                 LineItem order = orderModel.lineItems[index];
-                  
+
                                 return Container(
                                   padding: EdgeInsets.only(left: 10.0),
                                   child: Row(
@@ -139,12 +137,14 @@ class _MyOrderTabState extends State<MyOrderTab> {
                                               decoration: BoxDecoration(
                                                   border: Border.all(
                                                       color: Colors.grey,
-                                                      style: BorderStyle.solid)),
+                                                      style:
+                                                          BorderStyle.solid)),
                                               child: Image.network(
                                                 order.image == null
                                                     ? Strings.defaultImageUrl
                                                     : order.image!.src == ""
-                                                        ? Strings.defaultImageUrl
+                                                        ? Strings
+                                                            .defaultImageUrl
                                                         : order.image!.src!,
                                                 width: 100.0,
                                                 height: 100.0,
@@ -232,7 +232,7 @@ class _MyOrderTabState extends State<MyOrderTab> {
                                               ],
                                             ),
                                           ]),
-                  
+
                                       //const Icon(Icons.chevron_right_outlined)
                                     ],
                                   ),
@@ -251,8 +251,9 @@ class _MyOrderTabState extends State<MyOrderTab> {
                               Row(
                                 children: [
                                   Text("Order Received ",
-                                      style:
-                                          Theme.of(context).textTheme.headline3),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headline3),
                                   Text(
                                       "(${DateHelper.dateFormatForOrder(orderModel.dateCreated!)})")
                                 ],
@@ -282,17 +283,21 @@ class _MyOrderTabState extends State<MyOrderTab> {
                                     ),
                                   ),
                                   Row(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
-                                          "Placed on \n${DateHelper.dateFormatForOrder(orderModel.dateCreated!)}", style: TextStyle(fontSize: 15.0),),
+                                        "Placed on \n${DateHelper.dateFormatForOrder(orderModel.dateCreated!)}",
+                                        style: TextStyle(fontSize: 15.0),
+                                      ),
                                       SizedBox(
                                         width: 80.0,
                                         child: Text(
                                           "Expected Delivery on ${DateHelper.getCurrentDateInWords()}",
-                                          maxLines: 5, style: TextStyle(fontSize: 15.0),
+                                          maxLines: 5,
+                                          style: TextStyle(fontSize: 15.0),
                                         ),
                                       )
                                     ],

@@ -157,10 +157,18 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
       _lastNameController.text = customerProvider.customerData[0]["last_name"];
     }
 
+    if (customerProvider.customerData[0].containsKey("email")) {
+      _emailController.text = customerProvider.customerData[0]["email"];
+    }
+
     if (customerProvider.customerData[0]
         .containsKey("digi_gold_billing_email")) {
       _emailController.text =
           customerProvider.customerData[0]["digi_gold_billing_email"];
+    }
+
+    if (customerProvider.customerData[0].containsKey("mobile_no")) {
+      _phoneNoController.text = customerProvider.customerData[0]["mobile_no"];
     }
 
     if (customerProvider.customerData[0]
@@ -364,10 +372,10 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
                       }).toList(),
                       onChanged: (String? newValue) {
                         if (mounted) {
-      setState(() {
-                          isProofSelected = true;
-                          selectedProof = newValue!;
-                        });
+                          setState(() {
+                            isProofSelected = true;
+                            selectedProof = newValue!;
+                          });
                         }
                       }),
                 ),
@@ -377,7 +385,7 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
 
                 isProofSelected
                     ? Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           getSelectedProofWidget(selectedProof),
                           const SizedBox(
@@ -401,12 +409,12 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
                                   ),
                                 )
                               : SizedBox(),
-                              showForgotToUploadFileMsg
+                          showForgotToUploadFileMsg
                               ? Padding(
-                                padding: const EdgeInsets.only(left: 8.0),
-                                child: Column(
-                                  children: [
-                                    Text(
+                                  padding: const EdgeInsets.only(left: 8.0),
+                                  child: Column(
+                                    children: [
+                                      Text(
                                         "You have to upload document image",
                                         style: TextStyle(
                                             color: Colors.red,
@@ -416,9 +424,9 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
                                       SizedBox(
                                         height: 20.0,
                                       )
-                                  ],
-                                ),
-                              )
+                                    ],
+                                  ),
+                                )
                               : SizedBox(),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,
@@ -429,9 +437,9 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
                                       .pickImage(source: ImageSource.gallery);
                                   if (image != null) {
                                     if (mounted) {
-      setState(() {
-                                      imagePath = image.path;
-                                    });
+                                      setState(() {
+                                        imagePath = image.path;
+                                      });
                                     }
                                     print("imagePath $imagePath");
 
@@ -439,9 +447,9 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
                                         .checkInternetConnection(context);
                                     if (isThereInternet) {
                                       if (mounted) {
-      setState(() {
-                                        isImageUploading = true;
-                                      });
+                                        setState(() {
+                                          isImageUploading = true;
+                                        });
                                       }
 
                                       http.StreamedResponse response =
@@ -449,9 +457,9 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
                                               imagePath);
 
                                       if (mounted) {
-      setState(() {
-                                        isImageUploading = false;
-                                      });
+                                        setState(() {
+                                          isImageUploading = false;
+                                        });
                                       }
 
                                       if (response.statusCode == 201) {
@@ -468,10 +476,10 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
                                                 )));
 
                                         if (mounted) {
-      setState(() {
-                                          showFileName = true;
-                                          showForgotToUploadFileMsg = false;
-                                        });
+                                          setState(() {
+                                            showFileName = true;
+                                            showForgotToUploadFileMsg = false;
+                                          });
                                         }
                                       } else {
                                         ScaffoldMessenger.of(context)
@@ -518,8 +526,6 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
                               ),
                             ],
                           ),
-                        
-                          
                         ],
                       )
                     : SizedBox(),
@@ -560,9 +566,9 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
                     if (isProofSelected) {
                       if (!showFileName) {
                         if (mounted) {
-      setState(() {
-                          showForgotToUploadFileMsg = true;
-                        });
+                          setState(() {
+                            showForgotToUploadFileMsg = true;
+                          });
                         }
                       } else {
                         createOrder(customerProvider, orderProvider);
@@ -611,9 +617,9 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
       CustomerProvider customerProvider, OrderProvider orderProvider) async {
     if (_formKey.currentState!.validate()) {
       if (mounted) {
-      setState(() {
-        isOrderCreating = true;
-      });
+        setState(() {
+          isOrderCreating = true;
+        });
       }
 
       print("CITY1 ${_cityController.text}");
@@ -727,9 +733,9 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
       customerProvider.addCustomerData(personalData);
 
       if (mounted) {
-      setState(() {
-        isOrderCreating = false;
-      });
+        setState(() {
+          isOrderCreating = false;
+        });
       }
 
       if (razorpayOrderData.isNotEmpty) {

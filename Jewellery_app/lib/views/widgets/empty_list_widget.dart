@@ -113,7 +113,7 @@ class EmptyListWidget extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(
                       vertical: 10.0, horizontal: 40.0),
                   child: const Text(
-                    "CONTIUE SHOPPING",
+                    "CONTINUE SHOPPING",
                     style:
                         TextStyle(color: Colors.white, fontSize: 17.0, fontWeight: FontWeight.bold),
                   )),

@@ -75,17 +75,49 @@ class _ProfilePageState extends State<ProfilePage> {
     final customerProvider =
         Provider.of<CustomerProvider>(context, listen: false);
 
-    _firstNameController.text = customerProvider.customerData[0]["first_name"];
-    _lastNameController.text = customerProvider.customerData[0]["last_name"];
-    _emailController.text = customerProvider.customerData[0]["email"];
-    _phoneNoController.text = customerProvider.customerData[0]["mobile_no"];
-    _addressController.text = customerProvider.customerData[0]["fulladdress"];
-    _pinNoController.text = customerProvider.customerData[0]["pincode"];
-    _birthdateController.text = customerProvider.customerData[0]["birthday"];
-    _anniversarydateController.text =
-        customerProvider.customerData[0]["anniversary"];
-    _spousebirthdateController.text =
-        customerProvider.customerData[0]["spouse_birthday"];
+    if (customerProvider.customerData[0].containsKey("first_name")) {
+      _firstNameController.text =
+          customerProvider.customerData[0]["first_name"];
+    }
+
+    if (customerProvider.customerData[0].containsKey("last_name")) {
+      _lastNameController.text = customerProvider.customerData[0]["last_name"];
+    }
+
+    if (customerProvider.customerData[0].containsKey("email")) {
+      _emailController.text = customerProvider.customerData[0]["email"];
+    }
+
+    if (customerProvider.customerData[0].containsKey("mobile_no")) {
+      _phoneNoController.text = customerProvider.customerData[0]["mobile_no"];
+    }
+    // _phoneNoController.text = customerProvider.customerData[0]["mobile_no"];
+    // _addressController.text = customerProvider.customerData[0]["fulladdress"];
+    if (customerProvider.customerData[0].containsKey("fulladdress")) {
+      _addressController.text = customerProvider.customerData[0]["fulladdress"];
+    }
+    if (customerProvider.customerData[0].containsKey("pincode")) {
+      _pinNoController.text = customerProvider.customerData[0]["pincode"];
+    }
+
+    //_pinNoController.text = customerProvider.customerData[0]["pincode"];
+    if (customerProvider.customerData[0].containsKey("birthday")) {
+      _birthdateController.text = customerProvider.customerData[0]["birthday"];
+    }
+    // _birthdateController.text = customerProvider.customerData[0]["birthday"];
+    if (customerProvider.customerData[0].containsKey("anniversary")) {
+      _anniversarydateController.text =
+          customerProvider.customerData[0]["anniversary"];
+    }
+
+    // _anniversarydateController.text =
+    //     customerProvider.customerData[0]["anniversary"];
+    if (customerProvider.customerData[0].containsKey("spouse_birthday")) {
+      _spousebirthdateController.text =
+          customerProvider.customerData[0]["spouse_birthday"];
+    }
+    // _spousebirthdateController.text =
+    //     customerProvider.customerData[0]["spouse_birthday"];
   }
 
   @override

@@ -48,14 +48,14 @@ class WishlistProvider with ChangeNotifier {
   }
 
   void removeFromWishlist(int productId) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
       _favProductIds.remove(productId);
       notifyListeners();
 
       print("start removeFromWishlist");
       _setWishListSharedPrefs();
       print("end removeFromWishlist");
-    });
+    // });
   }
 
   void addToLocalWishlist(ProductsModel productsModel) {
@@ -71,7 +71,7 @@ class WishlistProvider with ChangeNotifier {
     //  _wishlistProducts.remove(productsModel);
 
     //bool isRevomed= listOfWish.remove(productsModel);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
       for (int i = 0; i < _wishlistProducts.length; i++) {
         if (_wishlistProducts[i].id == id) {
           _wishlistProducts.removeAt(i);
@@ -85,7 +85,7 @@ class WishlistProvider with ChangeNotifier {
       notifyListeners();
 
       print("start removeFromLocalWishlist");
-    });
+    // });
   }
 
   // void removeFromWishlist(ProductOfCategoryModel productOfCategoryModel) {

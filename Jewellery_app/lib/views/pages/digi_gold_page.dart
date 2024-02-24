@@ -1,8 +1,15 @@
+import 'dart:convert';
+
 import 'package:Tiara_by_TJ/api/api_service.dart';
 import 'package:Tiara_by_TJ/model/digi_gold_plan_model.dart' as DigiGoldPlan;
+import 'package:Tiara_by_TJ/model/gold_rate_model.dart';
+import 'package:Tiara_by_TJ/providers/digigold_provider.dart';
 
 import 'package:Tiara_by_TJ/views/widgets/digi_gold_card.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DigiGoldPage extends StatefulWidget {
   const DigiGoldPage({super.key});
@@ -13,29 +20,284 @@ class DigiGoldPage extends StatefulWidget {
 
 class _DigiGoldPageState extends State<DigiGoldPage> {
   bool isDigiGoldPlanLoading = false;
+  int goldRate = 0;
+  String goldPurity = "0";
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     getDigiGoldPlanList();
+    
+
+    getGoldRateRequest();
+  }
+
+  Future<void> getGoldRateRequest() async {
+    bool isThereInternet = await ApiService.checkInternetConnection(context);
+    if (isThereInternet) {
+      final digiGoldProvider =
+          Provider.of<DigiGoldProvider>(context, listen: false);
+      digiGoldProvider.setGoldRateLoading(true);
+      http.Response response = await ApiService.getGoldRate();
+     
+
+      if (response.statusCode == 200) {
+        final json = jsonDecode(response.body);
+
+        print("gold json $json");
+        GoldRateModel goldRateModel = GoldRateModel(
+          type: json["type"],
+          data: json["data"] == null ? null : Data.fromJson(json["data"]),
+        );
+        goldPurity = getGoldPurity(goldRateModel);
+
+        goldRate = getGoldRate(goldRateModel);
+      }
+
+       digiGoldProvider.setGoldRateLoading(false);
+    }
+  }
+
+  String getGoldPurity(GoldRateModel goldRateModel) {
+    String goldPurity = "0";
+    if (goldRateModel.data != null) {
+      if (goldRateModel.data!.goldPricing != null) {
+        if (goldRateModel.data!.goldPricing!.inr != null) {
+          goldPurity =
+              goldRateModel.data!.goldPricing!.inr!.inrDefault ?? "916";
+        }
+      }
+    }
+    return goldPurity;
+  }
+
+  int getGoldRate(GoldRateModel goldRateModel) {
+    int goldRate = 0;
+    if (goldRateModel.data != null) {
+      if (goldRateModel.data!.goldPricing != null) {
+        String goldPricingType =
+            goldRateModel.data!.goldPricing!.from ?? "automatic";
+        if (goldRateModel.data!.goldPricing!.inr != null) {
+          String defaultPurity =
+              goldRateModel.data!.goldPricing!.inr!.inrDefault ??
+                  "916";
+
+          switch (goldPricingType) {
+            case "automatic":
+              if (goldRateModel.data!.goldPricing!.inr!.automatic !=
+                  null) {
+                goldRate = getGoldRateOfAutomatic(
+                    goldRateModel.data!.goldPricing!.inr!.automatic!,
+                    defaultPurity, goldRateModel);
+              }
+
+              break;
+            case "manual":
+              goldRate = getGoldRateOfManual(
+                  goldRateModel.data!.goldPricing!.inr!.manual,
+                  defaultPurity, goldRateModel);
+
+              break;
+            default:
+              if (goldRateModel.data!.goldPricing!.inr!.automatic !=
+                  null) {
+                goldRate = getGoldRateOfAutomatic(
+                    goldRateModel.data!.goldPricing!.inr!.automatic!,
+                    defaultPurity, goldRateModel);
+              }
+
+              break;
+          }
+        }
+      }
+    }
+    return goldRate;
+  }
+
+  int getGoldRateOfAutomatic(PurpleAutomatic automatic, String defaultPurity, GoldRateModel goldRateModel) {
+    int goldRate = 0;
+
+    switch (defaultPurity) {
+      case "375":
+        if (goldRateModel.data!.goldPricing!.inr!.automatic!.the375 !=
+            null) {
+          if (goldRateModel.data!.goldPricing!.inr!.automatic!
+                  .the375!.rate !=
+              null) {
+            goldRate = goldRateModel.data!.goldPricing!.inr!.automatic!.the375!.rate!;
+          }
+        }
+        break;
+      case "583":
+        if (goldRateModel.data!.goldPricing!.inr!.automatic!.the583 !=
+            null) {
+          if (goldRateModel.data!.goldPricing!.inr!.automatic!
+                  .the583!.rate !=
+              null) {
+            goldRate = goldRateModel.data!.goldPricing!.inr!.automatic!.the583!.rate!;
+          }
+        }
+        break;
+      case "750":
+        if (goldRateModel.data!.goldPricing!.inr!.automatic!.the750 !=
+            null) {
+          if (goldRateModel.data!.goldPricing!.inr!.automatic!
+                  .the750!.rate !=
+              null) {
+            goldRate = goldRateModel.data!.goldPricing!.inr!.automatic!.the750!.rate!;
+          }
+        }
+        break;
+      case "916":
+        if (goldRateModel.data!.goldPricing!.inr!.automatic!.the916 !=
+            null) {
+          if (goldRateModel.data!.goldPricing!.inr!.automatic!
+                  .the916!.rate !=
+              null) {
+            goldRate = goldRateModel.data!.goldPricing!.inr!.automatic!.the916!.rate!;
+          }
+        }
+        break;
+      case "999":
+        if (goldRateModel.data!.goldPricing!.inr!.automatic!.the999 !=
+            null) {
+          if (goldRateModel.data!.goldPricing!.inr!.automatic!
+                  .the999!.rate !=
+              null) {
+            goldRate = goldRateModel.data!.goldPricing!.inr!.automatic!.the999!.rate!;
+          }
+        }
+        break;
+      case "999.99":
+        if (goldRateModel.data!.goldPricing!.inr!.automatic!.the99999 !=
+            null) {
+          if (goldRateModel.data!.goldPricing!.inr!.automatic!
+                  .the99999!.rate !=
+              null) {
+            goldRate = goldRateModel.data!.goldPricing!.inr!
+                .automatic!.the99999!.rate!;
+          }
+        }
+        break;
+      default:
+        if (goldRateModel.data!.goldPricing!.inr!.automatic!.the916 !=
+            null) {
+          if (goldRateModel.data!.goldPricing!.inr!.automatic!
+                  .the916!.rate !=
+              null) {
+            goldRate =goldRateModel.data!.goldPricing!.inr!.automatic!.the916!.rate!;
+          }
+        }
+        break;
+    }
+
+    return goldRate;
+  }
+
+  int getGoldRateOfManual(Map<String, Manual> manual, String defaultPurity, GoldRateModel goldRateModel) {
+    int goldRate = 0;
+
+    switch (defaultPurity) {
+      case "375":
+        if (goldRateModel.data!.goldPricing!.inr!.manual["375"] !=
+            null) {
+          Manual manual =
+              goldRateModel.data!.goldPricing!.inr!.manual["375"]!;
+          if (manual.rate != null) {
+            goldRate = int.parse(manual.rate!);
+          }
+        }
+
+        break;
+      case "583":
+        if (goldRateModel.data!.goldPricing!.inr!.manual["583"] !=
+            null) {
+          Manual manual =
+              goldRateModel.data!.goldPricing!.inr!.manual["583"]!;
+          if (manual.rate != null) {
+            goldRate = int.parse(manual.rate!);
+          }
+        }
+        break;
+      case "750":
+        if (goldRateModel.data!.goldPricing!.inr!.manual["750"] !=
+            null) {
+          Manual manual =
+              goldRateModel.data!.goldPricing!.inr!.manual["750"]!;
+          if (manual.rate != null) {
+            goldRate = int.parse(manual.rate!);
+          }
+        }
+        break;
+      case "916":
+        if (goldRateModel.data!.goldPricing!.inr!.manual["916"] !=
+            null) {
+          Manual manual =
+              goldRateModel.data!.goldPricing!.inr!.manual["916"]!;
+          if (manual.rate != null) {
+            goldRate = int.parse(manual.rate!);
+          }
+        }
+        break;
+      case "999":
+        if (goldRateModel.data!.goldPricing!.inr!.manual["999"] !=
+            null) {
+          Manual manual =
+              goldRateModel.data!.goldPricing!.inr!.manual["999"]!;
+          if (manual.rate != null) {
+            goldRate = int.parse(manual.rate!);
+          }
+        }
+        break;
+      case "999.99":
+        if (goldRateModel.data!.goldPricing!.inr!.manual["999.99"] !=
+            null) {
+          Manual manual = goldRateModel.data!.goldPricing!.inr!.manual["999.99"]!;
+          if (manual.rate != null) {
+            goldRate = int.parse(manual.rate!);
+          }
+        }
+        break;
+      default:
+        if (goldRateModel.data!.goldPricing!.inr!.manual["916"] !=
+            null) {
+          Manual manual =
+              goldRateModel.data!.goldPricing!.inr!.manual["916"]!;
+          if (manual.rate != null) {
+            goldRate = int.parse(manual.rate!);
+          }
+        }
+        break;
+    }
+
+    return goldRate;
   }
 
   Future<void> getDigiGoldPlanList() async {
     bool isThereInternet = await ApiService.checkInternetConnection(context);
     if (isThereInternet) {
       if (mounted) {
-      setState(() {
-        isDigiGoldPlanLoading = true;
-      });
+        setState(() {
+          isDigiGoldPlanLoading = true;
+        });
       }
 
       await ApiService.getListOfDigiGoldPlan();
 
       if (mounted) {
-      setState(() {
-        isDigiGoldPlanLoading = false;
-      });
+        setState(() {
+          isDigiGoldPlanLoading = false;
+        });
       }
+    }
+  }
+
+  Future<void> onLinkClicked(String url) async {
+    Uri uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
+    } else {
+      print("Could not launch Terms and condition's URL");
     }
   }
 
@@ -54,95 +316,153 @@ class _DigiGoldPageState extends State<DigiGoldPage> {
                   padding: const EdgeInsets.symmetric(
                     horizontal: 30.0,
                   ),
-                  child: Card(
-                    color: Theme.of(context).primaryColor,
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                          vertical: 30.0, horizontal: 20.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Flexi Plan",
-                            style: Theme.of(context).textTheme.headline1,
-                          ),
-                          SizedBox(
-                            height: 10.0,
-                          ),
-                          Text(
-                            "Buy Gold Worth",
-                            style: TextStyle(fontSize: 16.0),
-                            // style: Theme.of(context).textTheme.headline2,
-                          ),
-                          TextField(),
-                          SizedBox(
-                            height: 5.0,
-                          ),
-                          Text(
-                            "Min : ₹ 1 / Max : ₹ 199999",
-                            style: TextStyle(fontSize: 15.0),
-                          ),
-                          SizedBox(
-                            height: 10.0,
-                          ),
-                          Text(
-                            "Buy Gold By Grams",
-                            style: TextStyle(fontSize: 16.0),
-                          ),
-                          TextField(),
-                          SizedBox(
-                            height: 20.0,
-                          ),
-                          Text(
-                            "Terms & Conditions",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18.0,
-                                decoration: TextDecoration.underline),
-                          ),
-                          SizedBox(
-                            height: 30.0,
-                          ),
-                          Container(
-                            margin: EdgeInsets.symmetric(horizontal: 20.0),
-                            alignment: Alignment.center,
+                  child: Consumer<DigiGoldProvider>(
+                    builder: (context, value, child) {
+                      if (value.isGoldRateLoading) {
+                        return SizedBox(
+                          height: MediaQuery.of(context).size.height -
+                              kToolbarHeight,
+                          child: Center(
+                              child: CircularProgressIndicator(
+                            color: Theme.of(context).primaryColor,
+                          )),
+                        );
+                      } else {
+                        return Card(
+                          color: Theme.of(context).primaryColor,
+                          child: Padding(
                             padding: EdgeInsets.symmetric(
-                                vertical: 10.0, horizontal: 20.0),
-                            width: MediaQuery.of(context).size.width - 100,
-                            child: Text(
-                              "PROCEED TO PAY",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16.0,
-                                  fontWeight: FontWeight.bold),
+                                vertical: 30.0, horizontal: 20.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Flexi Plan",
+                                  style: Theme.of(context).textTheme.headline1,
+                                ),
+                                SizedBox(
+                                  height: 30.0,
+                                ),
+                                Text(
+                                  "Buy Gold Worth",
+                                  style: TextStyle(fontSize: 16.0),
+                                  // style: Theme.of(context).textTheme.headline2,
+                                ),
+                                Row(
+                                  children: [
+                                    Image.asset(
+                                      "assets/images/rupee.png",
+                                      width: 25.0,
+                                      height: 37.0,
+                                    ),
+                                    SizedBox(width: 230.0, child: TextField()),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 5.0,
+                                ),
+                                Text(
+                                  "Min : ₹ 1 / Max : ₹ 199999",
+                                  style: TextStyle(fontSize: 15.0),
+                                ),
+                                SizedBox(
+                                  height: 20.0,
+                                ),
+                                Text(
+                                  "Buy Gold By Grams",
+                                  style: TextStyle(fontSize: 16.0),
+                                ),
+                                Row(
+                                  children: [
+                                    SizedBox(width: 220.0, child: TextField()),
+                                    Text(
+                                      "gms",
+                                      style: TextStyle(fontSize: 22.0),
+                                    )
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 20.0,
+                                ),
+                                Center(
+                                  child: InkWell(
+                                    onTap: () {
+                                      onLinkClicked(
+                                          "https://tiarabytj.com/terms-conditions/");
+                                    },
+                                    child: Text(
+                                      "Terms & Conditions",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 18.0,
+                                          decoration: TextDecoration.underline),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 30.0,
+                                ),
+                                Container(
+                                  margin:
+                                      EdgeInsets.symmetric(horizontal: 20.0),
+                                  alignment: Alignment.center,
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 10.0, horizontal: 20.0),
+                                  width:
+                                      MediaQuery.of(context).size.width - 100,
+                                  child: Text(
+                                    "PROCEED TO PAY",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 16.0,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  decoration: BoxDecoration(
+                                      color: Colors.black,
+                                      shape: BoxShape.rectangle),
+                                ),
+                                SizedBox(
+                                  height: 15.0,
+                                ),
+                                Padding(
+                                    padding: const EdgeInsets.only(left: 30.0),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Image.asset(
+                                              "assets/images/saved_money.png",
+                                              width: 35.0,
+                                              height: 35.0,
+                                              color: Colors.yellow,
+                                            ),
+                                            // Text(""),
+                                            SizedBox(
+                                              width: 10.0,
+                                            ),
+                                            SizedBox(
+                                                width: 190.0,
+                                                child: Text(
+                                                  "Today's Gold Rate: \n ₹ $goldRate per gram of $goldPurity purity",
+                                                  maxLines: 3,
+                                                  style:
+                                                      TextStyle(fontSize: 17.0),
+                                                ))
+                                          ],
+                                        )
+                                      ],
+                                    ))
+                              ],
                             ),
-                            decoration: BoxDecoration(
-                                color: Colors.black, shape: BoxShape.rectangle),
                           ),
-                          SizedBox(
-                            height: 15.0,
-                          ),
-                          Padding(
-                              padding: const EdgeInsets.only(left: 30.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Image.asset(
-                                        "assets/images/saved_money.png",
-                                        width: 25.0,
-                                        height: 25.0,
-                                      ),
-                                      Text("Today's Gold Rate: "),
-                                      Text("₹ Price")
-                                    ],
-                                  )
-                                ],
-                              ))
-                        ],
-                      ),
-                    ),
+                        );
+                      }
+                    },
+                    //child:
                   ),
                 ),
                 isDigiGoldPlanLoading
@@ -167,13 +487,13 @@ class _DigiGoldPageState extends State<DigiGoldPage> {
         .toList();
   }
 }
- // SizedBox(
-                //   width: MediaQuery.of(context).size.width,
-                //   height: MediaQuery.of(context).size.height,
-                //   child: ListView.builder(
-                //       itemCount: ApiService.listOfDigiGoldPlan.length,
-                //       itemBuilder: (context, index) {
-                //         DigiGoldPlan.DigiGoldPlanModel digiGoldPlan = ApiService.listOfDigiGoldPlan[index];
-                //         return DigiGoldCard(digiGoldPlan: digiGoldPlan,);
-                //       }),
-                // )
+// SizedBox(
+//   width: MediaQuery.of(context).size.width,
+//   height: MediaQuery.of(context).size.height,
+//   child: ListView.builder(
+//       itemCount: ApiService.listOfDigiGoldPlan.length,
+//       itemBuilder: (context, index) {
+//         DigiGoldPlan.DigiGoldPlanModel digiGoldPlan = ApiService.listOfDigiGoldPlan[index];
+//         return DigiGoldCard(digiGoldPlan: digiGoldPlan,);
+//       }),
+// )
