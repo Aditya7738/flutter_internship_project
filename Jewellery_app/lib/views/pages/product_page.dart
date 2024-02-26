@@ -1,5 +1,7 @@
 import 'package:Tiara_by_TJ/model/products_model.dart';
 import 'package:Tiara_by_TJ/providers/cart_provider.dart';
+import 'package:Tiara_by_TJ/providers/category_provider.dart';
+import 'package:Tiara_by_TJ/providers/filteroptions_provider.dart';
 import 'package:Tiara_by_TJ/providers/wishlist_provider.dart';
 import 'package:Tiara_by_TJ/views/pages/cart_page.dart';
 import 'package:Tiara_by_TJ/views/pages/filter.dart';
@@ -31,9 +33,16 @@ class _ProductPageState extends State<ProductPage> {
 
   bool newListLoading = false;
 
+  late CategoryProvider categoryProvider;
+  late FilterOptionsProvider filterOptionsProvider;
+
   @override
   void initState() {
     super.initState();
+
+    categoryProvider = Provider.of(context, listen: false);
+    filterOptionsProvider =
+        Provider.of<FilterOptionsProvider>(context, listen: false);
 
     getProducts();
 
@@ -52,38 +61,38 @@ class _ProductPageState extends State<ProductPage> {
   void loadMoreData() async {
     if (mounted) {
       setState(() {
-      isLoading = true;
-    });
+        isLoading = true;
+      });
     }
 
     // Fetch more data (e.g., using ApiService)
-    isThereMoreProducts =
-        await ApiService.showNextPagesCategoryProduct(context);
+    isThereMoreProducts = await ApiService.showNextPagesCategoryProduct();
 
     if (mounted) {
       setState(() {
-      isLoading = false;
-    });
+        isLoading = false;
+      });
     }
   }
 
   Future<void> getProducts() async {
     bool isThereInternet = await ApiService.checkInternetConnection(context);
     if (isThereInternet) {
-      if (mounted) {
-      setState(() {
-        newListLoading = true;
-      });
-      }
+      // if (mounted) {
+      // setState(() {
+      //   newListLoading = true;
+      // });
+      // }
+      categoryProvider.setIsCategoryProductFetching(true);
       ApiService.listOfProductsCategoryWise.clear();
-      await ApiService.fetchProductsCategoryWise(context,
-          id: widget.id, pageNo: 1);
+      await ApiService.fetchProductsCategoryWise(id: widget.id, pageNo: 1);
 
-      if (mounted) {
-      setState(() {
-        newListLoading = false;
-      });
-      }
+      // if (mounted) {
+      // setState(() {
+      //   newListLoading = false;
+      // });
+      // }
+      categoryProvider.setIsCategoryProductFetching(false);
     }
   }
 
@@ -94,78 +103,84 @@ class _ProductPageState extends State<ProductPage> {
     super.dispose();
   }
 
-  bool isSearchBarUsed = false;
+  // bool isSearchBarUsed = false;
 
-  bool isSearchFieldEmpty = false;
-  String searchText = "";
+  // bool isSearchFieldEmpty = false;
+  // String searchText = "";
 
-  bool isProductListEmpty = false;
+  // bool isProductListEmpty = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          title: Text("Products"),
-          actions: <Widget>[
-            SizedBox(
-              height: 40.0,
-              width: 32.0,
-              child: badges.Badge(
-                badgeStyle: const badges.BadgeStyle(badgeColor: Colors.purple),
-                badgeContent: Consumer<WishlistProvider>(
-                    builder: (context, value, child) {
-                  print("LENGTH OF FAV: ${value.favProductIds}");
-                  return Text(
-                    value.favProductIds.length.toString(),
-                    style: const TextStyle(color: Colors.white),
-                  );
-                }),
-                child: IconButton(
-                  onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const WishListPage()));
-                  },
-                  icon: const Icon(Icons.favorite_sharp, color: Colors.black),
+        appBar: AppBar(
+            title: Text("Products"),
+            actions: <Widget>[
+              SizedBox(
+                height: 40.0,
+                width: 32.0,
+                child: badges.Badge(
+                  badgeStyle:
+                      const badges.BadgeStyle(badgeColor: Colors.purple),
+                  badgeContent: Consumer<WishlistProvider>(
+                      builder: (context, value, child) {
+                    print("LENGTH OF FAV: ${value.favProductIds}");
+                    return Text(
+                      value.favProductIds.length.toString(),
+                      style: const TextStyle(color: Colors.white),
+                    );
+                  }),
+                  child: IconButton(
+                    onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const WishListPage()));
+                    },
+                    icon: const Icon(Icons.favorite_sharp, color: Colors.black),
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(
-              width: 12,
-            ),
-            SizedBox(
-              height: 40.0,
-              width: 32.0,
-              child: badges.Badge(
-                badgeStyle: const badges.BadgeStyle(badgeColor: Colors.purple),
-                badgeContent: Consumer<CartProvider>(
-                    builder: (context, value, child) => Text(
-                          value.cartProductIds.length.toString(),
-                          style: const TextStyle(color: Colors.white),
-                        )),
-                child: IconButton(
-                  onPressed: () {
-                    print("CART CLICKED");
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => CartPage()));
-                  },
-                  icon: const Icon(Icons.shopping_cart),
-                  color: Colors.black,
+              const SizedBox(
+                width: 12,
+              ),
+              SizedBox(
+                height: 40.0,
+                width: 32.0,
+                child: badges.Badge(
+                  badgeStyle:
+                      const badges.BadgeStyle(badgeColor: Colors.purple),
+                  badgeContent: Consumer<CartProvider>(
+                      builder: (context, value, child) => Text(
+                            value.cart.length.toString(),
+                            style: const TextStyle(color: Colors.white),
+                          )),
+                  child: IconButton(
+                    onPressed: () {
+                      print("CART CLICKED");
+                      Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) => CartPage()));
+                    },
+                    icon: const Icon(Icons.shopping_cart),
+                    color: Colors.black,
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(
-              width: 12,
-            ),
-          ],
-          bottom: SearchProductsOfCategory()),
-      body: newListLoading
-          ? const Center(
+              const SizedBox(
+                width: 12,
+              ),
+            ],
+            bottom: SearchProductsOfCategory(categoryId: widget.id)),
+        body: Consumer<CategoryProvider>(builder: (context, value, child) {
+          if (value.isCategoryProductFetching
+              //|| filterOptionsProvider.isFilteredListLoading
+              ) {
+            return const Center(
               child: CircularProgressIndicator(
                 backgroundColor: Colors.black,
                 color: Colors.white,
               ),
-            )
-          : Padding(
+            );
+          } else {
+            return Padding(
               padding: const EdgeInsets.all(0.0),
               child: Scrollbar(
                 child: GridView.builder(
@@ -186,14 +201,16 @@ class _ProductPageState extends State<ProductPage> {
                           productsModel:
                               ApiService.listOfProductsCategoryWise[index],
                         );
-                      } else if (!isThereMoreProducts) {
+                      } else if (!isThereMoreProducts ||
+                          value.isProductListEmpty) {
                         return const Padding(
                           padding: EdgeInsets.symmetric(
                               vertical: 15.0, horizontal: 10.0),
                           child: Center(
                               child: Text(
-                            "No more products are left",
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                            "There are no more products",
+                            style: TextStyle(
+                                fontSize: 18.0, fontWeight: FontWeight.bold),
                           )),
                         );
                       } else {
@@ -208,7 +225,12 @@ class _ProductPageState extends State<ProductPage> {
                       }
                     }),
               ),
-            ),
-    );
+            );
+          }
+        }));
+
+    // newListLoading
+    //     ?
+    //     :     );
   }
 }

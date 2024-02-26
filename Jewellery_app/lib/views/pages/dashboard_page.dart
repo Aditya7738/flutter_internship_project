@@ -11,7 +11,7 @@ import 'package:Tiara_by_TJ/providers/customer_provider.dart';
 import 'package:Tiara_by_TJ/providers/profile_provider.dart';
 import 'package:Tiara_by_TJ/providers/wishlist_provider.dart';
 import 'package:Tiara_by_TJ/views/pages/home_screen.dart';
-import 'package:Tiara_by_TJ/views/pages/you_page.dart';
+import 'package:Tiara_by_TJ/views/pages/account_page.dart';
 import 'package:provider/provider.dart';
 
 class DashboardPage extends StatefulWidget {
@@ -215,7 +215,7 @@ class _DashboardPageState extends State<DashboardPage> {
 
   @override
   Widget build(BuildContext context) {
-    final tabs = <Widget>[DigiGoldPage(), const HomeScreen(), YouPage()];
+    final tabs = <Widget>[DigiGoldPage(), const HomeScreen(), AccountPage()];
     return Scaffold(
       body: tabs[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
@@ -256,7 +256,7 @@ class _DashboardPageState extends State<DashboardPage> {
             BottomNavigationBarItem(
               icon: Icon(Icons.person_outline_outlined,
                   color: Theme.of(context).primaryColor),
-              label: "My Account",
+              label: "Account",
               activeIcon: Icon(Icons.person_sharp,
                   color: Theme.of(context).primaryColor),
             ),

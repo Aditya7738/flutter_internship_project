@@ -9,14 +9,14 @@ import 'package:Tiara_by_TJ/providers/profile_provider.dart';
 import 'package:Tiara_by_TJ/views/widgets/suffix_icon.dart';
 import 'package:provider/provider.dart';
 
-class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
+class EditProfilePage extends StatefulWidget {
+  const EditProfilePage({super.key});
 
   @override
-  State<ProfilePage> createState() => _ProfilePageState();
+  State<EditProfilePage> createState() => _EditProfilePageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class _EditProfilePageState extends State<EditProfilePage> {
   TextEditingController _birthdateController = TextEditingController();
   TextEditingController _anniversarydateController = TextEditingController();
   TextEditingController _spousebirthdateController = TextEditingController();

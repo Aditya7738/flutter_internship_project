@@ -158,13 +158,13 @@ class _HomeScreenState extends State<HomeScreen> {
       //     fontWeight: FontWeight.bold),
       appBar: AppBarWidget(
           //  menuIcon: Icons.menu,
-          onPressed: () {
-            if (scaffoldKey.currentState!.isDrawerOpen) {
-              scaffoldKey.currentState!.closeDrawer();
-            } else {
-              scaffoldKey.currentState!.openDrawer();
-            }
-          },
+          // onPressed: () {
+          //   if (scaffoldKey.currentState!.isDrawerOpen) {
+          //     scaffoldKey.currentState!.closeDrawer();
+          //   } else {
+          //     scaffoldKey.currentState!.openDrawer();
+          //   }
+          // },
           isNeededForHome: true,
           isNeededForProductPage: false),
       body: SingleChildScrollView(

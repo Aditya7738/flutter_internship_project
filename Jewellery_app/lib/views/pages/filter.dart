@@ -1,5 +1,6 @@
 import 'package:Tiara_by_TJ/api/api_service.dart';
 import 'package:Tiara_by_TJ/model/filter_options_model.dart';
+import 'package:Tiara_by_TJ/providers/category_provider.dart';
 import 'package:Tiara_by_TJ/providers/filteroptions_provider.dart';
 import 'package:Tiara_by_TJ/views/widgets/filter_options.dart';
 import 'package:Tiara_by_TJ/views/widgets/filter_tile.dart';
@@ -8,7 +9,14 @@ import 'package:provider/provider.dart';
 
 class Filter extends StatefulWidget {
   final String searchText;
-  Filter({super.key, required this.searchText});
+
+  final bool fromProductsPage;
+  int? categoryId;
+  Filter(
+      {super.key,
+      required this.searchText,
+      required this.fromProductsPage,
+      this.categoryId});
 
   @override
   State<Filter> createState() => _FilterState();
@@ -37,6 +45,8 @@ class _FilterState extends State<Filter> {
   @override
   Widget build(BuildContext context) {
     final filterOptionsProvider = Provider.of<FilterOptionsProvider>(context);
+    final categoryProvider =
+        Provider.of<CategoryProvider>(context, listen: false);
 
     /// if (selectedFilterIndex != -1) {
     final filtersToSend = map[selectedFilterIndex];
@@ -81,9 +91,9 @@ class _FilterState extends State<Filter> {
                             option: filters["value"]!,
                             onTap: () {
                               if (mounted) {
-      setState(() {
-                                selectedFilterIndex = index;
-                              });
+                                setState(() {
+                                  selectedFilterIndex = index;
+                                });
                               }
                             },
                           );
@@ -159,10 +169,20 @@ class _FilterState extends State<Filter> {
                         filterOptionsProvider.clearFilterList;
                         print(
                             "filterOptionsProvider.list ${filterOptionsProvider.list.length}");
+                        if (widget.fromProductsPage) {
+                          ApiService.listOfProductsCategoryWise.clear();
 
-                        ApiService.listOfProductsModel.clear();
-                        await ApiService.fetchProducts(widget.searchText, 1,
-                            filterList: filterOptionsProvider.list);
+                          await ApiService.fetchSearchedProductCategoryWise(
+                              searchText: widget.searchText,
+                              id: widget.categoryId!,
+                              pageNo: 1,
+                              filterList: filterOptionsProvider.list);
+                        } else {
+                          ApiService.listOfProductsModel.clear();
+                          await ApiService.fetchProducts(widget.searchText, 1,
+                              filterList: filterOptionsProvider.list);
+                        }
+
                         filterOptionsProvider.setFilteredListLoading(false);
                       }
                     },
@@ -191,18 +211,24 @@ class _FilterState extends State<Filter> {
                           await ApiService.checkInternetConnection(context);
 
                       if (isThereInternet) {
-                        filterOptionsProvider.setFilteredListLoading(true);
-                        ApiService.listOfProductsModel.clear();
-                        await ApiService.fetchProducts(
-                            widget.searchText, 1,
-                            filterList: filterOptionsProvider.list);
-                        filterOptionsProvider.setFilteredListLoading(false);
-                      }
-// if (mounted) {
-//       setState(() {
+                        if (widget.fromProductsPage) {
+                          categoryProvider.setIsCategoryProductFetching(true);
+                          ApiService.listOfProductsCategoryWise.clear();
 
-// // });
-//                     },
+                          await ApiService.fetchSearchedProductCategoryWise(
+                              searchText: widget.searchText,
+                              id: widget.categoryId!,
+                              pageNo: 1,
+                              filterList: filterOptionsProvider.list);
+                          categoryProvider.setIsCategoryProductFetching(false);
+                        } else {
+                          filterOptionsProvider.setFilteredListLoading(true);
+                          ApiService.listOfProductsModel.clear();
+                          await ApiService.fetchProducts(widget.searchText, 1,
+                              filterList: filterOptionsProvider.list);
+                          filterOptionsProvider.setFilteredListLoading(false);
+                        }
+                      }
                     },
                     child: Container(
                         decoration: BoxDecoration(
@@ -214,7 +240,6 @@ class _FilterState extends State<Filter> {
                           "Apply",
                           style: TextStyle(color: Colors.white, fontSize: 17.0),
                         )),
-                    
                   ),
                 ],
               ),

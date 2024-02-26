@@ -9,35 +9,19 @@ import 'package:badges/badges.dart' as badges;
 import 'package:provider/provider.dart';
 
 class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
-  // final IconData menuIcon;
-  final VoidCallback? onPressed;
   final bool isNeededForHome;
   final bool isNeededForProductPage;
 
   const AppBarWidget(
       {super.key,
       //  required this.menuIcon,
-      required this.onPressed,
+
       required this.isNeededForHome,
       required this.isNeededForProductPage});
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      // leading: isNeededForHome
-      //     ? IconButton(
-      //         onPressed: onPressed,
-      //         icon: Icon(
-      //           menuIcon,
-      //           color: Colors.black,
-      //         ))
-      //     : IconButton(
-      //         onPressed: onPressed,
-      //         icon: Icon(
-      //           menuIcon,
-      //           color: Colors.black,
-      //         )),
-      //leadingWidth: 15.0,
       title: isNeededForHome
           ? Image.network(
               Strings.app_logo,
@@ -61,7 +45,6 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
                     color: Colors.grey,
                   )),
             ),
-
       backgroundColor: Colors.white,
       actions: isNeededForHome
           ? <Widget>[
@@ -103,7 +86,8 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
               const SizedBox(
                 width: 12,
               ),
-              SizedBox(
+              Container(
+                margin: EdgeInsets.only(top: 4.0),
                 height: 40.0,
                 width: 32.0,
                 child: badges.Badge(
@@ -113,11 +97,12 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
                       Consumer<CartProvider>(builder: (context, value, child) {
                     if (value.isOrderCreating) {
                       return SizedBox(
-                        width: 25.0,
-                        height: 25.0,
+                        width: 8.0,
+                        height: 8.0,
                         child: Center(
                           child: CircularProgressIndicator(
                             color: Colors.white,
+                            strokeWidth: 1.0,
                           ),
                         ),
                       );
@@ -161,7 +146,6 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
                 width: 5.0,
               )
             ],
-
       bottom: !isNeededForHome || isNeededForProductPage
           ? null
           : const CustomSearchBar(),

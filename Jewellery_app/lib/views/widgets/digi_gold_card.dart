@@ -47,10 +47,10 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
     for (var i = 0; i < widget.digiGoldPlan.metaData.length; i++) {
       if (widget.digiGoldPlan.metaData[i].key == "jeweller_contribution") {
         if (mounted) {
-      setState(() {
-          jeweller_contribution = widget.digiGoldPlan.metaData[i].value;
-          isJewellerContributing = true;
-        });
+          setState(() {
+            jeweller_contribution = widget.digiGoldPlan.metaData[i].value;
+            isJewellerContributing = true;
+          });
         }
       }
     }
@@ -62,12 +62,12 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
           "widget.digiGoldPlan.metaData[i].key ${widget.digiGoldPlan.metaData[i].key == "terms_and_conditions"}");
       if (widget.digiGoldPlan.metaData[i].key == "terms_and_conditions") {
         if (mounted) {
-      setState(() {
-          termsConditions = widget.digiGoldPlan.metaData[i].value;
-        });
+          setState(() {
+            termsConditions = widget.digiGoldPlan.metaData[i].value;
+          });
+        }
       }
     }
-  }
   }
 
   @override
@@ -178,9 +178,9 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                           print("termsSeen2 ${termsSeen}");
                           if (termsSeen) {
                             if (mounted) {
-      setState(() {
-                              checkBoxChecked = value ?? false;
-                            });
+                              setState(() {
+                                checkBoxChecked = value ?? false;
+                              });
                             }
                             print("checkBoxChecked ${checkBoxChecked}");
                           }
@@ -189,9 +189,9 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                       GestureDetector(
                           onTap: () {
                             if (mounted) {
-      setState(() {
-                              termsSeen = true;
-                            });
+                              setState(() {
+                                termsSeen = true;
+                              });
                             }
                             print("termsSeen1 ${termsSeen}");
 

@@ -7,14 +7,14 @@ import 'package:Tiara_by_TJ/views/pages/dashboard_page.dart';
 import 'package:Tiara_by_TJ/views/pages/login_page.dart';
 import 'package:Tiara_by_TJ/views/pages/orders_page.dart';
 import 'package:Tiara_by_TJ/views/pages/active_payment_page.dart';
-import 'package:Tiara_by_TJ/views/pages/profile_page.dart';
+import 'package:Tiara_by_TJ/views/pages/edit_profile_page.dart';
 import 'package:Tiara_by_TJ/views/pages/search_page.dart';
 import 'package:Tiara_by_TJ/views/pages/wishlist_page.dart';
 import 'package:provider/provider.dart';
 import 'package:badges/badges.dart' as badges;
 
-class MyAccountPage extends StatelessWidget {
-  MyAccountPage({super.key});
+class MyProfilePage extends StatelessWidget {
+  MyProfilePage({super.key});
 
   List<String> icons = [
     "assets/images/order_delivery.png",
@@ -192,10 +192,29 @@ class MyAccountPage extends StatelessWidget {
                       InkWell(
                           onTap: () => Navigator.of(context).push(
                               MaterialPageRoute(
-                                  builder: (context) => const ProfilePage())),
-                          child: const Text(
-                            "Edit Profile",
-                            style: TextStyle(color: Colors.green),
+                                  builder: (context) => const EditProfilePage())),
+                          child: Container(
+                            padding: EdgeInsets.symmetric(vertical: 1.0, horizontal: 10.0),
+                            child: Row(
+                              children: [
+                                Text(
+                                  "Edit Profile",
+                                  style: TextStyle(
+                                      color: Theme.of(context).primaryColor,
+                                      fontSize: 16.0, fontWeight: FontWeight.bold),
+                                ),
+                                SizedBox(
+                                  width: 5.0,
+                                ),
+                                Icon(Icons.edit, color: Theme.of(context).primaryColor,)
+                              ],
+                            ),
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                    width: 2.0,
+                                    color: Theme.of(context).primaryColor,
+                                    style: BorderStyle.solid),
+                                shape: BoxShape.rectangle),
                           ))
                     ],
                   )

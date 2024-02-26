@@ -11,15 +11,17 @@ import 'package:Tiara_by_TJ/views/pages/notification_page.dart';
 import 'package:Tiara_by_TJ/views/pages/orders_page.dart';
 import 'package:Tiara_by_TJ/views/pages/search_page.dart';
 import 'package:Tiara_by_TJ/views/pages/wishlist_page.dart';
-import 'package:provider/provider.dart';
 
-class YouPage extends StatelessWidget {
-  YouPage({super.key});
+import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+class AccountPage extends StatelessWidget {
+  AccountPage({super.key});
 
   List<IconData> icons = [
     Icons.account_circle_outlined,
-    Icons.qr_code_scanner_outlined,
-    Icons.notifications_none_outlined,
+    // Icons.qr_code_scanner_outlined,
+    // Icons.notifications_none_outlined,
     Icons.pin_drop_outlined
   ];
 
@@ -36,6 +38,15 @@ class YouPage extends StatelessWidget {
 
   List<String> title3 = ["Return", "Exchange", "Repair", "Shipping", "FAQ"];
 
+  Future<void> onLinkClicked(String url) async {
+    Uri uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
+    } else {
+      print("Could not launch Terms and condition's URL");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final customerProvider =
@@ -45,9 +56,9 @@ class YouPage extends StatelessWidget {
     print("isDataEmpty $isDataEmpty");
     print("CUSTOMERDATA ${customerProvider.customerData.length}");
     List<String> title = [
-      isDataEmpty ? "Login" : "My Account",
-      "Scan(at store)",
-      "Notifications",
+      isDataEmpty ? "Login" : "My profile",
+      //  "Scan(at store)",
+      //  "Notifications",
       "Track Order",
     ];
     return Scaffold(
@@ -138,7 +149,7 @@ class YouPage extends StatelessWidget {
                 )),
             SizedBox(
               width: MediaQuery.of(context).size.width,
-              height: 280.0,
+              height: 135.0,
               child: ListView.separated(
                 itemCount: icons.length,
                 itemBuilder: (context, index) {
@@ -153,17 +164,17 @@ class YouPage extends StatelessWidget {
                                   ),
                                 )
                               : Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => MyAccountPage(),
+                                  builder: (context) => MyProfilePage(),
                                 ));
 
                           break;
-                        case 2:
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => const NotificationPage(),
-                          ));
+                        // case 2:
+                        //   Navigator.of(context).push(MaterialPageRoute(
+                        //     builder: (context) => const NotificationPage(),
+                        //   ));
 
-                          break;
-                        case 3:
+                        //   break;
+                        case 1:
                           Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => const OrderPage(),
                           ));
@@ -197,17 +208,28 @@ class YouPage extends StatelessWidget {
                   padding: const EdgeInsets.only(bottom: 8.0),
                   child: Column(
                     children: [
-                      Container(
-                        margin: const EdgeInsets.symmetric(vertical: 10.0),
-                        width: 50.0,
-                        height: 50.0,
-                        decoration: const BoxDecoration(
-                            shape: BoxShape.rectangle,
-                            color: Color.fromARGB(255, 230, 230, 230),
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(15.0),
-                            )),
-                        child: const Icon(Icons.call),
+                      GestureDetector(
+                        onTap: () async {
+                          String url = 'tel:9833566117';
+                          Uri uri = Uri.parse(url);
+                          if (await canLaunchUrl(uri)) {
+                            await launchUrl(uri);
+                          } else {
+                            throw 'Could not launch $url';
+                          }
+                        },
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(vertical: 10.0),
+                          width: 50.0,
+                          height: 50.0,
+                          decoration: const BoxDecoration(
+                              shape: BoxShape.rectangle,
+                              color: Color.fromARGB(255, 230, 230, 230),
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(15.0),
+                              )),
+                          child: const Icon(Icons.call),
+                        ),
                       ),
                       const Text(
                         "Call",
@@ -220,45 +242,51 @@ class YouPage extends StatelessWidget {
                   padding: const EdgeInsets.only(bottom: 8.0),
                   child: Column(
                     children: [
-                      Container(
-                        margin: const EdgeInsets.symmetric(vertical: 10.0),
-                        width: 50.0,
-                        height: 50.0,
-                        decoration: const BoxDecoration(
-                            shape: BoxShape.rectangle,
-                            color: Color.fromARGB(255, 230, 230, 230),
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(15.0),
-                            )),
-                        child: const Icon(Icons.forum_sharp),
+                      GestureDetector(
+                        onTap: () {
+                          onLinkClicked("https://tiarabytj.com/");
+                        },
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(vertical: 10.0),
+                          width: 50.0,
+                          height: 50.0,
+                          decoration: const BoxDecoration(
+                              shape: BoxShape.rectangle,
+                              color: Color.fromARGB(255, 230, 230, 230),
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(15.0),
+                              )),
+                          child: const Icon(Icons.web),
+                        ),
                       ),
-                      const Text("Chat", style: TextStyle(fontSize: 17.0))
+                      const Text("Visit our website",
+                          style: TextStyle(fontSize: 17.0))
                     ],
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8.0),
-                  child: Column(
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.symmetric(vertical: 10.0),
-                        width: 50.0,
-                        height: 50.0,
-                        padding: const EdgeInsets.all(10.0),
-                        decoration: const BoxDecoration(
-                            shape: BoxShape.rectangle,
-                            color: Color.fromARGB(255, 230, 230, 230),
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(15.0),
-                            )),
-                        child: Image.asset(
-                          "assets/images/whatsapp.png",
-                        ),
-                      ),
-                      const Text("Whatsapp", style: TextStyle(fontSize: 17.0))
-                    ],
-                  ),
-                )
+                // Padding(
+                //   padding: const EdgeInsets.only(bottom: 8.0),
+                //   child: Column(
+                //     children: [
+                //       Container(
+                //         margin: const EdgeInsets.symmetric(vertical: 10.0),
+                //         width: 50.0,
+                //         height: 50.0,
+                //         padding: const EdgeInsets.all(10.0),
+                //         decoration: const BoxDecoration(
+                //             shape: BoxShape.rectangle,
+                //             color: Color.fromARGB(255, 230, 230, 230),
+                //             borderRadius: BorderRadius.all(
+                //               Radius.circular(15.0),
+                //             )),
+                //         child: Image.asset(
+                //           "assets/images/whatsapp.png",
+                //         ),
+                //       ),
+                //       const Text("Whatsapp", style: TextStyle(fontSize: 17.0))
+                //     ],
+                //   ),
+                // )
               ],
             ),
             Container(
@@ -273,7 +301,7 @@ class YouPage extends StatelessWidget {
                 )),
             SizedBox(
               width: MediaQuery.of(context).size.width,
-              height: 200.0,
+              height: 210.0,
               child: ListView.separated(
                 itemCount: icons2.length,
                 itemBuilder: (context, index) {
@@ -355,5 +383,19 @@ class YouPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  _callNumber() async {
+    // print("_callNumber");
+    // const number = '9833566117'; //set the number here
+    // bool? res = await FlutterPhoneDirectCaller.callNumber(number);
+    // print("_callNumber $res");
+    String url = 'tel:9833566117';
+    Uri uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 }

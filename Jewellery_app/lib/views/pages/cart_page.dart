@@ -1,3 +1,4 @@
+import 'package:Tiara_by_TJ/model/cart_product_model.dart';
 import 'package:Tiara_by_TJ/providers/customer_provider.dart';
 import 'package:Tiara_by_TJ/views/pages/dashboard_page.dart';
 import 'package:Tiara_by_TJ/views/pages/login_page.dart';
@@ -33,14 +34,7 @@ class _CartPageState extends State<CartPage> {
     super.initState();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final cartProvider = Provider.of<CartProvider>(context, listen: false);
-    final customerProvider =
-        Provider.of<CustomerProvider>(context, listen: false);
-    final cart = cartProvider.cart;
-
-    List<String> quantityList = [
+   List<String> quantityList = [
       "1",
       "2",
       "3",
@@ -76,6 +70,15 @@ class _CartPageState extends State<CartPage> {
       "25"
     ];
 
+  @override
+  Widget build(BuildContext context) {
+    final cartProvider = Provider.of<CartProvider>(context, listen: false);
+    final customerProvider =
+        Provider.of<CustomerProvider>(context, listen: false);
+    final cart = cartProvider.cart;
+
+   
+
     return Scaffold(
         appBar: const CartAppBar(
           title: 'Cart',
@@ -94,214 +97,222 @@ class _CartPageState extends State<CartPage> {
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Scrollbar(
-                        child: SizedBox(
-                          width: MediaQuery.of(context).size.width,
-                          height: MediaQuery.of(context).size.height / 2,
-                          child: ListView.builder(
-                              itemCount: cartList.length,
-                              itemBuilder: (context, index) {
-                                final cartData = cartList[index];
+                      ...getCartList(cartList, value),
+                      // Scrollbar(
+                      //   child: SizedBox(
+                      //     width: MediaQuery.of(context).size.width,
+                      //     height: MediaQuery.of(context).size.height / 2,
+                      //     child: ListView.builder(
+                      //         itemCount: cartList.length,
+                      //         itemBuilder: (context, index) {
+                      //           final cartData = cartList[index];
 
-                                print("Cart page cartdata  ${cartData.toMap()}");
-                                return Card(
-                                    child: Container(
-                                  padding: EdgeInsets.all(10.0),
-                                  child: Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
-                                          child: Image.network(
-                                            cartData.imageUrl ??
-                                                Strings.defaultImageUrl,
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width /
-                                                3,
-                                            fit: BoxFit.cover,
-                                            loadingBuilder: (context, child,
-                                                loadingProgress) {
-                                              if (loadingProgress == null) {
-                                                return child;
-                                              }
-                                              return const Center(
-                                                child:
-                                                    CircularProgressIndicator(
-                                                  color: Colors.black,
-                                                ),
-                                              );
-                                            },
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 10.0),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Row(
-                                                children: [
-                                                  Image.asset(
-                                                    "assets/images/rupee.png",
-                                                    width: 19.0,
-                                                    height: 19.0,
-                                                  ),
-                                                  Text(
-                                                      cartData.price ??
-                                                          "20,000",
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .headline2)
-                                                ],
-                                              ),
-                                              SizedBox(
-                                                  width: 178.0,
-                                                  //  (MediaQuery.of(context)
-                                                  //             .size
-                                                  //             .width -
-                                                  //         (MediaQuery.of(context)
-                                                  //                 .size
-                                                  //                 .width /
-                                                  //             3)) -
-                                                  //     67,
-                                                  child: Text(
-                                                    cartData.productName ??
-                                                        "Jewellery",
-                                                    maxLines: 2,
-                                                    style: const TextStyle(
-                                                        fontSize: 16.0),
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    softWrap: true,
-                                                  )),
-                                              Row(
-                                                children: [
-                                                  Row(
-                                                    children: [
-                                                      Text("Qty: ",
-                                                          style:
-                                                              Theme.of(context)
-                                                                  .textTheme
-                                                                  .headline4),
-                                                      const SizedBox(
-                                                        width: 5.0,
-                                                      ),
-                                                      DropdownButton<String>(
-                                                          value:
-                                                              cartData.quantity,
-                                                          icon: const Icon(Icons
-                                                              .keyboard_arrow_down_rounded),
-                                                          items: quantityList
-                                                              .map((String
-                                                                  option) {
-                                                            return DropdownMenuItem(
-                                                              value: option,
-                                                              child:
-                                                                  Text(option),
-                                                            );
-                                                          }).toList(),
-                                                          onChanged: (String?
-                                                              newValue) {
-                                                            if (mounted) {
-                                                              setState(() {
-                                                                value.updateQuantity(
-                                                                    cartData
-                                                                        .cartProductid!,
-                                                                    newValue!);
-                                                              });
-                                                            }
-                                                          })
-                                                    ],
-                                                  ),
-                                                  const SizedBox(
-                                                    width: 11.0,
-                                                  ),
-                                                  Row(
-                                                    children: [
-                                                      Text("Size: ",
-                                                          style:
-                                                              Theme.of(context)
-                                                                  .textTheme
-                                                                  .headline4),
-                                                      const SizedBox(
-                                                        width: 5.0,
-                                                      ),
-                                                      DropdownButton<String>(
-                                                          value: selectedSize,
-                                                          icon: const Icon(Icons
-                                                              .keyboard_arrow_down_rounded),
-                                                          items: sizeList.map(
-                                                              (String option) {
-                                                            return DropdownMenuItem(
-                                                              value: option,
-                                                              child:
-                                                                  Text(option),
-                                                            );
-                                                          }).toList(),
-                                                          onChanged: (String?
-                                                              newValue) {
-                                                            if (mounted) {
-                                                              setState(() {
-                                                                selectedSize =
-                                                                    newValue!;
-                                                              });
-                                                            }
-                                                          })
-                                                    ],
-                                                  ),
-                                                ],
-                                              ),
-                                              const Text(
-                                                "Expected Delivery : ",
-                                                style:
-                                                    TextStyle(fontSize: 17.0),
-                                              ),
-                                              Text(
-                                                  cartData.deliveryDate ??
-                                                      "After 5 days",
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .headline4)
-                                            ],
-                                          ),
-                                        ),
-                                        Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            GestureDetector(
-                                              onTap: () {
-                                                value.removeFromCart(cartData);
+                      //           print(
+                      //               "Cart page cartdata  ${cartData.toMap()}");
+                      //           return Padding(
+                      //             padding: const EdgeInsets.only(bottom: 8.0),
+                      //             child: Card(
+                      //                 child: Container(
+                      //               padding: EdgeInsets.all(10.0),
+                      //               child: Row(
+                      //                   crossAxisAlignment:
+                      //                       CrossAxisAlignment.start,
+                      //                   children: [
+                      //                     ClipRRect(
+                      //                       borderRadius:
+                      //                           BorderRadius.circular(10.0),
+                      //                       child: Image.network(
+                      //                         cartData.imageUrl ??
+                      //                             Strings.defaultImageUrl,
+                      //                         width: MediaQuery.of(context)
+                      //                                 .size
+                      //                                 .width /
+                      //                             3,
+                      //                         fit: BoxFit.cover,
+                      //                         loadingBuilder: (context, child,
+                      //                             loadingProgress) {
+                      //                           if (loadingProgress == null) {
+                      //                             return child;
+                      //                           }
+                      //                           return const Center(
+                      //                             child:
+                      //                                 CircularProgressIndicator(
+                      //                               color: Colors.black,
+                      //                             ),
+                      //                           );
+                      //                         },
+                      //                       ),
+                      //                     ),
+                      //                     Padding(
+                      //                       padding: const EdgeInsets.symmetric(
+                      //                           horizontal: 10.0),
+                      //                       child: Column(
+                      //                         crossAxisAlignment:
+                      //                             CrossAxisAlignment.start,
+                      //                         children: [
+                      //                           Row(
+                      //                             children: [
+                      //                               Image.asset(
+                      //                                 "assets/images/rupee.png",
+                      //                                 width: 19.0,
+                      //                                 height: 19.0,
+                      //                               ),
+                      //                               Text(
+                      //                                   cartData.price ??
+                      //                                       "20,000",
+                      //                                   style: Theme.of(context)
+                      //                                       .textTheme
+                      //                                       .headline2)
+                      //                             ],
+                      //                           ),
+                      //                           SizedBox(
+                      //                               width: 178.0,
+                      //                               //  (MediaQuery.of(context)
+                      //                               //             .size
+                      //                               //             .width -
+                      //                               //         (MediaQuery.of(context)
+                      //                               //                 .size
+                      //                               //                 .width /
+                      //                               //             3)) -
+                      //                               //     67,
+                      //                               child: Text(
+                      //                                 cartData.productName ??
+                      //                                     "Jewellery",
+                      //                                 maxLines: 2,
+                      //                                 style: const TextStyle(
+                      //                                     fontSize: 16.0),
+                      //                                 overflow:
+                      //                                     TextOverflow.ellipsis,
+                      //                                 softWrap: true,
+                      //                               )),
+                      //                           Row(
+                      //                             children: [
+                      //                               Row(
+                      //                                 children: [
+                      //                                   Text("Qty: ",
+                      //                                       style: Theme.of(
+                      //                                               context)
+                      //                                           .textTheme
+                      //                                           .headline4),
+                      //                                   const SizedBox(
+                      //                                     width: 5.0,
+                      //                                   ),
+                      //                                   DropdownButton<String>(
+                      //                                       value: cartData
+                      //                                           .quantity,
+                      //                                       icon: const Icon(Icons
+                      //                                           .keyboard_arrow_down_rounded),
+                      //                                       items: quantityList
+                      //                                           .map((String
+                      //                                               option) {
+                      //                                         return DropdownMenuItem(
+                      //                                           value: option,
+                      //                                           child: Text(
+                      //                                               option),
+                      //                                         );
+                      //                                       }).toList(),
+                      //                                       onChanged: (String?
+                      //                                           newValue) {
+                      //                                         if (mounted) {
+                      //                                           setState(() {
+                      //                                             value.updateQuantity(
+                      //                                                 cartData
+                      //                                                     .cartProductid!,
+                      //                                                 newValue!);
+                      //                                           });
+                      //                                         }
+                      //                                       })
+                      //                                 ],
+                      //                               ),
+                      //                               const SizedBox(
+                      //                                 width: 11.0,
+                      //                               ),
+                      //                               Row(
+                      //                                 children: [
+                      //                                   Text("Size: ",
+                      //                                       style: Theme.of(
+                      //                                               context)
+                      //                                           .textTheme
+                      //                                           .headline4),
+                      //                                   const SizedBox(
+                      //                                     width: 5.0,
+                      //                                   ),
+                      //                                   DropdownButton<String>(
+                      //                                       value: selectedSize,
+                      //                                       icon: const Icon(Icons
+                      //                                           .keyboard_arrow_down_rounded),
+                      //                                       items: sizeList.map(
+                      //                                           (String
+                      //                                               option) {
+                      //                                         return DropdownMenuItem(
+                      //                                           value: option,
+                      //                                           child: Text(
+                      //                                               option),
+                      //                                         );
+                      //                                       }).toList(),
+                      //                                       onChanged: (String?
+                      //                                           newValue) {
+                      //                                         if (mounted) {
+                      //                                           setState(() {
+                      //                                             selectedSize =
+                      //                                                 newValue!;
+                      //                                           });
+                      //                                         }
+                      //                                       })
+                      //                                 ],
+                      //                               ),
+                      //                             ],
+                      //                           ),
+                      //                           const Text(
+                      //                             "Expected Delivery : ",
+                      //                             style:
+                      //                                 TextStyle(fontSize: 17.0),
+                      //                           ),
+                      //                           Text(
+                      //                               cartData.deliveryDate ??
+                      //                                   "After 5 days",
+                      //                               style: Theme.of(context)
+                      //                                   .textTheme
+                      //                                   .headline4)
+                      //                         ],
+                      //                       ),
+                      //                     ),
+                      //                     Column(
+                      //                       mainAxisAlignment:
+                      //                           MainAxisAlignment.start,
+                      //                       children: [
+                      //                         GestureDetector(
+                      //                           onTap: () {
+                      //                             value.removeFromCart(cartData,
+                      //                                 cartData.cartProductid!);
 
-                                                value.removeFromCartId(
-                                                    cartData.cartProductid!);
+                      //                             value.removeFromCartId(
+                      //                                 cartData.cartProductid!);
 
-                                                print(
-                                                    "CART IDS : ${value.cartProductIds}");
-                                              },
-                                              child: Container(
-                                                decoration: const BoxDecoration(
-                                                  color: Colors.black,
-                                                  shape: BoxShape.circle,
-                                                ),
-                                                child: const Icon(
-                                                  Icons.close_rounded,
-                                                  color: Colors.white,
-                                                  size: 19.0,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        )
-                                      ]),
-                                ));
-                              }),
-                        ),
-                      ),
+                      //                             print(
+                      //                                 "CART IDS : ${value.cartProductIds}");
+                      //                           },
+                      //                           child: Container(
+                      //                             decoration:
+                      //                                 const BoxDecoration(
+                      //                               color: Colors.black,
+                      //                               shape: BoxShape.circle,
+                      //                             ),
+                      //                             child: const Icon(
+                      //                               Icons.close_rounded,
+                      //                               color: Colors.white,
+                      //                               size: 19.0,
+                      //                             ),
+                      //                           ),
+                      //                         ),
+                      //                       ],
+                      //                     )
+                      //                   ]),
+                      //             )),
+                      //           );
+                      //         }),
+                      //   ),
+                      // ),
                       const SizedBox(
                         height: 15.0,
                       ),
@@ -309,10 +320,11 @@ class _CartPageState extends State<CartPage> {
                         width: MediaQuery.of(context).size.width,
                         alignment: Alignment.centerRight,
                         child: InkWell(
-                          child: const Text(
+                          child: Text(
                             "Apply coupon",
                             style: TextStyle(
-                                color: Colors.blue,
+                                fontSize: 17.0,
+                                color: Theme.of(context).primaryColor,
                                 decoration: TextDecoration.underline),
                           ),
                           onTap: () {
@@ -337,7 +349,8 @@ class _CartPageState extends State<CartPage> {
                           children: [
                             CartTotalRow(
                                 label: 'No. of Items',
-                                value: value.cartProductIds.length.toString(),
+                                value: value.cart.length
+                                    .toString(), //decide what to fixed this or value.cartProductIds.length.toString(),
                                 showMoney: false),
                             const Divider(
                               height: 15.0,
@@ -426,7 +439,6 @@ class _CartPageState extends State<CartPage> {
               return Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: SizedBox(
-               
                   height: MediaQuery.of(context).size.height,
                   width: MediaQuery.of(context).size.width,
                   child: Column(
@@ -447,7 +459,7 @@ class _CartPageState extends State<CartPage> {
                         maxLines: 2,
                         style: TextStyle(
                             fontSize: 22.0,
-                           // color: Theme.of(context).primaryColor,
+                            // color: Theme.of(context).primaryColor,
                             fontWeight: FontWeight.bold),
                       ),
                       SizedBox(
@@ -563,6 +575,165 @@ class _CartPageState extends State<CartPage> {
         // cart.length != 0
         //     ?
         );
+  }
+
+  List<Widget> getCartList(List<CartProductModel> cartList, CartProvider value) {
+    return cartList.map((cartData) {
+      return Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Card(
+            child: Container(
+          padding: EdgeInsets.all(10.0),
+          child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(10.0),
+              child: Image.network(
+                cartData.imageUrl ?? Strings.defaultImageUrl,
+                width: MediaQuery.of(context).size.width / 3,
+                fit: BoxFit.cover,
+                loadingBuilder: (context, child, loadingProgress) {
+                  if (loadingProgress == null) {
+                    return child;
+                  }
+                  return const Center(
+                    child: CircularProgressIndicator(
+                      color: Colors.black,
+                    ),
+                  );
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Image.asset(
+                        "assets/images/rupee.png",
+                        width: 19.0,
+                        height: 19.0,
+                      ),
+                      Text(cartData.price ?? "20,000",
+                          style: Theme.of(context).textTheme.headline2)
+                    ],
+                  ),
+                  SizedBox(
+                      width: 178.0,
+                      //  (MediaQuery.of(context)
+                      //             .size
+                      //             .width -
+                      //         (MediaQuery.of(context)
+                      //                 .size
+                      //                 .width /
+                      //             3)) -
+                      //     67,
+                      child: Text(
+                        cartData.productName ?? "Jewellery",
+                        maxLines: 2,
+                        style: const TextStyle(fontSize: 16.0),
+                        overflow: TextOverflow.ellipsis,
+                        softWrap: true,
+                      )),
+                  Row(
+                    children: [
+                      Row(
+                        children: [
+                          Text("Qty: ",
+                              style: Theme.of(context).textTheme.headline4),
+                          const SizedBox(
+                            width: 5.0,
+                          ),
+                          DropdownButton<String>(
+                              value: cartData.quantity,
+                              icon:
+                                  const Icon(Icons.keyboard_arrow_down_rounded),
+                              items: quantityList.map((String option) {
+                                return DropdownMenuItem(
+                                  value: option,
+                                  child: Text(option),
+                                );
+                              }).toList(),
+                              onChanged: (String? newValue) {
+                                if (mounted) {
+                                  setState(() {
+                                    value.updateQuantity(
+                                        cartData.cartProductid!, newValue!);
+                                  });
+                                }
+                              })
+                        ],
+                      ),
+                      const SizedBox(
+                        width: 11.0,
+                      ),
+                      Row(
+                        children: [
+                          Text("Size: ",
+                              style: Theme.of(context).textTheme.headline4),
+                          const SizedBox(
+                            width: 5.0,
+                          ),
+                          DropdownButton<String>(
+                              value: selectedSize,
+                              icon:
+                                  const Icon(Icons.keyboard_arrow_down_rounded),
+                              items: sizeList.map((String option) {
+                                return DropdownMenuItem(
+                                  value: option,
+                                  child: Text(option),
+                                );
+                              }).toList(),
+                              onChanged: (String? newValue) {
+                                if (mounted) {
+                                  setState(() {
+                                    selectedSize = newValue!;
+                                  });
+                                }
+                              })
+                        ],
+                      ),
+                    ],
+                  ),
+                  const Text(
+                    "Expected Delivery : ",
+                    style: TextStyle(fontSize: 17.0),
+                  ),
+                  Text(cartData.deliveryDate ?? "After 5 days",
+                      style: Theme.of(context).textTheme.headline4)
+                ],
+              ),
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    value.removeFromCart(cartData, cartData.cartProductid!);
+
+                    value.removeFromCartId(cartData.cartProductid!);
+
+                    print("CART IDS : ${value.cartProductIds}");
+                  },
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      color: Colors.black,
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(
+                      Icons.close_rounded,
+                      color: Colors.white,
+                      size: 19.0,
+                    ),
+                  ),
+                ),
+              ],
+            )
+          ]),
+        )),
+      );
+    }).toList();
   }
 
   void showCouponDialog(BuildContext context) {

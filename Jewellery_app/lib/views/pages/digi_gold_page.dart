@@ -3,7 +3,10 @@ import 'dart:convert';
 import 'package:Tiara_by_TJ/api/api_service.dart';
 import 'package:Tiara_by_TJ/model/digi_gold_plan_model.dart' as DigiGoldPlan;
 import 'package:Tiara_by_TJ/model/gold_rate_model.dart';
+import 'package:Tiara_by_TJ/providers/customer_provider.dart';
 import 'package:Tiara_by_TJ/providers/digigold_provider.dart';
+import 'package:Tiara_by_TJ/views/pages/digigold_plan_bill.dart';
+import 'package:Tiara_by_TJ/views/pages/login_page.dart';
 
 import 'package:Tiara_by_TJ/views/widgets/digi_gold_card.dart';
 import 'package:flutter/material.dart';
@@ -22,12 +25,20 @@ class _DigiGoldPageState extends State<DigiGoldPage> {
   bool isDigiGoldPlanLoading = false;
   int goldRate = 0;
   String goldPurity = "0";
+  TextEditingController flexiPayController = TextEditingController();
+  TextEditingController flexiGoldController = TextEditingController();
+
+  bool checkBoxChecked = false;
+
+  bool termsSeen = false;
+
+  TextEditingController flexiPlanDurationController = TextEditingController();
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     getDigiGoldPlanList();
-    
 
     getGoldRateRequest();
   }
@@ -39,7 +50,6 @@ class _DigiGoldPageState extends State<DigiGoldPage> {
           Provider.of<DigiGoldProvider>(context, listen: false);
       digiGoldProvider.setGoldRateLoading(true);
       http.Response response = await ApiService.getGoldRate();
-     
 
       if (response.statusCode == 200) {
         final json = jsonDecode(response.body);
@@ -54,7 +64,7 @@ class _DigiGoldPageState extends State<DigiGoldPage> {
         goldRate = getGoldRate(goldRateModel);
       }
 
-       digiGoldProvider.setGoldRateLoading(false);
+      digiGoldProvider.setGoldRateLoading(false);
     }
   }
 
@@ -79,31 +89,31 @@ class _DigiGoldPageState extends State<DigiGoldPage> {
             goldRateModel.data!.goldPricing!.from ?? "automatic";
         if (goldRateModel.data!.goldPricing!.inr != null) {
           String defaultPurity =
-              goldRateModel.data!.goldPricing!.inr!.inrDefault ??
-                  "916";
+              goldRateModel.data!.goldPricing!.inr!.inrDefault ?? "916";
 
           switch (goldPricingType) {
             case "automatic":
-              if (goldRateModel.data!.goldPricing!.inr!.automatic !=
-                  null) {
+              if (goldRateModel.data!.goldPricing!.inr!.automatic != null) {
                 goldRate = getGoldRateOfAutomatic(
                     goldRateModel.data!.goldPricing!.inr!.automatic!,
-                    defaultPurity, goldRateModel);
+                    defaultPurity,
+                    goldRateModel);
               }
 
               break;
             case "manual":
               goldRate = getGoldRateOfManual(
                   goldRateModel.data!.goldPricing!.inr!.manual,
-                  defaultPurity, goldRateModel);
+                  defaultPurity,
+                  goldRateModel);
 
               break;
             default:
-              if (goldRateModel.data!.goldPricing!.inr!.automatic !=
-                  null) {
+              if (goldRateModel.data!.goldPricing!.inr!.automatic != null) {
                 goldRate = getGoldRateOfAutomatic(
                     goldRateModel.data!.goldPricing!.inr!.automatic!,
-                    defaultPurity, goldRateModel);
+                    defaultPurity,
+                    goldRateModel);
               }
 
               break;
@@ -114,78 +124,71 @@ class _DigiGoldPageState extends State<DigiGoldPage> {
     return goldRate;
   }
 
-  int getGoldRateOfAutomatic(PurpleAutomatic automatic, String defaultPurity, GoldRateModel goldRateModel) {
+  int getGoldRateOfAutomatic(PurpleAutomatic automatic, String defaultPurity,
+      GoldRateModel goldRateModel) {
     int goldRate = 0;
 
     switch (defaultPurity) {
       case "375":
-        if (goldRateModel.data!.goldPricing!.inr!.automatic!.the375 !=
-            null) {
-          if (goldRateModel.data!.goldPricing!.inr!.automatic!
-                  .the375!.rate !=
+        if (goldRateModel.data!.goldPricing!.inr!.automatic!.the375 != null) {
+          if (goldRateModel.data!.goldPricing!.inr!.automatic!.the375!.rate !=
               null) {
-            goldRate = goldRateModel.data!.goldPricing!.inr!.automatic!.the375!.rate!;
+            goldRate =
+                goldRateModel.data!.goldPricing!.inr!.automatic!.the375!.rate!;
           }
         }
         break;
       case "583":
-        if (goldRateModel.data!.goldPricing!.inr!.automatic!.the583 !=
-            null) {
-          if (goldRateModel.data!.goldPricing!.inr!.automatic!
-                  .the583!.rate !=
+        if (goldRateModel.data!.goldPricing!.inr!.automatic!.the583 != null) {
+          if (goldRateModel.data!.goldPricing!.inr!.automatic!.the583!.rate !=
               null) {
-            goldRate = goldRateModel.data!.goldPricing!.inr!.automatic!.the583!.rate!;
+            goldRate =
+                goldRateModel.data!.goldPricing!.inr!.automatic!.the583!.rate!;
           }
         }
         break;
       case "750":
-        if (goldRateModel.data!.goldPricing!.inr!.automatic!.the750 !=
-            null) {
-          if (goldRateModel.data!.goldPricing!.inr!.automatic!
-                  .the750!.rate !=
+        if (goldRateModel.data!.goldPricing!.inr!.automatic!.the750 != null) {
+          if (goldRateModel.data!.goldPricing!.inr!.automatic!.the750!.rate !=
               null) {
-            goldRate = goldRateModel.data!.goldPricing!.inr!.automatic!.the750!.rate!;
+            goldRate =
+                goldRateModel.data!.goldPricing!.inr!.automatic!.the750!.rate!;
           }
         }
         break;
       case "916":
-        if (goldRateModel.data!.goldPricing!.inr!.automatic!.the916 !=
-            null) {
-          if (goldRateModel.data!.goldPricing!.inr!.automatic!
-                  .the916!.rate !=
+        if (goldRateModel.data!.goldPricing!.inr!.automatic!.the916 != null) {
+          if (goldRateModel.data!.goldPricing!.inr!.automatic!.the916!.rate !=
               null) {
-            goldRate = goldRateModel.data!.goldPricing!.inr!.automatic!.the916!.rate!;
+            goldRate =
+                goldRateModel.data!.goldPricing!.inr!.automatic!.the916!.rate!;
           }
         }
         break;
       case "999":
-        if (goldRateModel.data!.goldPricing!.inr!.automatic!.the999 !=
-            null) {
-          if (goldRateModel.data!.goldPricing!.inr!.automatic!
-                  .the999!.rate !=
+        if (goldRateModel.data!.goldPricing!.inr!.automatic!.the999 != null) {
+          if (goldRateModel.data!.goldPricing!.inr!.automatic!.the999!.rate !=
               null) {
-            goldRate = goldRateModel.data!.goldPricing!.inr!.automatic!.the999!.rate!;
+            goldRate =
+                goldRateModel.data!.goldPricing!.inr!.automatic!.the999!.rate!;
           }
         }
         break;
       case "999.99":
-        if (goldRateModel.data!.goldPricing!.inr!.automatic!.the99999 !=
-            null) {
-          if (goldRateModel.data!.goldPricing!.inr!.automatic!
-                  .the99999!.rate !=
+        if (goldRateModel.data!.goldPricing!.inr!.automatic!.the99999 != null) {
+          if (goldRateModel.data!.goldPricing!.inr!.automatic!.the99999!.rate !=
               null) {
-            goldRate = goldRateModel.data!.goldPricing!.inr!
-                .automatic!.the99999!.rate!;
+            goldRate = goldRateModel
+                .data!.goldPricing!.inr!.automatic!.the99999!.rate!;
           }
         }
         break;
       default:
-        if (goldRateModel.data!.goldPricing!.inr!.automatic!.the916 !=
-            null) {
-          if (goldRateModel.data!.goldPricing!.inr!.automatic!
-                  .the916!.rate !=
+        if (goldRateModel.data!.goldPricing!.inr!.automatic!.the916 != null) {
+          if (goldRateModel.data!.goldPricing!.inr!.automatic!.the916!.rate !=
               null) {
-            goldRate =goldRateModel.data!.goldPricing!.inr!.automatic!.the916!.rate!;
+            goldRate =
+                goldRateModel.data!.goldPricing!.inr!.automatic!.the916!.rate!;
           }
         }
         break;
@@ -194,15 +197,14 @@ class _DigiGoldPageState extends State<DigiGoldPage> {
     return goldRate;
   }
 
-  int getGoldRateOfManual(Map<String, Manual> manual, String defaultPurity, GoldRateModel goldRateModel) {
+  int getGoldRateOfManual(Map<String, Manual> manual, String defaultPurity,
+      GoldRateModel goldRateModel) {
     int goldRate = 0;
 
     switch (defaultPurity) {
       case "375":
-        if (goldRateModel.data!.goldPricing!.inr!.manual["375"] !=
-            null) {
-          Manual manual =
-              goldRateModel.data!.goldPricing!.inr!.manual["375"]!;
+        if (goldRateModel.data!.goldPricing!.inr!.manual["375"] != null) {
+          Manual manual = goldRateModel.data!.goldPricing!.inr!.manual["375"]!;
           if (manual.rate != null) {
             goldRate = int.parse(manual.rate!);
           }
@@ -210,59 +212,49 @@ class _DigiGoldPageState extends State<DigiGoldPage> {
 
         break;
       case "583":
-        if (goldRateModel.data!.goldPricing!.inr!.manual["583"] !=
-            null) {
-          Manual manual =
-              goldRateModel.data!.goldPricing!.inr!.manual["583"]!;
+        if (goldRateModel.data!.goldPricing!.inr!.manual["583"] != null) {
+          Manual manual = goldRateModel.data!.goldPricing!.inr!.manual["583"]!;
           if (manual.rate != null) {
             goldRate = int.parse(manual.rate!);
           }
         }
         break;
       case "750":
-        if (goldRateModel.data!.goldPricing!.inr!.manual["750"] !=
-            null) {
-          Manual manual =
-              goldRateModel.data!.goldPricing!.inr!.manual["750"]!;
+        if (goldRateModel.data!.goldPricing!.inr!.manual["750"] != null) {
+          Manual manual = goldRateModel.data!.goldPricing!.inr!.manual["750"]!;
           if (manual.rate != null) {
             goldRate = int.parse(manual.rate!);
           }
         }
         break;
       case "916":
-        if (goldRateModel.data!.goldPricing!.inr!.manual["916"] !=
-            null) {
-          Manual manual =
-              goldRateModel.data!.goldPricing!.inr!.manual["916"]!;
+        if (goldRateModel.data!.goldPricing!.inr!.manual["916"] != null) {
+          Manual manual = goldRateModel.data!.goldPricing!.inr!.manual["916"]!;
           if (manual.rate != null) {
             goldRate = int.parse(manual.rate!);
           }
         }
         break;
       case "999":
-        if (goldRateModel.data!.goldPricing!.inr!.manual["999"] !=
-            null) {
-          Manual manual =
-              goldRateModel.data!.goldPricing!.inr!.manual["999"]!;
+        if (goldRateModel.data!.goldPricing!.inr!.manual["999"] != null) {
+          Manual manual = goldRateModel.data!.goldPricing!.inr!.manual["999"]!;
           if (manual.rate != null) {
             goldRate = int.parse(manual.rate!);
           }
         }
         break;
       case "999.99":
-        if (goldRateModel.data!.goldPricing!.inr!.manual["999.99"] !=
-            null) {
-          Manual manual = goldRateModel.data!.goldPricing!.inr!.manual["999.99"]!;
+        if (goldRateModel.data!.goldPricing!.inr!.manual["999.99"] != null) {
+          Manual manual =
+              goldRateModel.data!.goldPricing!.inr!.manual["999.99"]!;
           if (manual.rate != null) {
             goldRate = int.parse(manual.rate!);
           }
         }
         break;
       default:
-        if (goldRateModel.data!.goldPricing!.inr!.manual["916"] !=
-            null) {
-          Manual manual =
-              goldRateModel.data!.goldPricing!.inr!.manual["916"]!;
+        if (goldRateModel.data!.goldPricing!.inr!.manual["916"] != null) {
+          Manual manual = goldRateModel.data!.goldPricing!.inr!.manual["916"]!;
           if (manual.rate != null) {
             goldRate = int.parse(manual.rate!);
           }
@@ -301,8 +293,21 @@ class _DigiGoldPageState extends State<DigiGoldPage> {
     }
   }
 
+  void calculateGoldGrams(String value) {
+    if (value == "0") {
+      flexiGoldController.text = "0.0";
+    }
+
+    double goldGrams = (int.parse(value) / goldRate);
+    flexiGoldController.text = ((goldGrams * 100).round() / 100).toString();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final customerProvider =
+        Provider.of<CustomerProvider>(context, listen: true);
+
+    bool isCustomerDataEmpty = customerProvider.customerData.isEmpty;
     return Scaffold(
       appBar: AppBar(
         title: Text("DigiGold"),
@@ -338,14 +343,14 @@ class _DigiGoldPageState extends State<DigiGoldPage> {
                               children: [
                                 Text(
                                   "Flexi Plan",
-                                  style: Theme.of(context).textTheme.headline1,
+                                  style: TextStyle(fontSize: 20.0,color: Colors.white, fontWeight: FontWeight.bold),
                                 ),
                                 SizedBox(
-                                  height: 30.0,
+                                  height: 20.0,
                                 ),
                                 Text(
                                   "Buy Gold Worth",
-                                  style: TextStyle(fontSize: 16.0),
+                                  style: TextStyle(fontSize: 18.0,color: Colors.white, fontWeight: FontWeight.bold),
                                   // style: Theme.of(context).textTheme.headline2,
                                 ),
                                 Row(
@@ -353,9 +358,17 @@ class _DigiGoldPageState extends State<DigiGoldPage> {
                                     Image.asset(
                                       "assets/images/rupee.png",
                                       width: 25.0,
-                                      height: 37.0,
+                                      height: 37.0,color: Colors.white
                                     ),
-                                    SizedBox(width: 230.0, child: TextField()),
+                                    SizedBox(
+                                        width: 230.0,
+                                        child: TextField(
+                                          style: TextStyle(color: Colors.white),
+                                          onChanged: (value) {
+                                            calculateGoldGrams(value);
+                                          },
+                                          controller: flexiPayController,
+                                        )),
                                   ],
                                 ),
                                 SizedBox(
@@ -363,64 +376,235 @@ class _DigiGoldPageState extends State<DigiGoldPage> {
                                 ),
                                 Text(
                                   "Min : ₹ 1 / Max : ₹ 199999",
-                                  style: TextStyle(fontSize: 15.0),
+                                  style: TextStyle(fontSize: 16.0,color: Colors.white),
                                 ),
                                 SizedBox(
-                                  height: 20.0,
+                                  height: 40.0,
                                 ),
                                 Text(
                                   "Buy Gold By Grams",
-                                  style: TextStyle(fontSize: 16.0),
+                                  style: TextStyle(fontSize: 18.0,color: Colors.white, fontWeight: FontWeight.bold),
                                 ),
                                 Row(
                                   children: [
-                                    SizedBox(width: 220.0, child: TextField()),
+                                    SizedBox(
+                                        width: 220.0,
+                                        child: TextField(
+                                          style: TextStyle(color: Colors.white),
+                                          controller: flexiGoldController,
+                                        )),
                                     Text(
                                       "gms",
-                                      style: TextStyle(fontSize: 22.0),
+                                      style: TextStyle(fontSize: 20.0,color: Colors.white),
                                     )
                                   ],
                                 ),
                                 SizedBox(
-                                  height: 20.0,
+                                  height: 40.0,
                                 ),
+                                Text(
+                                  "Enter plan duration",
+                                  style: TextStyle(fontSize: 18.0,color: Colors.white, fontWeight: FontWeight.bold),
+                                ),
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                        width: 190.0,
+                                        child: TextField(
+                                          controller:
+                                              flexiPlanDurationController,
+                                        )),
+                                    Text(
+                                      "months",
+                                      style: TextStyle(fontSize: 20.0,color: Colors.white),
+                                    )
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 40.0,
+                                ),
+
                                 Center(
-                                  child: InkWell(
-                                    onTap: () {
-                                      onLinkClicked(
-                                          "https://tiarabytj.com/terms-conditions/");
-                                    },
-                                    child: Text(
-                                      "Terms & Conditions",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 18.0,
-                                          decoration: TextDecoration.underline),
-                                    ),
+                                  child: Row(
+                                    children: [
+                                      Checkbox(
+                                        activeColor: Colors.white,
+                                        checkColor: Colors.black,
+                                        value: checkBoxChecked,
+                                        onChanged: (value) {
+                                          print("termsSeen2 ${termsSeen}");
+                                          if (termsSeen) {
+                                            if (mounted) {
+                                              setState(() {
+                                                checkBoxChecked =
+                                                    value ?? false;
+                                              });
+                                            }
+                                            print(
+                                                "checkBoxChecked ${checkBoxChecked}");
+                                          }
+                                        },
+                                      ),
+                                      InkWell(
+                                        onTap: () {
+                                          if (mounted) {
+                                            setState(() {
+                                              termsSeen = true;
+                                            });
+                                          }
+
+                                          onLinkClicked(
+                                              "https://tiarabytj.com/terms-conditions/");
+                                        },
+                                        child: Text(
+                                          "Terms & Conditions",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 18.0,
+                                              decoration:
+                                                  TextDecoration.underline),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                                 SizedBox(
-                                  height: 30.0,
+                                  height: 20.0,
                                 ),
-                                Container(
-                                  margin:
-                                      EdgeInsets.symmetric(horizontal: 20.0),
-                                  alignment: Alignment.center,
-                                  padding: EdgeInsets.symmetric(
-                                      vertical: 10.0, horizontal: 20.0),
-                                  width:
-                                      MediaQuery.of(context).size.width - 100,
-                                  child: Text(
-                                    "PROCEED TO PAY",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 16.0,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  decoration: BoxDecoration(
-                                      color: Colors.black,
-                                      shape: BoxShape.rectangle),
-                                ),
+                                isCustomerDataEmpty
+                                    ? GestureDetector(
+                                        onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) => LoginPage(
+                                                  isComeFromCart: false,
+                                                ),
+                                              ));
+                                        },
+                                        child: Container(
+                                          margin: EdgeInsets.symmetric(
+                                              horizontal: 20.0),
+                                          alignment: Alignment.center,
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: 10.0, horizontal: 20.0),
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width -
+                                              100,
+                                          child: Text(
+                                            "LOGIN",
+                                            style: TextStyle(
+                                                color: checkBoxChecked
+                                                    ? Colors.black
+                                                    : Colors.white,
+                                                fontSize: 16.0,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          decoration: checkBoxChecked
+                                              ? BoxDecoration(
+                                                  color: Colors.white,
+                                                  // borderRadius:
+                                                  //     BorderRadius.circular(5.0)
+                                                )
+                                              : BoxDecoration(
+                                                  border: Border.all(
+                                                      width: 2.0,
+                                                      color: Colors.white,
+                                                      style: BorderStyle.solid),
+                                                  shape: BoxShape.rectangle),
+                                        ),
+                                      )
+                                    : GestureDetector(
+                                        onTap: () {
+                                          // Navigator.push(context,
+                                          //  MaterialPageRoute(builder: (context) =>
+                                          //   DigiGoldPlanOrderPage(digiGoldPlanModel: null,),));
+                                        },
+                                        child: Container(
+                                          margin: EdgeInsets.symmetric(
+                                              horizontal: 20.0),
+                                          alignment: Alignment.center,
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: 10.0, horizontal: 20.0),
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width -
+                                              100,
+                                          child: Text(
+                                            "PROCEED TO PAY",
+                                            style: TextStyle(
+                                                color: checkBoxChecked
+                                                    ? Colors.black
+                                                    : Colors.white,
+                                                fontSize: 16.0,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          decoration: checkBoxChecked
+                                              ? BoxDecoration(
+                                                  color: Colors.white,
+                                                  // borderRadius:
+                                                  //     BorderRadius.circular(5.0)
+                                                )
+                                              : BoxDecoration(
+                                                  border: Border.all(
+                                                      width: 2.0,
+                                                      color: Colors.white,
+                                                      style: BorderStyle.solid),
+                                                  shape: BoxShape.rectangle),
+                                        ),
+                                      ),
+                                //
+                                // GestureDetector(
+                                //         onTap: () {
+                                //           // Navigator.push(context, MaterialPageRoute(builder: (context) => DigiGoldPlanOrderPage(),));
+                                //         },
+                                //         child: Container(
+                                //           margin: EdgeInsets.symmetric(
+                                //               horizontal: 20.0),
+                                //           alignment: Alignment.center,
+                                //           padding: EdgeInsets.symmetric(
+                                //               vertical: 10.0, horizontal: 20.0),
+                                //           width: MediaQuery.of(context)
+                                //                   .size
+                                //                   .width -
+                                //               100,
+                                //           child: Text(
+                                //             "LOGIN",
+                                //             style: TextStyle(
+                                //                 color: Colors.white,
+                                //                 fontSize: 16.0,
+                                //                 fontWeight: FontWeight.bold),
+                                //           ),
+                                //           decoration: BoxDecoration(
+                                //               color: Colors.black,
+                                //               shape: BoxShape.rectangle),
+                                //         ),
+                                //       )
+                                //     :
+
+                                // Container(
+                                //     margin: EdgeInsets.symmetric(
+                                //         horizontal: 20.0),
+                                //     alignment: Alignment.center,
+                                //     padding: EdgeInsets.symmetric(
+                                //         vertical: 10.0, horizontal: 20.0),
+                                //     width: MediaQuery.of(context)
+                                //             .size
+                                //             .width -
+                                //         100,
+
+                                //     child: Text(
+                                //       "PROCEED TO PAY",
+                                //       style: TextStyle(
+                                //           color: Colors.white,
+                                //           fontSize: 16.0,
+                                //           fontWeight: FontWeight.bold),
+                                //     ),
+                                //     decoration: BoxDecoration(
+                                //         color: Colors.black,
+                                //         shape: BoxShape.rectangle),
+                                //   ),
                                 SizedBox(
                                   height: 15.0,
                                 ),
@@ -450,7 +634,7 @@ class _DigiGoldPageState extends State<DigiGoldPage> {
                                                   "Today's Gold Rate: \n ₹ $goldRate per gram of $goldPurity purity",
                                                   maxLines: 3,
                                                   style:
-                                                      TextStyle(fontSize: 17.0),
+                                                      TextStyle(fontSize: 18.0,color: Colors.yellow,),
                                                 ))
                                           ],
                                         )

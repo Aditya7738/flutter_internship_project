@@ -363,7 +363,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
             badgeStyle: const badges.BadgeStyle(badgeColor: Colors.purple),
             badgeContent: Consumer<CartProvider>(
                 builder: (context, value, child) => Text(
-                      value.cartProductIds.length.toString(),
+                      value.cart.length.toString(),
                       style: const TextStyle(color: Colors.white),
                     )),
             child: IconButton(

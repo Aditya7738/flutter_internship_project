@@ -1,3 +1,4 @@
+import 'package:Tiara_by_TJ/providers/category_provider.dart';
 import 'package:Tiara_by_TJ/providers/customize_options_provider.dart';
 import 'package:Tiara_by_TJ/providers/digigold_provider.dart';
 import 'package:Tiara_by_TJ/providers/filteroptions_provider.dart';
@@ -206,7 +207,8 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(create: (context) => CustomizeOptionsProvider()),
         ChangeNotifierProvider(create: (context) => FilterOptionsProvider()),
         ChangeNotifierProvider(create: (context) => DigiGoldProvider()),
-        ChangeNotifierProvider(create: (context) => OrderProvider())
+        ChangeNotifierProvider(create: (context) => OrderProvider()),
+        ChangeNotifierProvider(create: (context) => CategoryProvider()),
       ],
       child: MaterialApp(
         navigatorKey: navigatorKey,

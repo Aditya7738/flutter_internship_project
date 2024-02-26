@@ -185,7 +185,7 @@ late FilterOptionsProvider filterOptionsProvider;
                           topLeft: Radius.circular(20.0),
                           topRight: Radius.circular(20.0))),
                   builder: (context) {
-                    return Filter(searchText: searchText);
+                    return Filter(searchText: searchText, fromProductsPage: false,);
                   },
                 );
 

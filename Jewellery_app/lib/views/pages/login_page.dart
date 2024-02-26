@@ -9,7 +9,7 @@ import 'package:Tiara_by_TJ/api/api_service.dart';
 import 'package:Tiara_by_TJ/constants/strings.dart';
 import 'package:Tiara_by_TJ/helpers/validation_helper.dart';
 import 'package:Tiara_by_TJ/views/pages/signup_page.dart';
-import 'package:Tiara_by_TJ/views/pages/you_page.dart';
+import 'package:Tiara_by_TJ/views/pages/account_page.dart';
 import 'package:provider/provider.dart';
 import 'package:Tiara_by_TJ/providers/customer_provider.dart';
 

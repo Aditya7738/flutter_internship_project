@@ -3,20 +3,6 @@
 <plist version="1.0">
 	<dict>
 		<key>
-			LSApplicationQueriesSchemes
-		</key>
-		<array>
-			<string>
-				tez
-			</string>
-			<string>
-				phonepe
-			</string>
-			<string>
-				paytmmp
-			</string>
-		</array>
-		<key>
 			LSApplicationCategoryType
 		</key>
 		<string>
@@ -26,7 +12,7 @@
 		</key>
 		<array>
 			<string>
-				phonepe
+				tel
 			</string>
 			<string>
 				tez
@@ -39,6 +25,9 @@
 			</string>
 			<string>
 				credpay
+			</string>
+			<string>
+				phonepe
 			</string>
 		</array>
 		<key>

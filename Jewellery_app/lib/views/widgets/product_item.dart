@@ -182,7 +182,7 @@ class _ProductItemState extends State<ProductItem> {
                                   .contains(productsModel.id)) {
                                 value.removeFromCartId(productsModel.id!);
 
-                                value.removeFromCart(cartProductModel);
+                                value.removeFromCart(cartProductModel, productsModel.id!);
                               } else {
                                 value.addToCartId(productsModel.id!);
                                 value.addToCart(cartProductModel
