@@ -169,6 +169,7 @@ class _PaymentPageState extends State<PaymentPage>
       ]);
 
       print("digi billingData ${orderProvider.billingData}");
+       print("digi shippingData ${orderProvider.shippingData}");
       print("digi lineItems ${orderProvider.lineItems}");
       print("digi customerId ${orderProvider.customerId}");
       print("digi price ${orderProvider.price}");

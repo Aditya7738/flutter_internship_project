@@ -6,7 +6,7 @@ import 'package:Tiara_by_TJ/providers/customer_provider.dart';
 import 'package:Tiara_by_TJ/providers/wishlist_provider.dart';
 import 'package:Tiara_by_TJ/views/pages/cart_page.dart';
 import 'package:Tiara_by_TJ/views/pages/login_page.dart';
-import 'package:Tiara_by_TJ/views/pages/my_account_page.dart';
+import 'package:Tiara_by_TJ/views/pages/my_profile_page.dart';
 import 'package:Tiara_by_TJ/views/pages/notification_page.dart';
 import 'package:Tiara_by_TJ/views/pages/orders_page.dart';
 import 'package:Tiara_by_TJ/views/pages/search_page.dart';

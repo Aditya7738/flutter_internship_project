@@ -63,10 +63,10 @@ class OrderProvider with ChangeNotifier {
   }
 
   void addToMetaData(List<Map<String, dynamic>> paymentData) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+   // WidgetsBinding.instance.addPostFrameCallback((_) {
       _metaData.addAll(paymentData);
       notifyListeners();
-    });
+    //});
   }
 
   void setIsOrderCreating(bool isOrderCreating) {

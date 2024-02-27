@@ -19,7 +19,9 @@ import 'package:path/path.dart' as path;
 
 class DigiGoldPlanOrderPage extends StatefulWidget {
   final DigiGoldPlanModel digiGoldPlanModel;
-  DigiGoldPlanOrderPage({super.key, required this.digiGoldPlanModel});
+  Map<String, String>? flexiPlanData;
+  DigiGoldPlanOrderPage(
+      {super.key, required this.digiGoldPlanModel, this.flexiPlanData});
 
   @override
   State<DigiGoldPlanOrderPage> createState() => _DigiGoldPlanOrderPageState();
@@ -242,6 +244,15 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
     }
   }
 
+  String getPlanDuration() {
+    for (var i = 0; i < widget.digiGoldPlanModel.metaData.length; i++) {
+      if (widget.digiGoldPlanModel.metaData[i].key == "digi_plan_duration") {
+        return widget.digiGoldPlanModel.metaData[i].value;
+      }
+    }
+    return "";
+  }
+
   @override
   Widget build(BuildContext context) {
     final customerProvider =
@@ -263,43 +274,91 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
                 // const SizedBox(
                 //   height: 15.0,
                 // ),
-                Text("Your order",
+                Text("Plan details",
                     style: Theme.of(context).textTheme.headline1),
                 const SizedBox(
                   height: 5.0,
                 ),
                 Container(
-                  padding: const EdgeInsets.all(10.0),
-                  decoration: BoxDecoration(
-                      border: Border.all(
-                          color: Colors.grey, style: BorderStyle.solid)),
-                  child: Column(
-                    children: [
-                      CartTotalRow(
-                          label: 'Product',
-                          value:
-                              widget.digiGoldPlanModel.name ?? "Digi Gold Plan",
-                          showMoney: false),
-                      const Divider(
-                        height: 15.0,
-                        color: Colors.grey,
-                      ),
-                      CartTotalRow(
-                          label: 'Subtotal',
-                          value: widget.digiGoldPlanModel.price ?? "0",
-                          showMoney: true),
-                      const Divider(
-                        height: 15.0,
-                        color: Colors.grey,
-                      ),
-                      CartTotalRow(
-                        label: 'Total',
-                        value: widget.digiGoldPlanModel.price ?? "0",
-                        showMoney: true,
-                      ),
-                    ],
-                  ),
-                ),
+                    padding: const EdgeInsets.all(10.0),
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                            color: Colors.grey, style: BorderStyle.solid)),
+                    child: widget.flexiPlanData != null
+                        ? Column(
+                            children: [
+                              CartTotalRow(
+                                  label: 'Plan name',
+                                  value: widget.digiGoldPlanModel.name ??
+                                      "Digi Gold Plan",
+                                  showMoney: false),
+                              const Divider(
+                                height: 15.0,
+                                color: Colors.grey,
+                              ),
+                              CartTotalRow(
+                                label: 'Selected plan duration',
+                                value:
+                                    "${widget.flexiPlanData!["plan_duration"]!} months",
+                                showMoney: false,
+                              ),
+                              const Divider(
+                                height: 15.0,
+                                color: Colors.grey,
+                              ),
+                              CartTotalRow(
+                                label: 'Amount need to pay per month',
+                                value: widget.flexiPlanData!["plan_price"]!,
+                                showMoney: true,
+                              ),
+                              const Divider(
+                                height: 15.0,
+                                color: Colors.grey,
+                              ),
+                              CartTotalRow(
+                                label: 'Total amount you pay in plan',
+                                value:
+                                    "${int.parse(widget.flexiPlanData!["plan_price"]!) * int.parse(widget.flexiPlanData!["plan_duration"]!)}",
+                                showMoney: true,
+                              ),
+                              const Divider(
+                                height: 15.0,
+                                color: Colors.grey,
+                              ),
+                              CartTotalRow(
+                                label: 'Gold credit per month',
+                                value:
+                                    "${widget.flexiPlanData!["plan_gold_weight"]!} gms",
+                                showMoney: false,
+                              ),
+                            ],
+                          )
+                        : Column(
+                            children: [
+                              CartTotalRow(
+                                  label: 'Plan name',
+                                  value: widget.digiGoldPlanModel.name ??
+                                      "Digi Gold Plan",
+                                  showMoney: false),
+                              const Divider(
+                                height: 15.0,
+                                color: Colors.grey,
+                              ),
+                              CartTotalRow(
+                                  label: 'Plan amount',
+                                  value: widget.digiGoldPlanModel.price ?? "0",
+                                  showMoney: true),
+                              const Divider(
+                                height: 15.0,
+                                color: Colors.grey,
+                              ),
+                              CartTotalRow(
+                                label: 'Plan duration',
+                                value: "${getPlanDuration()} months",
+                                showMoney: false,
+                              ),
+                            ],
+                          )),
                 SizedBox(
                   height: 30.0,
                 ),
@@ -637,32 +696,76 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
         "postcode": _pinNoController.text
       };
 
-      List<Map<String, dynamic>> line_items = [
-        {
-          "id": widget.digiGoldPlanModel.id,
-          "quantity": 1,
-          "total": widget.digiGoldPlanModel.price,
-          "tax_class": "zero-rate",
-        },
-      ];
+      List<Map<String, dynamic>> line_items = <Map<String, dynamic>>[];
+      if (widget.flexiPlanData != null) {
+        line_items = [
+          {
+            "product_id": widget.digiGoldPlanModel.id,
+            "quantity": 1,
+            "total": widget.flexiPlanData!["plan_price"]!,
+            "tax_class": "zero-rate",
+          },
+        ];
+      } else {
+        line_items = [
+          {
+            "product_id": widget.digiGoldPlanModel.id,
+            "quantity": 1,
+            "total": widget.digiGoldPlanModel.price,
+            "tax_class": "zero-rate",
+          },
+        ];
+      }
 
-      List<Map<String, dynamic>> meta_data = [
-        {
-          "key": "virtual_order",
-          "value": "digigold",
-        },
-        {
-          "key": "gold_gross",
-          "value": goldGross,
-        },
-        {"key": "digi_plan_duration", "value": "$planDuration"},
-        {
-          "key": "digi_plan_name",
-          "value": widget.digiGoldPlanModel.name ?? "Gold plan"
-        },
-        {"key": "digi_plan_type", "value": digiPlanType},
-        {"key": "description", "value": widget.digiGoldPlanModel.description},
-      ];
+      List<Map<String, dynamic>> meta_data = <Map<String, dynamic>>[];
+
+      if (widget.flexiPlanData != null) {
+        meta_data = [
+          {
+            "key": "virtual_order",
+            "value": "digigold",
+          },
+          {
+            "key": "gold_gross",
+            "value": widget.flexiPlanData!["plan_gold_weight"]!,
+          },
+          {
+            "key": "digi_plan_duration",
+            "value": widget.flexiPlanData!["plan_duration"]!
+          },
+          {
+            "key": "digi_plan_price",
+            "value": widget.flexiPlanData!["plan_price"]!
+          },
+          {
+            "key": "digi_plan_name",
+            "value": widget.digiGoldPlanModel.name ?? "Gold plan"
+          },
+          {
+            "key": "digi_plan_type",
+            "value": widget.flexiPlanData!["digi_plan_type"]
+          },
+          {"key": "description", "value": widget.flexiPlanData!["description"]},
+        ];
+      } else {
+        meta_data = [
+          {
+            "key": "virtual_order",
+            "value": "digigold",
+          },
+          {
+            "key": "gold_gross",
+            "value": goldGross,
+          },
+          {"key": "digi_plan_duration", "value": "$planDuration"},
+          {
+            "key": "digi_plan_name",
+            "value": widget.digiGoldPlanModel.name ?? "Gold plan"
+          },
+          {"key": "digi_plan_type", "value": digiPlanType},
+          {"key": "description", "value": widget.digiGoldPlanModel.description},
+        ];
+      }
 
       print(
           "customerProvider.customerId ${customerProvider.customerData[0]["id"]}");
@@ -671,7 +774,7 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
       orderProvider.setCustomerId(customerProvider.customerData[0]["id"]);
       orderProvider.setLineItems(line_items);
       orderProvider.setMetaData(meta_data);
-      orderProvider.setPrice(widget.digiGoldPlanModel.price ?? "");
+      orderProvider.setPrice(widget.flexiPlanData!["plan_price"]!);
 
       ///////////////////////////////////////////////////////////////////////////////////////
 

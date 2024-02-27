@@ -35,7 +35,7 @@ class OrderPage extends StatelessWidget {
           //EmptyListWidget(imagePath: "assets/images/delivery_service.png", message: "Oops! You haven't placed an order yet!"),
           MyOrderTab(),
 
-          EmptyListWidget(imagePath: "assets/images/cancel.png", message: "You don't have any completely cancelled order.", forCancelledOrder: true,),
+          EmptyListWidget(imagePath: "assets/images/cancel.png", message: "You don't have any cancelled order.", forCancelledOrder: true,),
           ]
 
           )

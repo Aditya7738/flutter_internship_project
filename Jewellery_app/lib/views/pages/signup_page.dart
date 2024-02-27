@@ -49,7 +49,19 @@ class _SignupPageState extends State<SignupPage> {
     final customerProvider = Provider.of<CustomerProvider>(context);
 
     return Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(
+          leading: GestureDetector(
+              child: Icon(Icons.arrow_back_outlined),
+              onTap: () {
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => LoginPage(
+                        isComeFromCart: false,
+                      ),
+                    ));
+              }),
+        ),
         body: SingleChildScrollView(
           child: Padding(
               padding: const EdgeInsets.all(20.0),
@@ -310,13 +322,13 @@ class _SignupPageState extends State<SignupPage> {
                                 password = _passwordController.text;
                               });
                             }
-
+          
                             List<String> list = email.split('@');
                             String username = list[0];
-
+          
                             print(
                                 "$phone $email $first_name $last_name $username");
-
+          
                             Map<String, dynamic> data = {
                               "phone": phone,
                               "first_name": first_name,
@@ -325,7 +337,7 @@ class _SignupPageState extends State<SignupPage> {
                               "username": username,
                               "password": password
                             };
-
+          
                             print("SAVED DATA $data");
                             bool isThereInternet =
                                 await ApiService.checkInternetConnection(
@@ -336,30 +348,30 @@ class _SignupPageState extends State<SignupPage> {
                                   isLoading = true;
                                 });
                               }
-
+          
                               final response =
                                   await ApiService.createCustomer(data);
-
+          
                               if (mounted) {
                                 setState(() {
                                   isLoading = false;
                                 });
                               }
-
+          
                               if (response.statusCode == 201) {
                                 String body = response.body;
                                 List<Map<String, dynamic>> data =
                                     <Map<String, dynamic>>[];
-
+          
                                 try {
                                   data = jsonDecode(body);
                                   print("JSON DECODE DATA $data");
                                 } catch (e) {
                                   print('Error decoding: $e');
                                 }
-
+          
                                 customerProvider.setCustomerData(data);
-
+          
                                 Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
@@ -370,10 +382,10 @@ class _SignupPageState extends State<SignupPage> {
                               } else {
                                 String body = response.body;
                                 Map<String, dynamic> data = <String, dynamic>{};
-
+          
                                 try {
                                   data = jsonDecode(body);
-
+          
                                   if (mounted) {
                                     setState(() {
                                       isRegisterUnSuccessful = true;
@@ -424,12 +436,12 @@ class _SignupPageState extends State<SignupPage> {
                           child: RichText(
                               text: TextSpan(
                                   text: 'Already have an account?',
-                                  style: const TextStyle(color: Colors.black),
+                                  style: const TextStyle(color: Colors.black, fontSize: 16.0),
                                   children: <TextSpan>[
                             TextSpan(
                               text: ' Login',
                               style: const TextStyle(
-                                fontWeight: FontWeight.bold,
+                                fontWeight: FontWeight.bold, fontSize: 16.0,
                                 color: Color(0xffCC868A),
                               ),
                               recognizer: TapGestureRecognizer()

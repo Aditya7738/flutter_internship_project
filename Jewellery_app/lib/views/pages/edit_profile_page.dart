@@ -184,37 +184,37 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         return ValidationHelper.isPhoneNoValid(value);
                       },
                       decoration: InputDecoration(
-                          suffix: GestureDetector(
-                              onTap: () {
-                                value.setPhoneNoVerified(true);
-                              },
-                              child: value.phoneNoVerified
-                                  ? Container(
-                                      width: 100.0,
-                                      height: 40.0,
-                                      decoration: BoxDecoration(
-                                          color: const Color(0xffCC868A),
-                                          borderRadius:
-                                              BorderRadius.circular(10.0)),
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 10.0, horizontal: 20.0),
-                                      child: const Center(
-                                        child: Text(
-                                          "VERIFY",
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 15.0),
-                                        ),
-                                      ))
-                                  : Padding(
-                                      padding:
-                                          const EdgeInsets.only(bottom: 0.0),
-                                      child: Image.asset(
-                                        "assets/images/yes.png",
-                                        width: 30.0,
-                                        height: 25.0,
-                                      ),
-                                    )),
+                          // suffix: GestureDetector(
+                          //     onTap: () {
+                          //       value.setPhoneNoVerified(true);
+                          //     },
+                          //     child: value.phoneNoVerified
+                          //         ? Container(
+                          //             width: 100.0,
+                          //             height: 40.0,
+                          //             decoration: BoxDecoration(
+                          //                 color: const Color(0xffCC868A),
+                          //                 borderRadius:
+                          //                     BorderRadius.circular(10.0)),
+                          //             padding: const EdgeInsets.symmetric(
+                          //                 vertical: 10.0, horizontal: 20.0),
+                          //             child: const Center(
+                          //               child: Text(
+                          //                 "VERIFY",
+                          //                 style: TextStyle(
+                          //                     color: Colors.white,
+                          //                     fontSize: 15.0),
+                          //               ),
+                          //             ))
+                          //         : Padding(
+                          //             padding:
+                          //                 const EdgeInsets.only(bottom: 0.0),
+                          //             child: Image.asset(
+                          //               "assets/images/yes.png",
+                          //               width: 30.0,
+                          //               height: 25.0,
+                          //             ),
+                          //           )),
                           border: const OutlineInputBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(20.0))),
@@ -258,36 +258,36 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         border: const OutlineInputBorder(
                             borderRadius:
                                 BorderRadius.all(Radius.circular(20.0))),
-                        suffix: GestureDetector(
-                            onTap: () {
-                              value.setEmailVerified(true);
-                            },
-                            child: value.phoneNoVerified
-                                ? Container(
-                                    width: 100.0,
-                                    height: 40.0,
-                                    decoration: BoxDecoration(
-                                        color: const Color(0xffCC868A),
-                                        borderRadius:
-                                            BorderRadius.circular(10.0)),
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 10.0, horizontal: 20.0),
-                                    child: const Center(
-                                      child: Text(
-                                        "VERIFY",
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 15.0),
-                                      ),
-                                    ))
-                                : Padding(
-                                    padding: const EdgeInsets.only(bottom: 0.0),
-                                    child: Image.asset(
-                                      "assets/images/yes.png",
-                                      width: 30.0,
-                                      height: 25.0,
-                                    ),
-                                  )),
+                        // suffix: GestureDetector(
+                        //     onTap: () {
+                        //       value.setEmailVerified(true);
+                        //     },
+                        //     child: value.phoneNoVerified
+                        //         ? Container(
+                        //             width: 100.0,
+                        //             height: 40.0,
+                        //             decoration: BoxDecoration(
+                        //                 color: const Color(0xffCC868A),
+                        //                 borderRadius:
+                        //                     BorderRadius.circular(10.0)),
+                        //             padding: const EdgeInsets.symmetric(
+                        //                 vertical: 10.0, horizontal: 20.0),
+                        //             child: const Center(
+                        //               child: Text(
+                        //                 "VERIFY",
+                        //                 style: TextStyle(
+                        //                     color: Colors.white,
+                        //                     fontSize: 15.0),
+                        //               ),
+                        //             ))
+                        //         : Padding(
+                        //             padding: const EdgeInsets.only(bottom: 0.0),
+                        //             child: Image.asset(
+                        //               "assets/images/yes.png",
+                        //               width: 30.0,
+                        //               height: 25.0,
+                        //             ),
+                        //           )),
                       ),
                     ),
                   ),
@@ -474,13 +474,13 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       }
                     },
                     child: Container(
-                        width: 180.0,
+                        width: MediaQuery.of(context).size.width,
                         height: 50.0,
                         decoration: BoxDecoration(
                             color: const Color(0xffCC868A),
                             borderRadius: BorderRadius.circular(5.0)),
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 10.0, horizontal: 20.0),
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        margin: EdgeInsets.only(bottom: 10.0),
                         child: Center(
                           child: isUpdating
                               ? const SizedBox(

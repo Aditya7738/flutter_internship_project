@@ -48,18 +48,18 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: Colors.white,
       actions: isNeededForHome
           ? <Widget>[
-              const CircleAvatar(
-                radius: 12.0,
+              // const CircleAvatar(
+              //   radius: 12.0,
 
-                child: CircleAvatar(
-                  backgroundImage: NetworkImage(
-                      "https://upload.wikimedia.org/wikipedia/commons/b/bc/Flag_of_India.png"),
-                  radius: 12,
-                ), //CircleAvatar,
-              ),
-              const SizedBox(
-                width: 10,
-              ),
+              //   child: CircleAvatar(
+              //     backgroundImage: NetworkImage(
+              //         "https://upload.wikimedia.org/wikipedia/commons/b/bc/Flag_of_India.png"),
+              //     radius: 12,
+              //   ), //CircleAvatar,
+              // ),
+              // const SizedBox(
+              //   width: 10,
+              // ),
               SizedBox(
                 height: 40.0,
                 width: 32.0,

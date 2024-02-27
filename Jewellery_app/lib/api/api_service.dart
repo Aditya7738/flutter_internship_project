@@ -1910,10 +1910,15 @@ class ApiService {
     return null;
   }
 
-  static List<DigiGoldPlans.DigiGoldPlanModel> listOfDigiGoldPlan =
-      <DigiGoldPlans.DigiGoldPlanModel>[];
+  // static List<DigiGoldPlans.DigiGoldPlanModel> listOfFilteredDigiGoldPlan =
+  //     <DigiGoldPlans.DigiGoldPlanModel>[];
 
-  static Future<void> getListOfDigiGoldPlan() async {
+  // static late DigiGoldPlans.DigiGoldPlanModel flexiPlanModel;
+
+  static Future<List<DigiGoldPlans.DigiGoldPlanModel>>
+      getListOfDigiGoldPlan() async {
+    List<DigiGoldPlans.DigiGoldPlanModel> listOfAllDigiGoldPlan =
+        <DigiGoldPlans.DigiGoldPlanModel>[];
     String url =
         "https://tiarabytj.com/wp-json/wc/v3/products?custom_filter[0][key]=_visibility&custom_filter[0][value]=hidden&per_page=100&consumer_key=${Strings.consumerKey}&consumer_secret=${Strings.consumerSecret}";
 
@@ -1925,7 +1930,7 @@ class ApiService {
       final json = jsonDecode(response.body);
 
       for (var i = 0; i < json.length; i++) {
-        listOfDigiGoldPlan.add(DigiGoldPlans.DigiGoldPlanModel(
+        listOfAllDigiGoldPlan.add(DigiGoldPlans.DigiGoldPlanModel(
           id: json[i]["id"],
           name: json[i]["name"],
           slug: json[i]["slug"],
@@ -2037,8 +2042,13 @@ class ApiService {
               : DigiGoldPlans.Links.fromJson(json[i]["_links"]),
         ));
       }
+
+      
+
+      return listOfAllDigiGoldPlan;
     } else {
       print("response.body listOfDigiGoldPlan null");
+      return listOfAllDigiGoldPlan;
     }
   }
 

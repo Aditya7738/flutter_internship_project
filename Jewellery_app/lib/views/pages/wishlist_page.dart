@@ -1,3 +1,5 @@
+import 'package:Tiara_by_TJ/views/pages/dashboard_page.dart';
+import 'package:Tiara_by_TJ/views/widgets/empty_list_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:Tiara_by_TJ/api/api_service.dart';
 import 'package:Tiara_by_TJ/constants/strings.dart';
@@ -73,273 +75,349 @@ class _WishListPageState extends State<WishListPage> {
       body: Consumer<WishlistProvider>(builder: (context, value, child) {
         print("LEnGTH ${value.wishlistProducts.length}");
 
-        return Padding(
+        if (value.favProductIds.isEmpty) {
+//EmptyListWidget(imagePath: "assets/images/empty_wish_list.jpg", message: "You have no products in your wishlist.", forCancelledOrder: false)
+          return Padding(
             padding: const EdgeInsets.all(8.0),
-            child: isWishListLoading
-                ? const Center(
-                    child: CircularProgressIndicator(
-                      backgroundColor: Colors.black,
-                      color: Colors.white,
-                    ),
+            child: SizedBox(
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    "assets/images/empty_wish_list.jpg",
+                    width: 240.0,
+                    height: 240.0,
+                  ),
+                  const SizedBox(
+                    height: 40.0,
+                  ),
+                  Text(
+                    "Your Wishlist is Empty",
+                    textAlign: TextAlign.center,
+                    maxLines: 2,
+                    style: TextStyle(
+                        fontSize: 22.0,
+                        // color: Theme.of(context).primaryColor,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(
+                    height: 20.0,
+                  ),
+                  Text(
+                    "Looks like you don't have added any jewelleries to your wishlist yet",
+                    maxLines: 2,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 17.0),
+                  ),
+                  const SizedBox(
+                    height: 50.0,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          builder: (context) => const DashboardPage()));
+                    },
+                    child: Container(
+                        decoration: BoxDecoration(
+                            color: Theme.of(context).primaryColor,
+                            borderRadius: BorderRadius.circular(5.0)),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 10.0, horizontal: 40.0),
+                        child: const Text(
+                          "CONTINUE SHOPPING",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 17.0,
+                              fontWeight: FontWeight.bold),
+                        )),
                   )
-                : ListView.builder(
-                    itemCount: value.wishlistProducts.length,
-                    itemBuilder: (context, index) {
-                      final wishListItem = value.wishlistProducts[index];
+                ],
+              ),
+            ),
+          );
+        } else {
+          return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: isWishListLoading
+                  ? const Center(
+                      child: CircularProgressIndicator(
+                        backgroundColor: Colors.black,
+                        color: Colors.white,
+                      ),
+                    )
+                  : ListView.builder(
+                      itemCount: value.wishlistProducts.length,
+                      itemBuilder: (context, index) {
+                        final wishListItem = value.wishlistProducts[index];
 
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 3.0),
-                        child: Card(
-                            elevation: 5.0,
-                            child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                      child: Image.network(
-                                        wishListItem.images.isEmpty
-                                            ? Strings.defaultImageUrl
-                                            : wishListItem.images[0].src ??
-                                                Strings.defaultImageUrl,
-                                        width:
-                                            MediaQuery.of(context).size.width /
-                                                3,
-                                        height: 130.0,
-                                        fit: BoxFit.cover,
-                                        loadingBuilder:
-                                            (context, child, loadingProgress) {
-                                          if (loadingProgress == null) {
-                                            return child;
-                                          }
-                                          return SizedBox(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width /
-                                                3,
-                                            height: 130.0,
-                                            child: const Center(
-                                              child: CircularProgressIndicator(
-                                                color: Colors.black,
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 3.0),
+                          child: Card(
+                              elevation: 5.0,
+                              child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                        child: Image.network(
+                                          wishListItem.images.isEmpty
+                                              ? Strings.defaultImageUrl
+                                              : wishListItem.images[0].src ??
+                                                  Strings.defaultImageUrl,
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              3,
+                                          height: 130.0,
+                                          fit: BoxFit.cover,
+                                          loadingBuilder: (context, child,
+                                              loadingProgress) {
+                                            if (loadingProgress == null) {
+                                              return child;
+                                            }
+                                            return SizedBox(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width /
+                                                  3,
+                                              height: 130.0,
+                                              child: const Center(
+                                                child:
+                                                    CircularProgressIndicator(
+                                                  color: Colors.black,
+                                                ),
                                               ),
-                                            ),
-                                          );
-                                        },
+                                            );
+                                          },
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 0.0,
-                                        right: 10.0,
-                                        top: 10.0,
-                                        bottom: 20.0),
-                                    child: SizedBox(
-                                      width:
-                                          (MediaQuery.of(context).size.width -
-                                                  (MediaQuery.of(context)
-                                                          .size
-                                                          .width /
-                                                      3)) -
-                                              54,
-                                      height: 130.0,
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Row(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  SizedBox(
-                                                    width:
-                                                        (MediaQuery.of(context)
-                                                                    .size
-                                                                    .width /
-                                                                2) -
-                                                            20,
-                                                    child: Text(
-                                                      wishListItem.name ??
-                                                          "Jewellery",
-                                                      // overflow:
-                                                      //     TextOverflow.ellipsis,
-                                                      // softWrap: true,
-                                                      maxLines: 2,
-                                                      style: const TextStyle(
-                                                          fontSize: 18.0),
-                                                    ),
-                                                  ),
-                                                  GestureDetector(
-                                                    onTap: () {
-                                                      value
-                                                          .removeFromLocalWishlist(
-                                                              wishListItem.id!);
-
-                                                      value.removeFromWishlist(
-                                                          wishListItem.id!);
-
-                                                      // setState(() async {
-                                                      //   await getFavProducts(value.favProductIds);
-
-                                                      // });
-                                                    },
-                                                    child: Container(
-                                                      decoration:
-                                                          const BoxDecoration(
-                                                        color: Colors.black,
-                                                        shape: BoxShape.circle,
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 0.0,
+                                          right: 10.0,
+                                          top: 10.0,
+                                          bottom: 20.0),
+                                      child: SizedBox(
+                                        width:
+                                            (MediaQuery.of(context).size.width -
+                                                    (MediaQuery.of(context)
+                                                            .size
+                                                            .width /
+                                                        3)) -
+                                                54,
+                                        height: 130.0,
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Row(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    SizedBox(
+                                                      width: (MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .width /
+                                                              2) -
+                                                          20,
+                                                      child: Text(
+                                                        wishListItem.name ??
+                                                            "Jewellery",
+                                                        // overflow:
+                                                        //     TextOverflow.ellipsis,
+                                                        // softWrap: true,
+                                                        maxLines: 2,
+                                                        style: const TextStyle(
+                                                            fontSize: 18.0),
                                                       ),
-                                                      child: const Padding(
-                                                        padding:
-                                                            EdgeInsets.all(3.0),
-                                                        child: Icon(
-                                                          size: 15.0,
-                                                          Icons.close_rounded,
-                                                          color: Colors.white,
+                                                    ),
+                                                    GestureDetector(
+                                                      onTap: () {
+                                                        value
+                                                            .removeFromLocalWishlist(
+                                                                wishListItem
+                                                                    .id!);
+
+                                                        value
+                                                            .removeFromWishlist(
+                                                                wishListItem
+                                                                    .id!);
+
+                                                        // setState(() async {
+                                                        //   await getFavProducts(value.favProductIds);
+
+                                                        // });
+                                                      },
+                                                      child: Container(
+                                                        decoration:
+                                                            const BoxDecoration(
+                                                          color: Colors.black,
+                                                          shape:
+                                                              BoxShape.circle,
+                                                        ),
+                                                        child: const Padding(
+                                                          padding:
+                                                              EdgeInsets.all(
+                                                                  3.0),
+                                                          child: Icon(
+                                                            size: 15.0,
+                                                            Icons.close_rounded,
+                                                            color: Colors.white,
+                                                          ),
                                                         ),
                                                       ),
+                                                    )
+                                                  ],
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    Image.asset(
+                                                      "assets/images/rupee.png",
+                                                      width: 19.0,
+                                                      height: 19.0,
                                                     ),
-                                                  )
-                                                ],
-                                              ),
-                                              Row(
-                                                children: [
-                                                  Image.asset(
-                                                    "assets/images/rupee.png",
-                                                    width: 19.0,
-                                                    height: 19.0,
-                                                  ),
-                                                  Text(
-                                                      wishListItem.regularPrice !=
+                                                    Text(
+                                                        wishListItem.regularPrice !=
+                                                                ""
+                                                            ? wishListItem
+                                                                    .regularPrice ??
+                                                                "20000"
+                                                            : "20000",
+                                                        softWrap: true,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .headline2)
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                            Row(
+                                              children: [
+                                                GestureDetector(
+                                                  onTap: () {
+                                                    cartProvider.addToCartId(
+                                                        wishListItem.id!);
+                                                    print(
+                                                        "CART IDS : ${cartProvider.cartProductIds}");
+
+                                                    cartProvider.addToCart(
+                                                        CartProductModel(
+                                                      cartProductid:
+                                                          wishListItem.id,
+                                                      price: wishListItem
+                                                                  .regularPrice !=
                                                               ""
                                                           ? wishListItem
                                                                   .regularPrice ??
                                                               "20000"
-                                                          : "20000",
-                                                      softWrap: true,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .headline2)
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                          Row(
-                                            children: [
-                                              GestureDetector(
-                                                onTap: () {
-                                                  cartProvider.addToCartId(
-                                                      wishListItem.id!);
-                                                  print(
-                                                      "CART IDS : ${cartProvider.cartProductIds}");
+                                                          : "0.0",
+                                                      productName:
+                                                          wishListItem.name ??
+                                                              "Jewellery",
+                                                      quantity: "1",
+                                                      size: 5,
+                                                      deliveryDate: DateHelper
+                                                          .getCurrentDateInWords(),
+                                                      imageUrl: wishListItem
+                                                              .images.isEmpty
+                                                          ? Strings
+                                                              .defaultImageUrl
+                                                          : wishListItem
+                                                                  .images[0]
+                                                                  .src ??
+                                                              Strings
+                                                                  .defaultImageUrl,
+                                                      sku: wishListItem.sku,
+                                                      imageId: wishListItem
+                                                              .images.isNotEmpty
+                                                          ? wishListItem
+                                                              .images[0].id
+                                                          : 0,
+                                                    ));
+                                                    Navigator.of(context).push(
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                CartPage()));
 
-                                                  cartProvider.addToCart(
-                                                      CartProductModel(
-                                                    cartProductid:
-                                                        wishListItem.id,
-                                                    price: wishListItem
-                                                                .regularPrice !=
-                                                            ""
-                                                        ? wishListItem
-                                                                .regularPrice ??
-                                                            "20000"
-                                                        : "0.0",
-                                                    productName:
-                                                        wishListItem.name ??
-                                                            "Jewellery",
-                                                    quantity: "1",
-                                                    size: 5,
-                                                    deliveryDate: DateHelper
-                                                        .getCurrentDateInWords(),
-                                                    imageUrl: wishListItem
-                                                            .images.isEmpty
-                                                        ? Strings
-                                                            .defaultImageUrl
-                                                        : wishListItem.images[0]
-                                                                .src ??
-                                                            Strings
-                                                                .defaultImageUrl,
-                                                    sku: wishListItem.sku,
-                                                    imageId: wishListItem
-                                                            .images.isNotEmpty
-                                                        ? wishListItem
-                                                            .images[0].id
-                                                        : 0,
-                                                  ));
-                                                  Navigator.of(context).push(
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              CartPage()));
+                                                    value
+                                                        .removeFromLocalWishlist(
+                                                            wishListItem.id!);
 
-                                                  value.removeFromLocalWishlist(
-                                                      wishListItem.id!);
-
-                                                  value.removeFromWishlist(
-                                                      wishListItem.id!);
-                                                },
-                                                child: Container(
-                                                  decoration:
-                                                      const BoxDecoration(
-                                                          color: Colors.green,
-                                                          borderRadius:
-                                                              BorderRadius.all(
-                                                                  Radius
-                                                                      .circular(
-                                                                          5.0))),
-                                                  child: const Padding(
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            horizontal: 15.0,
-                                                            vertical: 5.0),
-                                                    child: Text(
-                                                      "Move to Cart",
-                                                      style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 17.0),
+                                                    value.removeFromWishlist(
+                                                        wishListItem.id!);
+                                                  },
+                                                  child: Container(
+                                                    decoration: const BoxDecoration(
+                                                        color: Colors.green,
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                                Radius.circular(
+                                                                    5.0))),
+                                                    child: const Padding(
+                                                      padding:
+                                                          EdgeInsets.symmetric(
+                                                              horizontal: 15.0,
+                                                              vertical: 5.0),
+                                                      child: Text(
+                                                        "Move to Cart",
+                                                        style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 17.0),
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
-                                              ),
-                                              const SizedBox(
-                                                width: 15.0,
-                                              ),
-                                              GestureDetector(
-                                                onTap: () {},
-                                                child: Container(
-                                                  decoration: BoxDecoration(
-                                                      border: Border.all(
-                                                          color: Colors.black),
-                                                      shape: BoxShape.rectangle,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              5.0)),
-                                                  child: const Padding(
-                                                    padding:
-                                                        EdgeInsets.all(3.0),
-                                                    child: Icon(Icons.share),
-                                                  ),
+                                                const SizedBox(
+                                                  width: 15.0,
                                                 ),
-                                              )
-                                            ],
-                                          )
-                                        ],
+                                                GestureDetector(
+                                                  onTap: () {},
+                                                  child: Container(
+                                                    decoration: BoxDecoration(
+                                                        border: Border.all(
+                                                            color:
+                                                                Colors.black),
+                                                        shape:
+                                                            BoxShape.rectangle,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(5.0)),
+                                                    child: const Padding(
+                                                      padding:
+                                                          EdgeInsets.all(3.0),
+                                                      child: Icon(Icons.share),
+                                                    ),
+                                                  ),
+                                                )
+                                              ],
+                                            )
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ])),
-                      );
-                    },
-                  ));
+                                  ])),
+                        );
+                      },
+                    ));
+        }
+
         // : ListView.builder(
         //     itemCount: value.wishlistProducts.length,
         //     itemBuilder: (context, index) {
