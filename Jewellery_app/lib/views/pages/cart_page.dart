@@ -1,5 +1,6 @@
 import 'package:Tiara_by_TJ/model/cart_product_model.dart';
 import 'package:Tiara_by_TJ/providers/customer_provider.dart';
+import 'package:Tiara_by_TJ/views/pages/coupon_list.dart';
 import 'package:Tiara_by_TJ/views/pages/dashboard_page.dart';
 import 'package:Tiara_by_TJ/views/pages/login_page.dart';
 import 'package:Tiara_by_TJ/views/widgets/empty_list_widget.dart';
@@ -85,6 +86,7 @@ class _CartPageState extends State<CartPage> {
           child: SingleChildScrollView(
               child: Consumer<CartProvider>(builder: (context, value, child) {
             var cartList = value.cart;
+
             cartList.forEach((element) {
               print("Cartlist in cart ${element.toMap()}");
             });
@@ -96,32 +98,45 @@ class _CartPageState extends State<CartPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       ...getCartList(cartList, value),
-                   
+
                       const SizedBox(
                         height: 15.0,
                       ),
 
                       GestureDetector(
                         onTap: () {
-                          
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => CouponListPage(
+                                    cartProductIds: value.cartProductIds,
+                                    cartTotal: value.calculateTotalPrice()),
+                              ));
                         },
                         child: Container(
                           margin: EdgeInsets.symmetric(horizontal: 10.0),
                           decoration: BoxDecoration(
-                            border: Border.all(color: Theme.of(context).primaryColor),
-                            shape: BoxShape.rectangle,
-                            borderRadius: BorderRadius.circular(10.0)
-                          ),
+                              border: Border.all(
+                                  color: Theme.of(context).primaryColor),
+                              shape: BoxShape.rectangle,
+                              borderRadius: BorderRadius.circular(10.0)),
                           child: ListTile(
-                            leading: Image.asset("assets/images/discount.png",color: Theme.of(context).primaryColor,
-                            width: 30.0,
-                            height: 30.0,
-                        
+                            leading: Image.asset(
+                              "assets/images/discount.png",
+                              color: Theme.of(context).primaryColor,
+                              width: 30.0,
+                              height: 30.0,
                             ),
-                            title: Text("Apply Coupon", style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 19.0),),
-                            trailing: Icon(Icons.east_outlined, size: 30.0,color: Theme.of(context).primaryColor),
+                            title: Text(
+                              "Apply Coupon",
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColor,
+                                  fontSize: 19.0),
+                            ),
+                            trailing: Icon(Icons.east_outlined,
+                                size: 30.0,
+                                color: Theme.of(context).primaryColor),
                           ),
-                        
                         ),
                       ),
                       SizedBox(
