@@ -170,9 +170,9 @@ class _LoginPageState extends State<LoginPage> {
                           suffixIcon: IconButton(
                             onPressed: () {
                               if (mounted) {
-      setState(() {
-                                isObscured = !isObscured;
-                              });
+                                setState(() {
+                                  isObscured = !isObscured;
+                                });
                               }
                             },
                             icon: Icon(isObscured
@@ -194,10 +194,10 @@ class _LoginPageState extends State<LoginPage> {
                         onTap: () async {
                           if (_formKey.currentState!.validate()) {
                             if (mounted) {
-      setState(() {
-                              email = _emailController.text;
-                              password = _passwordController.text;
-                            });
+                              setState(() {
+                                email = _emailController.text;
+                                password = _passwordController.text;
+                              });
                             }
                             print("$email $password");
 
@@ -216,9 +216,9 @@ class _LoginPageState extends State<LoginPage> {
                                     context);
                             if (isThereInternet) {
                               if (mounted) {
-      setState(() {
-                                isLoading = true;
-                              });
+                                setState(() {
+                                  isLoading = true;
+                                });
                               }
 
                               final response = await ApiService.loginCustomer(
@@ -244,9 +244,9 @@ class _LoginPageState extends State<LoginPage> {
                                   customerProvider.setCustomerData(data);
 
                                   if (mounted) {
-      setState(() {
-                                    isLoading = false;
-                                  });
+                                    setState(() {
+                                      isLoading = false;
+                                    });
                                   }
 
                                   widget.isComeFromCart
@@ -267,10 +267,10 @@ class _LoginPageState extends State<LoginPage> {
                                         "LOGIN ERROR DATA ${data["message"]}");
 
                                     if (mounted) {
-      setState(() {
-                                      isLoginUnSuccessful = true;
-                                      errorMsg = data["message"];
-                                    });
+                                      setState(() {
+                                        isLoginUnSuccessful = true;
+                                        errorMsg = data["message"];
+                                      });
                                     }
                                     print("JSON DECODE DATA $data");
                                   } catch (e) {
@@ -278,9 +278,9 @@ class _LoginPageState extends State<LoginPage> {
                                   }
 
                                   if (mounted) {
-      setState(() {
-                                    isLoading = false;
-                                  });
+                                    setState(() {
+                                      isLoading = false;
+                                    });
                                   }
                                 }
                               }

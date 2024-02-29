@@ -13,6 +13,17 @@ class CartProvider with ChangeNotifier {
 
   bool get isOrderCreating => _isOrderCreating;
 
+  Map<String, dynamic>? _selectedCouponData;
+
+  Map<String, dynamic>? get selectedCouponData => _selectedCouponData;
+
+  void setSelectedCouponData(Map<String, dynamic>? selectedCouponData) {
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+      _selectedCouponData = selectedCouponData;
+      notifyListeners();
+    //});
+  }
+
   void setIsOrderCreating(bool isOrderCreating) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _isOrderCreating = isOrderCreating;

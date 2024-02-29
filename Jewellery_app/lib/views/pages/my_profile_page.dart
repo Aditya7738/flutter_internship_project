@@ -52,7 +52,7 @@ class MyProfilePage extends StatelessWidget {
           alignment: Alignment.center,
           title: const Text("Confirm Logout"),
           content: const Text(
-              "Please click on confirm button for logout else cancel"),
+              "Please click on confirm button for logout else cancel", style: TextStyle(fontSize: 17.0),),
           actions: [
             GestureDetector(
               onTap: () {

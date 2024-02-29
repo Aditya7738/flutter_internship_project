@@ -2133,59 +2133,70 @@ class ApiService {
       final json = jsonDecode(response.body);
 
       for (var i = 0; i < json.length; i++) {
-        listOfCoupons.add(Coupons.CouponsModel(
-          id: json[i]["id"],
-          code: json[i]["code"],
-          amount: json[i]["amount"],
-          status: json[i]["status"],
-          dateCreated: DateTime.tryParse(json[i]["date_created"] ?? ""),
-          dateCreatedGmt: DateTime.tryParse(json[i]["date_created_gmt"] ?? ""),
-          dateModified: DateTime.tryParse(json[i]["date_modified"] ?? ""),
-          dateModifiedGmt:
-              DateTime.tryParse(json[i]["date_modified_gmt"] ?? ""),
-          discountType: json[i]["discount_type"],
-          description: json[i]["description"],
-          dateExpires: DateTime.tryParse(json[i]["date_expires"] ?? ""),
-          dateExpiresGmt: DateTime.tryParse(json[i]["date_expires_gmt"] ?? ""),
-          usageCount: json[i]["usage_count"],
-          individualUse: json[i]["individual_use"],
-          productIds: json[i]["product_ids"] == null
-              ? []
-              : List<dynamic>.from(json[i]["product_ids"]!.map((x) => x)),
-          excludedProductIds: json[i]["excluded_product_ids"] == null
-              ? []
-              : List<dynamic>.from(
-                  json[i]["excluded_product_ids"]!.map((x) => x)),
-          usageLimit: json[i]["usage_limit"],
-          usageLimitPerUser: json[i]["usage_limit_per_user"],
-          limitUsageToXItems: json[i]["limit_usage_to_x_items"],
-          freeShipping: json[i]["free_shipping"],
-          productCategories: json[i]["product_categories"] == null
-              ? []
-              : List<int>.from(json[i]["product_categories"]!.map((x) => x)),
-          excludedProductCategories:
-              json[i]["excluded_product_categories"] == null
+        print(
+            "DateExpires ${DateTime.tryParse(json[i]["date_expires"] ?? "")}");
+        if (DateTime.tryParse(json[i]["date_expires"] ?? "") != null) {
+          if (DateTime.now()
+              .isBefore(DateTime.tryParse(json[i]["date_expires"])!)) {
+            listOfCoupons.add(Coupons.CouponsModel(
+              id: json[i]["id"],
+              code: json[i]["code"],
+              amount: json[i]["amount"],
+              status: json[i]["status"],
+              dateCreated: DateTime.tryParse(json[i]["date_created"] ?? ""),
+              dateCreatedGmt:
+                  DateTime.tryParse(json[i]["date_created_gmt"] ?? ""),
+              dateModified: DateTime.tryParse(json[i]["date_modified"] ?? ""),
+              dateModifiedGmt:
+                  DateTime.tryParse(json[i]["date_modified_gmt"] ?? ""),
+              discountType: json[i]["discount_type"],
+              description: json[i]["description"],
+              dateExpires: DateTime.tryParse(json[i]["date_expires"] ?? ""),
+              dateExpiresGmt:
+                  DateTime.tryParse(json[i]["date_expires_gmt"] ?? ""),
+              usageCount: json[i]["usage_count"],
+              individualUse: json[i]["individual_use"],
+              productIds: json[i]["product_ids"] == null
+                  ? []
+                  : List<dynamic>.from(json[i]["product_ids"]!.map((x) => x)),
+              excludedProductIds: json[i]["excluded_product_ids"] == null
+                  ? []
+                  : List<dynamic>.from(
+                      json[i]["excluded_product_ids"]!.map((x) => x)),
+              usageLimit: json[i]["usage_limit"],
+              usageLimitPerUser: json[i]["usage_limit_per_user"],
+              limitUsageToXItems: json[i]["limit_usage_to_x_items"],
+              freeShipping: json[i]["free_shipping"],
+              productCategories: json[i]["product_categories"] == null
+                  ? []
+                  : List<int>.from(
+                      json[i]["product_categories"]!.map((x) => x)),
+              excludedProductCategories: json[i]
+                          ["excluded_product_categories"] ==
+                      null
                   ? []
                   : List<dynamic>.from(
                       json[i]["excluded_product_categories"]!.map((x) => x)),
-          excludeSaleItems: json[i]["exclude_sale_items"],
-          minimumAmount: json[i]["minimum_amount"],
-          maximumAmount: json[i]["maximum_amount"],
-          emailRestrictions: json[i]["email_restrictions"] == null
-              ? []
-              : List<dynamic>.from(
-                  json[i]["email_restrictions"]!.map((x) => x)),
-          usedBy: json[i]["used_by"] == null
-              ? []
-              : List<String>.from(json[i]["used_by"]!.map((x) => x)),
-          metaData: json[i]["meta_data"] == null
-              ? []
-              : List<Coupons.MetaDatum>.from(json[i]["meta_data"]!
-                  .map((x) => Coupons.MetaDatum.fromJson(x))),
-          links: json[i]["_links"] == null
-              ? null
-              : Coupons.Links.fromJson(json[i]["_links"]),
-        ));
+              excludeSaleItems: json[i]["exclude_sale_items"],
+              minimumAmount: json[i]["minimum_amount"],
+              maximumAmount: json[i]["maximum_amount"],
+              emailRestrictions: json[i]["email_restrictions"] == null
+                  ? []
+                  : List<dynamic>.from(
+                      json[i]["email_restrictions"]!.map((x) => x)),
+              usedBy: json[i]["used_by"] == null
+                  ? []
+                  : List<String>.from(json[i]["used_by"]!.map((x) => x)),
+              metaData: json[i]["meta_data"] == null
+                  ? []
+                  : List<Coupons.MetaDatum>.from(json[i]["meta_data"]!
+                      .map((x) => Coupons.MetaDatum.fromJson(x))),
+              links: json[i]["_links"] == null
+                  ? null
+                  : Coupons.Links.fromJson(json[i]["_links"]),
+            ));
+          }
+        }
       }
 
       print("listOfCoupons.length ${listOfCoupons.length}");

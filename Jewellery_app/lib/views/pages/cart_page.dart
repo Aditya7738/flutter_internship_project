@@ -71,6 +71,8 @@ class _CartPageState extends State<CartPage> {
     "25"
   ];
 
+  Map<String, dynamic>? selectedCouponData;
+
   @override
   Widget build(BuildContext context) {
     final cartProvider = Provider.of<CartProvider>(context, listen: false);
@@ -102,42 +104,198 @@ class _CartPageState extends State<CartPage> {
                       const SizedBox(
                         height: 15.0,
                       ),
-
+                      Padding(
+                        padding: const EdgeInsets.only(left: 8.0),
+                        child: Text("Offers & Benefits",
+                            style: Theme.of(context).textTheme.headline2),
+                      ),
+                      const SizedBox(
+                        height: 10.0,
+                      ),
                       GestureDetector(
-                        onTap: () {
-                          Navigator.push(
+                        onTap: () async {
+                          if (value.selectedCouponData == null) {
+                               selectedCouponData = await Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => CouponListPage(
                                     cartProductIds: value.cartProductIds,
                                     cartTotal: value.calculateTotalPrice()),
                               ));
+                          value.setSelectedCouponData(selectedCouponData);
+                          print(
+                              "selectedCouponData != null ${selectedCouponData != null}");
+                          if (selectedCouponData != null) {
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: Image.asset(
+                                    "assets/images/discount.png",
+                                    color: Theme.of(context).primaryColor,
+                                    width: 30.0,
+                                    height: 30.0,
+                                  ),
+                                  content: Container(
+                                    height: 250,
+                                    child: Column(
+                                      children: [
+                                        Text(
+                                            "'${selectedCouponData!["couponcode"]}' applied"),
+                                        SizedBox(
+                                          height: 30.0,
+                                        ),
+                                        Text(
+                                          "${selectedCouponData!["discountString"]} saved with this coupon!",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              fontSize: 22.0,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        SizedBox(
+                                          height: 30.0,
+                                        ),
+                                        Text(
+                                          "Woohoo! Your coupon is successfully applied!",
+                                          textAlign: TextAlign.center,
+                                        ),
+                                        SizedBox(
+                                          height: 20.0,
+                                        ),
+                                        GestureDetector(
+                                          onTap: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: Container(
+                                              decoration: BoxDecoration(
+                                                  color:
+                                                      const Color(0xffCC868A),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          5.0)),
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 10.0,
+                                                      horizontal: 20.0),
+                                              child: const Text(
+                                                "YAYY!",
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 17.0),
+                                              )),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
+                          }
+                          }
+                       
                         },
-                        child: Container(
-                          margin: EdgeInsets.symmetric(horizontal: 10.0),
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: Theme.of(context).primaryColor),
-                              shape: BoxShape.rectangle,
-                              borderRadius: BorderRadius.circular(10.0)),
-                          child: ListTile(
-                            leading: Image.asset(
-                              "assets/images/discount.png",
-                              color: Theme.of(context).primaryColor,
-                              width: 30.0,
-                              height: 30.0,
-                            ),
-                            title: Text(
-                              "Apply Coupon",
-                              style: TextStyle(
-                                  color: Theme.of(context).primaryColor,
-                                  fontSize: 19.0),
-                            ),
-                            trailing: Icon(Icons.east_outlined,
-                                size: 30.0,
-                                color: Theme.of(context).primaryColor),
-                          ),
-                        ),
+                        child: value.selectedCouponData != null
+                            ? Container(
+                                margin: EdgeInsets.symmetric(horizontal: 10.0),
+                                decoration: BoxDecoration(
+                                    color: Color.fromARGB(255, 255, 227, 230),
+                                    // border: Border.all(
+                                    //     color: Theme.of(context).primaryColor),
+                                    shape: BoxShape.rectangle,
+                                    borderRadius: BorderRadius.circular(10.0)),
+                                child: ListTile(
+                                  // leading: Image.asset(
+                                  //   "assets/images/discount.png",
+                                  //   color: Theme.of(context).primaryColor,
+                                  //   width: 30.0,
+                                  //   height: 30.0,
+                                  // ),
+
+                                  // Text(
+                                  //         "'${selectedCouponData!["couponcode"]}' applied"),
+                                  //     SizedBox(
+                                  //       height: 30.0,
+                                  //     ),
+                                  //     Text(
+                                  //       "${selectedCouponData!["discountString"]} saved with this coupon!",
+                                  //       textAlign: TextAlign.center,
+                                  //       style: TextStyle(
+                                  //           fontSize: 22.0,
+                                  //           fontWeight: FontWeight.bold),
+                                  //     ),
+                                  title: Text(
+                                    //"'couponcode' applied"
+                                    "'${selectedCouponData!["couponcode"]}' applied"
+                                    ,
+                                    style: TextStyle(
+                                        // color: Theme.of(context).primaryColor,
+                                        fontSize: 19.0),
+                                  ),
+                                  subtitle: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.check,
+                                        color: Theme.of(context).primaryColor,
+                                        size: 18.0,
+                                      ),
+                                      Text(
+                                        //"500/- "
+                                        "${selectedCouponData!["discountString"]} "
+                                        ,
+                                        style: TextStyle(
+                                            color:
+                                                Theme.of(context).primaryColor,
+                                            fontSize: 16.0,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      Text(
+                                        "saved on this order",
+                                        style: TextStyle(fontSize: 16.0),
+                                      )
+                                    ],
+                                  ),
+                                  trailing: GestureDetector(
+                                    onTap: () {
+                                      // setState(() {
+                                        value.setSelectedCouponData(null);
+                                   //   });
+                                      
+                                    },
+                                    child: Text(
+                                      "Remove",
+                                      style: TextStyle(
+                                          color: Theme.of(context).primaryColor,
+                                          fontSize: 16.0,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                ),
+                              )
+                            : Container(
+                                margin: EdgeInsets.symmetric(horizontal: 10.0),
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                        color: Theme.of(context).primaryColor),
+                                    shape: BoxShape.rectangle,
+                                    borderRadius: BorderRadius.circular(10.0)),
+                                child: ListTile(
+                                  leading: Image.asset(
+                                    "assets/images/discount.png",
+                                    color: Theme.of(context).primaryColor,
+                                    width: 30.0,
+                                    height: 30.0,
+                                  ),
+                                  title: Text(
+                                    "Apply Coupon",
+                                    style: TextStyle(
+                                        color: Theme.of(context).primaryColor,
+                                        fontSize: 19.0),
+                                  ),
+                                  trailing: Icon(Icons.east_outlined,
+                                      size: 30.0,
+                                      color: Theme.of(context).primaryColor),
+                                ),
+                              ),
                       ),
                       SizedBox(
                         height: 20.0,
