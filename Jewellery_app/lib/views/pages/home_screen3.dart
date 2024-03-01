@@ -1,7 +1,7 @@
 import 'package:Tiara_by_TJ/views/widgets/product_list_in_tab.dart';
 import 'package:flutter/material.dart';
 import 'package:Tiara_by_TJ/api/api_service.dart';
-import 'package:Tiara_by_TJ/constants/strings.dart';
+import 'package:Tiara_by_TJ/constants/constants.dart';
 import 'package:Tiara_by_TJ/model/category_model.dart';
 import 'package:Tiara_by_TJ/providers/cart_provider.dart';
 import 'package:Tiara_by_TJ/providers/wishlist_provider.dart';
@@ -79,7 +79,7 @@ class _HomeScreen3State extends State<HomeScreen3> {
     return Scaffold(
         appBar: AppBar(
             title: CachedNetworkImage(
-              imageUrl: Strings.app_logo,
+              imageUrl: Constants.app_logo,
               width: 150,
               height: 70,
               placeholder: (context, url) {

@@ -2,7 +2,7 @@ import 'package:Tiara_by_TJ/api/api_service.dart';
 import 'package:Tiara_by_TJ/model/products_model.dart';
 import 'package:Tiara_by_TJ/providers/category_provider.dart';
 import 'package:Tiara_by_TJ/providers/filteroptions_provider.dart';
-import 'package:Tiara_by_TJ/views/pages/filter.dart';
+import 'package:Tiara_by_TJ/views/widgets/filter_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -157,7 +157,7 @@ class _SearchProductsOfCategoryState extends State<SearchProductsOfCategory> {
                         topLeft: Radius.circular(20.0),
                         topRight: Radius.circular(20.0))),
                 builder: (context) {
-                  return Filter(
+                  return FilterModal(
                     searchText: categoryProvider.searchText,
                     fromProductsPage: true,
                     categoryId: widget.categoryId,

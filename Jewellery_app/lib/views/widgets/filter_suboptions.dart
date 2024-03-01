@@ -71,14 +71,7 @@ class _FilterSubOptionsState extends State<FilterSubOptions> {
               subOptions: subOptions,
              index: index,
 
-              //isFilterSubOptionClicked: index == selectedFilterSubOptionIndex,
-              // onTap: () {
-              //   // if (mounted) {
-      //setState(() {});
-              //   //   selectedFilterSubOptionIndex = index;
-              //   // });
-                
-              // },
+         
               filterKey: widget.filterKey,
             );
           },

@@ -4,7 +4,7 @@ import 'package:Tiara_by_TJ/providers/category_provider.dart';
 import 'package:Tiara_by_TJ/providers/filteroptions_provider.dart';
 import 'package:Tiara_by_TJ/providers/wishlist_provider.dart';
 import 'package:Tiara_by_TJ/views/pages/cart_page.dart';
-import 'package:Tiara_by_TJ/views/pages/filter.dart';
+import 'package:Tiara_by_TJ/views/widgets/filter_modal.dart';
 import 'package:Tiara_by_TJ/views/pages/wishlist_page.dart';
 import 'package:Tiara_by_TJ/views/widgets/custom_searchbar.dart';
 import 'package:Tiara_by_TJ/views/widgets/search_products_category.dart';
@@ -45,6 +45,7 @@ class _ProductPageState extends State<ProductPage> {
         Provider.of<FilterOptionsProvider>(context, listen: false);
 
     getProducts();
+    
 
     _scrollController.addListener(() async {
       print(
@@ -99,6 +100,8 @@ class _ProductPageState extends State<ProductPage> {
   @override
   void dispose() {
     // TODO: implement dispose
+  //  final filterProvider = Provider.of<FilterOptionsProvider>(context);
+    filterOptionsProvider.clearFilterList();
     _scrollController.dispose();
     super.dispose();
   }
@@ -169,65 +172,180 @@ class _ProductPageState extends State<ProductPage> {
               ),
             ],
             bottom: SearchProductsOfCategory(categoryId: widget.id)),
-        body: Consumer<CategoryProvider>(builder: (context, value, child) {
-          if (value.isCategoryProductFetching
-              //|| filterOptionsProvider.isFilteredListLoading
-              ) {
-            return const Center(
-              child: CircularProgressIndicator(
-                backgroundColor: Colors.black,
-                color: Colors.white,
-              ),
+        body: SingleChildScrollView(
+          child: Consumer<CategoryProvider>(
+              builder: (context, categoryProviderValue, child) {
+            // if (categoryProviderValue.isCategoryProductFetching
+            //     //|| filterOptionsProvider.isFilteredListLoading
+            //     ) {
+            //   return SizedBox(
+            //     height: MediaQuery.of(context).size.height - 150,
+            //     child: const Center(
+            //       child: CircularProgressIndicator(
+            //         backgroundColor: Colors.black,
+            //         color: Colors.white,
+            //       ),
+            //     ),
+            //   );
+            // } else {
+            return Column(
+              children: [
+                Consumer<FilterOptionsProvider>(
+                  builder: (context, value, child) {
+                    return value.list.isEmpty
+                        ? SizedBox()
+                        : SizedBox(
+                            height: 70.0,
+                            width: MediaQuery.of(context).size.width,
+                            child: ListView.builder(
+                              padding: EdgeInsets.all(5.0),
+                              scrollDirection: Axis.horizontal,
+                              itemCount: value.list.length,
+                              itemBuilder: (context, index) {
+                                // print("value.list[index][parent] == price_range ${value.list[index]["parent"] == "price_range"}");
+
+                                // print( "₹${value.list[index]["price_range"]["min_price"]}");
+                                return Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0),
+                                  child: Chip(
+                                      padding: EdgeInsets.all(7.0),
+                                      label: Text(
+                                        value.list[index]["parent"] ==
+                                                "price_range"
+                                            ? "₹${value.list[index]["price_range"]["min_price"]} - ₹${value.list[index]["price_range"]["max_price"]}"
+                                            : value.list[index]["label"],
+                                        style: TextStyle(
+                                            fontSize: 16.0,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      deleteIcon: Container(
+                                        decoration: const BoxDecoration(
+                                          color: Colors.black,
+                                          shape: BoxShape.circle,
+                                        ),
+                                        child: const Icon(
+                                          Icons.close_rounded,
+                                          color: Colors.white,
+                                          size: 19.0,
+                                        ),
+                                      ),
+                                      onDeleted: () async {
+                                        print("ONDELETED CALLED");
+
+                                        print("index to remove $index");
+
+                                        value.removeFromList(index);
+
+                                        print("_list ${value.list}");
+
+                                        bool isThereInternet = await ApiService
+                                            .checkInternetConnection(context);
+                                        if (isThereInternet) {
+                                          categoryProviderValue
+                                              .setIsCategoryProductFetching(
+                                                  true);
+
+                                          ApiService.listOfProductsModel
+                                              .clear();
+                                          await ApiService.fetchProducts(
+                                              categoryProviderValue.searchText,
+                                              1,
+                                              filterList: value.list);
+                                          categoryProviderValue
+                                              .setIsCategoryProductFetching(
+                                                  false);
+                                        }
+                                      }),
+                                );
+                              },
+                            ),
+                          );
+                  },
+                ),
+                //  if (categoryProviderValue.isCategoryProductFetching
+                //       //|| filterOptionsProvider.isFilteredListLoading
+                //       ) {
+                //     return SizedBox(
+                //       height: MediaQuery.of(context).size.height - 150,
+                //       child: const Center(
+                //         child: CircularProgressIndicator(
+                //           backgroundColor: Colors.black,
+                //           color: Colors.white,
+                //         ),
+                //       ),
+                //     );
+                //   } else {
+                categoryProviderValue.isCategoryProductFetching
+                    ? SizedBox(
+                        height: MediaQuery.of(context).size.height - 150,
+                        child: const Center(
+                          child: CircularProgressIndicator(
+                            backgroundColor: Colors.black,
+                            color: Colors.white,
+                          ),
+                        ),
+                      )
+                    : SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height - 136,
+                        child: Scrollbar(
+                          child: GridView.builder(
+                              controller: _scrollController,
+                              itemCount:
+                                  ApiService.listOfProductsCategoryWise.length +
+                                      (isLoading || !isThereMoreProducts
+                                          ? 1
+                                          : 0),
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                      childAspectRatio: 0.64,
+                                      crossAxisCount:
+                                          MediaQuery.of(context).size.width >
+                                                  600
+                                              ? 4
+                                              : 2,
+                                      crossAxisSpacing: 0.0,
+                                      mainAxisSpacing: 0.0),
+                              itemBuilder: (BuildContext context, int index) {
+                                if (index <
+                                    ApiService
+                                        .listOfProductsCategoryWise.length) {
+                                  return ProductItem(
+                                    productIndex: index,
+                                    productsModel: ApiService
+                                        .listOfProductsCategoryWise[index],
+                                  );
+                                } else if (!isThereMoreProducts ||
+                                    categoryProviderValue.isProductListEmpty) {
+                                  return const Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 15.0, horizontal: 10.0),
+                                    child: Center(
+                                        child: Text(
+                                      "There are no more products",
+                                      style: TextStyle(
+                                          fontSize: 18.0,
+                                          fontWeight: FontWeight.bold),
+                                    )),
+                                  );
+                                } else {
+                                  return const Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 15.0, horizontal: 10.0),
+                                    child: Center(
+                                        child: CircularProgressIndicator(
+                                      color: Color(0xffCC868A),
+                                    )),
+                                  );
+                                }
+                              }),
+                        ),
+                      ),
+              ],
             );
-          } else {
-            return Padding(
-              padding: const EdgeInsets.all(0.0),
-              child: Scrollbar(
-                child: GridView.builder(
-                    controller: _scrollController,
-                    itemCount: ApiService.listOfProductsCategoryWise.length +
-                        (isLoading || !isThereMoreProducts ? 1 : 0),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        childAspectRatio: 0.64,
-                        crossAxisCount:
-                            MediaQuery.of(context).size.width > 600 ? 4 : 2,
-                        crossAxisSpacing: 0.0,
-                        mainAxisSpacing: 0.0),
-                    itemBuilder: (BuildContext context, int index) {
-                      if (index <
-                          ApiService.listOfProductsCategoryWise.length) {
-                        return ProductItem(
-                          productIndex: index,
-                          productsModel:
-                              ApiService.listOfProductsCategoryWise[index],
-                        );
-                      } else if (!isThereMoreProducts ||
-                          value.isProductListEmpty) {
-                        return const Padding(
-                          padding: EdgeInsets.symmetric(
-                              vertical: 15.0, horizontal: 10.0),
-                          child: Center(
-                              child: Text(
-                            "There are no more products",
-                            style: TextStyle(
-                                fontSize: 18.0, fontWeight: FontWeight.bold),
-                          )),
-                        );
-                      } else {
-                        return const Padding(
-                          padding: EdgeInsets.symmetric(
-                              vertical: 15.0, horizontal: 10.0),
-                          child: Center(
-                              child: CircularProgressIndicator(
-                            color: Color(0xffCC868A),
-                          )),
-                        );
-                      }
-                    }),
-              ),
-            );
-          }
-        }));
+          }),
+        ));
 
     // newListLoading
     //     ?

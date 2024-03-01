@@ -796,6 +796,11 @@ class _DigiGoldPageState extends State<DigiGoldPage> {
                           SizedBox(
                             height: 20.0,
                           ),
+                          Column(
+                            children: [
+                              ...getGoldPlanList(),
+                            ],
+                          )
                         ],
                       )
                     : isDigiGoldPlanLoading

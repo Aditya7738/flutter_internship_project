@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
-import 'package:Tiara_by_TJ/constants/strings.dart';
+import 'package:Tiara_by_TJ/constants/constants.dart';
 import 'package:Tiara_by_TJ/model/products_model.dart';
 
 class SearchProductWholeCarouselSlider extends StatefulWidget {
@@ -19,7 +19,7 @@ class _WholeCarouselSliderState
   CarouselController carouselController = CarouselController();
   late List<ProductImage> listOfProductImage;
 
-  List<String> urlList = [Strings.defaultImageUrl, Strings.defaultImageUrl];
+  List<String> urlList = [Constants.defaultImageUrl, Constants.defaultImageUrl];
 
   @override
   void initState() {

@@ -4,7 +4,7 @@ import 'package:Tiara_by_TJ/providers/digigold_provider.dart';
 import 'package:Tiara_by_TJ/providers/filteroptions_provider.dart';
 import 'package:Tiara_by_TJ/providers/order_provider.dart';
 import 'package:Tiara_by_TJ/views/pages/digi_gold_page.dart';
-import 'package:Tiara_by_TJ/views/pages/filter.dart';
+import 'package:Tiara_by_TJ/views/widgets/filter_modal.dart';
 import 'package:Tiara_by_TJ/views/pages/home_screen.dart';
 import 'package:Tiara_by_TJ/views/pages/home_screen2.dart';
 import 'package:Tiara_by_TJ/views/pages/home_screen3.dart';
@@ -18,7 +18,7 @@ import 'package:Tiara_by_TJ/providers/wishlist_provider.dart';
 import 'package:Tiara_by_TJ/views/pages/dashboard_page.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
-import 'constants/strings.dart';
+import 'constants/constants.dart';
 import 'package:flutter/services.dart';
 
 import 'dart:async';
@@ -92,7 +92,7 @@ class _MyAppState extends State<MyApp> {
     OneSignal.consentRequired(_requireConsent);
 
     // NOTE: Replace with your own app ID from https://www.onesignal.com
-    OneSignal.initialize("c58ace4e-b5d1-4ebe-b769-c0705eeac0db");
+    OneSignal.initialize(Constants.oneSignalAppId);
 
     OneSignal.Notifications.clearAll();
 
@@ -150,10 +150,10 @@ class _MyAppState extends State<MyApp> {
     OneSignal.Notifications.addClickListener((event) {
       print('NOTIFICATION CLICK LISTENER CALLED WITH EVENT: $event');
       if (mounted) {
-      setState(() {
-        _debugLabelString =
-            " \n${event.notification.jsonRepresentation().replaceAll("\\n", "\n")}";
-      });
+        setState(() {
+          _debugLabelString =
+              " \n${event.notification.jsonRepresentation().replaceAll("\\n", "\n")}";
+        });
       }
     });
 
@@ -170,10 +170,10 @@ class _MyAppState extends State<MyApp> {
       event.notification.display();
 
       if (mounted) {
-      setState(() {
-        _debugLabelString =
-            "Notification received in foreground notification: \n${event.notification.jsonRepresentation().replaceAll("\\n", "\n")}";
-      });
+        setState(() {
+          _debugLabelString =
+              "Notification received in foreground notification: \n${event.notification.jsonRepresentation().replaceAll("\\n", "\n")}";
+        });
       }
     });
   }
@@ -212,7 +212,7 @@ class _MyAppState extends State<MyApp> {
       ],
       child: MaterialApp(
         navigatorKey: navigatorKey,
-        title: Strings.app_name,
+        title: Constants.app_name,
         theme: ThemeData(
             primaryColor: Color(0xffCC868A),
             textTheme: TextTheme(

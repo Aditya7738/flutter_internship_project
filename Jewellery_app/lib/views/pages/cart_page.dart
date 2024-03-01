@@ -5,7 +5,7 @@ import 'package:Tiara_by_TJ/views/pages/dashboard_page.dart';
 import 'package:Tiara_by_TJ/views/pages/login_page.dart';
 import 'package:Tiara_by_TJ/views/widgets/empty_list_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:Tiara_by_TJ/constants/strings.dart';
+import 'package:Tiara_by_TJ/constants/constants.dart';
 import 'package:Tiara_by_TJ/providers/cart_provider.dart';
 import 'package:Tiara_by_TJ/views/pages/search_page.dart';
 import 'package:Tiara_by_TJ/views/pages/shipping_page.dart';
@@ -73,12 +73,23 @@ class _CartPageState extends State<CartPage> {
 
   Map<String, dynamic>? selectedCouponData;
 
+  double calculateTotalPriceAfterApplyCoupon(
+      double total, Map<String, dynamic>? selectedCouponData) {
+    final cartProvider = Provider.of<CartProvider>(context, listen: false);
+    double totalAfterDiscount = 0.0;
+    if (selectedCouponData!["discountString"].toString().contains("%")) {
+      totalAfterDiscount =
+          total - ((selectedCouponData["discountAmount"] / 100) * total);
+    } else {
+      totalAfterDiscount = total - selectedCouponData["discountAmount"];
+    }
+    cartProvider.setTotalAfterCouponApplied(totalAfterDiscount);
+    return totalAfterDiscount;
+  }
+
   @override
   Widget build(BuildContext context) {
     final cartProvider = Provider.of<CartProvider>(context, listen: false);
-    final customerProvider =
-        Provider.of<CustomerProvider>(context, listen: false);
-    final cart = cartProvider.cart;
 
     return Scaffold(
         appBar: const CartAppBar(
@@ -100,7 +111,6 @@ class _CartPageState extends State<CartPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       ...getCartList(cartList, value),
-
                       const SizedBox(
                         height: 15.0,
                       ),
@@ -115,84 +125,83 @@ class _CartPageState extends State<CartPage> {
                       GestureDetector(
                         onTap: () async {
                           if (value.selectedCouponData == null) {
-                               selectedCouponData = await Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => CouponListPage(
-                                    cartProductIds: value.cartProductIds,
-                                    cartTotal: value.calculateTotalPrice()),
-                              ));
-                          value.setSelectedCouponData(selectedCouponData);
-                          print(
-                              "selectedCouponData != null ${selectedCouponData != null}");
-                          if (selectedCouponData != null) {
-                            showDialog(
-                              context: context,
-                              builder: (context) {
-                                return AlertDialog(
-                                  title: Image.asset(
-                                    "assets/images/discount.png",
-                                    color: Theme.of(context).primaryColor,
-                                    width: 30.0,
-                                    height: 30.0,
-                                  ),
-                                  content: Container(
-                                    height: 250,
-                                    child: Column(
-                                      children: [
-                                        Text(
-                                            "'${selectedCouponData!["couponcode"]}' applied"),
-                                        SizedBox(
-                                          height: 30.0,
-                                        ),
-                                        Text(
-                                          "${selectedCouponData!["discountString"]} saved with this coupon!",
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                              fontSize: 22.0,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        SizedBox(
-                                          height: 30.0,
-                                        ),
-                                        Text(
-                                          "Woohoo! Your coupon is successfully applied!",
-                                          textAlign: TextAlign.center,
-                                        ),
-                                        SizedBox(
-                                          height: 20.0,
-                                        ),
-                                        GestureDetector(
-                                          onTap: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                          child: Container(
-                                              decoration: BoxDecoration(
-                                                  color:
-                                                      const Color(0xffCC868A),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          5.0)),
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      vertical: 10.0,
-                                                      horizontal: 20.0),
-                                              child: const Text(
-                                                "YAYY!",
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 17.0),
-                                              )),
-                                        ),
-                                      ],
+                            selectedCouponData = await Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => CouponListPage(
+                                      cartProductIds: value.cartProductIds,
+                                      cartTotal: value.calculateTotalPrice()),
+                                ));
+                            value.setSelectedCouponData(selectedCouponData);
+                            print(
+                                "selectedCouponData != null ${selectedCouponData != null}");
+                            if (selectedCouponData != null) {
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title: Image.asset(
+                                      "assets/images/discount.png",
+                                      color: Theme.of(context).primaryColor,
+                                      width: 30.0,
+                                      height: 30.0,
                                     ),
-                                  ),
-                                );
-                              },
-                            );
+                                    content: Container(
+                                      height: 250,
+                                      child: Column(
+                                        children: [
+                                          Text(
+                                              "'${selectedCouponData!["couponcode"]}' applied"),
+                                          SizedBox(
+                                            height: 30.0,
+                                          ),
+                                          Text(
+                                            "${selectedCouponData!["discountString"]} saved with this coupon!",
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                                fontSize: 22.0,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          SizedBox(
+                                            height: 30.0,
+                                          ),
+                                          Text(
+                                            "Woohoo! Your coupon is successfully applied!",
+                                            textAlign: TextAlign.center,
+                                          ),
+                                          SizedBox(
+                                            height: 20.0,
+                                          ),
+                                          GestureDetector(
+                                            onTap: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: Container(
+                                                decoration: BoxDecoration(
+                                                    color:
+                                                        const Color(0xffCC868A),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            5.0)),
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 10.0,
+                                                        horizontal: 20.0),
+                                                child: const Text(
+                                                  "YAYY!",
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 17.0),
+                                                )),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                },
+                              );
+                            }
                           }
-                          }
-                       
                         },
                         child: value.selectedCouponData != null
                             ? Container(
@@ -204,29 +213,9 @@ class _CartPageState extends State<CartPage> {
                                     shape: BoxShape.rectangle,
                                     borderRadius: BorderRadius.circular(10.0)),
                                 child: ListTile(
-                                  // leading: Image.asset(
-                                  //   "assets/images/discount.png",
-                                  //   color: Theme.of(context).primaryColor,
-                                  //   width: 30.0,
-                                  //   height: 30.0,
-                                  // ),
-
-                                  // Text(
-                                  //         "'${selectedCouponData!["couponcode"]}' applied"),
-                                  //     SizedBox(
-                                  //       height: 30.0,
-                                  //     ),
-                                  //     Text(
-                                  //       "${selectedCouponData!["discountString"]} saved with this coupon!",
-                                  //       textAlign: TextAlign.center,
-                                  //       style: TextStyle(
-                                  //           fontSize: 22.0,
-                                  //           fontWeight: FontWeight.bold),
-                                  //     ),
                                   title: Text(
                                     //"'couponcode' applied"
-                                    "'${selectedCouponData!["couponcode"]}' applied"
-                                    ,
+                                    "'${selectedCouponData!["couponcode"]}' applied",
                                     style: TextStyle(
                                         // color: Theme.of(context).primaryColor,
                                         fontSize: 19.0),
@@ -240,8 +229,7 @@ class _CartPageState extends State<CartPage> {
                                       ),
                                       Text(
                                         //"500/- "
-                                        "${selectedCouponData!["discountString"]} "
-                                        ,
+                                        "${selectedCouponData!["discountString"]} ",
                                         style: TextStyle(
                                             color:
                                                 Theme.of(context).primaryColor,
@@ -257,9 +245,8 @@ class _CartPageState extends State<CartPage> {
                                   trailing: GestureDetector(
                                     onTap: () {
                                       // setState(() {
-                                        value.setSelectedCouponData(null);
-                                   //   });
-                                      
+                                      value.setSelectedCouponData(null);
+                                      //   });
                                     },
                                     child: Text(
                                       "Remove",
@@ -300,26 +287,6 @@ class _CartPageState extends State<CartPage> {
                       SizedBox(
                         height: 20.0,
                       ),
-                      // Container(
-                      //   width: MediaQuery.of(context).size.width,
-                      //   alignment: Alignment.centerRight,
-                      //   child: InkWell(
-                      //     child: Text(
-                      //       "Apply coupon",
-                      //       style: TextStyle(
-                      //           fontSize: 17.0,
-                      //           color: Theme.of(context).primaryColor,
-                      //           decoration: TextDecoration.underline),
-                      //     ),
-                      //     onTap: () {
-                      //       showCouponDialog(context);
-                      //     },
-                      //   ),
-                      // ),
-                      // const SizedBox(
-                      //   height: 15.0,
-                      // ),
-
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8.0),
                         child: Column(
@@ -330,63 +297,259 @@ class _CartPageState extends State<CartPage> {
                             const SizedBox(
                               height: 10.0,
                             ),
-                            Container(
-                              padding: const EdgeInsets.all(10.0),
-                              decoration: BoxDecoration(
-                                  border: Border.all(
-                                      color: Colors.grey,
-                                      style: BorderStyle.solid)),
-                              child: Column(
-                                children: [
-                                  CartTotalRow(
-                                      label: 'No. of Items',
-                                      value: value.cart.length
-                                          .toString(), //decide what to fixed this or value.cartProductIds.length.toString(),
-                                      showMoney: false),
-                                  const Divider(
-                                    height: 15.0,
-                                    color: Colors.grey,
-                                  ),
-                                  CartTotalRow(
-                                      label: 'Subtotal',
-                                      value: value
-                                          .calculateTotalPrice()
-                                          .toString(),
-                                      showMoney: true),
-                                  const Divider(
-                                    height: 15.0,
-                                    color: Colors.grey,
-                                  ),
-                                  const CartTotalRow(
-                                      label: 'Shipping charge',
-                                      value: "Free",
-                                      showMoney: false),
-                                  const Divider(
-                                    height: 15.0,
-                                    color: Colors.grey,
-                                  ),
-                                  const CartTotalRow(
-                                    label: 'Shipping insurance',
-                                    value: "Free",
-                                    showMoney: false,
-                                  ),
-                                  const Divider(
-                                    height: 15.0,
-                                    color: Colors.grey,
-                                  ),
-                                  CartTotalRow(
-                                    label: 'Total',
-                                    value:
-                                        value.calculateTotalPrice().toString(),
-                                    showMoney: true,
-                                  ),
-                                ],
-                              ),
-                            ),
+                            value.selectedCouponData != null
+                                ? Card(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(16.0),
+                                      child: Column(
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                'No. of Items',
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .headline3,
+                                              ),
+                                              Text(value.cart.length.toString(),
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .headline3)
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 10.0,
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                'Subtotal',
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .headline3,
+                                              ),
+                                              Text(
+                                                  "₹ ${value.calculateTotalPrice().toString()}",
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .headline3)
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 10.0,
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                'Shipping charge',
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .headline3,
+                                              ),
+                                              Text("Free",
+                                                  style: TextStyle(
+                                                      color: Theme.of(context)
+                                                          .primaryColor,
+                                                      fontSize: 17.0,
+                                                      fontWeight:
+                                                          FontWeight.bold))
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 10.0,
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                'Discount',
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .headline3,
+                                              ),
+                                              Text(
+                                                  selectedCouponData!["discountString"]
+                                                          .toString()
+                                                          .contains("%")
+                                                      ? "- ₹ ${((selectedCouponData!["discountAmount"] / 100) * value.calculateTotalPrice())}"
+                                                      : "- ${value.selectedCouponData!["discountString"]}",
+                                                  style: TextStyle(
+                                                      color: Colors.green,
+                                                      fontSize: 17.0,
+                                                      fontWeight:
+                                                          FontWeight.bold))
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 10.0,
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                'Shipping insurance',
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .headline3,
+                                              ),
+                                              Text("Free",
+                                                  style: TextStyle(
+                                                      color: Theme.of(context)
+                                                          .primaryColor,
+                                                      fontSize: 17.0,
+                                                      fontWeight:
+                                                          FontWeight.bold))
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 30.0,
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                'Total',
+                                                style: TextStyle(
+                                                    fontSize: 19.0,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                              Text(
+                                                  "₹ ${calculateTotalPriceAfterApplyCoupon(value.calculateTotalPrice(), selectedCouponData)}",
+                                                  //"₹ ${value.calculateTotalPrice().toString()}",
+                                                  style: TextStyle(
+                                                      fontSize: 19.0,
+                                                      fontWeight:
+                                                          FontWeight.bold))
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  )
+                                : Card(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(16.0),
+                                      child: Column(
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                'No. of Items',
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .headline3,
+                                              ),
+                                              Text(value.cart.length.toString(),
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .headline3)
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 10.0,
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                'Subtotal',
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .headline3,
+                                              ),
+                                              Text(
+                                                  "₹ ${value.calculateTotalPrice()}",
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .headline3)
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 10.0,
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                'Shipping charge',
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .headline3,
+                                              ),
+                                              Text("Free",
+                                                  style: TextStyle(
+                                                      color: Theme.of(context)
+                                                          .primaryColor,
+                                                      fontSize: 17.0,
+                                                      fontWeight:
+                                                          FontWeight.bold))
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 10.0,
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                'Shipping insurance',
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .headline3,
+                                              ),
+                                              Text("Free",
+                                                  style: TextStyle(
+                                                      color: Theme.of(context)
+                                                          .primaryColor,
+                                                      fontSize: 17.0,
+                                                      fontWeight:
+                                                          FontWeight.bold))
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 30.0,
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                'Total',
+                                                style: TextStyle(
+                                                    fontSize: 19.0,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                              Text(
+                                                  "₹ ${value.calculateTotalPrice().toString()}",
+                                                  style: TextStyle(
+                                                      fontSize: 19.0,
+                                                      fontWeight:
+                                                          FontWeight.bold))
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  )
                           ],
                         ),
                       ),
-
                       const SizedBox(
                         height: 90.0,
                       ),
@@ -518,7 +681,10 @@ class _CartPageState extends State<CartPage> {
                               width: 25.0,
                               height: 37.0,
                             ),
-                            Text(cartProvider.calculateTotalPrice().toString(),
+                            Text(
+                                value.selectedCouponData != null
+                                    ? value.totalAfterCouponApplied.toString()
+                                    : value.calculateTotalPrice().toString(),
                                 style: Theme.of(context).textTheme.headline1)
                           ],
                         ),
@@ -587,7 +753,7 @@ class _CartPageState extends State<CartPage> {
             ClipRRect(
               borderRadius: BorderRadius.circular(10.0),
               child: Image.network(
-                cartData.imageUrl ?? Strings.defaultImageUrl,
+                cartData.imageUrl ?? Constants.defaultImageUrl,
                 width: MediaQuery.of(context).size.width / 3,
                 fit: BoxFit.cover,
                 loadingBuilder: (context, child, loadingProgress) {

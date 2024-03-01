@@ -930,7 +930,7 @@ class _CouponListPageState extends State<CouponListPage> {
                     child: Text(
                       couponsModel.discountType == "fixed_product"
                           ? "₹ ${(double.parse(couponsModel.amount!)).toInt()} OFF"
-                          : "${(double.parse(couponsModel.amount!)).toInt()} %",
+                          : "${(double.parse(couponsModel.amount!)).toInt()} % OFF",
                       style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,

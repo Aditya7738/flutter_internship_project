@@ -28,8 +28,8 @@ class WishlistProvider with ChangeNotifier {
   //       productName: productOfCategoryModel.name ?? "Jewellery",
   //       productPrice: productOfCategoryModel.regularPrice ?? "20,000",
   //       imageUrl: productOfCategoryModel.images.isEmpty
-  //           ? Strings.defaultImageUrl
-  //           : productOfCategoryModel.images[0].src ?? Strings.defaultImageUrl);
+  //           ? Constants.defaultImageUrl
+  //           : productOfCategoryModel.images[0].src ?? Constants.defaultImageUrl);
 
   //   _wishlist.add(wishlistProductModel);
 
@@ -93,8 +93,8 @@ class WishlistProvider with ChangeNotifier {
   //       productName: productOfCategoryModel.name ?? "Jewellery",
   //       productPrice: productOfCategoryModel.regularPrice ?? "20,000",
   //       imageUrl: productOfCategoryModel.images.isEmpty
-  //           ? Strings.defaultImageUrl
-  //           : productOfCategoryModel.images[0].src ?? Strings.defaultImageUrl);
+  //           ? Constants.defaultImageUrl
+  //           : productOfCategoryModel.images[0].src ?? Constants.defaultImageUrl);
   //   _wishlist.remove(wishlistProductModel);
   //   notifyListeners();
 

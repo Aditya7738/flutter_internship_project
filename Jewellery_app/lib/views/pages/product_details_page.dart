@@ -8,7 +8,7 @@ import 'package:Tiara_by_TJ/views/pages/reviews_page.dart';
 import 'package:Tiara_by_TJ/views/pages/wishlist_page.dart';
 import 'package:Tiara_by_TJ/views/pages/write_review_page.dart';
 import 'package:flutter/material.dart';
-import 'package:Tiara_by_TJ/constants/strings.dart';
+import 'package:Tiara_by_TJ/constants/constants.dart';
 import 'package:Tiara_by_TJ/helpers/date_helper.dart';
 import 'package:Tiara_by_TJ/model/cart_product_model.dart';
 import 'package:Tiara_by_TJ/model/choice_model.dart';
@@ -534,10 +534,10 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                       height: 10.0,
                     ),
                     const LabelWidget(
-                      label: Strings.description_label,
+                      label: Constants.description_label,
                     ),
                     HtmlWidget(productsModel.description ??
-                        Strings.product_description),
+                        Constants.product_description),
                     const SizedBox(
                       height: 10.0,
                     ),
@@ -855,7 +855,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                   width: MediaQuery.of(context).size.width / 2,
                   child: ButtonWidget(
                       imagePath: "assets/images/grocery_store.png",
-                      btnString: Strings.cart_btn_text,
+                      btnString: Constants.cart_btn_text,
                       onTap: () async {
                         print("CART PRESSED");
                         cartProvider.addToCartId(productsModel.id!);
@@ -877,9 +877,9 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         //       size: 5,
                         //       deliveryDate: DateHelper.getCurrentDateInWords(),
                         //       imageUrl: productsModel.images.isEmpty
-                        //           ? Strings.defaultImageUrl
+                        //           ? Constants.defaultImageUrl
                         //           : productsModel.images[0].src ??
-                        //               Strings.defaultImageUrl,
+                        //               Constants.defaultImageUrl,
                         //       sku: productsModel.sku ?? "ABC",
                         //       imageId: productsModel.images.isNotEmpty
                         //           ? productsModel.images[0].id
@@ -898,9 +898,9 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                             size: 5,
                             deliveryDate: DateHelper.getCurrentDateInWords(),
                             imageUrl: productsModel.images.isEmpty
-                                ? Strings.defaultImageUrl
+                                ? Constants.defaultImageUrl
                                 : productsModel.images[0].src ??
-                                    Strings.defaultImageUrl,
+                                    Constants.defaultImageUrl,
                             sku: productsModel.sku ?? "ABC",
                             imageId: productsModel.images.isNotEmpty
                                 ? productsModel.images[0].id

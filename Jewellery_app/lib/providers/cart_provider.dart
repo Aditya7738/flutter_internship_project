@@ -19,8 +19,8 @@ class CartProvider with ChangeNotifier {
 
   void setSelectedCouponData(Map<String, dynamic>? selectedCouponData) {
     // WidgetsBinding.instance.addPostFrameCallback((_) {
-      _selectedCouponData = selectedCouponData;
-      notifyListeners();
+    _selectedCouponData = selectedCouponData;
+    notifyListeners();
     //});
   }
 
@@ -48,6 +48,16 @@ class CartProvider with ChangeNotifier {
     }
     return totalPrice;
     //_totalPrice = totalPrice;
+  }
+
+  double _totalAfterCouponApplied = 0.0;
+  double get totalAfterCouponApplied => _totalAfterCouponApplied;
+
+  void setTotalAfterCouponApplied(double totalAfterCouponApplied) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _totalAfterCouponApplied = totalAfterCouponApplied;
+      notifyListeners();
+    });
   }
 
   void addToCartId(int id) {
@@ -99,26 +109,7 @@ class CartProvider with ChangeNotifier {
     print("modelIndex $modelIndex");
 
     _cart.removeAt(modelIndex);
-    // print(" Cart list before remove");
-    // if (oldCartModel != null) {
-    //   print("oldCartModel != null ${oldCartModel != null}");
-    //   if (oldCartModel == cartProductModel) {
-    //     print(
-    //         "oldCartModel == cartProductModel ${oldCartModel == cartProductModel}");
-    //   }
-    // }
-    // _cart.forEach((element) {
-    //   print(element.toMap());
-    //   if (element == cartProductModel) {
-    //     print("element == cartProductModel ${element == cartProductModel}");
-    //   };
-    // });
-    // bool isRemoved = _cart.remove(cartProductModel);
-    // print("isRemoved $isRemoved");
-    // print(" Cart list After remove");
-    // _cart.forEach((element) {
-    //   print(element.toMap());
-    // });
+
     notifyListeners();
     print("cart length ${_cart.length}");
 

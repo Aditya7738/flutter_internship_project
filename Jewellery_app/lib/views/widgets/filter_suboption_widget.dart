@@ -5,15 +5,12 @@ import 'package:provider/provider.dart';
 class FilterSubOptionsWidget extends StatefulWidget {
   final Map<String, dynamic> subOptions;
   final int index;
-  //final bool isFilterSubOptionClicked;
-  // final VoidCallback onTap;
+
   final String filterKey;
   FilterSubOptionsWidget(
       {super.key,
       required this.subOptions,
       required this.index,
-      // required this.isFilterSubOptionClicked,
-      //  required this.onTap,
       required this.filterKey});
 
   @override
@@ -21,171 +18,140 @@ class FilterSubOptionsWidget extends StatefulWidget {
 }
 
 class _FilterSubOptionsWidgetState extends State<FilterSubOptionsWidget> {
-  //late Map<String, dynamic> subOptions;
-
-//  bool filterAlreadyThere = false;
+  bool isSelected = false;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    //subOptions = widget.subOptions;
+    showAlreadySelectedFilters();
   }
 
- // bool isSelected = false;
+  showAlreadySelectedFilters() {
+    final filterOptionsProvider =
+        Provider.of<FilterOptionsProvider>(context, listen: false);
+    for (var i = 0; i < filterOptionsProvider.list.length; i++) {
+      if (filterOptionsProvider.list[i]["parent"] == widget.filterKey &&
+          filterOptionsProvider.list[i]["id"] == widget.subOptions["id"]) {
+        setState(() {
+          isSelected = true;
+        });
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    // final filterOptionsProvider =
+    //     Provider.of<FilterOptionsProvider>(context, listen: true);
     final filterOptionsProvider =
-        Provider.of<FilterOptionsProvider>(context, listen: true);
-    List<Map<String, dynamic>> selectedSubOptions = filterOptionsProvider.list;
-
-    print("filterKey ${widget.filterKey}");
-
-    // for (var i = 0; i < selectedSubOptions.length; i++) {
-    //   print("selectedSubOptions parent ${selectedSubOptions[i]["parent"]}");
-    //   print(
-    //       "is contain widget.filterKey ${selectedSubOptions[i]["parent"] == widget.filterKey}");
-
-    //   if (selectedSubOptions[i]["parent"] == widget.filterKey) {
-    //     print("selectedSubOptions[i][id] ${selectedSubOptions[i]["id"]}");
-    //     print("widget.subOptionsid ${widget.subOptions["id"]}");
-    //     if (selectedSubOptions[i]["id"] == widget.subOptions["id"]) {
-    //       if (mounted) {
-      //setState(() {});
-    //         isSelected = true;
-    //       });
-    //     }
-    //   } else {
-    //     if (mounted) {
-      //setState(() {});
-    //       isSelected = false;
+        Provider.of<FilterOptionsProvider>(context, listen: false);
+    // for (var i = 0; i < filterOptionsProvider.list.length; i++) {
+    //   if (filterOptionsProvider.list[i]["parent"] == widget.filterKey &&
+    //       filterOptionsProvider.list[i]["id"] == widget.subOptions["id"]) {
+    //     setState(() {
+    //       isSelected = true;
     //     });
     //   }
     // }
 
-    //////////////////////////////////
-    // if (selectedSubOptionsdata.containsKey(widget.filterKey)) {
-    //   print("selectedSubOptionsdata[widget.filterKey]id ${selectedSubOptionsdata[widget.filterKey]}");
-    //   print("widget.subOptionsid ${widget.subOptions["id"]}");
-    //   if(selectedSubOptionsdata[widget.filterKey] == widget.subOptions["id"]){
-    //     isSelected = true;
-    //   }
+    print("filterKey ${widget.filterKey}");
 
-    // }
-
-    // print("widget.isFilterSubOptionClicked ${widget.isFilterSubOptionClicked}");
-    // print("isSelected ${isSelected}");
-    // print("filterAlreadyThere $filterAlreadyThere");
-
-    return GestureDetector(
-      onTap: () {
-        // print("filterOptionsProvider.list ${filterOptionsProvider.list}");
-        // print("subOptionsparent ${widget.filterKey}");
-        // if (filterOptionsProvider.list.length > 0) {
-        //   for (var i = 0; i < filterOptionsProvider.list.length; i++) {
-        //     print(
-        //         "containsValue subOptionsid ${filterOptionsProvider.list[i].containsValue(widget.subOptions["id"])}");
-
-        //     print(
-        //         "ContainsValueSubOptionParent ${filterOptionsProvider.list[i].containsValue(widget.filterKey)}");
-        //     print("subOptionsid ${widget.subOptions["id"]}");
-
-        //     if (filterOptionsProvider.list[i]
-        //             .containsValue(widget.subOptions["id"]) &&
-        //         filterOptionsProvider.list[i].containsValue(widget.filterKey)) {
-        //       if (mounted) {
-      //setState(() {});
-        //         filterAlreadyThere = true;
+    return Consumer<FilterOptionsProvider>(
+      builder: (context, value, child) {
+        // for (var i = 0; i < value.list.length; i++) {
+        //   if (value.list[i]["parent"] == widget.filterKey &&
+        //       value.list[i]["id"] == widget.subOptions["id"]) {
+        //     if (mounted) {
+        //       setState(() {
+        //         isSelected = true;
         //       });
-        //       filterOptionsProvider.removeFromList(i);
-        //     } else {
-        //       // if (mounted) {
-      //setState(() {});
-        //       //   filterAlreadyThere = false;
-        //       // });
-        filterOptionsProvider.setSelectedSubOptionsdata({
-          "id": widget.subOptions["id"],
-          "count": widget.subOptions["count"],
-          "label": widget.subOptions["label"],
-          "parent": widget.filterKey
-        });
-        //       break;
         //     }
         //   }
-        // } else {
-        //   // if (mounted) {
-      //setState(() {});
-        //   //   filterAlreadyThere = false;
-        //   // });
-        //   filterOptionsProvider.setSelectedSubOptionsdata({
-        //     "id": widget.subOptions["id"],
-        //     "count": widget.subOptions["count"],
-        //     "label": widget.subOptions["label"],
-        //     "parent": widget.filterKey
-        //   });
         // }
 
-        print("filterOptionsProvider.list ${filterOptionsProvider.list}");
-      },
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            SizedBox(
-                width: MediaQuery.of(context).size.width / 2,
-                child: Consumer<FilterOptionsProvider>(
-                  builder: (BuildContext context, value, Widget? child) {
-                    bool isSelected = false;
-                    for (var i = 0; i < value.list.length; i++) {
-                      if (value.list[i]["parent"] == widget.filterKey &&
-                          value.list[i]["id"] == widget.subOptions["id"]) {
-                        isSelected = true;
-                      }
-                    }
+        return GestureDetector(
+          onTap: () {
+            if (value.list.length > 0) {
+              for (var i = 0; i < value.list.length; i++) {
+                print("value.list before ${value.list}");
+                // print(
+                //     "value.list[i].containsValue(selectedSubOptionsdataid ${value.list[i].containsValue(widget.subOptions["id"])}");
 
-                    return Text(
-                      widget.subOptions["label"] ?? "filter${widget.index}",
-                      maxLines: 2,
-                      style: TextStyle(
-                          color: isSelected
-                              ? Theme.of(context).primaryColor
-                              : Colors.black,
-                          //widget.isFilterSubOptionClicked ||
-                          // isSelected
-                          //     ? filterAlreadyThere
-                          //         ? Colors.black
-                          //         : Theme.of(context).primaryColor
-                          //     : Colors.black,
+                // print(
+                //     "value.list[i].containsValue(selectedSubOptionsdataparent) ${value.list[i].containsValue(widget.filterKey)}");
+                if (value.list[i].containsValue(widget.subOptions["id"]) &&
+                    value.list[i].containsValue(widget.filterKey)) {
+                  print("list $value.list");
+                  value.removeFromList(i);
+                  setState(() {
+                    isSelected = false;
+                  });
+                  return;
+                }
+              }
+            }
 
-                          fontSize: 15.0),
-                    );
-                  },
-                )),
-            Consumer<FilterOptionsProvider>(
-              builder: (BuildContext context, value, Widget? child) {
-                bool isSelected = false;
-                    for (var i = 0; i < value.list.length; i++) {
-                      if (value.list[i]["parent"] == widget.filterKey &&
-                          value.list[i]["id"] == widget.subOptions["id"]) {
-                        isSelected = true;
-                      }
-                    }
-                return Text(
+            if (widget.filterKey == "price_range") {
+              if (value.list.length > 0) {
+                for (var i = 0; i < value.list.length; i++) {
+                  if (value.list[i].containsValue(widget.filterKey)) {
+                    value.removeFromList(i);
+                    setState(() {
+                      isSelected = false;
+                    });
+                  }
+                }
+              }
+            }
+
+            value.setSelectedSubOptionsdata({
+              "id": widget.subOptions["id"],
+              "count": widget.subOptions["count"],
+              "label": widget.subOptions["label"],
+              "parent": widget.filterKey
+            });
+
+            print("value.list after ${value.list}");
+
+            for (var i = 0; i < value.list.length; i++) {
+              if (value.list[i]["parent"] == widget.filterKey &&
+                  value.list[i]["id"] == widget.subOptions["id"]) {
+                setState(() {
+                  isSelected = true;
+                });
+              }
+            }
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SizedBox(
+                  width: MediaQuery.of(context).size.width / 2,
+                  child: Text(
+                    widget.subOptions["label"] ?? "filter${widget.index}",
+                    maxLines: 2,
+                    style: TextStyle(
+                        color: isSelected
+                            ? Theme.of(context).primaryColor
+                            : Colors.black,
+                        fontSize: 15.0),
+                  ),
+                ),
+                Text(
                   widget.subOptions["count"].toString(),
                   style: TextStyle(
-                      color:
-                          //widget.isFilterSubOptionClicked ||
-                         isSelected
-                              ? Theme.of(context).primaryColor
-                              : Colors.black,
+                      color: isSelected
+                          ? Theme.of(context).primaryColor
+                          : Colors.black,
                       fontSize: 15.0),
-                );
-              },
-            )
-          ],
-        ),
-      ),
+                )
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

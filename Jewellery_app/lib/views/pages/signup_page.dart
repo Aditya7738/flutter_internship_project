@@ -1,7 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:Tiara_by_TJ/api/api_service.dart';
-import 'package:Tiara_by_TJ/constants/strings.dart';
+import 'package:Tiara_by_TJ/constants/constants.dart';
 import 'dart:convert';
 import 'package:Tiara_by_TJ/helpers/validation_helper.dart';
 import 'package:Tiara_by_TJ/providers/customer_provider.dart';
@@ -72,7 +72,7 @@ class _SignupPageState extends State<SignupPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Image.network(
-                        Strings.app_logo,
+                        Constants.app_logo,
                         width: 150.0,
                         height: 70.0,
                       ),

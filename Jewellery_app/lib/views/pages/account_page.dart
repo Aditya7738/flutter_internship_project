@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
-import 'package:Tiara_by_TJ/constants/strings.dart';
+import 'package:Tiara_by_TJ/constants/constants.dart';
 import 'package:Tiara_by_TJ/providers/cart_provider.dart';
 import 'package:Tiara_by_TJ/providers/customer_provider.dart';
 import 'package:Tiara_by_TJ/providers/wishlist_provider.dart';
@@ -64,7 +64,7 @@ class AccountPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
           title: Image.network(
-            Strings.app_logo,
+            Constants.app_logo,
             width: 150,
             height: 80,
           ),
@@ -158,11 +158,8 @@ class AccountPage extends StatelessWidget {
                       switch (index) {
                         case 0:
                           isDataEmpty
-                              ? MaterialPageRoute(
-                                  builder: (context) => LoginPage(
-                                    isComeFromCart: false,
-                                  ),
-                                )
+                              ?  Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage(isComeFromCart: false),))
+                                
                               : Navigator.of(context).push(MaterialPageRoute(
                                   builder: (context) => MyProfilePage(),
                                 ));

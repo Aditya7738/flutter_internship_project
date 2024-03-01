@@ -4,7 +4,7 @@ import 'dart:ffi';
 import 'package:Tiara_by_TJ/providers/order_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:Tiara_by_TJ/api/api_service.dart';
-import 'package:Tiara_by_TJ/constants/strings.dart';
+import 'package:Tiara_by_TJ/constants/constants.dart';
 import 'package:Tiara_by_TJ/helpers/validation_helper.dart';
 import 'package:Tiara_by_TJ/providers/cart_provider.dart';
 import 'package:Tiara_by_TJ/providers/customer_provider.dart';
@@ -164,7 +164,7 @@ class _ShippingPageState extends State<ShippingPage> {
       appBar: AppBar(
         surfaceTintColor: Colors.white,
         title: Image.network(
-          Strings.app_logo,
+          Constants.app_logo,
           width: 150,
           height: 80,
         ),

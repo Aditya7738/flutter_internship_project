@@ -1,8 +1,8 @@
 import 'package:Tiara_by_TJ/providers/filteroptions_provider.dart';
-import 'package:Tiara_by_TJ/views/pages/filter.dart';
+import 'package:Tiara_by_TJ/views/widgets/filter_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:Tiara_by_TJ/api/api_service.dart';
-import 'package:Tiara_by_TJ/constants/strings.dart';
+import 'package:Tiara_by_TJ/constants/constants.dart';
 import 'package:Tiara_by_TJ/model/products_model.dart';
 import 'package:multi_select_flutter/bottom_sheet/multi_select_bottom_sheet_field.dart';
 import 'package:multi_select_flutter/chip_display/multi_select_chip_display.dart';
@@ -185,7 +185,7 @@ late FilterOptionsProvider filterOptionsProvider;
                           topLeft: Radius.circular(20.0),
                           topRight: Radius.circular(20.0))),
                   builder: (context) {
-                    return Filter(searchText: searchText, fromProductsPage: false,);
+                    return FilterModal(searchText: searchText, fromProductsPage: false,);
                   },
                 );
 
@@ -441,12 +441,12 @@ late FilterOptionsProvider filterOptionsProvider;
                                                         child: Image.network(
                                                           productsModel.images
                                                                   .isEmpty
-                                                              ? Strings
+                                                              ? Constants
                                                                   .defaultImageUrl
                                                               : productsModel
                                                                       .images[0]
                                                                       .src ??
-                                                                  Strings
+                                                                  Constants
                                                                       .defaultImageUrl,
                                                           loadingBuilder: (context,
                                                               child,

@@ -104,55 +104,63 @@ class FilterOptionsProvider with ChangeNotifier {
   //   "gold_wt": "Gold weight",
   //   "gender":"",
 
-  Map<String, dynamic> _selectedSubOptionsdata = <String, dynamic>{};
-  Map<String, dynamic> get selectedSubOptionsdata => _selectedSubOptionsdata;
+  // Map<String, dynamic> _selectedSubOptionsdata = <String, dynamic>{};
+  // Map<String, dynamic> get selectedSubOptionsdata => _selectedSubOptionsdata;
 
   List<Map<String, dynamic>> _list = <Map<String, dynamic>>[];
 
   List<Map<String, dynamic>> get list => _list;
 
-  void addSelectedSubOptionsdataInList(
-      Map<String, dynamic> selectedSubOptionsdata) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _list.add(selectedSubOptionsdata);
-      // _selectedSubOptionsdata.addAll(selectedSubOptionsdata);
-      notifyListeners();
-    });
-  }
+  // void addSelectedSubOptionsdataInList(
+  //     Map<String, dynamic> selectedSubOptionsdata) {
+  //   WidgetsBinding.instance.addPostFrameCallback((_) {
+  //     _list.add(selectedSubOptionsdata);
+  //     // _selectedSubOptionsdata.addAll(selectedSubOptionsdata);
+  //     notifyListeners();
+  //   });
+  // }
+  // bool _isFilterSelected = false;
+  // bool get isFilterSelected => _isFilterSelected;
+
+  // void setIsSelected(bool isSelected) {
+  //   _isFilterSelected = isSelected;
+  //   notifyListeners();
+  // }
 
   void setSelectedSubOptionsdata(Map<String, dynamic> selectedSubOptionsdata) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (_list.length > 0) {
-        for (var i = 0; i < _list.length; i++) {
-          print(
-              "_list[i].containsValue(selectedSubOptionsdataid ${_list[i].containsValue(selectedSubOptionsdata["id"])}");
+    //  WidgetsBinding.instance.addPostFrameCallback((_) {
+    // if (_list.length > 0) {
+    //   for (var i = 0; i < _list.length; i++) {
+    //     print(
+    //         "_list[i].containsValue(selectedSubOptionsdataid ${_list[i].containsValue(selectedSubOptionsdata["id"])}");
 
-          print(
-              "_list[i].containsValue(selectedSubOptionsdataparent) ${_list[i].containsValue(selectedSubOptionsdata["parent"])}");
-          if (_list[i].containsValue(selectedSubOptionsdata["id"]) &&
-              _list[i].containsValue(selectedSubOptionsdata["parent"])) {
-            print("list $_list");
-            removeFromList(i);
+    //     print(
+    //         "_list[i].containsValue(selectedSubOptionsdataparent) ${_list[i].containsValue(selectedSubOptionsdata["parent"])}");
+    //     if (_list[i].containsValue(selectedSubOptionsdata["id"]) &&
+    //         _list[i].containsValue(selectedSubOptionsdata["parent"])) {
+    //       print("list $_list");
+    //       removeFromList(i);
+         
+    //       return;
+    //     }
+    //   }
+    // }
 
-            return;
-          }
-        }
-      }
+    // if (selectedSubOptionsdata["parent"] == "price_range") {
+    //   if (_list.length > 0) {
+    //     for (var i = 0; i < _list.length; i++) {
+    //       if (_list[i].containsValue(selectedSubOptionsdata["parent"])) {
+    //         removeFromList(i);
+           
+    //       }
+    //     }
+    //   }
+    // }
 
-      if (selectedSubOptionsdata["parent"] == "price_range") {
-        if (_list.length > 0) {
-          for (var i = 0; i < _list.length; i++) {
-            if (_list[i].containsValue(selectedSubOptionsdata["parent"])) {
-              removeFromList(i);
-            }
-          }
-        }
-      }
+    _list.add(selectedSubOptionsdata);
 
-      _list.add(selectedSubOptionsdata);
-
-      notifyListeners();
-    });
+    notifyListeners();
+    // });
   }
 
   bool _isFilteredListLoading = false;
@@ -179,20 +187,18 @@ class FilterOptionsProvider with ChangeNotifier {
 
   void clearFilterList() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      try {
-        print("filter list ${_list.length}");
-        if (_list.length > 0) {
-          _list.clear();
-        }
+      // try {
+      //   print("filter list ${_list.length}");
+      //   if (_list.length > 0) {
+      _list.clear();
+      //   }
 
-        print("filter list cleared ${_list.length}");
-      } catch (e) {
-        print(e.toString());
-      }
+      //   print("filter list cleared ${_list.length}");
+      // } catch (e) {
+      //   print(e.toString());
+      // }
 
       notifyListeners();
     });
   }
-
-  
 }

@@ -4,7 +4,7 @@ import 'package:Tiara_by_TJ/views/pages/wishlist_page.dart';
 import 'package:Tiara_by_TJ/views/widgets/empty_list_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:badges/badges.dart' as badges;
-import 'package:Tiara_by_TJ/constants/strings.dart';
+import 'package:Tiara_by_TJ/constants/constants.dart';
 import 'package:Tiara_by_TJ/providers/cart_provider.dart';
 import 'package:Tiara_by_TJ/providers/wishlist_provider.dart';
 
@@ -16,7 +16,7 @@ class NotificationPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
           title: Image.network(
-            Strings.app_logo,
+            Constants.app_logo,
             width: 150,
             height: 80,
           ),

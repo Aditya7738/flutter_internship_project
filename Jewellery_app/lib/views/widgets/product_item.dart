@@ -1,7 +1,7 @@
 import 'package:Tiara_by_TJ/views/pages/details_view.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:Tiara_by_TJ/constants/strings.dart';
+import 'package:Tiara_by_TJ/constants/constants.dart';
 import 'package:Tiara_by_TJ/helpers/date_helper.dart';
 import 'package:Tiara_by_TJ/model/cart_product_model.dart';
 import 'package:Tiara_by_TJ/model/products_model.dart';
@@ -67,9 +67,9 @@ class _ProductItemState extends State<ProductItem> {
                   )
                 : CachedNetworkImage(
                     imageUrl: productsModel.images.isEmpty
-                        ? Strings.defaultImageUrl
+                        ? Constants.defaultImageUrl
                         : productsModel.images[0].src ??
-                            Strings.defaultImageUrl,
+                            Constants.defaultImageUrl,
                     placeholder: (context, url) {
                       return SizedBox(
                         width: (MediaQuery.of(context).size.width / 2) + 16.0,
@@ -170,9 +170,9 @@ class _ProductItemState extends State<ProductItem> {
                                       size: 5,
                                       deliveryDate: deliveryDate,
                                       imageUrl: productsModel.images.isEmpty
-                                          ? Strings.defaultImageUrl
+                                          ? Constants.defaultImageUrl
                                           : productsModel.images[0].src ??
-                                              Strings.defaultImageUrl,
+                                              Constants.defaultImageUrl,
                                       sku: productsModel.sku,
                                       imageId: productsModel.images.isNotEmpty
                                           ? productsModel.images[0].id
@@ -198,9 +198,9 @@ class _ProductItemState extends State<ProductItem> {
                                     //   deliveryDate:
                                     //       deliveryDate,
                                     //   imageUrl: productsModel.images.isEmpty
-                                    //       ? Strings.defaultImageUrl
+                                    //       ? Constants.defaultImageUrl
                                     //       : productsModel.images[0].src ??
-                                    //           Strings.defaultImageUrl,
+                                    //           Constants.defaultImageUrl,
                                     //   sku: productsModel.sku,
                                     //   imageId: productsModel.images.isNotEmpty
                                     //       ? productsModel.images[0].id

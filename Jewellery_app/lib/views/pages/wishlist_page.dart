@@ -2,7 +2,7 @@ import 'package:Tiara_by_TJ/views/pages/dashboard_page.dart';
 import 'package:Tiara_by_TJ/views/widgets/empty_list_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:Tiara_by_TJ/api/api_service.dart';
-import 'package:Tiara_by_TJ/constants/strings.dart';
+import 'package:Tiara_by_TJ/constants/constants.dart';
 import 'package:Tiara_by_TJ/helpers/date_helper.dart';
 import 'package:Tiara_by_TJ/model/cart_product_model.dart';
 import 'package:Tiara_by_TJ/providers/cart_provider.dart';
@@ -167,9 +167,9 @@ class _WishListPageState extends State<WishListPage> {
                                             BorderRadius.circular(10.0),
                                         child: Image.network(
                                           wishListItem.images.isEmpty
-                                              ? Strings.defaultImageUrl
+                                              ? Constants.defaultImageUrl
                                               : wishListItem.images[0].src ??
-                                                  Strings.defaultImageUrl,
+                                                  Constants.defaultImageUrl,
                                           width: MediaQuery.of(context)
                                                   .size
                                                   .width /
@@ -337,12 +337,12 @@ class _WishListPageState extends State<WishListPage> {
                                                           .getCurrentDateInWords(),
                                                       imageUrl: wishListItem
                                                               .images.isEmpty
-                                                          ? Strings
+                                                          ? Constants
                                                               .defaultImageUrl
                                                           : wishListItem
                                                                   .images[0]
                                                                   .src ??
-                                                              Strings
+                                                              Constants
                                                                   .defaultImageUrl,
                                                       sku: wishListItem.sku,
                                                       imageId: wishListItem
@@ -432,9 +432,9 @@ class _WishListPageState extends State<WishListPage> {
         //                 children: [
         //                   Image.network(
         //                     wishListItem.images.isEmpty
-        //                         ? Strings.defaultImageUrl
+        //                         ? Constants.defaultImageUrl
         //                         : wishListItem.images[0].src ??
-        //                             Strings.defaultImageUrl,
+        //                             Constants.defaultImageUrl,
         //                     width:
         //                         MediaQuery.of(context).size.width / 3,
         //                     height: 170.0,
@@ -567,12 +567,12 @@ class _WishListPageState extends State<WishListPage> {
         //                                           .getCurrentDateInWords(),
         //                                       imageUrl: wishListItem
         //                                               .images.isEmpty
-        //                                           ? Strings
+        //                                           ? Constants
         //                                               .defaultImageUrl
         //                                           : wishListItem
         //                                                   .images[0]
         //                                                   .src ??
-        //                                               Strings
+        //                                               Constants
         //                                                   .defaultImageUrl));
         //                                   Navigator.of(context).push(
         //                                       MaterialPageRoute(

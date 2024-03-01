@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:Tiara_by_TJ/api/api_service.dart';
-import 'package:Tiara_by_TJ/constants/strings.dart';
+import 'package:Tiara_by_TJ/constants/constants.dart';
 import 'package:Tiara_by_TJ/helpers/validation_helper.dart';
 import 'package:Tiara_by_TJ/model/products_model.dart';
 import 'package:Tiara_by_TJ/providers/customer_provider.dart';
@@ -67,9 +67,9 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
                               color: Theme.of(context).primaryColor)),
                       child: CachedNetworkImage(
                         imageUrl: widget.productsModel.images.isEmpty
-                            ? Strings.defaultImageUrl
+                            ? Constants.defaultImageUrl
                             : widget.productsModel.images[0].src ??
-                                Strings.defaultImageUrl,
+                                Constants.defaultImageUrl,
                         width: MediaQuery.of(context).size.width / 3,
                         height: MediaQuery.of(context).size.width / 3,
                         placeholder: (context, url) {

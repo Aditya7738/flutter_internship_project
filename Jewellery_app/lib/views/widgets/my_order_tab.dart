@@ -1,7 +1,7 @@
 import 'package:Tiara_by_TJ/providers/order_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:Tiara_by_TJ/api/api_service.dart';
-import 'package:Tiara_by_TJ/constants/strings.dart';
+import 'package:Tiara_by_TJ/constants/constants.dart';
 import 'package:Tiara_by_TJ/helpers/date_helper.dart';
 import 'package:Tiara_by_TJ/model/order_model.dart';
 import 'package:Tiara_by_TJ/providers/customer_provider.dart';
@@ -141,9 +141,9 @@ class _MyOrderTabState extends State<MyOrderTab> {
                                                           BorderStyle.solid)),
                                               child: Image.network(
                                                 order.image == null
-                                                    ? Strings.defaultImageUrl
+                                                    ? Constants.defaultImageUrl
                                                     : order.image!.src == ""
-                                                        ? Strings
+                                                        ? Constants
                                                             .defaultImageUrl
                                                         : order.image!.src!,
                                                 width: 100.0,

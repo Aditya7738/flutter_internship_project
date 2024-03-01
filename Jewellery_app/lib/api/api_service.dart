@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:Tiara_by_TJ/constants/strings.dart';
+import 'package:Tiara_by_TJ/constants/constants.dart';
 import 'package:Tiara_by_TJ/model/category_model.dart';
 import 'package:Tiara_by_TJ/model/coupons_model.dart' as Coupons;
 import 'package:Tiara_by_TJ/model/digi_gold_plan_model.dart' as DigiGoldPlans;
@@ -52,11 +52,11 @@ class ApiService {
 
   static Future<List<CategoriesModel>> fetchCategories(
       int pageNo, BuildContext context) async {
-    //https://tiarabytj.com/wp-json/wc/v3/products/categories?consumer_key=ck_33882e17eeaff38b20ac7c781156024bc2d6af4a&consumer_secret=cs_df67b056d05606c05275b571ab39fa508fcdd7b9
+    //${Constants.baseUrl}/wp-json/wc/v3/products/categories?consumer_key=ck_33882e17eeaff38b20ac7c781156024bc2d6af4a&consumer_secret=cs_df67b056d05606c05275b571ab39fa508fcdd7b9
     //checkInternetConnection(context);
 
     String categoryUri =
-        "${Strings.baseUrl}/wp-json/wc/v3/products/categories?consumer_key=${Strings.consumerKey}&consumer_secret=${Strings.consumerSecret}&page=$pageNo&per_page=50";
+        "${Constants.baseUrl}/wp-json/wc/v3/products/categories?consumer_key=${Constants.consumerKey}&consumer_secret=${Constants.consumerSecret}&page=$pageNo&per_page=50";
     Uri uri = Uri.parse(categoryUri);
     final response = await http.get(uri);
 
@@ -111,9 +111,9 @@ class ApiService {
       {required int id, required int pageNo}) async {
     categoryId = id;
     //checkInternetConnection(context);
-    //https://tiarabytj.com/wp-json/wc/v3/products?consumer_key=ck_33882e17eeaff38b20ac7c781156024bc2d6af4a&consumer_secret=cs_df67b056d05606c05275b571ab39fa508fcdd7b9&category=230
+    //${Constants.baseUrl}/wp-json/wc/v3/products?consumer_key=ck_33882e17eeaff38b20ac7c781156024bc2d6af4a&consumer_secret=cs_df67b056d05606c05275b571ab39fa508fcdd7b9&category=230
     String categoryUri =
-        "${Strings.baseUrl}/wp-json/wc/v3/products?consumer_key=${Strings.consumerKey}&consumer_secret=${Strings.consumerSecret}&category=$id&per_page=30&page=$pageNo";
+        "${Constants.baseUrl}/wp-json/wc/v3/products?consumer_key=${Constants.consumerKey}&consumer_secret=${Constants.consumerSecret}&category=$id&per_page=30&page=$pageNo";
     Uri uri = Uri.parse(categoryUri);
     final response = await http.get(uri);
 
@@ -263,9 +263,9 @@ class ApiService {
       List<Map<String, dynamic>>? filterList}) async {
     categoryId = id;
 
-    //https://tiarabytj.com/wp-json/wc/v3/products?consumer_key=ck_33882e17eeaff38b20ac7c781156024bc2d6af4a&consumer_secret=cs_df67b056d05606c05275b571ab39fa508fcdd7b9&category=230
+    //${Constants.baseUrl}/wp-json/wc/v3/products?consumer_key=ck_33882e17eeaff38b20ac7c781156024bc2d6af4a&consumer_secret=cs_df67b056d05606c05275b571ab39fa508fcdd7b9&category=230
     String endpoint =
-        "${Strings.baseUrl}/wp-json/wc/v3/products?consumer_key=${Strings.consumerKey}&consumer_secret=${Strings.consumerSecret}&category=$id&per_page=100&search=$searchText&page=$pageNo";
+        "${Constants.baseUrl}/wp-json/wc/v3/products?consumer_key=${Constants.consumerKey}&consumer_secret=${Constants.consumerSecret}&category=$id&per_page=100&search=$searchText&page=$pageNo";
 
     if (filterList != null) {
       //1/////////////////
@@ -574,7 +574,7 @@ class ApiService {
     // checkInternetConnection(context);
 
     String endpoint =
-        "${Strings.baseUrl}/wp-json/wc/v3/products?consumer_key=${Strings.consumerKey}&consumer_secret=${Strings.consumerSecret}&per_page=100&search=$searchText&page=$pageNo";
+        "${Constants.baseUrl}/wp-json/wc/v3/products?consumer_key=${Constants.consumerKey}&consumer_secret=${Constants.consumerSecret}&per_page=100&search=$searchText&page=$pageNo";
 
     if (filterList != null) {
       //1/////////////////
@@ -862,7 +862,7 @@ class ApiService {
   static Future<List<AllProducts.ProductsModel>> getOnSaleProducts(
       int pageNo) async {
     String endpoint =
-        "${Strings.baseUrl}/wp-json/wc/v3/products?consumer_key=${Strings.consumerKey}&consumer_secret=${Strings.consumerSecret}&per_page=100&on_sale=true";
+        "${Constants.baseUrl}/wp-json/wc/v3/products?consumer_key=${Constants.consumerKey}&consumer_secret=${Constants.consumerSecret}&per_page=100&on_sale=true";
 
     Uri uri = Uri.parse(endpoint);
 
@@ -1012,7 +1012,7 @@ class ApiService {
     //checkInternetConnection(context);
     //https: //tiarabytj.com/wp-json/wc/v3/products?consumer_key=ck_33882e17eeaff38b20ac7c781156024bc2d6af4a&consumer_secret=cs_df67b056d05606c05275b571ab39fa508fcdd7b9
     String endpoint =
-        "${Strings.baseUrl}/wp-json/wc/v3/products?consumer_key=${Strings.consumerKey}&consumer_secret=${Strings.consumerSecret}&per_page=100&on_sale=true";
+        "${Constants.baseUrl}/wp-json/wc/v3/products?consumer_key=${Constants.consumerKey}&consumer_secret=${Constants.consumerSecret}&per_page=100&on_sale=true";
 
     Uri uri = Uri.parse(endpoint);
 
@@ -1161,7 +1161,7 @@ class ApiService {
       List<int> ids) async {
     // checkInternetConnection(context);
     var endpoint =
-        "${Strings.baseUrl}/wp-json/wc/v3/products?consumer_key=${Strings.consumerKey}&consumer_secret=${Strings.consumerSecret}&include=";
+        "${Constants.baseUrl}/wp-json/wc/v3/products?consumer_key=${Constants.consumerKey}&consumer_secret=${Constants.consumerSecret}&include=";
 
     for (int i = 0; i < ids.length; i++) {
       endpoint += "${ids[i]},";
@@ -1204,7 +1204,7 @@ class ApiService {
       Map<String, dynamic> customerData) async {
     // checkInternetConnection(context);
     const endpoint =
-        "https://tiarabytj.com/wp-json/wc/v3/customers?consumer_key=${Strings.consumerKey}&consumer_secret=${Strings.consumerSecret}";
+        "${Constants.baseUrl}/wp-json/wc/v3/customers?consumer_key=${Constants.consumerKey}&consumer_secret=${Constants.consumerSecret}";
 
     Uri uri = Uri.parse(endpoint);
 
@@ -1228,7 +1228,7 @@ class ApiService {
       String email, String password, String username) async {
     // checkInternetConnection(context);
     const endpoint =
-        "https://tiarabytj.com/wp-json/wc/v3/customers?consumer_key=${Strings.consumerKey}&consumer_secret=${Strings.consumerSecret}";
+        "${Constants.baseUrl}/wp-json/wc/v3/customers?consumer_key=${Constants.consumerKey}&consumer_secret=${Constants.consumerSecret}";
 
     var headers = {
       'Content-Type': 'application/json',
@@ -1261,7 +1261,7 @@ class ApiService {
       Map<String, String> billingData, Map<String, String> shippingData) async {
     //checkInternetConnection(context);
     final endpoint =
-        "https://tiarabytj.com/wp-json/wc/v3/customers/$customerId?consumer_key=${Strings.consumerKey}&consumer_secret=${Strings.consumerSecret}";
+        "${Constants.baseUrl}/wp-json/wc/v3/customers/$customerId?consumer_key=${Constants.consumerKey}&consumer_secret=${Constants.consumerSecret}";
 
     var headers = {
       'Content-Type': 'application/json',
@@ -1320,7 +1320,7 @@ class ApiService {
     print("$customerId");
     //checkInternetConnection(context);
     final endpoint =
-        "https://tiarabytj.com/wp-json/wc/v3/customers/$customerId?consumer_key=${Strings.consumerKey}&consumer_secret=${Strings.consumerSecret}";
+        "${Constants.baseUrl}/wp-json/wc/v3/customers/$customerId?consumer_key=${Constants.consumerKey}&consumer_secret=${Constants.consumerSecret}";
 
     var headers = {
       'Content-Type': 'application/json',
@@ -1362,7 +1362,7 @@ class ApiService {
     print("CUSTOMERID $customerId");
     // checkInternetConnection(context);
     const endpoint =
-        "https://tiarabytj.com/wp-json/wc/v3/orders?consumer_key=${Strings.consumerKey}&consumer_secret=${Strings.consumerSecret}";
+        "${Constants.baseUrl}/wp-json/wc/v3/orders?consumer_key=${Constants.consumerKey}&consumer_secret=${Constants.consumerSecret}";
 
     Uri uri = Uri.parse(endpoint);
 
@@ -1425,7 +1425,7 @@ class ApiService {
 
   static List<CustomersOrder.OrderModel> listOfOrders =
       <CustomersOrder.OrderModel>[];
-  //https://tiarabytj.com/wp-json/wc/v3/orders?consumer_key=ck_33882e17eeaff38b20ac7c781156024bc2d6af4a&consumer_secret=cs_df67b056d05606c05275b571ab39fa508fcdd7b9&page=1&customer_id=230999&per_page=20
+  //${Constants.baseUrl}/wp-json/wc/v3/orders?consumer_key=ck_33882e17eeaff38b20ac7c781156024bc2d6af4a&consumer_secret=cs_df67b056d05606c05275b571ab39fa508fcdd7b9&page=1&customer_id=230999&per_page=20
 
   static Future<List<CustomersOrder.OrderModel>> fetchOrders(
       int customerId, int pageNo) async {
@@ -1434,7 +1434,7 @@ class ApiService {
     print("CUSTOMERID $customerId");
 
     String endpoint =
-        "https://tiarabytj.com/wp-json/wc/v3/orders?consumer_key=${Strings.consumerKey}&consumer_secret=${Strings.consumerSecret}&customer=$customerId&page=$pageNo&per_page=10";
+        "${Constants.baseUrl}/wp-json/wc/v3/orders?consumer_key=${Constants.consumerKey}&consumer_secret=${Constants.consumerSecret}&customer=$customerId&page=$pageNo&per_page=10";
 
     Uri uri = Uri.parse(endpoint);
 
@@ -1542,7 +1542,7 @@ class ApiService {
 
   static Future<void> generateBasicAuthForRazorPay() async {
     final endpoint =
-        "https://tiarabytj.com/wp-json/store/v1/settings?options=woocommerce_razorpay_settings";
+        "${Constants.baseUrl}/wp-json/store/v1/settings?options=woocommerce_razorpay_settings";
 
     Uri uri = Uri.parse(endpoint);
     String userName = "tiarabytj@gmail.com";
@@ -1668,13 +1668,16 @@ class ApiService {
 
   static List<PaymentGatewaysModel> paymentGateways = <PaymentGatewaysModel>[];
   static Future<List<PaymentGatewaysModel>?> getPaymentGateways() async {
-    final endpoint = "https://tiarabytj.com/wp-json/wc/v3/payment_gateways";
+    final endpoint = "${Constants.baseUrl}/wp-json/wc/v3/payment_gateways";
     Uri uri = Uri.parse(endpoint);
-    String userName = "tiarabytj@gmail.com";
-    String password = "October@Jwero";
+    // String userName = "tiarabytj@gmail.com";
+    // String password = "October@Jwero";
 
-    String basicAuth =
-        "Basic " + base64Encode(utf8.encode('$userName:$password'));
+    String basicAuth = "Basic " +
+        base64Encode(
+            utf8.encode('${Constants.userName}:${Constants.password}'));
+
+    print("basicAuthgetPaymentGateways $basicAuth");
 
     final headers = {
       'content-type': 'application/json',
@@ -1744,7 +1747,7 @@ class ApiService {
   static Future<http.Response> createProductReview(
       Map<String, dynamic> reviewData) async {
     final url =
-        "https://tiarabytj.com/wp-json/wc/v3/products/reviews?consumer_key=${Strings.consumerKey}&consumer_secret=${Strings.consumerSecret}";
+        "${Constants.baseUrl}/wp-json/wc/v3/products/reviews?consumer_key=${Constants.consumerKey}&consumer_secret=${Constants.consumerSecret}";
 
     Uri uri = Uri.parse(url);
     final response = await http.post(uri,
@@ -1768,7 +1771,7 @@ class ApiService {
 
   static Future<List<ReviewsModel>> getReviews(String productId) async {
     final url =
-        "https://tiarabytj.com/wp-json/wc/v3/products/reviews?consumer_key=${Strings.consumerKey}&consumer_secret=${Strings.consumerSecret}&product=$productId";
+        "${Constants.baseUrl}/wp-json/wc/v3/products/reviews?consumer_key=${Constants.consumerKey}&consumer_secret=${Constants.consumerSecret}&product=$productId";
 
     print("current productId $productId");
     Uri uri = Uri.parse(url);
@@ -1810,12 +1813,16 @@ class ApiService {
   static Future<CustomizationOption.ProductCustomizationOptionsModel?>
       getProductCustomizeOptions() async {
     final url =
-        "https://tiarabytj.com/wp-json/store/v1/settings/Show_product_customize";
+        "${Constants.baseUrl}/wp-json/store/v1/settings/Show_product_customize";
 
     Uri uri = Uri.parse(url);
 
+    String basicAuth = "Basic " +
+        base64Encode(
+            utf8.encode('${Constants.userName}:${Constants.password}'));
+
     final response = await http.get(uri, headers: {
-      'authorization': 'Basic dGlhcmFieXRqQGdtYWlsLmNvbTpPY3RvYmVyQEp3ZXJv',
+      'authorization': basicAuth,
       'content-type': 'application/json',
     });
 
@@ -1841,14 +1848,15 @@ class ApiService {
 
   static FilterOptions.FilterOptionsModel? filterOptionsModel;
   static Future<FilterOptions.FilterOptionsModel?> getFilterOptions() async {
-    String url = "https://tiarabytj.com/wp-json/store/v1/taxonomies";
+    String url = "${Constants.baseUrl}/wp-json/store/v1/taxonomies";
 
     Uri uri = Uri.parse(url);
-    String userName = "tiarabytj@gmail.com";
-    String password = "October@Jwero";
+    // String userName = "tiarabytj@gmail.com";
+    // String password = "October@Jwero";
 
-    String basicAuth =
-        "Basic " + base64Encode(utf8.encode('$userName:$password'));
+    String basicAuth = "Basic " +
+        base64Encode(
+            utf8.encode('${Constants.userName}:${Constants.password}'));
 
     print("filterOptions basicAuth $basicAuth");
 
@@ -1919,7 +1927,7 @@ class ApiService {
     List<DigiGoldPlans.DigiGoldPlanModel> listOfAllDigiGoldPlan =
         <DigiGoldPlans.DigiGoldPlanModel>[];
     String url =
-        "https://tiarabytj.com/wp-json/wc/v3/products?custom_filter[0][key]=_visibility&custom_filter[0][value]=hidden&per_page=100&consumer_key=${Strings.consumerKey}&consumer_secret=${Strings.consumerSecret}";
+        "${Constants.baseUrl}/wp-json/wc/v3/products?custom_filter[0][key]=_visibility&custom_filter[0][value]=hidden&per_page=100&consumer_key=${Constants.consumerKey}&consumer_secret=${Constants.consumerSecret}";
 
     Uri uri = Uri.parse(url);
     final response = await http.get(uri);
@@ -2051,13 +2059,13 @@ class ApiService {
 
   static Future<http.StreamedResponse> uploadDocumentImage(
       String imagePath) async {
-    final url = "https://tiarabytj.com/wp-json/wp/v2/media";
+    final url = "${Constants.baseUrl}/wp-json/wp/v2/media";
     Uri uri = Uri.parse(url);
-    String userName = "tiarabytj@gmail.com";
-    String password = "October@Jwero";
 
-    String basicAuth =
-        "Basic " + base64Encode(utf8.encode('$userName:$password'));
+
+    String basicAuth = "Basic " +
+        base64Encode(
+            utf8.encode('${Constants.userName}:${Constants.password}'));
 
     print("image upload basicAuth $basicAuth");
 
@@ -2086,16 +2094,14 @@ class ApiService {
   // static late GoldRateModel goldRateModel;
 
   static Future<http.Response> getGoldRate() async {
-    final url =
-        "https://tiarabytj.com/wp-json/store/v1/settings/master_pricing";
+    final url = "${Constants.baseUrl}/wp-json/store/v1/settings/master_pricing";
     Uri uri = Uri.parse(url);
-    String userName = "tiarabytj@gmail.com";
-    String password = "October@Jwero";
 
-    String basicAuth =
-        "Basic " + base64Encode(utf8.encode('$userName:$password'));
+   String basicAuth = "Basic " +
+        base64Encode(
+            utf8.encode('${Constants.userName}:${Constants.password}'));
 
-    print("image upload basicAuth $basicAuth");
+    print("getGoldRate basicAuth $basicAuth");
 
     var headers = {
       'Authorization': basicAuth,
@@ -2122,7 +2128,7 @@ class ApiService {
 
   static Future<void> getCoupons() async {
     final url =
-        "https://tiarabytj.com/wp-json/wc/v3/coupons?&consumer_key=${Strings.consumerKey}&consumer_secret=${Strings.consumerSecret}&per_page=100";
+        "${Constants.baseUrl}/wp-json/wc/v3/coupons?&consumer_key=${Constants.consumerKey}&consumer_secret=${Constants.consumerSecret}&per_page=100";
 
     Uri uri = Uri.parse(url);
 
