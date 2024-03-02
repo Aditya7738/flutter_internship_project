@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:Tiara_by_TJ/constants/constants.dart';
 import 'package:Tiara_by_TJ/model/category_model.dart';
@@ -1215,12 +1216,47 @@ class ApiService {
 
     if (response.statusCode == 201) {
       print("BODY ${response.body}");
+
       final json = jsonDecode(response.body);
       print("JSON $json");
 
       return response;
     } else {
       return response;
+    }
+  }
+
+  static Future<void> signupCustomer(Map<String, String> customerData) async {
+    String endpoint = "${Constants.baseUrl}/wp-json/wc/v3/customers";
+    String basicAuth = base64Encode(utf8.encode(
+        "${Constants.consumerKeySignup} : ${Constants.consumerSecretSignup}"));
+
+    var headers = {
+      HttpHeaders.authorizationHeader: "Basic $basicAuth",
+   //   HttpHeaders.contentTypeHeader: "text/html"
+    };
+
+    Uri uri = Uri.parse(endpoint);
+
+    http.Response response =
+        await http.post(uri, headers: headers, body: customerData);
+
+    print("signupCustomer statusCode ${response.statusCode}");
+
+    print("signupCustomer body ${response.body}");
+
+    print("signupCustomer headers ${response.headers}");
+
+print("signupCustomer reasonPhrase ${response.reasonPhrase}");
+    
+
+    if (response.statusCode == 201) {
+      // try {
+      //   final json = jsonDecode(response.body);
+      //   print("signupCustomer json $json");
+      // } catch (e) {
+      //   print("${e.toString()}");
+      // }
     }
   }
 
@@ -1545,11 +1581,10 @@ class ApiService {
         "${Constants.baseUrl}/wp-json/store/v1/settings?options=woocommerce_razorpay_settings";
 
     Uri uri = Uri.parse(endpoint);
-    String userName = "tiarabytj@gmail.com";
-    String password = "October@Jwero";
 
-    String basicAuth =
-        "Basic " + base64Encode(utf8.encode('$userName:$password'));
+    String basicAuth = "Basic " +
+        base64Encode(
+            utf8.encode('${Constants.userName}:${Constants.password}'));
 
     final headers = {
       'content-type': 'application/json',
@@ -2062,7 +2097,6 @@ class ApiService {
     final url = "${Constants.baseUrl}/wp-json/wp/v2/media";
     Uri uri = Uri.parse(url);
 
-
     String basicAuth = "Basic " +
         base64Encode(
             utf8.encode('${Constants.userName}:${Constants.password}'));
@@ -2097,7 +2131,7 @@ class ApiService {
     final url = "${Constants.baseUrl}/wp-json/store/v1/settings/master_pricing";
     Uri uri = Uri.parse(url);
 
-   String basicAuth = "Basic " +
+    String basicAuth = "Basic " +
         base64Encode(
             utf8.encode('${Constants.userName}:${Constants.password}'));
 

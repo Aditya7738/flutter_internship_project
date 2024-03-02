@@ -32,15 +32,11 @@ class _DashboardPageState extends State<DashboardPage> {
     getProductCustomizeOptions();
     getFilterOptions();
     getBasicAuthForRazorPay();
-   
   }
-
- 
 
   Future<void> getBasicAuthForRazorPay() async {
     bool isThereInternet = await ApiService.checkInternetConnection(context);
     if (isThereInternet) {
-    
       await ApiService.generateBasicAuthForRazorPay();
     }
   }
@@ -223,9 +219,9 @@ class _DashboardPageState extends State<DashboardPage> {
           onTap: (index) {
             print("TAB O: $index");
             if (mounted) {
-      setState(() {
-              _currentIndex = index;
-            });
+              setState(() {
+                _currentIndex = index;
+              });
             }
           },
           currentIndex: _currentIndex,

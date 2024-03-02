@@ -25,13 +25,13 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   final TextEditingController _lastNameController = TextEditingController();
 
-  final TextEditingController _companyNameController = TextEditingController();
+ 
 
   final TextEditingController _addressController = TextEditingController();
 
   final TextEditingController _phoneNoController = TextEditingController();
 
-  final TextEditingController _cityController = TextEditingController();
+ 
 
   final TextEditingController _pinNoController = TextEditingController();
 

@@ -8,7 +8,7 @@ import 'package:Tiara_by_TJ/model/cart_product_model.dart';
 import 'package:Tiara_by_TJ/providers/cart_provider.dart';
 import 'package:Tiara_by_TJ/providers/wishlist_provider.dart';
 import 'package:Tiara_by_TJ/views/pages/cart_page.dart';
-import 'package:Tiara_by_TJ/views/widgets/cart_app_bar.dart';
+
 import 'package:provider/provider.dart';
 
 class WishListPage extends StatefulWidget {
@@ -71,7 +71,9 @@ class _WishListPageState extends State<WishListPage> {
     //final wishlistProvider = Provider.of<WishlistProvider>(context, listen: false);
 
     return Scaffold(
-      appBar: const CartAppBar(title: "Wishlist"),
+      appBar: AppBar(
+        title: Text("Wishlist"),
+      ),
       body: Consumer<WishlistProvider>(builder: (context, value, child) {
         print("LEnGTH ${value.wishlistProducts.length}");
 

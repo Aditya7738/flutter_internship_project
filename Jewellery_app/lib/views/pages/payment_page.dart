@@ -169,7 +169,7 @@ class _PaymentPageState extends State<PaymentPage>
       ]);
 
       print("digi billingData ${orderProvider.billingData}");
-       print("digi shippingData ${orderProvider.shippingData}");
+      print("digi shippingData ${orderProvider.shippingData}");
       print("digi lineItems ${orderProvider.lineItems}");
       print("digi customerId ${orderProvider.customerId}");
       print("digi price ${orderProvider.price}");
@@ -219,6 +219,7 @@ class _PaymentPageState extends State<PaymentPage>
     final cartProvider = Provider.of<CartProvider>(context, listen: false);
     final customerData = customerProvider.customerData[0];
 
+    print("customerData $customerData");
     String productName = "";
     String contact = "";
     String email = "";
@@ -230,8 +231,11 @@ class _PaymentPageState extends State<PaymentPage>
       contact = customerData["billing"]["phone"];
       email = customerData["email"];
     } else {
+      print("digi_gold_plan_name ${customerData["digi_gold_plan_name"]}");
       productName = customerData["digi_gold_plan_name"];
+       print("digi_gold_billing_email ${customerData["digi_gold_billing_email"]}");
       email = customerData["digi_gold_billing_email"];
+       print("digi_gold_billing_phone ${customerData["digi_gold_billing_phone"]}");
       contact = customerData["digi_gold_billing_phone"];
     }
 
@@ -250,7 +254,8 @@ class _PaymentPageState extends State<PaymentPage>
     print("Payment $options");
 
     try {
-      final response = _razorpay.open(options);
+      final response = _razorpay.open(
+          options); // add await, setstate and make async func, since it taking time to open
     } catch (e) {
       debugPrint(e.toString());
     }
@@ -355,9 +360,9 @@ class _PaymentPageState extends State<PaymentPage>
   @override
   Widget build(BuildContext context) {
     final cartProvider = Provider.of<CartProvider>(context, listen: false);
-    final customerProvider =
-        Provider.of<CustomerProvider>(context, listen: false);
-    final customerData = customerProvider.customerData[0];
+    // final customerProvider =
+    //     Provider.of<CustomerProvider>(context, listen: false);
+    //final customerData = customerProvider.customerData[0];
 
     String productName = "";
     for (int i = 0; i < cartProvider.cart.length; i++) {
@@ -546,9 +551,13 @@ class _PaymentPageState extends State<PaymentPage>
                               ),
                             ]);
                       } else {
-                        return Center(
-                          child: CircularProgressIndicator(
-                            color: Colors.black,
+                        return Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.height / 2,
+                          child: Center(
+                            child: CircularProgressIndicator(
+                              color: Colors.black,
+                            ),
                           ),
                         );
                       }

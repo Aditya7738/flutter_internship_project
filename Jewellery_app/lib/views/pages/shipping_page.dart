@@ -338,11 +338,14 @@ class _ShippingPageState extends State<ShippingPage> {
                               orderProvider.setCustomerId(customerId);
                               orderProvider.setLineItems(lineItems);
                               orderProvider.setCustomerId(customerId);
-                              orderProvider.setPrice(cartProvider
-                                  .calculateTotalPrice()
-                                  .toString());
+                              orderProvider.setPrice(
+                                  cartProvider.isCouponApplied
+                                      ? cartProvider.totalAfterCouponApplied
+                                          .toString()
+                                      : cartProvider
+                                          .calculateTotalPrice()
+                                          .toString());
 
-                             
                               await ApiService.updateCustomer(
                                   customerId, billingData, shippingData);
 

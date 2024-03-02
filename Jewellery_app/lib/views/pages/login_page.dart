@@ -249,6 +249,10 @@ class _LoginPageState extends State<LoginPage> {
                                     });
                                   }
 
+                                  customerProvider.setIsUserLoggedIn(true);
+
+                                  //
+
                                   widget.isComeFromCart
                                       ? Navigator.of(context).pushReplacement(
                                           MaterialPageRoute(
@@ -320,24 +324,25 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       Center(
                           child: RichText(
-                              text: TextSpan(
-                                  text: 'New to Tiara By TJ?',
-                                  style: const TextStyle(color: Colors.black),
-                                  children: <TextSpan>[
-                            TextSpan(
-                              text: '  Create Account',
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xffCC868A),
-                              ),
-                              recognizer: TapGestureRecognizer()
-                                ..onTap = () {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => const SignupPage(),
-                                  ));
-                                },
-                            ),
-                          ]))),
+                              text: TextSpan(children: <TextSpan>[
+                        TextSpan(
+                          text: 'New to Tiara By TJ?',
+                          style: const TextStyle(color: Colors.black),
+                        ),
+                        TextSpan(
+                          text: '  Create Account',
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xffCC868A),
+                          ),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => const SignupPage(),
+                              ));
+                            },
+                        ),
+                      ], style: TextStyle(fontSize: 17.0)))),
                     ]),
               ))),
         ));

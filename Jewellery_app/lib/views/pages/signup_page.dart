@@ -7,6 +7,7 @@ import 'package:Tiara_by_TJ/helpers/validation_helper.dart';
 import 'package:Tiara_by_TJ/providers/customer_provider.dart';
 import 'package:Tiara_by_TJ/views/pages/login_page.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
@@ -44,10 +45,21 @@ class _SignupPageState extends State<SignupPage> {
   bool isRegisterUnSuccessful = false;
   String errorMsg = "";
 
+    Future<void> onLinkClicked(String url) async {
+    Uri uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
+    } else {
+      print("Could not launch Terms and condition's URL");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final customerProvider = Provider.of<CustomerProvider>(context);
-
+   
+    _passwordController.text = "Sldi4e@#45";
+    _confirmPasswordController.text = "Sldi4e@#45";
+    _phoneNoController.text = "4153516564";
     return Scaffold(
         appBar: AppBar(
           leading: GestureDetector(
@@ -274,7 +286,8 @@ class _SignupPageState extends State<SignupPage> {
                               text: TextSpan(
                                   text:
                                       '*By clicking on Save chage, you accept our ',
-                                  style: const TextStyle(color: Colors.black),
+                                  style: const TextStyle(
+                                      color: Colors.black, fontSize: 16.0),
                                   children: <TextSpan>[
                             TextSpan(
                               text: 'T&C',
@@ -285,6 +298,7 @@ class _SignupPageState extends State<SignupPage> {
                                 ..onTap = () {
                                   // Handle the click event for the specific word.
                                   print('You clicked on T&C');
+                                  onLinkClicked("https://tiarabytj.com/terms-conditions/");
                                   // Add your custom action here.
                                 },
                             ),
@@ -303,6 +317,7 @@ class _SignupPageState extends State<SignupPage> {
                                 ..onTap = () {
                                   // Handle the click event for the specific word.
                                   print('You clicked on Privacy Policy');
+                                  onLinkClicked("https://tiarabytj.com/privacy-policy/");
                                   // Add your custom action here.
                                 },
                             ),
@@ -322,13 +337,13 @@ class _SignupPageState extends State<SignupPage> {
                                 password = _passwordController.text;
                               });
                             }
-          
+
                             List<String> list = email.split('@');
                             String username = list[0];
-          
+
                             print(
                                 "$phone $email $first_name $last_name $username");
-          
+
                             Map<String, dynamic> data = {
                               "phone": phone,
                               "first_name": first_name,
@@ -337,7 +352,7 @@ class _SignupPageState extends State<SignupPage> {
                               "username": username,
                               "password": password
                             };
-          
+
                             print("SAVED DATA $data");
                             bool isThereInternet =
                                 await ApiService.checkInternetConnection(
@@ -348,55 +363,64 @@ class _SignupPageState extends State<SignupPage> {
                                   isLoading = true;
                                 });
                               }
-          
-                              final response =
-                                  await ApiService.createCustomer(data);
-          
+
+                              // final response =
+                              //     await ApiService.createCustomer(data);
+
+                              await ApiService.signupCustomer({
+                                //   "phone": phone,
+                                "first_name": first_name,
+                                "last_name": last_name,
+                                "email": email,
+                                //    "username": username,
+                                // "password": password
+                              });
+
                               if (mounted) {
                                 setState(() {
                                   isLoading = false;
                                 });
                               }
-          
-                              if (response.statusCode == 201) {
-                                String body = response.body;
-                                List<Map<String, dynamic>> data =
-                                    <Map<String, dynamic>>[];
-          
-                                try {
-                                  data = jsonDecode(body);
-                                  print("JSON DECODE DATA $data");
-                                } catch (e) {
-                                  print('Error decoding: $e');
-                                }
-          
-                                customerProvider.setCustomerData(data);
-          
-                                Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => LoginPage(
-                                        isComeFromCart: false,
-                                      ),
-                                    ));
-                              } else {
-                                String body = response.body;
-                                Map<String, dynamic> data = <String, dynamic>{};
-          
-                                try {
-                                  data = jsonDecode(body);
-          
-                                  if (mounted) {
-                                    setState(() {
-                                      isRegisterUnSuccessful = true;
-                                      errorMsg = data["message"];
-                                    });
-                                  }
-                                  print("JSON DECODE DATA $data");
-                                } catch (e) {
-                                  print('Error decoding: $e');
-                                }
-                              }
+
+                              // if (response.statusCode == 201) {
+                              //   String body = response.body;
+                              //   // List<Map<String, dynamic>> data =
+                              //   //     <Map<String, dynamic>>[];
+                              //   Map<String, dynamic> data = <String, dynamic>{};
+                              //   try {
+                              //     data = jsonDecode(body);
+                              //     print("JSON DECODE DATA $data");
+                              //   } catch (e) {
+                              //     print('Error decoding: $e');
+                              //   }
+
+                              // customerProvider.addCustomerData(data);
+
+                              //   Navigator.pushReplacement(
+                              //       context,
+                              //       MaterialPageRoute(
+                              //         builder: (context) => LoginPage(
+                              //           isComeFromCart: false,
+                              //         ),
+                              //       ));
+                              // } else {
+                              //   String body = response.body;
+                              //   Map<String, dynamic> data = <String, dynamic>{};
+
+                              //   try {
+                              //     data = jsonDecode(body);
+
+                              //     if (mounted) {
+                              //       setState(() {
+                              //         isRegisterUnSuccessful = true;
+                              //         errorMsg = data["message"];
+                              //       });
+                              //     }
+                              //     print("JSON DECODE DATA $data");
+                              //   } catch (e) {
+                              //     print('Error decoding: $e');
+                              //   }
+                              // }
                             }
                           }
                           // print("$phoneNo $email $firstName $lastName");
@@ -436,12 +460,14 @@ class _SignupPageState extends State<SignupPage> {
                           child: RichText(
                               text: TextSpan(
                                   text: 'Already have an account?',
-                                  style: const TextStyle(color: Colors.black, fontSize: 16.0),
+                                  style: const TextStyle(
+                                      color: Colors.black, fontSize: 16.0),
                                   children: <TextSpan>[
                             TextSpan(
                               text: ' Login',
                               style: const TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 16.0,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16.0,
                                 color: Color(0xffCC868A),
                               ),
                               recognizer: TapGestureRecognizer()

@@ -173,6 +173,8 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
       _phoneNoController.text = customerProvider.customerData[0]["mobile_no"];
     }
 
+    
+
     if (customerProvider.customerData[0]
         .containsKey("digi_gold_billing_phone")) {
       _phoneNoController.text =
@@ -774,7 +776,12 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
       orderProvider.setCustomerId(customerProvider.customerData[0]["id"]);
       orderProvider.setLineItems(line_items);
       orderProvider.setMetaData(meta_data);
-      orderProvider.setPrice(widget.flexiPlanData!["plan_price"]!);
+      orderProvider.setPrice(
+        widget.flexiPlanData != null ?
+        widget.flexiPlanData!["plan_price"]!
+        :
+        widget.digiGoldPlanModel.price!
+        );
 
       ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -814,7 +821,12 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
 
       print("CITY2 ${_cityController.text}");
 
+      print("DigiGoldPlanName ${ widget.digiGoldPlanModel.name ?? "Digi Gold Plan"}");
+
+
+
       customerProvider.addCustomerData({
+
         "address_1": _addressController1.text,
         "address_2": _addressController2.text,
         "city": _cityController.text,

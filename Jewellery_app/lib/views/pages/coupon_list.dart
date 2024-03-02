@@ -176,7 +176,7 @@ class _CouponListPageState extends State<CouponListPage> {
               "₹ ${(double.parse(ApiService.listOfCoupons[i].amount!)).toInt()}");
         } else {
           discounts.add(
-              "${(double.parse(ApiService.listOfCoupons[i].amount!)).toInt()} %");
+              "${(double.parse(ApiService.listOfCoupons[i].amount!)).toInt()}% OFF");
         }
       }
     }
@@ -228,7 +228,7 @@ class _CouponListPageState extends State<CouponListPage> {
         if (applicableCoupon.discountType == "fixed_product") {
           discount = "₹ ${(double.parse(applicableCoupon.amount!)).toInt()}";
         } else {
-          discount = "${(double.parse(applicableCoupon.amount!)).toInt()} %";
+          discount = "${(double.parse(applicableCoupon.amount!)).toInt()}% OFF";
         }
 
         discountData = {
@@ -265,13 +265,17 @@ class _CouponListPageState extends State<CouponListPage> {
                     keyboardType: TextInputType.text,
                     onChanged: (value) {
                       if (value == "") {
-                        setState(() {
-                          showApplyButton = false;
-                        });
+                        if (mounted) {
+                          setState(() {
+                            showApplyButton = false;
+                          });
+                        }
                       } else {
-                        setState(() {
-                          showApplyButton = true;
-                        });
+                        if (mounted) {
+                          setState(() {
+                            showApplyButton = true;
+                          });
+                        }
                       }
                     },
                     validator: (value) {
@@ -287,10 +291,14 @@ class _CouponListPageState extends State<CouponListPage> {
                           ? GestureDetector(
                               onTap: () {
                                 if (_formKey.currentState!.validate()) {
-                                  Map<String, dynamic> discountData = findDiscountFromCode(_couponController.text);
+                                  Map<String, dynamic> discountData =
+                                      findDiscountFromCode(
+                                          _couponController.text);
                                   Navigator.pop(context, {
-                                    "discountString": discountData["discountString"],
-                                    "discountAmount": discountData["discountAmount"],
+                                    "discountString":
+                                        discountData["discountString"],
+                                    "discountAmount":
+                                        discountData["discountAmount"],
                                     "couponcode": _couponController.text
                                   });
                                 }
@@ -747,7 +755,7 @@ class _CouponListPageState extends State<CouponListPage> {
       if (couponsModel.discountType == "fixed_product") {
         discount = "₹ ${(double.parse(couponsModel.amount!)).toInt()}";
       } else {
-        discount = "${(double.parse(couponsModel.amount!)).toInt()} %";
+        discount = "${(double.parse(couponsModel.amount!)).toInt()}% OFF";
       }
 
       widgets.add(Stack(
@@ -930,7 +938,7 @@ class _CouponListPageState extends State<CouponListPage> {
                     child: Text(
                       couponsModel.discountType == "fixed_product"
                           ? "₹ ${(double.parse(couponsModel.amount!)).toInt()} OFF"
-                          : "${(double.parse(couponsModel.amount!)).toInt()} % OFF",
+                          : "${(double.parse(couponsModel.amount!)).toInt()}% OFF",
                       style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,

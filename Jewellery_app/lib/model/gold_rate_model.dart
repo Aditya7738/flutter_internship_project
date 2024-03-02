@@ -392,7 +392,7 @@ class The375 {
 
     factory The375.fromJson(Map<String, dynamic> json){ 
         return The375(
-            base: json["base"],
+            base: int.parse("${json["base"]}") ,
             margin: json["margin"],
             rate: json["rate"],
         );
@@ -440,7 +440,7 @@ class The916 {
         required this.rate,
     });
 
-    final String? base;
+    final int? base;
     final int? margin;
     final int? rate;
 

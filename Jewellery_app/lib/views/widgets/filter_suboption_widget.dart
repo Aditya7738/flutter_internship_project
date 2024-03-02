@@ -32,9 +32,11 @@ class _FilterSubOptionsWidgetState extends State<FilterSubOptionsWidget> {
     for (var i = 0; i < filterOptionsProvider.list.length; i++) {
       if (filterOptionsProvider.list[i]["parent"] == widget.filterKey &&
           filterOptionsProvider.list[i]["id"] == widget.subOptions["id"]) {
-        setState(() {
-          isSelected = true;
-        });
+        if (mounted) {
+          setState(() {
+            isSelected = true;
+          });
+        }
       }
     }
   }
@@ -83,9 +85,11 @@ class _FilterSubOptionsWidgetState extends State<FilterSubOptionsWidget> {
                     value.list[i].containsValue(widget.filterKey)) {
                   print("list $value.list");
                   value.removeFromList(i);
-                  setState(() {
-                    isSelected = false;
-                  });
+                  if (mounted) {
+                    setState(() {
+                      isSelected = false;
+                    });
+                  }
                   return;
                 }
               }
@@ -96,9 +100,11 @@ class _FilterSubOptionsWidgetState extends State<FilterSubOptionsWidget> {
                 for (var i = 0; i < value.list.length; i++) {
                   if (value.list[i].containsValue(widget.filterKey)) {
                     value.removeFromList(i);
-                    setState(() {
-                      isSelected = false;
-                    });
+                    if (mounted) {
+                      setState(() {
+                        isSelected = false;
+                      });
+                    }
                   }
                 }
               }
@@ -116,9 +122,11 @@ class _FilterSubOptionsWidgetState extends State<FilterSubOptionsWidget> {
             for (var i = 0; i < value.list.length; i++) {
               if (value.list[i]["parent"] == widget.filterKey &&
                   value.list[i]["id"] == widget.subOptions["id"]) {
-                setState(() {
-                  isSelected = true;
-                });
+                if (mounted) {
+                  setState(() {
+                    isSelected = true;
+                  });
+                }
               }
             }
           },

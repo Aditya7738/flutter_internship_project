@@ -52,16 +52,16 @@ class _NoInternetConnectionPageState extends State<NoInternetConnectionPage> {
               GestureDetector(
                 onTap: () async {
                   if (mounted) {
-      setState(() {
-                    isInternetChecking = true;
-                  });
+                    setState(() {
+                      isInternetChecking = true;
+                    });
                   }
                   final connectivityResult =
                       await (Connectivity().checkConnectivity());
                   if (mounted) {
-      setState(() {
-                    isInternetChecking = false;
-                  });
+                    setState(() {
+                      isInternetChecking = false;
+                    });
                   }
 
                   if (connectivityResult != ConnectivityResult.none) {
@@ -76,7 +76,7 @@ class _NoInternetConnectionPageState extends State<NoInternetConnectionPage> {
                   }
                 },
                 child: Container(
-                width: 155,
+                    width: 155,
                     decoration: BoxDecoration(
                         border: Border.all(
                             color: Theme.of(context).primaryColor,
@@ -88,12 +88,12 @@ class _NoInternetConnectionPageState extends State<NoInternetConnectionPage> {
                       children: [
                         isInternetChecking
                             ? CircularProgressIndicator(
-                            color: Theme.of(context).primaryColor,
+                                color: Theme.of(context).primaryColor,
                                 strokeWidth: 2.0,
                               )
                             : Image.asset(
                                 "assets/images/reload.png",
-                              color: Theme.of(context).primaryColor,
+                                color: Theme.of(context).primaryColor,
                                 width: 20.0,
                                 height: 20.0,
                               ),

@@ -18,12 +18,12 @@ import 'package:url_launcher/url_launcher.dart';
 class AccountPage extends StatelessWidget {
   AccountPage({super.key});
 
-  List<IconData> icons = [
-    Icons.account_circle_outlined,
-    // Icons.qr_code_scanner_outlined,
-    // Icons.notifications_none_outlined,
-    Icons.pin_drop_outlined
-  ];
+  // List<IconData> icons = [
+
+  //   // Icons.qr_code_scanner_outlined,
+  //   // Icons.notifications_none_outlined,
+  //   Icons.pin_drop_outlined
+  // ];
 
   List<IconData> icons2 = [
     Icons.send,
@@ -147,47 +147,70 @@ class AccountPage extends StatelessWidget {
                   "Hello, there!",
                   style: TextStyle(fontSize: 17.0),
                 )),
-            SizedBox(
-              width: MediaQuery.of(context).size.width,
-              height: 135.0,
-              child: ListView.separated(
-                itemCount: icons.length,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    onTap: () {
-                      switch (index) {
-                        case 0:
-                          isDataEmpty
-                              ?  Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage(isComeFromCart: false),))
-                                
-                              : Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => MyProfilePage(),
-                                ));
-
-                          break;
-                        // case 2:
-                        //   Navigator.of(context).push(MaterialPageRoute(
-                        //     builder: (context) => const NotificationPage(),
-                        //   ));
-
-                        //   break;
-                        case 1:
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => const OrderPage(),
-                          ));
-                          break;
-                        default:
-                      }
-                    },
-                    leading: Icon(icons[index]),
-                    title: Text(title[index],
-                        style: const TextStyle(fontSize: 17.0)),
-                  );
-                },
-                separatorBuilder: (context, index) =>
-                    const Divider(thickness: 1.0, color: Colors.grey),
+            ListTile(
+              onTap: () {
+                isDataEmpty
+                    ? Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              LoginPage(isComeFromCart: false),
+                        ))
+                    : Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => MyProfilePage(),
+                      ));
+              },
+              leading: Icon(
+                Icons.account_circle_outlined,
               ),
+              title: Text(isDataEmpty ? "Login" : "My profile",
+                  style: const TextStyle(fontSize: 17.0)),
             ),
+            // SizedBox(
+            //   width: MediaQuery.of(context).size.width,
+            //   height: 135.0,
+            //   child: ListView.separated(
+            //     itemCount: icons.length,
+            //     itemBuilder: (context, index) {
+            //       return ListTile(
+            //         onTap: () {
+            //           switch (index) {
+            //             case 0:
+            //               isDataEmpty
+            //                   ? Navigator.push(
+            //                       context,
+            //                       MaterialPageRoute(
+            //                         builder: (context) =>
+            //                             LoginPage(isComeFromCart: false),
+            //                       ))
+            //                   : Navigator.of(context).push(MaterialPageRoute(
+            //                       builder: (context) => MyProfilePage(),
+            //                     ));
+
+            //               break;
+            //             // case 2:
+            //             //   Navigator.of(context).push(MaterialPageRoute(
+            //             //     builder: (context) => const NotificationPage(),
+            //             //   ));
+
+            //             //   break;
+            //             case 1:
+            //               Navigator.of(context).push(MaterialPageRoute(
+            //                 builder: (context) => const OrderPage(),
+            //               ));
+            //               break;
+            //             default:
+            //           }
+            //         },
+            //         leading: Icon(icons[index]),
+            //         title: Text(title[index],
+            //             style: const TextStyle(fontSize: 17.0)),
+            //       );
+            //     },
+            //     separatorBuilder: (context, index) =>
+            //         const Divider(thickness: 1.0, color: Colors.grey),
+            //   ),
+            // ),
             Container(
                 padding:
                     const EdgeInsets.only(left: 15.0, top: 30.0, bottom: 5.0),

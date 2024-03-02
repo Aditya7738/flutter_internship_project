@@ -291,9 +291,12 @@ class _DigiGoldPageState extends State<DigiGoldPage> {
           if (listOfAllDigiGoldPlan[i].metaData[j].key == "digi_plan_type") {
             if (listOfAllDigiGoldPlan[i].metaData[j].value == "flexi") {
               flexiPlanModel = listOfAllDigiGoldPlan[i];
-              setState(() {
+              if (mounted) {
+                setState(() {
                 isFlexiPlanEnabled = true;
               });
+              }
+              
             } else {
               listOfFilteredDigiGoldPlan.add(listOfAllDigiGoldPlan[i]);
             }

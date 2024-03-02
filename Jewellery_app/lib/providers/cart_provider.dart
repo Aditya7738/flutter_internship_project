@@ -13,6 +13,23 @@ class CartProvider with ChangeNotifier {
 
   bool get isOrderCreating => _isOrderCreating;
 
+  bool _isCouponApplied = false;
+
+  bool get isCouponApplied => _isCouponApplied;
+
+  void setIsCouponApplied(bool isCouponApplied) {
+    _isCouponApplied = isCouponApplied;
+    notifyListeners();
+  }
+
+  // String _totalPriceAfterCouponApplied = "";
+  // String get totalPriceAfterCouponApplied => _totalPriceAfterCouponApplied;
+
+  // void setTotalPriceAfterCouponApplied(String totalPriceAfterCouponApplied) {
+  //   _totalPriceAfterCouponApplied = totalPriceAfterCouponApplied;
+  //   notifyListeners();
+  // }
+
   Map<String, dynamic>? _selectedCouponData;
 
   Map<String, dynamic>? get selectedCouponData => _selectedCouponData;

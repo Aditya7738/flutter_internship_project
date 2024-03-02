@@ -10,7 +10,7 @@ import 'package:Tiara_by_TJ/providers/cart_provider.dart';
 import 'package:Tiara_by_TJ/views/pages/search_page.dart';
 import 'package:Tiara_by_TJ/views/pages/shipping_page.dart';
 import 'package:Tiara_by_TJ/views/widgets/button_widget.dart';
-import 'package:Tiara_by_TJ/views/widgets/cart_app_bar.dart';
+
 import 'package:Tiara_by_TJ/views/widgets/cart_total_row.dart';
 import 'package:Tiara_by_TJ/views/widgets/label_widget.dart';
 import 'package:provider/provider.dart';
@@ -92,8 +92,8 @@ class _CartPageState extends State<CartPage> {
     final cartProvider = Provider.of<CartProvider>(context, listen: false);
 
     return Scaffold(
-        appBar: const CartAppBar(
-          title: 'Cart',
+        appBar: AppBar(
+          title: Text("Cart"),
         ),
         body: Scrollbar(
           child: SingleChildScrollView(
@@ -136,6 +136,7 @@ class _CartPageState extends State<CartPage> {
                             print(
                                 "selectedCouponData != null ${selectedCouponData != null}");
                             if (selectedCouponData != null) {
+                             
                               showDialog(
                                 context: context,
                                 builder: (context) {
@@ -156,7 +157,12 @@ class _CartPageState extends State<CartPage> {
                                             height: 30.0,
                                           ),
                                           Text(
-                                            "${selectedCouponData!["discountString"]} saved with this coupon!",
+                                            selectedCouponData![
+                                                        "discountString"]
+                                                    .toString()
+                                                    .contains("%")
+                                                ? "You got ${selectedCouponData!["discountString"]} discount with this coupon!"
+                                                : "${selectedCouponData!["discountString"]} saved with this coupon!",
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
                                                 fontSize: 22.0,
@@ -215,32 +221,37 @@ class _CartPageState extends State<CartPage> {
                                 child: ListTile(
                                   title: Text(
                                     //"'couponcode' applied"
-                                    "'${selectedCouponData!["couponcode"]}' applied",
+                                    "'${value.selectedCouponData!["couponcode"]}' applied",
                                     style: TextStyle(
                                         // color: Theme.of(context).primaryColor,
                                         fontSize: 19.0),
                                   ),
-                                  subtitle: Row(
-                                    children: [
-                                      Icon(
-                                        Icons.check,
-                                        color: Theme.of(context).primaryColor,
-                                        size: 18.0,
-                                      ),
-                                      Text(
-                                        //"500/- "
-                                        "${selectedCouponData!["discountString"]} ",
-                                        style: TextStyle(
-                                            color:
-                                                Theme.of(context).primaryColor,
-                                            fontSize: 16.0,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      Text(
-                                        "saved on this order",
-                                        style: TextStyle(fontSize: 16.0),
-                                      )
-                                    ],
+                                  subtitle: Expanded(
+                                    // height: 40.0,
+                                    child: RichText(
+                                      text: TextSpan(children: [
+                                        TextSpan(
+                                          text: value.selectedCouponData![
+                                                      "discountString"]
+                                                  .toString()
+                                                  .contains("%")
+                                              ? " ₹ ${((value.selectedCouponData!["discountAmount"] / 100) * value.calculateTotalPrice()).round()}"
+                                              : " ${value.selectedCouponData!["discountString"]}",
+                                          style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .primaryColor,
+                                              fontSize: 16.0,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        TextSpan(
+                                          text: " saved on this order",
+                                          style: TextStyle(
+                                              fontSize: 16.0,
+                                              color: Colors.black),
+                                        )
+                                      ]),
+                                      maxLines: 2,
+                                    ),
                                   ),
                                   trailing: GestureDetector(
                                     onTap: () {
@@ -333,7 +344,7 @@ class _CartPageState extends State<CartPage> {
                                                     .headline3,
                                               ),
                                               Text(
-                                                  "₹ ${value.calculateTotalPrice().toString()}",
+                                                  "₹ ${value.calculateTotalPrice().round().toString()}",
                                                   style: Theme.of(context)
                                                       .textTheme
                                                       .headline3)
@@ -375,10 +386,11 @@ class _CartPageState extends State<CartPage> {
                                                     .headline3,
                                               ),
                                               Text(
-                                                  selectedCouponData!["discountString"]
+                                                  value.selectedCouponData![
+                                                              "discountString"]
                                                           .toString()
                                                           .contains("%")
-                                                      ? "- ₹ ${((selectedCouponData!["discountAmount"] / 100) * value.calculateTotalPrice())}"
+                                                      ? "- ₹ ${((value.selectedCouponData!["discountAmount"] / 100) * value.calculateTotalPrice()).round()}"
                                                       : "- ${value.selectedCouponData!["discountString"]}",
                                                   style: TextStyle(
                                                       color: Colors.green,
@@ -424,8 +436,10 @@ class _CartPageState extends State<CartPage> {
                                                         FontWeight.bold),
                                               ),
                                               Text(
-                                                  "₹ ${calculateTotalPriceAfterApplyCoupon(value.calculateTotalPrice(), selectedCouponData)}",
-                                                  //"₹ ${value.calculateTotalPrice().toString()}",
+                                                  value.selectedCouponData !=
+                                                          null
+                                                      ? "₹ ${(calculateTotalPriceAfterApplyCoupon(value.calculateTotalPrice(), value.selectedCouponData)).round()}"
+                                                      : "₹ ${value.calculateTotalPrice().toString()}",
                                                   style: TextStyle(
                                                       fontSize: 19.0,
                                                       fontWeight:
@@ -683,8 +697,13 @@ class _CartPageState extends State<CartPage> {
                             ),
                             Text(
                                 value.selectedCouponData != null
-                                    ? value.totalAfterCouponApplied.toString()
-                                    : value.calculateTotalPrice().toString(),
+                                    ? value.totalAfterCouponApplied
+                                        .round()
+                                        .toString()
+                                    : value
+                                        .calculateTotalPrice()
+                                        .round()
+                                        .toString(),
                                 style: Theme.of(context).textTheme.headline1)
                           ],
                         ),
@@ -696,7 +715,11 @@ class _CartPageState extends State<CartPage> {
                               final customerProvider =
                                   Provider.of<CustomerProvider>(context,
                                       listen: false);
-
+if (value.selectedCouponData != null) {
+  value.setIsCouponApplied(true);
+}else{
+   value.setIsCouponApplied(false);
+}
                               //List<Map<String,dynamic>> oldCartDataList = <Map<String,dynamic>>[];
 
                               //user old cart item should be added to cart again when he login and direct to cart page

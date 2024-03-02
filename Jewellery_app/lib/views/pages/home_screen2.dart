@@ -59,8 +59,8 @@ class _HomeScreen2State extends State<HomeScreen2> {
   void loadMoreData() async {
     if (mounted) {
       setState(() {
-      isNewCategoryLoading = true;
-    });
+        isNewCategoryLoading = true;
+      });
     }
 
     // Fetch more data (e.g., using ApiService)
@@ -70,8 +70,8 @@ class _HomeScreen2State extends State<HomeScreen2> {
     //categories = ApiService.listOfCategory;
     if (mounted) {
       setState(() {
-      isNewCategoryLoading = false;
-    });
+        isNewCategoryLoading = false;
+      });
     }
   }
 
@@ -87,8 +87,8 @@ class _HomeScreen2State extends State<HomeScreen2> {
 
     if (mounted) {
       setState(() {
-      isCategoryLoading = false;
-    });
+        isCategoryLoading = false;
+      });
     }
   }
 
@@ -96,9 +96,9 @@ class _HomeScreen2State extends State<HomeScreen2> {
     bool isThereInternet = await ApiService.checkInternetConnection(context);
     if (isThereInternet) {
       if (mounted) {
-      setState(() {
-        isSalesLoading = true;
-      });
+        setState(() {
+          isSalesLoading = true;
+        });
       }
       await ApiService.getOnSaleProducts(1);
 
@@ -110,9 +110,9 @@ class _HomeScreen2State extends State<HomeScreen2> {
       // }
 
       if (mounted) {
-      setState(() {
-        isSalesLoading = false;
-      });
+        setState(() {
+          isSalesLoading = false;
+        });
       }
     }
   }
@@ -279,9 +279,9 @@ class _HomeScreen2State extends State<HomeScreen2> {
                   autoPlayInterval: const Duration(seconds: 3),
                   onPageChanged: (index, reason) {
                     if (mounted) {
-      setState(() {
-                      currentIndex = index;
-                    });
+                      setState(() {
+                        currentIndex = index;
+                      });
                     }
                   }),
             ),
@@ -336,9 +336,9 @@ class _HomeScreen2State extends State<HomeScreen2> {
                   autoPlayInterval: const Duration(seconds: 3),
                   onPageChanged: (index, reason) {
                     if (mounted) {
-      setState(() {
-                      currentIndex = index;
-                    });
+                      setState(() {
+                        currentIndex = index;
+                      });
                     }
                   }),
             ),
