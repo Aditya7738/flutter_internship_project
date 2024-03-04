@@ -1,3 +1,5 @@
+import 'package:Tiara_by_TJ/model/choice_model.dart';
+import 'package:Tiara_by_TJ/views/widgets/choice_widget.dart';
 import 'package:Tiara_by_TJ/views/widgets/product_list_in_tab.dart';
 import 'package:flutter/material.dart';
 import 'package:Tiara_by_TJ/api/api_service.dart';
@@ -26,58 +28,126 @@ class HomeScreen3 extends StatefulWidget {
 class _HomeScreen3State extends State<HomeScreen3> {
   @override
   Widget build(BuildContext context) {
+    // List<Widget> newArrivalTabs = [
+    //   const Tab(
+    //     text: "Nose pin",
+    //   ),
+    //   const Tab(
+    //     text: "Bracelets",
+    //   ),
+    //   const Tab(
+    //     text: "Rings",
+    //   )
+    // ];
+
     List<Widget> newArrivalTabs = [
       const Tab(
-        text: "Nose pin",
+        // text: "",
+        child: Text(
+          "Nose pin",
+          style: TextStyle(fontSize: 16.0),
+        ),
       ),
       const Tab(
-        text: "Bracelets",
+        // text: "",
+        child: Text(
+          "Bracelets",
+          style: TextStyle(fontSize: 16.0),
+        ),
       ),
       const Tab(
-        text: "Rings",
+        // text: "",
+        child: Text(
+          "Rings",
+          style: TextStyle(fontSize: 16.0),
+        ),
       )
     ];
 
     List<Widget> diamondJewelleryTabs = [
       const Tab(
-        text: "Earrings",
+        // text: "",
+        child: Text(
+          "Earrings",
+          style: TextStyle(fontSize: 16.0),
+        ),
       ),
       const Tab(
-        text: "Pendant",
+        //text: "",
+        child: Text(
+          "Pendant",
+          style: TextStyle(fontSize: 16.0),
+        ),
       ),
       const Tab(
-        text: "Rings",
+        // text: "",
+        child: Text(
+          "Rings",
+          style: TextStyle(fontSize: 16.0),
+        ),
       )
     ];
 
     List<Widget> goldenJewelleryTabs = [
       const Tab(
-        text: "Earrings",
+        // text: "",
+        child: Text(
+          "Earrings",
+          style: TextStyle(fontSize: 16.0),
+        ),
       ),
       const Tab(
-        text: "Pendant",
+        //text: "",
+        child: Text(
+          "Pendant",
+          style: TextStyle(fontSize: 16.0),
+        ),
       ),
       const Tab(
-        text: "Rings",
+        // text: "",
+        child: Text(
+          "Rings",
+          style: TextStyle(fontSize: 16.0),
+        ),
       )
     ];
 
     List<Widget> silverJewelleryTabs = [
       const Tab(
-        text: "Earrings",
+        // text: "",
+        child: Text(
+          "Earrings",
+          style: TextStyle(fontSize: 16.0),
+        ),
       ),
       const Tab(
-        text: "Pendant",
+        //text: "",
+        child: Text(
+          "Pendant",
+          style: TextStyle(fontSize: 16.0),
+        ),
       ),
       const Tab(
-        text: "Rings",
+        // text: "",
+        child: Text(
+          "Rings",
+          style: TextStyle(fontSize: 16.0),
+        ),
       )
     ];
 
+    List<String> layoutsOptions = <String>[
+      "Home screen 1",
+      "Home screen 2",
+      "Home screen 3",
+    ];
 
+    ChoiceModel choiceModel =
+        ChoiceModel(options: layoutsOptions, selectedOption: layoutsOptions[2]);
 
     return Scaffold(
         appBar: AppBar(
+            automaticallyImplyLeading: false,
             title: CachedNetworkImage(
               imageUrl: Constants.app_logo,
               width: 150,
@@ -169,7 +239,15 @@ class _HomeScreen3State extends State<HomeScreen3> {
             // SizedBox(
             //   height: 10.0,
             // ),
-
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                ChoiceWidget(choiceModel: choiceModel, fromCart: true),
+                SizedBox(
+                  width: 10.0,
+                )
+              ],
+            ),
             SizedBox(
               //color: Colors.red,
               height: MediaQuery.of(context).size.height - 100,
@@ -178,11 +256,16 @@ class _HomeScreen3State extends State<HomeScreen3> {
                   length: newArrivalTabs.length,
                   child: Scaffold(
                     appBar: AppBar(
+                      automaticallyImplyLeading: false,
                       title: Text(
                         "NEW ARRIVALS",
                         style: TextStyle(fontSize: 27.0),
                       ),
-                      bottom: TabBar(tabs: newArrivalTabs, labelColor: Theme.of(context).primaryColor,indicatorColor: Theme.of(context).primaryColor,),
+                      bottom: TabBar(
+                        tabs: newArrivalTabs,
+                        labelColor: Theme.of(context).primaryColor,
+                        indicatorColor: Theme.of(context).primaryColor,
+                      ),
                     ),
                     body: TabBarView(children: [
                       Container(
@@ -207,7 +290,7 @@ class _HomeScreen3State extends State<HomeScreen3> {
                   )),
             ),
             SizedBox(
-              height: 10.0,
+              height: 30.0,
             ),
             SizedBox(
               //color: Colors.red,
@@ -217,11 +300,15 @@ class _HomeScreen3State extends State<HomeScreen3> {
                   length: diamondJewelleryTabs.length,
                   child: Scaffold(
                     appBar: AppBar(
+                      automaticallyImplyLeading: false,
                       title: Text(
                         "Diamond Jewellery",
                         style: TextStyle(fontSize: 27.0),
                       ),
-                      bottom: TabBar(tabs: diamondJewelleryTabs, labelColor: Theme.of(context).primaryColor,indicatorColor: Theme.of(context).primaryColor),
+                      bottom: TabBar(
+                          tabs: diamondJewelleryTabs,
+                          labelColor: Theme.of(context).primaryColor,
+                          indicatorColor: Theme.of(context).primaryColor),
                     ),
                     body: TabBarView(children: [
                       Container(
@@ -246,7 +333,7 @@ class _HomeScreen3State extends State<HomeScreen3> {
                   )),
             ),
             SizedBox(
-              height: 10.0,
+              height: 30.0,
             ),
             SizedBox(
               //color: Colors.red,
@@ -256,11 +343,15 @@ class _HomeScreen3State extends State<HomeScreen3> {
                   length: goldenJewelleryTabs.length,
                   child: Scaffold(
                     appBar: AppBar(
+                      automaticallyImplyLeading: false,
                       title: Text(
                         "Golden Jewellery",
                         style: TextStyle(fontSize: 27.0),
                       ),
-                      bottom: TabBar(tabs: goldenJewelleryTabs,labelColor: Theme.of(context).primaryColor, indicatorColor: Theme.of(context).primaryColor),
+                      bottom: TabBar(
+                          tabs: goldenJewelleryTabs,
+                          labelColor: Theme.of(context).primaryColor,
+                          indicatorColor: Theme.of(context).primaryColor),
                     ),
                     body: TabBarView(children: [
                       Container(
@@ -284,8 +375,8 @@ class _HomeScreen3State extends State<HomeScreen3> {
                     ]),
                   )),
             ),
-             SizedBox(
-              height: 10.0,
+            SizedBox(
+              height: 30.0,
             ),
             SizedBox(
               //color: Colors.red,
@@ -295,13 +386,15 @@ class _HomeScreen3State extends State<HomeScreen3> {
                   length: silverJewelleryTabs.length,
                   child: Scaffold(
                     appBar: AppBar(
+                      automaticallyImplyLeading: false,
                       title: Text(
                         "Silver Jewellery",
                         style: TextStyle(fontSize: 27.0),
                       ),
-                      bottom: TabBar(tabs: silverJewelleryTabs, 
-                      labelColor: Theme.of(context).primaryColor,
-                      indicatorColor: Theme.of(context).primaryColor),
+                      bottom: TabBar(
+                          tabs: silverJewelleryTabs,
+                          labelColor: Theme.of(context).primaryColor,
+                          indicatorColor: Theme.of(context).primaryColor),
                     ),
                     body: TabBarView(children: [
                       Container(
@@ -325,7 +418,6 @@ class _HomeScreen3State extends State<HomeScreen3> {
                     ]),
                   )),
             ),
-
           ]),
         )));
   }

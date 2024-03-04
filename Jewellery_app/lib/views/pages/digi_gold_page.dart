@@ -367,6 +367,7 @@ class _DigiGoldPageState extends State<DigiGoldPage> {
     bool isCustomerDataEmpty = customerProvider.customerData.isEmpty;
     return Scaffold(
       appBar: AppBar(
+          automaticallyImplyLeading: false,
         title: Text("DigiGold"),
       ),
       body: SingleChildScrollView(

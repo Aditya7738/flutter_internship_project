@@ -38,6 +38,23 @@ class AccountPage extends StatelessWidget {
 
   List<String> title3 = ["Return", "Exchange", "Repair", "Shipping", "FAQ"];
 
+  void _launchGmailCompose(
+      {required String to, String? subject, String? body}) async {
+    final Uri emailLaunchUri = Uri(
+        scheme: 'mailto',
+        path: to,
+        queryParameters: {
+          if (subject != null) 'subject': subject,
+          if (body != null) 'body': body
+        });
+
+    if (await canLaunchUrl(emailLaunchUri)) {
+      await launchUrl(emailLaunchUri);
+    } else {
+      throw 'Could not launch $emailLaunchUri';
+    }
+  }
+
   Future<void> onLinkClicked(String url) async {
     Uri uri = Uri.parse(url);
     if (await canLaunchUrl(uri)) {
@@ -55,14 +72,10 @@ class AccountPage extends StatelessWidget {
     bool isDataEmpty = customerProvider.customerData.isEmpty;
     print("isDataEmpty $isDataEmpty");
     print("CUSTOMERDATA ${customerProvider.customerData.length}");
-    List<String> title = [
-      isDataEmpty ? "Login" : "My profile",
-      //  "Scan(at store)",
-      //  "Notifications",
-      "Track Order",
-    ];
+
     return Scaffold(
       appBar: AppBar(
+          automaticallyImplyLeading: false,
           title: Image.network(
             Constants.app_logo,
             width: 150,
@@ -329,24 +342,18 @@ class AccountPage extends StatelessWidget {
                     onTap: () {
                       switch (index) {
                         case 0:
-                          // isDataEmpty
-                          //     ? MaterialPageRoute(
-                          //         builder: (context) => LoginPage(
-                          //           isComeFromCart: false,
-                          //         ),
-                          //       )
-                          //     : Navigator.of(context).push(MaterialPageRoute(
-                          //         builder: (context) => MyAccountPage(),
-                          //       ));
-
+                          _launchGmailCompose(
+                              to: 'aditya.shigwan18@gmail.com',
+                              subject: 'Feedback',
+                              body: 'Respected sir/mam');
                           break;
-                        case 2:
+                        case 1:
                           // Navigator.of(context).push(MaterialPageRoute(
                           //   builder: (context) => const NotificationPage(),
                           // ));
 
                           break;
-                        case 3:
+                        case 2:
                           // Navigator.of(context).push(MaterialPageRoute(
                           //   builder: (context) => const OrderPage(),
                           // ));

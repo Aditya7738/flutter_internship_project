@@ -1,11 +1,13 @@
 import 'package:Tiara_by_TJ/api/api_service.dart';
 import 'package:Tiara_by_TJ/constants/constants.dart';
 import 'package:Tiara_by_TJ/model/category_model.dart';
+import 'package:Tiara_by_TJ/model/choice_model.dart';
 import 'package:Tiara_by_TJ/providers/cart_provider.dart';
 import 'package:Tiara_by_TJ/providers/wishlist_provider.dart';
 import 'package:Tiara_by_TJ/views/pages/cart_page.dart';
 import 'package:Tiara_by_TJ/views/pages/search_page.dart';
 import 'package:Tiara_by_TJ/views/pages/wishlist_page.dart';
+import 'package:Tiara_by_TJ/views/widgets/choice_widget.dart';
 import 'package:Tiara_by_TJ/views/widgets/product_item.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_options.dart';
@@ -119,10 +121,20 @@ class _HomeScreen2State extends State<HomeScreen2> {
 
   @override
   Widget build(BuildContext context) {
+    List<String> layoutsOptions = <String>[
+      "Home screen 1",
+      "Home screen 2",
+      "Home screen 3",
+    ];
+
+    ChoiceModel choiceModel =
+        ChoiceModel(options: layoutsOptions, selectedOption: layoutsOptions[1]);
+
     print(
         "ApiService.listOfCategory.length ${ApiService.listOfCategory.length ~/ 2}");
     return Scaffold(
       appBar: AppBar(
+          automaticallyImplyLeading: false,
           title: CachedNetworkImage(
             imageUrl: Constants.app_logo,
             width: 150,
@@ -208,6 +220,13 @@ class _HomeScreen2State extends State<HomeScreen2> {
       body: SingleChildScrollView(
         child: Column(
           children: [
+              Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                ChoiceWidget(choiceModel: choiceModel, fromCart: true),
+                SizedBox(width: 10.0,)
+              ],
+            ),
             SizedBox(
               height: 10.0,
             ),

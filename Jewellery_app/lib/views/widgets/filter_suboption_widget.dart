@@ -144,6 +144,8 @@ class _FilterSubOptionsWidgetState extends State<FilterSubOptionsWidget> {
                         color: isSelected
                             ? Theme.of(context).primaryColor
                             : Colors.black,
+                        fontWeight:
+                            isSelected ? FontWeight.bold : FontWeight.normal,
                         fontSize: 15.0),
                   ),
                 ),

@@ -29,17 +29,17 @@ class _FilterOptionsState extends State<FilterOptions> {
     //   selectedMax = selectedSubOptionsdata["price_range"]["max_price"].toDouble();
     // }
 
-     List<Map<String, dynamic>> selectedSubOptions =
-        filterOptionsProvider.list;
+    List<Map<String, dynamic>> selectedSubOptions = filterOptionsProvider.list;
 
-       for (var i = 0; i < selectedSubOptions.length; i++) {
-         if(selectedSubOptions[i]["parent"] == "price_range"){
-          selectedMin = selectedSubOptions[i]["price_range"]["min_price"].toDouble();
-      selectedMax = selectedSubOptions[i]["price_range"]["max_price"].toDouble();
-         }
-       }
+    for (var i = 0; i < selectedSubOptions.length; i++) {
+      if (selectedSubOptions[i]["parent"] == "price_range") {
+        selectedMin =
+            selectedSubOptions[i]["price_range"]["min_price"].toDouble();
+        selectedMax =
+            selectedSubOptions[i]["price_range"]["max_price"].toDouble();
+      }
+    }
 
-  
     Widget priceRange = Container(
       width: MediaQuery.of(context).size.width -
           (MediaQuery.of(context).size.width / 3),
@@ -89,14 +89,13 @@ class _FilterOptionsState extends State<FilterOptions> {
             onChanged: (value) {
               print("SELECTED VALUE $value");
               if (mounted) {
-      setState(() {
-                selectedMin = value.start;
-                selectedMax = value.end;
-              });
+                setState(() {
+                  selectedMin = value.start;
+                  selectedMax = value.end;
+                });
               }
             },
             onChangeEnd: (value) {
-             
               filterOptionsProvider.setSelectedSubOptionsdata({
                 "price_range": {
                   "min_price": value.start.toInt(),
@@ -104,8 +103,7 @@ class _FilterOptionsState extends State<FilterOptions> {
                 },
                 "parent": "price_range"
               });
-              print(
-                  "filterOptionsProvider.list ${filterOptionsProvider.list}");
+              print("filterOptionsProvider.list ${filterOptionsProvider.list}");
             },
             labels: RangeLabels(selectedMin.toString(), selectedMax.toString()),
           )
@@ -120,7 +118,7 @@ class _FilterOptionsState extends State<FilterOptions> {
       //window = priceRange;
       return priceRange;
     } else {
-    //  print("else in widget.selectedFilterIndex ${widget.selectedFilterIndex}");
+      //  print("else in widget.selectedFilterIndex ${widget.selectedFilterIndex}");
       return FilterSubOptions(
           selectedFilterIndex: widget.selectedFilterIndex,
           filterKey: widget.filterKey);

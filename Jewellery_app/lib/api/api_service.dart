@@ -51,13 +51,15 @@ class ApiService {
     return false;
   }
 
+  static String categoryUri =
+        "${Constants.baseUrl}/wp-json/wc/v3/products/categories?consumer_key=${Constants.consumerKey}&consumer_secret=${Constants.consumerSecret}&page=$pageNo&per_page=50";
+
   static Future<List<CategoriesModel>> fetchCategories(
       int pageNo, BuildContext context) async {
     //${Constants.baseUrl}/wp-json/wc/v3/products/categories?consumer_key=ck_33882e17eeaff38b20ac7c781156024bc2d6af4a&consumer_secret=cs_df67b056d05606c05275b571ab39fa508fcdd7b9
     //checkInternetConnection(context);
 
-    String categoryUri =
-        "${Constants.baseUrl}/wp-json/wc/v3/products/categories?consumer_key=${Constants.consumerKey}&consumer_secret=${Constants.consumerSecret}&page=$pageNo&per_page=50";
+    
     Uri uri = Uri.parse(categoryUri);
     final response = await http.get(uri);
 

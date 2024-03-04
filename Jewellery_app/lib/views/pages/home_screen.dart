@@ -1,3 +1,5 @@
+import 'package:Tiara_by_TJ/model/choice_model.dart';
+import 'package:Tiara_by_TJ/views/widgets/choice_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:Tiara_by_TJ/api/api_service.dart';
 import 'package:Tiara_by_TJ/model/navigation_model.dart';
@@ -7,6 +9,7 @@ import 'package:dots_indicator/dots_indicator.dart';
 import 'package:Tiara_by_TJ/views/widgets/button_widget.dart';
 import 'package:Tiara_by_TJ/views/widgets/feature_widget.dart';
 import 'package:Tiara_by_TJ/views/widgets/pincode_widget.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 
 import '../widgets/nav_drawer.dart';
 
@@ -40,12 +43,30 @@ class _HomeScreenState extends State<HomeScreen> {
 
   bool isNewCategoryLoading = false;
 
+  Stream<FileResponse>? categoryFileStream;
+
+  void _downloadFile() {
+    if (mounted) {
+      setState(() {
+        categoryFileStream = DefaultCacheManager()
+            .getFileStream(ApiService.categoryUri, withProgress: true);
+      });
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     //getDataFromProvider();
+    _downloadFile();
+
+    if (categoryFileStream == null) {
+      //getRequest();
+      _downloadFile();
+    }
+
     carouselController = CarouselController();
-    getRequest();
+
     _scrollController.addListener(() async {
       print(
           "CONDITION ${_scrollController.position.pixels == _scrollController.position.maxScrollExtent}");
@@ -93,9 +114,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    double width = 20.0;
-    double height = 20.0;
-
     // List<NavigationModel> listOfNavigationModel = <NavigationModel>[];
     // listOfNavigationModel.add(NavigationModel(
     //     Image.asset("assets/images/notification.png",
@@ -146,6 +164,14 @@ class _HomeScreenState extends State<HomeScreen> {
     //       color: Colors.white,
     //     ),
     //     "Login"));
+    List<String> layoutsOptions = <String>[
+      "Home screen 1",
+      "Home screen 2",
+      "Home screen 3",
+    ];
+
+    ChoiceModel choiceModel =
+        ChoiceModel(options: layoutsOptions, selectedOption: layoutsOptions[0]);
 
     return Scaffold(
       key: scaffoldKey,
@@ -170,39 +196,87 @@ class _HomeScreenState extends State<HomeScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            isLoading
-                ? SizedBox(
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                ChoiceWidget(choiceModel: choiceModel, fromCart: true),
+                SizedBox(
+                  width: 10.0,
+                )
+              ],
+            ),
+
+            categoryFileStream != null
+                ?
+                // ? SizedBox(
+                //     height: MediaQuery.of(context).size.height / 6,
+                //     child: Center(
+                //       child: CircularProgressIndicator(
+                //         color: Theme.of(context).primaryColor,
+                //       ),
+                //     ),
+                //   )
+                // :
+                StreamBuilder(
+                    stream: categoryFileStream!,
+                    builder: (context, snapshot) {
+                      Widget body;
+                      final loading = !snapshot.hasData ||
+                          snapshot.data is DownloadProgress;
+
+                      if (snapshot.hasError) {
+                        body = ListTile(
+                          title: const Text('Error'),
+                          subtitle: Text(snapshot.error.toString()),
+                        );
+                      }
+                      //   uncomment below code
+                      // else if (loading) {
+                      //   body = p_i.ProgressIndicator(
+                      //     progress: snapshot.data as DownloadProgress?,
+                      //   );
+                      // } else {
+                      //   body = FileInfoWidget(
+                      //     fileInfo: snapshot.requireData as FileInfo,
+                      //     clearCache: clearCache,
+                      //     removeFile: removeFile,
+                      //   );
+                      // }
+
+                      return Container(
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 10.0, vertical: 10.0),
+                        height: MediaQuery.of(context).size.height / 6,
+                        child: Scrollbar(
+                          child: ListView.builder(
+                              controller: _scrollController,
+                              scrollDirection: Axis.horizontal,
+                              itemCount: ApiService.listOfCategory.length +
+                                  (isNewCategoryLoading ? 1 : 0),
+                              itemBuilder: (context, index) {
+                                if (index < ApiService.listOfCategory.length) {
+                                  return FeatureWidget(
+                                    categoriesModel:
+                                        ApiService.listOfCategory[index],
+                                    isLoading: isLoading,
+                                  );
+                                } else {
+                                  return const Center(
+                                      child: CircularProgressIndicator(
+                                    color: Color(0xffCC868A),
+                                  ));
+                                }
+                              }),
+                        ),
+                      );
+                    },
+                  )
+                : SizedBox(
                     height: MediaQuery.of(context).size.height / 6,
                     child: Center(
                       child: CircularProgressIndicator(
                         color: Theme.of(context).primaryColor,
                       ),
-                    ),
-                  )
-                : Container(
-                    margin: const EdgeInsets.symmetric(
-                        horizontal: 10.0, vertical: 10.0),
-                    height: MediaQuery.of(context).size.height / 6,
-                    child: Scrollbar(
-                      child: ListView.builder(
-                          controller: _scrollController,
-                          scrollDirection: Axis.horizontal,
-                          itemCount: ApiService.listOfCategory.length +
-                              (isNewCategoryLoading ? 1 : 0),
-                          itemBuilder: (context, index) {
-                            if (index < ApiService.listOfCategory.length) {
-                              return FeatureWidget(
-                                categoriesModel:
-                                    ApiService.listOfCategory[index],
-                                isLoading: isLoading,
-                              );
-                            } else {
-                              return const Center(
-                                  child: CircularProgressIndicator(
-                                color: Color(0xffCC868A),
-                              ));
-                            }
-                          }),
                     ),
                   ),
             // const Padding(
