@@ -11,10 +11,10 @@ class CategoryProvider with ChangeNotifier {
   String get searchText => _searchText;
 
   void setSearchText(String searchText) {
-     WidgetsBinding.instance.addPostFrameCallback((_) {
-    _searchText = searchText;
-    notifyListeners();
-     });
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _searchText = searchText;
+      notifyListeners();
+    });
   }
 
   void setIsProductListEmpty(bool isProductListEmpty) {
@@ -27,6 +27,36 @@ class CategoryProvider with ChangeNotifier {
   void setIsCategoryProductFetching(bool isCategoryProductFetching) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _isCategoryProductFetching = isCategoryProductFetching;
+      notifyListeners();
+    });
+  }
+
+  bool _fileInfoFetching = false;
+  bool get fileInfoFetching => _fileInfoFetching;
+
+  void setFileInfoFetching(bool fileInfoFetching) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _fileInfoFetching = fileInfoFetching;
+      notifyListeners();
+    });
+  }
+
+  bool _isFilePathExist = false;
+  bool get isFilePathExist => _isFilePathExist;
+
+  void setIsFilePathExist(bool isFilePathExist) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _isFilePathExist = isFilePathExist;
+      notifyListeners();
+    });
+  }
+
+  bool _isPathChecking = false;
+  bool get isPathChecking => _isPathChecking;
+
+  void setIsPathChecking(bool isFisPathCheckingilePathExist) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _isPathChecking = isPathChecking;
       notifyListeners();
     });
   }

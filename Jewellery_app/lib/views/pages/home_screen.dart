@@ -1,7 +1,12 @@
+import 'dart:convert';
+
+import 'package:Tiara_by_TJ/model/category_model.dart';
 import 'package:Tiara_by_TJ/model/choice_model.dart';
+import 'package:Tiara_by_TJ/providers/category_provider.dart';
 import 'package:Tiara_by_TJ/views/widgets/choice_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:Tiara_by_TJ/api/api_service.dart';
+import 'package:Tiara_by_TJ/api/cache_memory.dart';
 import 'package:Tiara_by_TJ/model/navigation_model.dart';
 import 'package:Tiara_by_TJ/views/widgets/app_bar.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -10,7 +15,8 @@ import 'package:Tiara_by_TJ/views/widgets/button_widget.dart';
 import 'package:Tiara_by_TJ/views/widgets/feature_widget.dart';
 import 'package:Tiara_by_TJ/views/widgets/pincode_widget.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
-
+import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 import '../widgets/nav_drawer.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -46,20 +52,22 @@ class _HomeScreenState extends State<HomeScreen> {
   Stream<FileResponse>? categoryFileStream;
 
   void _downloadFile() {
-    if (mounted) {
-      setState(() {
-        categoryFileStream = DefaultCacheManager()
-            .getFileStream(ApiService.categoryUri, withProgress: true);
-      });
-    }
+    // if (mounted) {
+    setState(() {
+      categoryFileStream = DefaultCacheManager()
+          .getFileStream(ApiService.categoryUri, withProgress: true);
+    });
+    //  }
   }
 
   @override
   void initState() {
     super.initState();
     //getDataFromProvider();
+
     _downloadFile();
 
+    print("categoryFileStream == null ${categoryFileStream == null}");
     if (categoryFileStream == null) {
       //getRequest();
       _downloadFile();
@@ -172,7 +180,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
     ChoiceModel choiceModel =
         ChoiceModel(options: layoutsOptions, selectedOption: layoutsOptions[0]);
-
+    CategoryProvider categoryProvider =
+        Provider.of<CategoryProvider>(context, listen: false);
     return Scaffold(
       key: scaffoldKey,
       // drawer: NavDrawer(
@@ -207,68 +216,124 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
 
             categoryFileStream != null
-                ?
-                // ? SizedBox(
-                //     height: MediaQuery.of(context).size.height / 6,
-                //     child: Center(
-                //       child: CircularProgressIndicator(
-                //         color: Theme.of(context).primaryColor,
-                //       ),
-                //     ),
-                //   )
-                // :
-                StreamBuilder(
+                ? StreamBuilder(
                     stream: categoryFileStream!,
                     builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        getFile(snapshot, categoryProvider);
+                      }
+
                       Widget body;
+                      print("!snapshot.hasData ${!snapshot.hasData}");
+                      print(
+                          "snapshot.data is DownloadProgress ${snapshot.data is DownloadProgress}");
                       final loading = !snapshot.hasData ||
                           snapshot.data is DownloadProgress;
-
+                      // DownloadProgress? progress =
+                      //     snapshot.data as DownloadProgress?;
+                      print("loading $loading");
                       if (snapshot.hasError) {
                         body = ListTile(
                           title: const Text('Error'),
                           subtitle: Text(snapshot.error.toString()),
                         );
+                        print("snapshot error");
                       }
                       //   uncomment below code
-                      // else if (loading) {
-                      //   body = p_i.ProgressIndicator(
-                      //     progress: snapshot.data as DownloadProgress?,
-                      //   );
-                      // } else {
-                      //   body = FileInfoWidget(
-                      //     fileInfo: snapshot.requireData as FileInfo,
-                      //     clearCache: clearCache,
-                      //     removeFile: removeFile,
-                      //   );
-                      // }
+                      else if (loading) {
+                        body = SizedBox(
+                            width: MediaQuery.of(context).size.width,
+                            height: MediaQuery.of(context).size.height / 6,
+                            child: Center(
+                              child: CircularProgressIndicator(
+                                color:
+                                    // Colors.red,
+                                    Theme.of(context).primaryColor,
+                              ),
+                            ));
+                        print("snapshot.loading");
+                        //  p_i.ProgressIndicator(
+                        //   progress: snapshot.data as DownloadProgress?,
+                        // );
+                      } else {
+                        print(
+                            "categoryProvider.fileInfoFetching ${categoryProvider.fileInfoFetching}");
+                        // print("categoryFileStream.length ${}");
 
-                      return Container(
-                        margin: const EdgeInsets.symmetric(
-                            horizontal: 10.0, vertical: 10.0),
-                        height: MediaQuery.of(context).size.height / 6,
-                        child: Scrollbar(
-                          child: ListView.builder(
-                              controller: _scrollController,
-                              scrollDirection: Axis.horizontal,
-                              itemCount: ApiService.listOfCategory.length +
-                                  (isNewCategoryLoading ? 1 : 0),
-                              itemBuilder: (context, index) {
-                                if (index < ApiService.listOfCategory.length) {
-                                  return FeatureWidget(
-                                    categoriesModel:
-                                        ApiService.listOfCategory[index],
-                                    isLoading: isLoading,
-                                  );
-                                } else {
-                                  return const Center(
-                                      child: CircularProgressIndicator(
-                                    color: Color(0xffCC868A),
-                                  ));
-                                }
-                              }),
-                        ),
-                      );
+                        categoryProvider.fileInfoFetching
+                            ? body = SizedBox(
+                                width: MediaQuery.of(context).size.width,
+                                height: MediaQuery.of(context).size.height / 6,
+                                child: Center(
+                                  child: CircularProgressIndicator(
+                                    color: Theme.of(context).primaryColor,
+                                    // Colors.yellow,
+                                  ),
+                                ))
+                            : body = SizedBox(
+                                width: MediaQuery.of(context).size.width,
+                                height: MediaQuery.of(context).size.height / 6,
+                                child: Scrollbar(
+                                  child: ListView.builder(
+                                      controller: _scrollController,
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount:
+                                          CacheMemory.listOfCategory.length,
+                                      //+    (isNewCategoryLoading ? 1 : 0),
+                                      itemBuilder: (context, index) {
+                                        print(
+                                            "CacheMemory.listOfCategory.length ${CacheMemory.listOfCategory.length}");
+                                        if (index <
+                                            CacheMemory.listOfCategory.length) {
+                                          return FeatureWidget(
+                                            categoriesModel: CacheMemory
+                                                .listOfCategory[index],
+                                            isLoading: isLoading,
+                                          );
+                                        } else {
+                                          return const Center(
+                                              child: CircularProgressIndicator(
+                                            color: Color(0xffCC868A),
+                                          ));
+                                        }
+                                      }),
+                                ),
+                              );
+
+                        // body = FileInfoWidget(
+                        //   fileInfo: snapshot.requireData as FileInfo,
+                        //   clearCache: clearCache,
+                        //   removeFile: removeFile,
+                        // );
+                        print("snapshot.data ${snapshot.data}");
+                      }
+                      return body;
+                      // return Container(
+                      //   margin: const EdgeInsets.symmetric(
+                      //       horizontal: 10.0, vertical: 10.0),
+                      //   height: MediaQuery.of(context).size.height / 6,
+                      //   child: Scrollbar(
+                      //     child: ListView.builder(
+                      //         controller: _scrollController,
+                      //         scrollDirection: Axis.horizontal,
+                      //         itemCount: ApiService.listOfCategory.length +
+                      //             (isNewCategoryLoading ? 1 : 0),
+                      //         itemBuilder: (context, index) {
+                      //           if (index < ApiService.listOfCategory.length) {
+                      //             return FeatureWidget(
+                      //               categoriesModel:
+                      //                   ApiService.listOfCategory[index],
+                      //               isLoading: isLoading,
+                      //             );
+                      //           } else {
+                      //             return const Center(
+                      //                 child: CircularProgressIndicator(
+                      //               color: Color(0xffCC868A),
+                      //             ));
+                      //           }
+                      //         }),
+                      //   ),
+                      // );
                     },
                   )
                 : SizedBox(
@@ -444,5 +509,13 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
+  }
+
+  void getFile(AsyncSnapshot<Object?> snapshot,
+      CategoryProvider categoryProvider) async {
+    categoryProvider.setFileInfoFetching(true);
+    //  CacheMemory.listOfCategory.clear();
+    await CacheMemory.getFile(snapshot);
+    categoryProvider.setFileInfoFetching(false);
   }
 }

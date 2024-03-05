@@ -11,12 +11,14 @@ import 'package:Tiara_by_TJ/views/pages/notification_page.dart';
 import 'package:Tiara_by_TJ/views/pages/orders_page.dart';
 import 'package:Tiara_by_TJ/views/pages/search_page.dart';
 import 'package:Tiara_by_TJ/views/pages/wishlist_page.dart';
-
+import 'package:in_app_review/in_app_review.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AccountPage extends StatelessWidget {
   AccountPage({super.key});
+
+  final InAppReview inAppReview = InAppReview.instance;
 
   // List<IconData> icons = [
 
@@ -339,7 +341,7 @@ class AccountPage extends StatelessWidget {
                 itemCount: icons2.length,
                 itemBuilder: (context, index) {
                   return GestureDetector(
-                    onTap: () {
+                    onTap: () async {
                       switch (index) {
                         case 0:
                           _launchGmailCompose(
@@ -354,9 +356,12 @@ class AccountPage extends StatelessWidget {
 
                           break;
                         case 2:
-                          // Navigator.of(context).push(MaterialPageRoute(
-                          //   builder: (context) => const OrderPage(),
-                          // ));
+                          if (await inAppReview.isAvailable()) {
+                            print("inAppReview.isAvailable");
+                            inAppReview.requestReview();
+                          }else{
+                             print("inAppReview.isUnAvailable");
+                          }
                           break;
                         default:
                       }

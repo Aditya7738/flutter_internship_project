@@ -31,11 +31,12 @@ class ApiService {
   static Future<bool> checkInternetConnection(BuildContext context) async {
     final connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.none) {
-      return await Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => NoInternetConnectionPage(),
-          ));
+      // return await Navigator.push(
+      //     context,
+      //     MaterialPageRoute(
+      //       builder: (context) => NoInternetConnectionPage(),
+      //     ));
+      return true;
     } else {
       return true;
     }
@@ -52,7 +53,7 @@ class ApiService {
   }
 
   static String categoryUri =
-        "${Constants.baseUrl}/wp-json/wc/v3/products/categories?consumer_key=${Constants.consumerKey}&consumer_secret=${Constants.consumerSecret}&page=$pageNo&per_page=50";
+        "${Constants.baseUrl}/wp-json/wc/v3/products/categories?consumer_key=${Constants.consumerKey}&consumer_secret=${Constants.consumerSecret}&page=$pageNo&per_page=100";
 
   static Future<List<CategoriesModel>> fetchCategories(
       int pageNo, BuildContext context) async {

@@ -7,6 +7,7 @@ class HTTPProvider {
 
     if (file != null && await file.exists()) {
       String result = await file.readAsString();
+      
       return http.Response(result, 200);
     }
     return http.Response("", 404);

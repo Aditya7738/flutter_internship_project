@@ -26,12 +26,12 @@ class CustomerProvider with ChangeNotifier {
 
   void addCustomerData(Map<String, dynamic> customerData) {
     // WidgetsBinding.instance.addPostFrameCallback((_) {
-      // customerData.forEach((key, value) {
-      //   _customerData[0][key] = value;
-      // });
-      _customerData.add(customerData);
-      notifyListeners();
-      _setCustomerSharedPrefs();
+    // customerData.forEach((key, value) {
+    //   _customerData[0][key] = value;
+    // });
+    _customerData.add(customerData);
+    notifyListeners();
+    _setCustomerSharedPrefs();
     //});
   }
 
@@ -71,4 +71,6 @@ class CustomerProvider with ChangeNotifier {
       notifyListeners();
     });
   }
+
+
 }
