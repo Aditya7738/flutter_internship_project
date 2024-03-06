@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:Tiara_by_TJ/api/api_service.dart';
 import 'package:Tiara_by_TJ/api/cache_memory.dart';
+import 'package:Tiara_by_TJ/providers/cache_provider.dart';
 import 'package:Tiara_by_TJ/providers/category_provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -32,39 +33,107 @@ class _FeatureWidgetState extends State<FeatureWidget> {
   @override
   void initState() {
     super.initState();
+    CacheProvider cacheProvider = Provider.of(context, listen: false);
     localLoading = widget.isLoading;
     categoriesModel = widget.categoriesModel;
-    _downloadFile(categoriesModel.image?.src ?? defaultImageUrl);
+    _downloadFile(categoriesModel.image?.src ?? defaultImageUrl, cacheProvider);
+    // _downloadFile(categoriesModel.image?.src ?? defaultImageUrl);
 
-    print("categoryImageFileStream == null ${categoryImageFileStream == null}");
-    if (categoryImageFileStream == null) {
-      //getRequest();
-      _downloadFile(categoriesModel.image?.src ?? defaultImageUrl);
-    }
+    // if (categoryImageFileStream == null) {
+    //   //getRequest();
+    //   _downloadFile(categoriesModel.image?.src ?? defaultImageUrl);
+    // }
   }
 
-  void _downloadFile(String imageUrl) {
-    // if (mounted) {
-    setState(() {
-      categoryImageFileStream = DefaultCacheManager().getImageFile(
-        imageUrl,
-        withProgress: true,
-        maxWidth: 90,
-        maxHeight: 87,
-      );
-    });
-    //  }
+  void _downloadFile(String imageUrl, CacheProvider cacheProvider) {
+    if (categoryImageFileStream == null) {
+      if (mounted) {
+        setState(() {
+          if (imageUrl.contains('http://') || imageUrl.contains('https://')) {
+            //    cacheProvider.setCategoryImageFileStream(
+            categoryImageFileStream = DefaultCacheManager().getImageFile(
+              imageUrl,
+              withProgress: true,
+              maxWidth: 90,
+              maxHeight: 87,
+            );
+            //);
+          } else {
+            //  cacheProvider.setCategoryImageFileStream(
+            categoryImageFileStream = DefaultCacheManager().getImageFile(
+              defaultImageUrl,
+              withProgress: true,
+              maxWidth: 90,
+              maxHeight: 87,
+            );
+            //);
+          }
+        });
+      }
+    }
   }
 
   bool isPathExist = false;
 
+  bool isPathChecking = false;
+
+  // doFileExist(String path
+  //     //, CategoryProvider categoryProvider
+  //     ) async {
+  //   try {
+  //     File file = File(path);
+  //     //  categoryProvider.setIsPathChecking(true);
+  //     setState(() {
+  //       isPathChecking = true;
+  //     });
+  //     bool fileExists = await file.exists();
+  //     setState(() {
+  //       isPathChecking = false;
+  //     });
+  //     //   categoryProvider.setIsPathChecking(false);
+  //     if (fileExists) {
+  //       setState(() {
+  //         isPathExist = true;
+  //       });
+  //       // categoryProvider.setIsFilePathExist(true);
+  //     } else {
+  //       setState(() {
+  //         isPathExist = false;
+  //       });
+  //       //categoryProvider.setIsFilePathExist(false);
+  //     }
+  //   } catch (e) {
+  //     print("doFileExist error ${e.toString()}");
+  //     // categoryProvider.setIsFilePathExist(false);
+  //   }
+  // }
+
+  Future<bool> checkFileExistence(String path) async {
+    try {
+      File file = File(path);
+      return await file.exists();
+    } catch (e) {
+      print("doFileExist error ${e.toString()}");
+      return false;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    //   CacheProvider cacheProvider = Provider.of(context, listen: false);
     print("categoriesModel.id ${categoriesModel.id}");
-    CategoryProvider categoryProvider =
-        Provider.of<CategoryProvider>(context, listen: false);
+    // CategoryProvider categoryProvider =
+    //     Provider.of<CategoryProvider>(context, listen: false);
     print("categoriesModel.image?.src ${categoriesModel.image?.src}");
-    return GestureDetector(
+
+    // Call _downloadFile method here
+    print("categoryImageFileStream == null ${categoryImageFileStream == null}");
+    // if (cacheProvider.categoryImageFileStream == null) {
+
+    // } else {
+
+      if (categoryImageFileStream != null) {
+        return GestureDetector(
         onTap: () {
           Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => ProductPage(id: categoriesModel.id)));
@@ -93,13 +162,64 @@ class _FeatureWidgetState extends State<FeatureWidget> {
                                 snapshot.requireData as FileInfo;
 
                             path = fileInfo.file.path;
+
+                            return FutureBuilder<bool>(
+                              future: checkFileExistence(path),
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return Container(
+                                    alignment: Alignment.center,
+                                    width: 90.0,
+                                    height: 87.0,
+                                    child: const CircularProgressIndicator(
+                                      color: Colors.black,
+                                    ),
+                                  ); // Show a loading indicator
+                                } else if (snapshot.hasError) {
+                                  return Text('Error: ${snapshot.error}');
+                                } else {
+                                  if (snapshot.hasData) {
+                                    isPathExist = snapshot.data ?? false;
+                                    if (isPathExist) {
+                                      return Image.file(
+                                        File(path),
+                                        fit: BoxFit.fill,
+                                        width: 90.0,
+                                        height: 87.0,
+                                      );
+                                    } else {
+                                      return Image.asset(
+                                        "assets/images/image_placeholder.jpg",
+                                        fit: BoxFit.fill,
+                                        width: 90.0,
+                                        height: 87.0,
+                                      );
+                                    }
+                                  } else {
+                                    return Container(
+                                      alignment: Alignment.center,
+                                      width: 90.0,
+                                      height: 87.0,
+                                      child: const CircularProgressIndicator(
+                                        color: Colors.black,
+                                      ),
+                                    );
+                                  }
+                                }
+                              },
+                            );
+                          } else {
+                            return Container(
+                              alignment: Alignment.center,
+                              width: 90.0,
+                              height: 87.0,
+                              child: const CircularProgressIndicator(
+                                color: Colors.black,
+                              ),
+                            );
                           }
-                          print("image path $path");
-                        }
-
-                        doFileExist(path, categoryProvider);
-
-                        if (categoryProvider.isPathChecking) {
+                        } else {
                           return Container(
                             alignment: Alignment.center,
                             width: 90.0,
@@ -108,21 +228,48 @@ class _FeatureWidgetState extends State<FeatureWidget> {
                               color: Colors.black,
                             ),
                           );
-                        } else if (categoryProvider.isFilePathExist) {
-                          return Image.file(
-                            File(path),
-                            fit: BoxFit.fill,
-                            width: 90.0,
-                            height: 87.0,
-                          );
-                        } else {
-                          return Image.asset(
-                            "assets/images/image_placeholder.jpg",
-                            fit: BoxFit.fill,
-                            width: 90.0,
-                            height: 87.0,
-                          );
                         }
+
+                        // bool isFileExist = true;
+                        // return Consumer<CategoryProvider>(
+                        //   builder: (context, value, child) {
+
+                        // if (path != "") {
+                        //   print("image path $path");
+
+                        // checkFileExistence(path).then((value) {
+                        //   setState(() {
+                        //     isPathChecking = false;
+                        //   });
+                        // });
+
+                        // doFileExist(path
+                        //     //, value
+                        //     );
+
+                        // if (isPathChecking) {
+                        //   return Container(
+                        //     alignment: Alignment.center,
+                        //     width: 90.0,
+                        //     height: 87.0,
+                        //     child: const CircularProgressIndicator(
+                        //       color: Colors.black,
+                        //     ),
+                        //   );
+                        // } else
+
+                        //   }
+
+                        // return Container(
+                        //   alignment: Alignment.center,
+                        //   width: 90.0,
+                        //   height: 87.0,
+                        //   child: const CircularProgressIndicator(
+                        //     color: Colors.black,
+                        //   ),
+                        // );
+                        //   },
+                        // );
                       },
                     )
                     //  CachedNetworkImage(
@@ -175,24 +322,20 @@ class _FeatureWidgetState extends State<FeatureWidget> {
             ],
           ),
         ));
-  }
 
-  doFileExist(String path, CategoryProvider categoryProvider) async {
-    try {
-      File file = File(path);
-      categoryProvider.setIsPathChecking(true);
-      bool fileExists = await file.exists();
-      categoryProvider.setIsPathChecking(false);
-      if (fileExists) {
-        categoryProvider.setIsFilePathExist(true);
-      } else {
-        categoryProvider.setIsFilePathExist(false);
       }
-    } catch (e) {
-      print("doFileExist error ${e.toString()}");
-      categoryProvider.setIsFilePathExist(false);
-    }
-  }
+  return Container(
+    alignment: Alignment.center,
+    width: 90.0,
+    height: 87.0,
+    child: const CircularProgressIndicator(
+      color: Colors.black,
+    ),
+  );
+
+      }
+
+}
 
   // void getFile(AsyncSnapshot<Object?> snapshot, categoryProvider) async {
   //   categoryProvider.setImageFileFetching(true);
@@ -200,4 +343,4 @@ class _FeatureWidgetState extends State<FeatureWidget> {
   //   await CacheMemory.getCategoryImage(snapshot);
   //   categoryProvider.setImageFileFetching(false);
   // }
-}
+//}

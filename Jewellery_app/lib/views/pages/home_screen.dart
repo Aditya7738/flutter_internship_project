@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:Tiara_by_TJ/model/category_model.dart';
 import 'package:Tiara_by_TJ/model/choice_model.dart';
+import 'package:Tiara_by_TJ/providers/cache_provider.dart';
 import 'package:Tiara_by_TJ/providers/category_provider.dart';
 import 'package:Tiara_by_TJ/views/widgets/choice_widget.dart';
 import 'package:flutter/material.dart';
@@ -47,42 +48,46 @@ class _HomeScreenState extends State<HomeScreen> {
 
   bool isLoading = false;
 
+  bool isBannerLoading = false;
+
   bool isNewCategoryLoading = false;
 
   Stream<FileResponse>? categoryFileStream;
 
-  void _downloadFile() {
-    // if (mounted) {
-    setState(() {
-      categoryFileStream = DefaultCacheManager()
-          .getFileStream(ApiService.categoryUri, withProgress: true);
-    });
-    //  }
+  void _downloadFile(CacheProvider cacheProvider) {
+    if (mounted) {
+      setState(() {
+        // cacheProvider.setCategoryFileStream(DefaultCacheManager()
+        //     .getFileStream(ApiService.categoryUri, withProgress: true));
+        categoryFileStream = DefaultCacheManager()
+            .getFileStream(ApiService.categoryUri, withProgress: true);
+      });
+      print("categoryFileStream == null ${categoryFileStream == null}");
+    }
   }
 
   @override
   void initState() {
     super.initState();
     //getDataFromProvider();
-
-    _downloadFile();
-
-    print("categoryFileStream == null ${categoryFileStream == null}");
+    CacheProvider cacheProvider = Provider.of(context, listen: false);
     if (categoryFileStream == null) {
       //getRequest();
-      _downloadFile();
+      _downloadFile(cacheProvider);
     }
 
-    carouselController = CarouselController();
+    getBanners();
 
-    _scrollController.addListener(() async {
-      print(
-          "CONDITION ${_scrollController.position.pixels == _scrollController.position.maxScrollExtent}");
-      if (_scrollController.position.pixels ==
-          _scrollController.position.maxScrollExtent) {
-        loadMoreData();
-      }
-    });
+     carouselController = CarouselController();
+
+    // _scrollController.addListener(() async {
+    //   print(
+    //       "CONDITION ${_scrollController.position.pixels == _scrollController.position.maxScrollExtent}");
+    //   if (_scrollController.position.pixels ==
+    //       _scrollController.position.maxScrollExtent) {
+    //     loadMoreData();
+    //   }
+    // });
   }
 
   void loadMoreData() async {
@@ -99,6 +104,24 @@ class _HomeScreenState extends State<HomeScreen> {
       setState(() {
         isNewCategoryLoading = false;
       });
+    }
+  }
+
+  Future<void> getBanners() async {
+    bool isThereInternet = await ApiService.checkInternetConnection(context);
+    if (isThereInternet) {
+      if (mounted) {
+        setState(() {
+          isBannerLoading = true;
+        });
+      }
+      await ApiService.getBanners();
+
+      if (mounted) {
+        setState(() {
+          isBannerLoading = false;
+        });
+      }
     }
   }
 
@@ -177,11 +200,18 @@ class _HomeScreenState extends State<HomeScreen> {
       "Home screen 2",
       "Home screen 3",
     ];
-
+    CacheProvider cacheProvider = Provider.of(context, listen: false);
     ChoiceModel choiceModel =
         ChoiceModel(options: layoutsOptions, selectedOption: layoutsOptions[0]);
     CategoryProvider categoryProvider =
         Provider.of<CategoryProvider>(context, listen: false);
+    //   print("categoryFileStream == null ${categoryFileStream == null}");
+    // if (categoryFileStream == null) {
+    //   //getRequest();
+    //   _downloadFile();
+    // }
+    // print("categoryFileStream == null ${categoryFileStream == null}");
+
     return Scaffold(
       key: scaffoldKey,
       // drawer: NavDrawer(
@@ -351,19 +381,16 @@ class _HomeScreenState extends State<HomeScreen> {
 
             CarouselSlider(
               carouselController: carouselController,
-              items: images
-                  .map((image) =>
-                      //  Container(
-                      //       margin: const EdgeInsets.all(5.0),
-                      //       decoration: BoxDecoration(
-                      //           image: DecorationImage(
-                      //               image: NetworkImage(image),
-                      //               fit: BoxFit.fill)),
-                      //     )
+              items: ApiService.listOfBanners
+                  .map((banner) =>
+                
                       Container(
                         margin: const EdgeInsets.all(5.0),
                         child: Image.network(
-                          image,
+                          banner.metadata != null ?
+                          banner.metadata!.bgImageMobile[0]
+                          :
+                          "https://rotationalmoulding.com/wp-content/uploads/2017/02/NoImageAvailable.jpg",
                           loadingBuilder: (context, child, loadingProgress) {
                             if (loadingProgress == null) {
                               return child;
@@ -400,7 +427,7 @@ class _HomeScreenState extends State<HomeScreen> {
             SizedBox(
                 width: MediaQuery.of(context).size.width,
                 child: DotsIndicator(
-                  dotsCount: images.length,
+                  dotsCount: ApiService.listOfBanners.length,
                   position: currentIndex,
                   onTap: (index) {
                     carouselController.animateToPage(index);

@@ -345,7 +345,7 @@ class AccountPage extends StatelessWidget {
                       switch (index) {
                         case 0:
                           _launchGmailCompose(
-                              to: 'aditya.shigwan18@gmail.com',
+                              to: 'tiarabytj@gmail.com',
                               subject: 'Feedback',
                               body: 'Respected sir/mam');
                           break;
@@ -393,15 +393,26 @@ class AccountPage extends StatelessWidget {
               child: GridView.builder(
                 itemCount: title3.length,
                 itemBuilder: (context, index) {
-                  return Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                          color: Colors.grey, style: BorderStyle.solid),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 30.0, vertical: 10.0),
-                      child: Text(title3[index]),
+                  return GestureDetector(
+                    onTap: () {
+                      switch (index) {
+                        case 0:
+                          onLinkClicked("https://tiarabytj.com/blog/quotations/return-policy/");
+                          break;
+                        default:
+                      }
+                      
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                            color: Colors.grey, style: BorderStyle.solid),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 30.0, vertical: 10.0),
+                        child: Text(title3[index]),
+                      ),
                     ),
                   );
                 },

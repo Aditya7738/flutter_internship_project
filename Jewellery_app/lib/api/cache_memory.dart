@@ -18,26 +18,30 @@ class CacheMemory {
       result = await fileInfo.file.readAsString();
     }
 
-    final json = jsonDecode(http.Response(result, 200).body);
-    print("getFile json $json");
-    listOfCategory.clear();
-    for (int i = 0; i < json.length; i++) {
-      listOfCategory.add(CategoriesModel(
-          id: json[i]['id'],
-          name: json[i]['name'],
-          slug: json[i]['slug'],
-          parent: json[i]['parent'],
-          description: json[i]['description'],
-          display: json[i]['display'],
-          image: json[i]["image"] == null
-              ? null
-              : CategoryImageModel.fromJson(json[i]["image"]),
-          menuOrder: json[i]['menuOrder'],
-          count: json[i]['count'],
-          links: json[i]['links']));
-    }
+    if (result.isNotEmpty) {
+      final json = jsonDecode(http.Response(result, 200).body);
+      print("getFile json $json");
+      listOfCategory.clear();
+      for (int i = 0; i < json.length; i++) {
+        listOfCategory.add(CategoriesModel(
+            id: json[i]['id'],
+            name: json[i]['name'],
+            slug: json[i]['slug'],
+            parent: json[i]['parent'],
+            description: json[i]['description'],
+            display: json[i]['display'],
+            image: json[i]["image"] == null
+                ? null
+                : CategoryImageModel.fromJson(json[i]["image"]),
+            menuOrder: json[i]['menuOrder'],
+            count: json[i]['count'],
+            links: json[i]['links']));
+      }
 
-    print("listOfCategory length ${listOfCategory.length}");
+      print("listOfCategory length ${listOfCategory.length}");
+    }else{
+      print("Result is empty or incomplete.");
+    }
   }
 
   // static Future<void> getCategoryImage(AsyncSnapshot<Object?> snapshot) async {

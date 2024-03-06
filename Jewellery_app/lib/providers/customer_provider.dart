@@ -29,7 +29,7 @@ class CustomerProvider with ChangeNotifier {
     // customerData.forEach((key, value) {
     //   _customerData[0][key] = value;
     // });
-    _customerData.add(customerData);
+    _customerData[0].addAll(customerData);
     notifyListeners();
     _setCustomerSharedPrefs();
     //});
@@ -71,6 +71,4 @@ class CustomerProvider with ChangeNotifier {
       notifyListeners();
     });
   }
-
-
 }

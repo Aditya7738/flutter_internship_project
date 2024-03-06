@@ -50,117 +50,119 @@ class _DashboardPageState extends State<DashboardPage> {
           Provider.of<FilterOptionsProvider>(context, listen: false);
 
       //print("filterOptionsModel IS NOT NULL");
-      List<Map<String, dynamic>> categoriesList = <Map<String, dynamic>>[];
-      for (var i = 0; i < filterOptionsModel!.categories.length; i++) {
-        Map<String, dynamic> categoriesMap = <String, dynamic>{
-          "id": filterOptionsModel.categories[i].id,
-          "label": filterOptionsModel.categories[i].label,
-          "value": filterOptionsModel.categories[i].value,
-          "count": filterOptionsModel.categories[i].count
-        };
-        categoriesList.add(categoriesMap);
+
+      if (filterOptionsModel != null) {
+        List<Map<String, dynamic>> categoriesList = <Map<String, dynamic>>[];
+        for (var i = 0; i < filterOptionsModel.categories.length; i++) {
+          Map<String, dynamic> categoriesMap = <String, dynamic>{
+            "id": filterOptionsModel.categories[i].id,
+            "label": filterOptionsModel.categories[i].label,
+            "value": filterOptionsModel.categories[i].value,
+            "count": filterOptionsModel.categories[i].count
+          };
+          categoriesList.add(categoriesMap);
+        }
+        print("categoriesList $categoriesList");
+
+        filterOptionsProvider.setCategoryFilterOptionsdata(categoriesList);
+
+        List<Map<String, dynamic>> collectionsList = <Map<String, dynamic>>[];
+        for (var i = 0; i < filterOptionsModel.collections.length; i++) {
+          Map<String, dynamic> collectionsMap = <String, dynamic>{
+            "id": filterOptionsModel.collections[i].id,
+            "label": filterOptionsModel.collections[i].label,
+            "value": filterOptionsModel.collections[i].value,
+            "count": filterOptionsModel.collections[i].count
+          };
+          collectionsList.add(collectionsMap);
+        }
+
+        print("collectionsList $collectionsList");
+
+        filterOptionsProvider.setCollectionsFilterOptionsdata(collectionsList);
+
+        List<Map<String, dynamic>> diamondWeightList = <Map<String, dynamic>>[];
+        for (var i = 0; i < filterOptionsModel.diamondWt.length; i++) {
+          Map<String, dynamic> diamondWtMap = <String, dynamic>{
+            "id": filterOptionsModel.diamondWt[i].id,
+            "label": filterOptionsModel.diamondWt[i].label,
+            "value": filterOptionsModel.diamondWt[i].value,
+            "count": filterOptionsModel.diamondWt[i].count
+          };
+          diamondWeightList.add(diamondWtMap);
+        }
+
+        print("diamondWeightList $diamondWeightList");
+        print("diamondWeightList length ${diamondWeightList.length}");
+
+        filterOptionsProvider.setDiamondWtFilterOptionsdata(diamondWeightList);
+
+        List<Map<String, dynamic>> goldWtList = <Map<String, dynamic>>[];
+        for (var i = 0; i < filterOptionsModel.goldWt.length; i++) {
+          Map<String, dynamic> goldWt = <String, dynamic>{
+            "id": filterOptionsModel.goldWt[i].id,
+            "label": filterOptionsModel.goldWt[i].label,
+            "value": filterOptionsModel.goldWt[i].value,
+            "count": filterOptionsModel.goldWt[i].count
+          };
+          goldWtList.add(goldWt);
+        }
+
+        print("goldWtList $goldWtList");
+        print("goldWtList length ${goldWtList.length}");
+
+        filterOptionsProvider.setGoldWtFilterOptionsdata(goldWtList);
+
+        List<Map<String, dynamic>> genderList = <Map<String, dynamic>>[];
+        for (var i = 0; i < filterOptionsModel.gender.length; i++) {
+          Map<String, dynamic> gender = <String, dynamic>{
+            "id": filterOptionsModel.gender[i].id,
+            "label": filterOptionsModel.gender[i].label,
+            "value": filterOptionsModel.gender[i].value,
+            "count": filterOptionsModel.gender[i].count
+          };
+          genderList.add(gender);
+        }
+        print("genderList $genderList");
+        print("genderList length ${genderList.length}");
+
+        filterOptionsProvider.setGenderFilterOptionsdata(genderList);
+
+        List<Map<String, dynamic>> tagsList = <Map<String, dynamic>>[];
+        for (var i = 0; i < filterOptionsModel.tags.length; i++) {
+          Map<String, dynamic> tags = <String, dynamic>{
+            "id": filterOptionsModel.tags[i].id,
+            "label": filterOptionsModel.tags[i].label,
+            "value": filterOptionsModel.tags[i].value,
+            "count": filterOptionsModel.tags[i].count
+          };
+          tagsList.add(tags);
+        }
+
+        print("tagsList $tagsList");
+        print("tagsList length ${tagsList.length}");
+
+        filterOptionsProvider.setTagsFilterOptionsdata(tagsList);
+
+        List<Map<String, dynamic>> subCategoriesList = <Map<String, dynamic>>[];
+        for (var i = 0; i < filterOptionsModel.subCategories.length; i++) {
+          Map<String, dynamic> subCategories = <String, dynamic>{
+            "id": filterOptionsModel.subCategories[i].id,
+            "label": filterOptionsModel.subCategories[i].label,
+            "value": filterOptionsModel.subCategories[i].value,
+            "count": filterOptionsModel.subCategories[i].count
+          };
+          subCategoriesList.add(subCategories);
+        }
+
+        print("subCategoriesList $subCategoriesList");
+        print("subCategoriesList length ${subCategoriesList.length}");
+
+        filterOptionsProvider
+            .setSubCategoriesFilterOptionsdata(subCategoriesList);
+      } else {
+        print("filterOptionsModel IS NULL");
       }
-
-      print("categoriesList $categoriesList");
-
-      filterOptionsProvider.setCategoryFilterOptionsdata(categoriesList);
-
-      List<Map<String, dynamic>> collectionsList = <Map<String, dynamic>>[];
-      for (var i = 0; i < filterOptionsModel.collections.length; i++) {
-        Map<String, dynamic> collectionsMap = <String, dynamic>{
-          "id": filterOptionsModel.collections[i].id,
-          "label": filterOptionsModel.collections[i].label,
-          "value": filterOptionsModel.collections[i].value,
-          "count": filterOptionsModel.collections[i].count
-        };
-        collectionsList.add(collectionsMap);
-      }
-
-      print("collectionsList $collectionsList");
-
-      filterOptionsProvider.setCollectionsFilterOptionsdata(collectionsList);
-
-      List<Map<String, dynamic>> diamondWeightList = <Map<String, dynamic>>[];
-      for (var i = 0; i < filterOptionsModel.diamondWt.length; i++) {
-        Map<String, dynamic> diamondWtMap = <String, dynamic>{
-          "id": filterOptionsModel.diamondWt[i].id,
-          "label": filterOptionsModel.diamondWt[i].label,
-          "value": filterOptionsModel.diamondWt[i].value,
-          "count": filterOptionsModel.diamondWt[i].count
-        };
-        diamondWeightList.add(diamondWtMap);
-      }
-
-      print("diamondWeightList $diamondWeightList");
-      print("diamondWeightList length ${diamondWeightList.length}");
-
-      filterOptionsProvider.setDiamondWtFilterOptionsdata(diamondWeightList);
-
-      List<Map<String, dynamic>> goldWtList = <Map<String, dynamic>>[];
-      for (var i = 0; i < filterOptionsModel.goldWt.length; i++) {
-        Map<String, dynamic> goldWt = <String, dynamic>{
-          "id": filterOptionsModel.goldWt[i].id,
-          "label": filterOptionsModel.goldWt[i].label,
-          "value": filterOptionsModel.goldWt[i].value,
-          "count": filterOptionsModel.goldWt[i].count
-        };
-        goldWtList.add(goldWt);
-      }
-
-      print("goldWtList $goldWtList");
-      print("goldWtList length ${goldWtList.length}");
-
-      filterOptionsProvider.setGoldWtFilterOptionsdata(goldWtList);
-
-      List<Map<String, dynamic>> genderList = <Map<String, dynamic>>[];
-      for (var i = 0; i < filterOptionsModel.gender.length; i++) {
-        Map<String, dynamic> gender = <String, dynamic>{
-          "id": filterOptionsModel.gender[i].id,
-          "label": filterOptionsModel.gender[i].label,
-          "value": filterOptionsModel.gender[i].value,
-          "count": filterOptionsModel.gender[i].count
-        };
-        genderList.add(gender);
-      }
-      print("genderList $genderList");
-      print("genderList length ${genderList.length}");
-
-      filterOptionsProvider.setGenderFilterOptionsdata(genderList);
-
-      List<Map<String, dynamic>> tagsList = <Map<String, dynamic>>[];
-      for (var i = 0; i < filterOptionsModel.tags.length; i++) {
-        Map<String, dynamic> tags = <String, dynamic>{
-          "id": filterOptionsModel.tags[i].id,
-          "label": filterOptionsModel.tags[i].label,
-          "value": filterOptionsModel.tags[i].value,
-          "count": filterOptionsModel.tags[i].count
-        };
-        tagsList.add(tags);
-      }
-
-      print("tagsList $tagsList");
-      print("tagsList length ${tagsList.length}");
-
-      filterOptionsProvider.setTagsFilterOptionsdata(tagsList);
-
-      List<Map<String, dynamic>> subCategoriesList = <Map<String, dynamic>>[];
-      for (var i = 0; i < filterOptionsModel.subCategories.length; i++) {
-        Map<String, dynamic> subCategories = <String, dynamic>{
-          "id": filterOptionsModel.subCategories[i].id,
-          "label": filterOptionsModel.subCategories[i].label,
-          "value": filterOptionsModel.subCategories[i].value,
-          "count": filterOptionsModel.subCategories[i].count
-        };
-        subCategoriesList.add(subCategories);
-      }
-
-      print("subCategoriesList $subCategoriesList");
-      print("subCategoriesList length ${subCategoriesList.length}");
-
-      filterOptionsProvider
-          .setSubCategoriesFilterOptionsdata(subCategoriesList);
-
-      print("filterOptionsModel IS NULL");
     }
   }
 

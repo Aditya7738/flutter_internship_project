@@ -45,7 +45,7 @@ class _SignupPageState extends State<SignupPage> {
   bool isRegisterUnSuccessful = false;
   String errorMsg = "";
 
-    Future<void> onLinkClicked(String url) async {
+  Future<void> onLinkClicked(String url) async {
     Uri uri = Uri.parse(url);
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri);
@@ -56,7 +56,6 @@ class _SignupPageState extends State<SignupPage> {
 
   @override
   Widget build(BuildContext context) {
-   
     _passwordController.text = "Sldi4e@#45";
     _confirmPasswordController.text = "Sldi4e@#45";
     _phoneNoController.text = "4153516564";
@@ -298,7 +297,8 @@ class _SignupPageState extends State<SignupPage> {
                                 ..onTap = () {
                                   // Handle the click event for the specific word.
                                   print('You clicked on T&C');
-                                  onLinkClicked("https://tiarabytj.com/terms-conditions/");
+                                  onLinkClicked(
+                                      "https://tiarabytj.com/terms-conditions/");
                                   // Add your custom action here.
                                 },
                             ),
@@ -317,7 +317,8 @@ class _SignupPageState extends State<SignupPage> {
                                 ..onTap = () {
                                   // Handle the click event for the specific word.
                                   print('You clicked on Privacy Policy');
-                                  onLinkClicked("https://tiarabytj.com/privacy-policy/");
+                                  onLinkClicked(
+                                      "https://tiarabytj.com/privacy-policy/");
                                   // Add your custom action here.
                                 },
                             ),
@@ -372,8 +373,8 @@ class _SignupPageState extends State<SignupPage> {
                                 "first_name": first_name,
                                 "last_name": last_name,
                                 "email": email,
-                                //    "username": username,
-                                // "password": password
+                                "username": username,
+                                "password": password
                               });
 
                               if (mounted) {

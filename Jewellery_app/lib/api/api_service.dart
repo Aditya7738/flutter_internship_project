@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:Tiara_by_TJ/constants/constants.dart';
+import 'package:Tiara_by_TJ/model/banner_model.dart';
 import 'package:Tiara_by_TJ/model/category_model.dart';
 import 'package:Tiara_by_TJ/model/coupons_model.dart' as Coupons;
 import 'package:Tiara_by_TJ/model/digi_gold_plan_model.dart' as DigiGoldPlans;
@@ -53,14 +54,13 @@ class ApiService {
   }
 
   static String categoryUri =
-        "${Constants.baseUrl}/wp-json/wc/v3/products/categories?consumer_key=${Constants.consumerKey}&consumer_secret=${Constants.consumerSecret}&page=$pageNo&per_page=100";
+      "${Constants.baseUrl}/wp-json/wc/v3/products/categories?consumer_key=${Constants.consumerKey}&consumer_secret=${Constants.consumerSecret}&page=$pageNo&per_page=100";
 
   static Future<List<CategoriesModel>> fetchCategories(
       int pageNo, BuildContext context) async {
     //${Constants.baseUrl}/wp-json/wc/v3/products/categories?consumer_key=ck_33882e17eeaff38b20ac7c781156024bc2d6af4a&consumer_secret=cs_df67b056d05606c05275b571ab39fa508fcdd7b9
     //checkInternetConnection(context);
 
-    
     Uri uri = Uri.parse(categoryUri);
     final response = await http.get(uri);
 
@@ -1236,7 +1236,7 @@ class ApiService {
 
     var headers = {
       HttpHeaders.authorizationHeader: "Basic $basicAuth",
-   //   HttpHeaders.contentTypeHeader: "text/html"
+      //   HttpHeaders.contentTypeHeader: "text/html"
     };
 
     Uri uri = Uri.parse(endpoint);
@@ -1250,8 +1250,7 @@ class ApiService {
 
     print("signupCustomer headers ${response.headers}");
 
-print("signupCustomer reasonPhrase ${response.reasonPhrase}");
-    
+    print("signupCustomer reasonPhrase ${response.reasonPhrase}");
 
     if (response.statusCode == 201) {
       // try {
@@ -2243,6 +2242,49 @@ print("signupCustomer reasonPhrase ${response.reasonPhrase}");
       }
 
       print("listOfCoupons.length ${listOfCoupons.length}");
+    }
+  }
+
+  static List<BannerModel> listOfBanners = <BannerModel>[];
+
+  static Future<void> getBanners() async {
+    final url = "${Constants.baseUrl}/wp-json/wp/v2/slider";
+
+    Uri uri = Uri.parse(url);
+
+    http.Response response = await http.get(uri);
+    print("coupons response.statusCode ${response.statusCode}");
+
+    if (response.statusCode == 200) {
+      final json = jsonDecode(response.body);
+
+      for (var i = 0; i < json.length; i++) {
+        listOfBanners.add(BannerModel(
+          id: json[i]["id"],
+          date: DateTime.tryParse(json[i]["date"] ?? ""),
+          dateGmt: DateTime.tryParse(json[i]["date_gmt"] ?? ""),
+          guid: json[i]["guid"] == null ? null : Guid.fromJson(json[i]["guid"]),
+          modified: DateTime.tryParse(json[i]["modified"] ?? ""),
+          modifiedGmt: DateTime.tryParse(json[i]["modified_gmt"] ?? ""),
+          slug: json[i]["slug"],
+          status: json[i]["status"],
+          type: json[i]["type"],
+          link: json[i]["link"],
+          title:
+              json[i]["title"] == null ? null : Guid.fromJson(json[i]["title"]),
+          content: json[i]["content"] == null
+              ? null
+              : Content.fromJson(json[i]["content"]),
+          featuredMedia: json[i]["featured_media"],
+          menuOrder: json[i]["menu_order"],
+          template: json[i]["template"],
+          meta: json[i]["meta"] == null ? null : Meta.fromJson(json[i]["meta"]),
+          metadata: json[i]["metadata"] == null
+              ? null
+              : Metadata.fromJson(json[i]["metadata"]),
+          // links: json[i]["_links"] == null ? null : Links.fromJson(json[i]["_links"]),
+        ));
+      }
     }
   }
 }

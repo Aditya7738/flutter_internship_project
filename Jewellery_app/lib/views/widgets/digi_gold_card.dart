@@ -145,11 +145,18 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                   ),
                   PriceInfo(
                       label: "You Pay Per Month: ",
-                      price: widget.digiGoldPlan.price ?? "0"),
+                      price: widget.digiGoldPlan.price != null
+                          ? widget.digiGoldPlan.price!.isNotEmpty
+                              ? widget.digiGoldPlan.price!
+                              : "0"
+                          : "0"),
                   PriceInfo(
                       label: "Total Amount You Pay: ",
-                      price:
-                          "${int.parse(widget.digiGoldPlan.price ?? "0") * planDuration}"),
+                      price: widget.digiGoldPlan.price != null
+                          ? widget.digiGoldPlan.price!.isNotEmpty
+                              ? "${int.parse(widget.digiGoldPlan.price!) * planDuration}"
+                              : "0"
+                          : "0"),
                   isJewellerContributing
                       ? PriceInfo(
                           label: "Jeweller Contribution: ",
@@ -161,8 +168,11 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                   isJewellerContributing
                       ? PriceInfo(
                           label: "You Get Jewellery Worth: ",
-                          price:
-                              "${int.parse(jeweller_contribution) + int.parse(widget.digiGoldPlan.price!) * planDuration}")
+                          price: widget.digiGoldPlan.price != null
+                              ? widget.digiGoldPlan.price!.isNotEmpty
+                                  ? "${int.parse(jeweller_contribution) + int.parse(widget.digiGoldPlan.price!) * planDuration}"
+                                  : "0"
+                              : "0")
                       : SizedBox(
                           height: 10.0,
                         ),

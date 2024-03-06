@@ -23,6 +23,8 @@ class _MyOrderTabState extends State<MyOrderTab> {
 
   bool isMoreOrderLoading = false;
 
+  List<OrderModel> listOfCartOrders = <OrderModel>[];
+
   @override
   void initState() {
     super.initState();
@@ -47,6 +49,13 @@ class _MyOrderTabState extends State<MyOrderTab> {
 
       await ApiService.fetchOrders(customerId, 1);
 
+      for (var i = 0; i < ApiService.listOfOrders.length; i++) {
+        if (ApiService.listOfOrders[i].metaData.isEmpty) {
+          listOfCartOrders.add(ApiService.listOfOrders[i]);
+        }
+  
+      }
+
       if (mounted) {
         setState(() {
           pageLoading = false;
@@ -68,9 +77,9 @@ class _MyOrderTabState extends State<MyOrderTab> {
         : Padding(
             padding: const EdgeInsets.all(8.0),
             child: ListView.builder(
-              itemCount: ApiService.listOfOrders.length,
+              itemCount: listOfCartOrders.length,
               itemBuilder: (context, index) {
-                OrderModel orderModel = ApiService.listOfOrders[index];
+                OrderModel orderModel = listOfCartOrders[index];
 
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 8.0),
