@@ -198,7 +198,7 @@ class _ProductPageState extends State<ProductPage> {
                             height: 70.0,
                             width: MediaQuery.of(context).size.width,
                             child: ListView.builder(
-                              padding: EdgeInsets.all(5.0),
+                              padding: const EdgeInsets.all(5.0),
                               scrollDirection: Axis.horizontal,
                               itemCount: value.list.length,
                               itemBuilder: (context, index) {

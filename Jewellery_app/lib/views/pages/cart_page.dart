@@ -15,6 +15,7 @@ import 'package:Tiara_by_TJ/views/widgets/cart_total_row.dart';
 import 'package:Tiara_by_TJ/views/widgets/label_widget.dart';
 import 'package:provider/provider.dart';
 
+//store totalafter applied coupon in  order provider
 class CartPage extends StatefulWidget {
   int? productId;
 
@@ -29,10 +30,13 @@ class CartPage extends StatefulWidget {
 class _CartPageState extends State<CartPage> {
   String selectedQuantity = '1';
   String selectedSize = '5';
+
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    
   }
 
   List<String> quantityList = [
@@ -74,8 +78,8 @@ class _CartPageState extends State<CartPage> {
   Map<String, dynamic>? selectedCouponData;
 
   double calculateTotalPriceAfterApplyCoupon(
-      double total, Map<String, dynamic>? selectedCouponData) {
-    final cartProvider = Provider.of<CartProvider>(context, listen: false);
+      double total, Map<String, dynamic>? selectedCouponData, CartProvider value) {
+    //final cartProvider = Provider.of<CartProvider>(context, listen: false);
     double totalAfterDiscount = 0.0;
     if (selectedCouponData!["discountString"].toString().contains("%")) {
       totalAfterDiscount =
@@ -83,9 +87,14 @@ class _CartPageState extends State<CartPage> {
     } else {
       totalAfterDiscount = total - selectedCouponData["discountAmount"];
     }
-    cartProvider.setTotalAfterCouponApplied(totalAfterDiscount);
+
+    print("calculateTotalPriceAfterApplyCoupon $totalAfterDiscount");
+
+    value.setTotalAfterCouponApplied(totalAfterDiscount);
     return totalAfterDiscount;
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -136,7 +145,6 @@ class _CartPageState extends State<CartPage> {
                             print(
                                 "selectedCouponData != null ${selectedCouponData != null}");
                             if (selectedCouponData != null) {
-                             
                               showDialog(
                                 context: context,
                                 builder: (context) {
@@ -438,7 +446,7 @@ class _CartPageState extends State<CartPage> {
                                               Text(
                                                   value.selectedCouponData !=
                                                           null
-                                                      ? "₹ ${(calculateTotalPriceAfterApplyCoupon(value.calculateTotalPrice(), value.selectedCouponData)).round()}"
+                                                      ? "₹ ${(calculateTotalPriceAfterApplyCoupon(value.calculateTotalPrice(), value.selectedCouponData, value)).round()}"
                                                       : "₹ ${value.calculateTotalPrice().toString()}",
                                                   style: TextStyle(
                                                       fontSize: 19.0,
@@ -715,11 +723,11 @@ class _CartPageState extends State<CartPage> {
                               final customerProvider =
                                   Provider.of<CustomerProvider>(context,
                                       listen: false);
-if (value.selectedCouponData != null) {
-  value.setIsCouponApplied(true);
-}else{
-   value.setIsCouponApplied(false);
-}
+                              if (value.selectedCouponData != null) {
+                                value.setIsCouponApplied(true);
+                              } else {
+                                value.setIsCouponApplied(false);
+                              }
                               //List<Map<String,dynamic>> oldCartDataList = <Map<String,dynamic>>[];
 
                               //user old cart item should be added to cart again when he login and direct to cart page
@@ -924,42 +932,42 @@ if (value.selectedCouponData != null) {
     }).toList();
   }
 
-  void showCouponDialog(BuildContext context) {
-    //TextEditingController textEditingController = TextEditingController();
+  // void showCouponDialog(BuildContext context) {
+  //   //TextEditingController textEditingController = TextEditingController();
 
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          content: Column(mainAxisSize: MainAxisSize.min, children: [
-            TextFormField(
-              maxLines: 1,
-              enabled: true,
-              decoration: const InputDecoration(hintText: "Coupon code"),
-            ),
-            const SizedBox(
-              height: 20.0,
-            ),
-            GestureDetector(
-              onTap: () {
-                // Navigator.of(context).pushReplacement(
-                //     MaterialPageRoute(
-                //         builder: (context) => SearchPage()));
-              },
-              child: Container(
-                  decoration: BoxDecoration(
-                      color: const Color(0xffCC868A),
-                      borderRadius: BorderRadius.circular(5.0)),
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 10.0, horizontal: 20.0),
-                  child: const Text(
-                    "Apply coupon",
-                    style: TextStyle(color: Colors.white, fontSize: 17.0),
-                  )),
-            ),
-          ]),
-        );
-      },
-    );
-  }
+  //   showDialog(
+  //     context: context,
+  //     builder: (context) {
+  //       return AlertDialog(
+  //         content: Column(mainAxisSize: MainAxisSize.min, children: [
+  //           TextFormField(
+  //             maxLines: 1,
+  //             enabled: true,
+  //             decoration: const InputDecoration(hintText: "Coupon code"),
+  //           ),
+  //           const SizedBox(
+  //             height: 20.0,
+  //           ),
+  //           GestureDetector(
+  //             onTap: () {
+  //               // Navigator.of(context).pushReplacement(
+  //               //     MaterialPageRoute(
+  //               //         builder: (context) => SearchPage()));
+  //             },
+  //             child: Container(
+  //                 decoration: BoxDecoration(
+  //                     color: const Color(0xffCC868A),
+  //                     borderRadius: BorderRadius.circular(5.0)),
+  //                 padding: const EdgeInsets.symmetric(
+  //                     vertical: 10.0, horizontal: 20.0),
+  //                 child: const Text(
+  //                   "Apply coupon",
+  //                   style: TextStyle(color: Colors.white, fontSize: 17.0),
+  //                 )),
+  //           ),
+  //         ]),
+  //       );
+  //     },
+  //   );
+  // }
 }

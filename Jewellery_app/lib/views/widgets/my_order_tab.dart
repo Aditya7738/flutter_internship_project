@@ -53,7 +53,6 @@ class _MyOrderTabState extends State<MyOrderTab> {
         if (ApiService.listOfOrders[i].metaData.isEmpty) {
           listOfCartOrders.add(ApiService.listOfOrders[i]);
         }
-  
       }
 
       if (mounted) {
@@ -81,6 +80,12 @@ class _MyOrderTabState extends State<MyOrderTab> {
               itemBuilder: (context, index) {
                 OrderModel orderModel = listOfCartOrders[index];
 
+                int totalPrice = 0;
+
+                for (var i = 0; i < orderModel.lineItems.length; i++) {
+                  totalPrice += orderModel.lineItems[i].price!;
+                }
+
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 8.0),
                   child: Card(
@@ -104,14 +109,12 @@ class _MyOrderTabState extends State<MyOrderTab> {
                                           Theme.of(context).textTheme.headline3)
                                 ],
                               ),
-                              InkWell(
-                                child: Text(
-                                  "Order Details",
-                                  style: TextStyle(
-                                    color: Colors.green,
-                                    fontSize: 15.0,
-                                  ),
-                                ),
+                              Text(
+                                "₹ ${orderModel.total}",
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 17.0,
+                                    fontWeight: FontWeight.bold),
                               )
                             ],
                           ),

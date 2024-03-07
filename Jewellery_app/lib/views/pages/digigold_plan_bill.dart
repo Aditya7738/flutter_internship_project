@@ -253,6 +253,19 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
     return "";
   }
 
+  String jewellerContribution = "";
+  checkIsJewellerContributing() {
+    for (var i = 0; i < widget.digiGoldPlanModel.metaData.length; i++) {
+      if (widget.digiGoldPlanModel.metaData[i].key == "jeweller_contribution") {
+        if (mounted) {
+          setState(() {
+            jewellerContribution = widget.digiGoldPlanModel.metaData[i].value;
+          });
+        }
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final customerProvider =
@@ -764,8 +777,12 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
           },
           {"key": "digi_plan_type", "value": digiPlanType},
           {"key": "description", "value": widget.digiGoldPlanModel.description},
+          {"key": "jeweller_contribution", "value": jewellerContribution}
         ];
       }
+
+ print("jeweller_contribution ${jewellerContribution}");
+      print("widget.digiGoldPlanModel.description ${widget.digiGoldPlanModel.description}");
 
       print(
           "customerProvider.customerId ${customerProvider.customerData[0]["id"]}");

@@ -840,7 +840,7 @@ class _CouponListPageState extends State<CouponListPage> {
                                               //     :
                                               Theme.of(context).primaryColor,
                                           fontWeight: FontWeight.bold,
-                                          fontSize: 17.0)),
+                                          fontSize: 19.0)),
                                 )
                               ],
                             ),

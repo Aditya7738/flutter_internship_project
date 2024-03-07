@@ -78,7 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     getBanners();
 
-     carouselController = CarouselController();
+    carouselController = CarouselController();
 
     // _scrollController.addListener(() async {
     //   print(
@@ -379,66 +379,78 @@ class _HomeScreenState extends State<HomeScreen> {
             //   child: PincodeWidget(),
             // ),
 
-            CarouselSlider(
-              carouselController: carouselController,
-              items: ApiService.listOfBanners
-                  .map((banner) =>
-                
-                      Container(
-                        margin: const EdgeInsets.all(5.0),
-                        child: Image.network(
-                          banner.metadata != null ?
-                          banner.metadata!.bgImageMobile[0]
-                          :
-                          "https://rotationalmoulding.com/wp-content/uploads/2017/02/NoImageAvailable.jpg",
-                          loadingBuilder: (context, child, loadingProgress) {
-                            if (loadingProgress == null) {
-                              return child;
-                            }
-                            return Container(
-                              alignment: Alignment.center,
-                              width: MediaQuery.of(context).size.width,
-                              height: 92.0,
-                              child: const CircularProgressIndicator(
-                                color: Colors.black,
-                              ),
-                            );
-                          },
-                          fit: BoxFit.fill,
-                        ),
-                      ))
-                  .toList(),
-              options: CarouselOptions(
-                  viewportFraction: 1.04,
-                  height: MediaQuery.of(context).size.height / 2,
-                  enlargeCenterPage: true,
-                  autoPlay: true,
-                  aspectRatio: 16 / 9,
-                  autoPlayInterval: const Duration(seconds: 3),
-                  onPageChanged: (index, reason) {
-                    if (mounted) {
-                      setState(() {
-                        currentIndex = index;
-                      });
-                    }
-                  }),
-            ),
-
-            SizedBox(
-                width: MediaQuery.of(context).size.width,
-                child: DotsIndicator(
-                  dotsCount: ApiService.listOfBanners.length,
-                  position: currentIndex,
-                  onTap: (index) {
-                    carouselController.animateToPage(index);
-                  },
-                  decorator: const DotsDecorator(
-                    color: Colors.grey,
-                    activeColor: Colors.black,
-                    size: Size.square(12.0),
-                    activeSize: Size.square(15.0),
-                  ),
-                )),
+            isBannerLoading
+                ? SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    height: 300,
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        color: Theme.of(context).primaryColor,
+                      ),
+                    ),
+                  )
+                : Column(
+                    children: [
+                      CarouselSlider(
+                        carouselController: carouselController,
+                        items: ApiService.listOfBanners
+                            .map((banner) => Container(
+                                  margin: const EdgeInsets.all(5.0),
+                                  child: Image.network(
+                                    banner.metadata != null
+                                        ? banner.metadata!.bgImageMobile[0]
+                                        : "https://rotationalmoulding.com/wp-content/uploads/2017/02/NoImageAvailable.jpg",
+                                    loadingBuilder:
+                                        (context, child, loadingProgress) {
+                                      if (loadingProgress == null) {
+                                        return child;
+                                      }
+                                      return Container(
+                                        alignment: Alignment.center,
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        height: 92.0,
+                                        child: const CircularProgressIndicator(
+                                          color: Colors.black,
+                                        ),
+                                      );
+                                    },
+                                    fit: BoxFit.fill,
+                                  ),
+                                ))
+                            .toList(),
+                        options: CarouselOptions(
+                            viewportFraction: 1.04,
+                            height: MediaQuery.of(context).size.height / 2,
+                            enlargeCenterPage: true,
+                            autoPlay: true,
+                            aspectRatio: 16 / 9,
+                            autoPlayInterval: const Duration(seconds: 3),
+                            onPageChanged: (index, reason) {
+                              if (mounted) {
+                                setState(() {
+                                  currentIndex = index;
+                                });
+                              }
+                            }),
+                      ),
+                      SizedBox(
+                          width: MediaQuery.of(context).size.width,
+                          child: DotsIndicator(
+                            dotsCount: ApiService.listOfBanners.length > 0 ? ApiService.listOfBanners.length : 1,
+                            position: currentIndex,
+                            onTap: (index) {
+                              carouselController.animateToPage(index);
+                            },
+                            decorator: const DotsDecorator(
+                              color: Colors.grey,
+                              activeColor: Colors.black,
+                              size: Size.square(12.0),
+                              activeSize: Size.square(15.0),
+                            ),
+                          )),
+                    ],
+                  )
 
             // Padding(
             //   padding: const EdgeInsets.symmetric(horizontal: 10.0),

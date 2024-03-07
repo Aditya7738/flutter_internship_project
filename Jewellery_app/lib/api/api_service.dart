@@ -113,7 +113,7 @@ class ApiService {
 
   static Future<List<ProductsModel>> fetchProductsCategoryWise(
       {required int id, required int pageNo}) async {
-    categoryId = id;
+    print("categoryId $id");
     //checkInternetConnection(context);
     //${Constants.baseUrl}/wp-json/wc/v3/products?consumer_key=ck_33882e17eeaff38b20ac7c781156024bc2d6af4a&consumer_secret=cs_df67b056d05606c05275b571ab39fa508fcdd7b9&category=230
     String categoryUri =

@@ -18,8 +18,10 @@ class CartProvider with ChangeNotifier {
   bool get isCouponApplied => _isCouponApplied;
 
   void setIsCouponApplied(bool isCouponApplied) {
-    _isCouponApplied = isCouponApplied;
-    notifyListeners();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _isCouponApplied = isCouponApplied;
+      notifyListeners();
+    });
   }
 
   // String _totalPriceAfterCouponApplied = "";
@@ -71,10 +73,10 @@ class CartProvider with ChangeNotifier {
   double get totalAfterCouponApplied => _totalAfterCouponApplied;
 
   void setTotalAfterCouponApplied(double totalAfterCouponApplied) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _totalAfterCouponApplied = totalAfterCouponApplied;
-      notifyListeners();
-    });
+    //  WidgetsBinding.instance.addPostFrameCallback((_) {
+    _totalAfterCouponApplied = totalAfterCouponApplied;
+    notifyListeners();
+    //   });
   }
 
   void addToCartId(int id) {

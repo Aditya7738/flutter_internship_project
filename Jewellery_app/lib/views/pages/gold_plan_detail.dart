@@ -97,6 +97,22 @@ class _GoldPlanDetailState extends State<GoldPlanDetail> {
     return "";
   }
 
+  bool isJewellerContributing = false;
+
+  String getJewellerContribution() {
+    for (var i = 0; i < widget.orderModel.metaData.length; i++) {
+      if (widget.orderModel.metaData[i].key == "jeweller_contribution") {
+        if (widget.orderModel.metaData[i].value!.isNotEmpty) {
+          setState(() {
+            isJewellerContributing = true;
+          });
+          return widget.orderModel.metaData[i].value!;
+        }
+      }
+    }
+    return "";
+  }
+
   String getPaymentDateFromList(OrderModel orderModel) {
     for (var i = 0; i < orderModel.metaData.length; i++) {
       if (orderModel.metaData[i].key == "payment_date") {
@@ -271,6 +287,32 @@ class _GoldPlanDetailState extends State<GoldPlanDetail> {
                 SizedBox(
                   height: 10.0,
                 ),
+                isJewellerContributing
+                    ? Column(
+                        children: [
+                          Row(
+                            children: [
+                              Text(
+                                "Jeweller Cotribution on last month:",
+                                style: TextStyle(
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              SizedBox(
+                                width: 5.0,
+                              ),
+                              Text("₹ ${getJewellerContribution()}",
+                                  style: TextStyle(
+                                    fontSize: 18.0,
+                                  )),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 10.0,
+                          ),
+                        ],
+                      )
+                    : SizedBox(),
                 Row(
                   children: [
                     Text(
@@ -316,7 +358,7 @@ class _GoldPlanDetailState extends State<GoldPlanDetail> {
                 SizedBox(
                   height: 5.0,
                 ),
-                HtmlWidget("${getPlanDescription()}",
+                HtmlWidget("<p>${getPlanDescription()}</p>",
                     textStyle: TextStyle(
                       fontSize: 18.0,
                     )),
@@ -349,8 +391,7 @@ class _GoldPlanDetailState extends State<GoldPlanDetail> {
                       ),
                       CartTotalRow(
                           label: 'Gold Credited',
-                          value:
-                              "${getTotalGoldCredited()} gms",
+                          value: "${getTotalGoldCredited()} gms",
                           showMoney: false),
                       const Divider(
                         height: 15.0,
@@ -358,7 +399,8 @@ class _GoldPlanDetailState extends State<GoldPlanDetail> {
                       ),
                       CartTotalRow(
                         label: 'No. of months paid',
-                        value: "${widget.allOrdersList.length} / 12",
+                        value:
+                            "${widget.allOrdersList.length} / ${getPlanDuration()}",
                         showMoney: false,
                       ),
                     ],
@@ -500,131 +542,121 @@ class _GoldPlanDetailState extends State<GoldPlanDetail> {
         ));
   }
 
-  List<Widget> getPlanPayments(){
+  List<Widget> getPlanPayments() {
     List<Widget> widgets = <Widget>[];
-   for (var i = 0; i < widget.allOrdersList.length; i++) {
-    OrderModel orderModel = widget.allOrdersList[i];
-     widgets.add(
-      Padding(
-                        padding: const EdgeInsets.only(bottom: 8.0),
-                        child: Card(
-                          child: Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Column(
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      "Month ${i + 1}",
-                                      style: TextStyle(
-                                          fontSize: 18.0,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    Text(
-                                      "${getPaymentDateFromList(orderModel)}",
-                                      style: TextStyle(
-                                          fontSize: 18.0,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ],
-                                ),
-                                Divider(
-                                  thickness: 1.0,
-                                ),
-                                Column(
-                                  children: [
-                                    Table(
-                                      children: [
-                                        TableRow(children: [
-                                          Text(
-                                            "Payment Ref ID: ",
-                                            style: TextStyle(
-                                                fontSize: 18.0,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          Text(
-                                            "${getPaymentRefIdFromList(orderModel)}",
-                                            style: TextStyle(
-                                              fontSize: 18.0,
-                                            ),
-                                            maxLines: 2,
-                                          )
-                                        ]),
-                                        TableRow(children: [
-                                          Text(
-                                            "Mode of payment: ",
-                                            style: TextStyle(
-                                                fontSize: 18.0,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          Text(
-                                            "${getPaymentMethodFromList(orderModel)}",
-                                            style: TextStyle(
-                                              fontSize: 18.0,
-                                            ),
-                                            maxLines: 2,
-                                          )
-                                        ]),
-                                        TableRow(children: [
-                                          Text(
-                                            "Amount paid: ",
-                                            style: TextStyle(
-                                                fontSize: 18.0,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          Text(
-                                            "₹ ${widget.orderModel.total}",
-                                            style: TextStyle(
-                                              fontSize: 18.0,
-                                            ),
-                                            maxLines: 2,
-                                          )
-                                        ]),
-                                      ],
-                                    )
-                                  ],
-                                ),
-                                Divider(
-                                  thickness: 1.0,
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Gold credited: ",
-                                      style: TextStyle(
-                                          fontSize: 18.0,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    SizedBox(
-                                      width: 5.0,
-                                    ),
-                                    Text(
-                                      "${getGoldCreditedFromList(orderModel)}",
-                                      style: TextStyle(
-                                        fontSize: 19.0,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 5.0,
-                                    ),
-                                    Image.asset(
-                                      "assets/images/gold_coin.png",
-                                      width: 24.0,
-                                      height: 24.0,
-                                    )
-                                  ],
-                                )
-                              ],
-                            ),
+    for (var i = 0; i < widget.allOrdersList.length; i++) {
+      OrderModel orderModel = widget.allOrdersList[i];
+      widgets.add(Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Card(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Month ${i + 1}",
+                      style: TextStyle(
+                          fontSize: 18.0, fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      "${getPaymentDateFromList(orderModel)}",
+                      style: TextStyle(
+                          fontSize: 18.0, fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+                Divider(
+                  thickness: 1.0,
+                ),
+                Column(
+                  children: [
+                    Table(
+                      children: [
+                        TableRow(children: [
+                          Text(
+                            "Payment Ref ID: ",
+                            style: TextStyle(
+                                fontSize: 18.0, fontWeight: FontWeight.bold),
                           ),
-                        ),
-                      )
-
-     );
-   }
-   return widgets;
+                          Text(
+                            "${getPaymentRefIdFromList(orderModel)}",
+                            style: TextStyle(
+                              fontSize: 18.0,
+                            ),
+                            maxLines: 2,
+                          )
+                        ]),
+                        TableRow(children: [
+                          Text(
+                            "Mode of payment: ",
+                            style: TextStyle(
+                                fontSize: 18.0, fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            "${getPaymentMethodFromList(orderModel)}",
+                            style: TextStyle(
+                              fontSize: 18.0,
+                            ),
+                            maxLines: 2,
+                          )
+                        ]),
+                        TableRow(children: [
+                          Text(
+                            "Amount paid: ",
+                            style: TextStyle(
+                                fontSize: 18.0, fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            "₹ ${widget.orderModel.total}",
+                            style: TextStyle(
+                              fontSize: 18.0,
+                            ),
+                            maxLines: 2,
+                          )
+                        ]),
+                      ],
+                    )
+                  ],
+                ),
+                Divider(
+                  thickness: 1.0,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Gold credited: ",
+                      style: TextStyle(
+                          fontSize: 18.0, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(
+                      width: 5.0,
+                    ),
+                    Text(
+                      "${getGoldCreditedFromList(orderModel)}",
+                      style: TextStyle(
+                        fontSize: 19.0,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 5.0,
+                    ),
+                    Image.asset(
+                      "assets/images/gold_coin.png",
+                      width: 24.0,
+                      height: 24.0,
+                    )
+                  ],
+                )
+              ],
+            ),
+          ),
+        ),
+      ));
+    }
+    return widgets;
   }
 }

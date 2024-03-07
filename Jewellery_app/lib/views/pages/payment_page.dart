@@ -136,12 +136,21 @@ class _PaymentPageState extends State<PaymentPage>
     if (isThereInternet) {
       cartProvider.setIsOrderCreating(true);
       orderProvider.setIsOrderCreating(true);
+
+print("cartProvider.isCouponApplied ${cartProvider.isCouponApplied}");
+
+print("cartProvider.totalAfterCouponApplied ${cartProvider.totalAfterCouponApplied}");
+
+print("orderProvider.price ${orderProvider.price}");
+
       http.Response response = await ApiService.createOrder(
           orderProvider.billingData,
           orderProvider.shippingData,
           orderProvider.lineItems,
           orderProvider.customerId,
-          orderProvider.price,
+          cartProvider.isCouponApplied
+              ? cartProvider.totalAfterCouponApplied.toString()
+              : orderProvider.price.toString(),
           null);
 
       orderProvider.setIsOrderCreating(false);
@@ -182,6 +191,8 @@ class _PaymentPageState extends State<PaymentPage>
           orderProvider.customerId,
           orderProvider.price,
           orderProvider.metaData);
+
+          //jeweller contribution is not adding in metadata
 
       orderProvider.setIsOrderCreating(false);
 
@@ -233,9 +244,11 @@ class _PaymentPageState extends State<PaymentPage>
     } else {
       print("digi_gold_plan_name ${customerData["digi_gold_plan_name"]}");
       productName = customerData["digi_gold_plan_name"];
-       print("digi_gold_billing_email ${customerData["digi_gold_billing_email"]}");
+      print(
+          "digi_gold_billing_email ${customerData["digi_gold_billing_email"]}");
       email = customerData["digi_gold_billing_email"];
-       print("digi_gold_billing_phone ${customerData["digi_gold_billing_phone"]}");
+      print(
+          "digi_gold_billing_phone ${customerData["digi_gold_billing_phone"]}");
       contact = customerData["digi_gold_billing_phone"];
     }
 

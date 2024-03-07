@@ -2,12 +2,17 @@ import 'package:flutter/material.dart';
 
 class DigiGoldPlanSubCard extends StatelessWidget {
   final String price;
-  const DigiGoldPlanSubCard({super.key, required this.price });
+  
+  final bool isPlanAlreadyPurchased;
+  const DigiGoldPlanSubCard(
+      {super.key, required this.price, required this.isPlanAlreadyPurchased});
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Colors.yellow,
+      color: isPlanAlreadyPurchased ?
+      const Color.fromARGB(255, 255, 248, 180)
+      : Colors.yellow,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 90.0),
         child: Column(

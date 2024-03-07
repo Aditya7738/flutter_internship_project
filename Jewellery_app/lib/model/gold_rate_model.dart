@@ -359,7 +359,7 @@ class Empty {
         required this.purpleDefault,
     });
 
-    final String? base;
+    final dynamic base;
     final String? rate;
     final bool? purpleDefault;
 
@@ -386,7 +386,7 @@ class The375 {
         required this.rate,
     });
 
-    final int? base;
+    final dynamic base;
     final int? margin;
     final int? rate;
 
@@ -413,7 +413,7 @@ class The583 {
         required this.rate,
     });
 
-    final int? base;
+    final dynamic base;
     final String? margin;
     final int? rate;
 
@@ -440,7 +440,7 @@ class The916 {
         required this.rate,
     });
 
-    final int? base;
+    final dynamic base;
     final int? margin;
     final int? rate;
 
@@ -466,7 +466,7 @@ class Manual {
         required this.rate,
     });
 
-    final String? base;
+    final dynamic base;
     final String? rate;
 
     factory Manual.fromJson(Map<String, dynamic> json){ 
@@ -657,7 +657,7 @@ class AutomaticValue {
         required this.rate,
     });
 
-    final dynamic? base;
+    final dynamic base;
     final int? margin;
     final int? rate;
 
@@ -785,7 +785,7 @@ class The650 {
         required this.rate,
     });
 
-    final String? base;
+    final dynamic base;
     final int? margin;
     final String? rate;
 
