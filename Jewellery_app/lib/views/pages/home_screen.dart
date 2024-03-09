@@ -200,7 +200,7 @@ class _HomeScreenState extends State<HomeScreen> {
       "Home screen 2",
       "Home screen 3",
     ];
-    CacheProvider cacheProvider = Provider.of(context, listen: false);
+   // CacheProvider cacheProvider = Provider.of(context, listen: false);
     ChoiceModel choiceModel =
         ChoiceModel(options: layoutsOptions, selectedOption: layoutsOptions[0]);
     CategoryProvider categoryProvider =
@@ -302,7 +302,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ))
                             : body = SizedBox(
                                 width: MediaQuery.of(context).size.width,
-                                height: MediaQuery.of(context).size.height / 6,
+                                height: MediaQuery.of(context).size.height / 5,
                                 child: Scrollbar(
                                   child: ListView.builder(
                                       controller: _scrollController,

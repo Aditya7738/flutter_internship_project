@@ -20,27 +20,37 @@ class FilterTile extends StatelessWidget {
       child: Container(
           padding: EdgeInsets.only(left: 10.0, top: 10.0, bottom: 10.0),
       
-          height: 45.0,
+          height: 60.0,
           width: MediaQuery.of(context).size.width / 3,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                option,
-                style: TextStyle(
-                  fontSize: 15.0,
-                    color: isFilterTileClicked
-                        ? Theme.of(context).primaryColor
-                        : Colors.black),
-              ),
-              isFilterTileClicked
-                  ? Container(
-                      color: Theme.of(context).primaryColor,
-                      width: 3.0,
-                    )
-                  : SizedBox()
-            ],
-          )),
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              print("filter tile ${(constraints.maxWidth / 9) - 2}");
+              return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  option,
+                  style: TextStyle(
+                    fontSize: (constraints.maxWidth / 9) - 2,
+                      color: isFilterTileClicked
+                          ? Theme.of(context).primaryColor
+                          : Colors.black, 
+                          fontWeight: isFilterTileClicked?
+                           FontWeight.bold:
+                           FontWeight.normal),
+                          
+                ),
+                isFilterTileClicked
+                    ? Container(
+                        color: Theme.of(context).primaryColor,
+                        width: 3.0,
+                      )
+                    : SizedBox()
+              ],
+            );
+            },
+         //   child:           
+            )),
     );
   }
 }

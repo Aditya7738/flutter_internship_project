@@ -54,8 +54,8 @@ class _FeatureWidgetState extends State<FeatureWidget> {
             categoryImageFileStream = DefaultCacheManager().getImageFile(
               imageUrl,
               withProgress: true,
-              maxWidth: 90,
-              maxHeight: 87,
+              maxWidth: 172,
+              maxHeight: 172,
             );
             //);
           } else {
@@ -63,8 +63,8 @@ class _FeatureWidgetState extends State<FeatureWidget> {
             categoryImageFileStream = DefaultCacheManager().getImageFile(
               defaultImageUrl,
               withProgress: true,
-              maxWidth: 90,
-              maxHeight: 87,
+              maxWidth: 172,
+              maxHeight: 172,
             );
             //);
           }
@@ -132,215 +132,216 @@ class _FeatureWidgetState extends State<FeatureWidget> {
 
     // } else {
 
-      if (categoryImageFileStream != null) {
-        return GestureDetector(
-        onTap: () {
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => ProductPage(id: categoriesModel.id)));
-        },
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 2.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Card(
-                elevation: 0.0,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(25.0)),
-                child: ClipRRect(
-                    borderRadius: BorderRadius.circular(25.0),
-                    child: StreamBuilder(
-                      stream: categoryImageFileStream,
-                      builder: (context, snapshot) {
-                        String path = "";
-                        if (snapshot.hasData) {
-                          // getFile(snapshot, categoryProvider);
-                          print(
-                              "data is FileInfo image ${snapshot.data is FileInfo}");
-                          if (snapshot.data is FileInfo) {
-                            FileInfo fileInfo =
-                                snapshot.requireData as FileInfo;
+    if (categoryImageFileStream != null) {
+      return GestureDetector(onTap: () {
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => ProductPage(id: categoriesModel.id)));
+      }, child: LayoutBuilder(
+        builder: (context, constraints) {
+          print("fontsize constraints.maxHeight ${constraints.maxHeight / 12}");
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 2.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Card(
+                  elevation: 0.0,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(25.0)),
+                  child: ClipRRect(
+                      borderRadius: BorderRadius.circular(25.0),
+                      child: StreamBuilder(
+                        stream: categoryImageFileStream,
+                        builder: (context, snapshot) {
+                          String path = "";
+                          if (snapshot.hasData) {
+                            // getFile(snapshot, categoryProvider);
+                            print(
+                                "data is FileInfo image ${snapshot.data is FileInfo}");
+                            if (snapshot.data is FileInfo) {
+                              FileInfo fileInfo =
+                                  snapshot.requireData as FileInfo;
 
-                            path = fileInfo.file.path;
+                              path = fileInfo.file.path;
 
-                            return FutureBuilder<bool>(
-                              future: checkFileExistence(path),
-                              builder: (context, snapshot) {
-                                if (snapshot.connectionState ==
-                                    ConnectionState.waiting) {
-                                  return Container(
-                                    alignment: Alignment.center,
-                                    width: 90.0,
-                                    height: 87.0,
-                                    child: const CircularProgressIndicator(
-                                      color: Colors.black,
-                                    ),
-                                  ); // Show a loading indicator
-                                } else if (snapshot.hasError) {
-                                  return Text('Error: ${snapshot.error}');
-                                } else {
-                                  if (snapshot.hasData) {
-                                    isPathExist = snapshot.data ?? false;
-                                    if (isPathExist) {
-                                      return Image.file(
-                                        File(path),
-                                        fit: BoxFit.fill,
-                                        width: 90.0,
-                                        height: 87.0,
-                                      );
-                                    } else {
-                                      return Image.asset(
-                                        "assets/images/image_placeholder.jpg",
-                                        fit: BoxFit.fill,
-                                        width: 90.0,
-                                        height: 87.0,
-                                      );
-                                    }
-                                  } else {
+                              return FutureBuilder<bool>(
+                                future: checkFileExistence(path),
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
                                     return Container(
                                       alignment: Alignment.center,
-                                      width: 90.0,
-                                      height: 87.0,
+                                      width: constraints.maxHeight - 72,
+                                      height: constraints.maxHeight - 72,
                                       child: const CircularProgressIndicator(
                                         color: Colors.black,
                                       ),
-                                    );
+                                    ); // Show a loading indicator
+                                  } else if (snapshot.hasError) {
+                                    return Text('Error: ${snapshot.error}');
+                                  } else {
+                                    if (snapshot.hasData) {
+                                      isPathExist = snapshot.data ?? false;
+                                      if (isPathExist) {
+                                        return Image.file(
+                                          File(path),
+                                          fit: BoxFit.fill,
+                                          width: constraints.maxHeight - 72,
+                                          height: constraints.maxHeight - 72,
+                                        );
+                                      } else {
+                                        return Image.asset(
+                                          "assets/images/image_placeholder.jpg",
+                                          fit: BoxFit.fill,
+                                          width: constraints.maxHeight - 72,
+                                          height: constraints.maxHeight - 72,
+                                        );
+                                      }
+                                    } else {
+                                      return Container(
+                                        alignment: Alignment.center,
+                                        width: 90.0,
+                                        height: 87.0,
+                                        child: const CircularProgressIndicator(
+                                          color: Colors.black,
+                                        ),
+                                      );
+                                    }
                                   }
-                                }
-                              },
-                            );
+                                },
+                              );
+                            } else {
+                              return Container(
+                                alignment: Alignment.center,
+                                width: constraints.maxHeight - 72,
+                                height: constraints.maxHeight - 72,
+                                child: const CircularProgressIndicator(
+                                  color: Colors.black,
+                                ),
+                              );
+                            }
                           } else {
                             return Container(
                               alignment: Alignment.center,
-                              width: 90.0,
-                              height: 87.0,
+                              width: constraints.maxHeight - 72,
+                              height: constraints.maxHeight - 72,
                               child: const CircularProgressIndicator(
                                 color: Colors.black,
                               ),
                             );
                           }
-                        } else {
-                          return Container(
-                            alignment: Alignment.center,
-                            width: 90.0,
-                            height: 87.0,
-                            child: const CircularProgressIndicator(
-                              color: Colors.black,
-                            ),
-                          );
-                        }
 
-                        // bool isFileExist = true;
-                        // return Consumer<CategoryProvider>(
-                        //   builder: (context, value, child) {
+                          // bool isFileExist = true;
+                          // return Consumer<CategoryProvider>(
+                          //   builder: (context, value, child) {
 
-                        // if (path != "") {
-                        //   print("image path $path");
+                          // if (path != "") {
+                          //   print("image path $path");
 
-                        // checkFileExistence(path).then((value) {
-                        //   setState(() {
-                        //     isPathChecking = false;
-                        //   });
-                        // });
+                          // checkFileExistence(path).then((value) {
+                          //   setState(() {
+                          //     isPathChecking = false;
+                          //   });
+                          // });
 
-                        // doFileExist(path
-                        //     //, value
-                        //     );
+                          // doFileExist(path
+                          //     //, value
+                          //     );
 
-                        // if (isPathChecking) {
-                        //   return Container(
-                        //     alignment: Alignment.center,
-                        //     width: 90.0,
-                        //     height: 87.0,
-                        //     child: const CircularProgressIndicator(
-                        //       color: Colors.black,
-                        //     ),
-                        //   );
-                        // } else
+                          // if (isPathChecking) {
+                          //   return Container(
+                          //     alignment: Alignment.center,
+                          //     width: 90.0,
+                          //     height: 87.0,
+                          //     child: const CircularProgressIndicator(
+                          //       color: Colors.black,
+                          //     ),
+                          //   );
+                          // } else
 
-                        //   }
+                          //   }
 
-                        // return Container(
-                        //   alignment: Alignment.center,
-                        //   width: 90.0,
-                        //   height: 87.0,
-                        //   child: const CircularProgressIndicator(
-                        //     color: Colors.black,
-                        //   ),
-                        // );
-                        //   },
-                        // );
-                      },
-                    )
-                    //  CachedNetworkImage(
-                    //   imageUrl: categoriesModel.image?.src ?? defaultImageUrl,
-                    //   placeholder: (context, url) {
-                    //     return Container(
-                    //       alignment: Alignment.center,
-                    //       width: 90.0,
-                    //       height: 87.0,
-                    //       child: const CircularProgressIndicator(
-                    //         color: Colors.black,
-                    //       ),
-                    //     );
-                    //   },
-                    //   fit: BoxFit.fill,
-                    //   width: 90.0,
-                    //   height: 87.0,
-                    // ),
+                          // return Container(
+                          //   alignment: Alignment.center,
+                          //   width: 90.0,
+                          //   height: 87.0,
+                          //   child: const CircularProgressIndicator(
+                          //     color: Colors.black,
+                          //   ),
+                          // );
+                          //   },
+                          // );
+                        },
+                      )
+                      //  CachedNetworkImage(
+                      //   imageUrl: categoriesModel.image?.src ?? defaultImageUrl,
+                      //   placeholder: (context, url) {
+                      //     return Container(
+                      //       alignment: Alignment.center,
+                      //       width: 90.0,
+                      //       height: 87.0,
+                      //       child: const CircularProgressIndicator(
+                      //         color: Colors.black,
+                      //       ),
+                      //     );
+                      //   },
+                      //   fit: BoxFit.fill,
+                      //   width: 90.0,
+                      //   height: 87.0,
+                      // ),
 
-                    //  Image.network(
-                    //   categoriesModel.image?.src ?? defaultImageUrl,
-                    //   loadingBuilder: (context, child, loadingProgress) {
-                    //     if (loadingProgress == null) {
-                    //       return child;
-                    //     }
-                    //     return Container(
-                    //       alignment: Alignment.center,
-                    //       width: 90.0,
-                    //       height: 87.0,
-                    //       child: const CircularProgressIndicator(
-                    //         color: Colors.black,
-                    //       ),
-                    //     );
-                    //   },
-                    // fit: BoxFit.fill,
-                    // width: 90.0,
-                    // height: 87.0,
-                    ),
-              ),
-              const SizedBox(
-                height: 5.0,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(2.0),
-                child: Text(
-                  categoriesModel.name ?? "Jewellery",
-                  style: const TextStyle(fontSize: 15.0),
+                      //  Image.network(
+                      //   categoriesModel.image?.src ?? defaultImageUrl,
+                      //   loadingBuilder: (context, child, loadingProgress) {
+                      //     if (loadingProgress == null) {
+                      //       return child;
+                      //     }
+                      //     return Container(
+                      //       alignment: Alignment.center,
+                      //       width: 90.0,
+                      //       height: 87.0,
+                      //       child: const CircularProgressIndicator(
+                      //         color: Colors.black,
+                      //       ),
+                      //     );
+                      //   },
+                      // fit: BoxFit.fill,
+                      // width: 90.0,
+                      // height: 87.0,
+                      ),
                 ),
-              ),
-            ],
-          ),
-        ));
-
-      }
-  return Container(
-    alignment: Alignment.center,
-    width: 90.0,
-    height: 87.0,
-    child: const CircularProgressIndicator(
-      color: Colors.black,
-    ),
-  );
-
-      }
-
+                const SizedBox(
+                  height: 5.0,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(2.0),
+                  child: Text(
+                    categoriesModel.name ?? "Jewellery",
+                    style: TextStyle(fontSize: (constraints.maxHeight / 12)),
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+        //child:
+      ));
+    }
+    return Container(
+      alignment: Alignment.center,
+      width: 172.0,
+      height: 172.0,
+      child: const CircularProgressIndicator(
+        color: Colors.black,
+      ),
+    );
+  }
 }
 
-  // void getFile(AsyncSnapshot<Object?> snapshot, categoryProvider) async {
-  //   categoryProvider.setImageFileFetching(true);
-  //   //  CacheMemory.listOfCategory.clear();
-  //   await CacheMemory.getCategoryImage(snapshot);
-  //   categoryProvider.setImageFileFetching(false);
-  // }
+// void getFile(AsyncSnapshot<Object?> snapshot, categoryProvider) async {
+//   categoryProvider.setImageFileFetching(true);
+//   //  CacheMemory.listOfCategory.clear();
+//   await CacheMemory.getCategoryImage(snapshot);
+//   categoryProvider.setImageFileFetching(false);
+// }
 //}

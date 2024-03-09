@@ -51,12 +51,20 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
     checkPlanPurchased();
   }
 
+  bool planPurchasedChecking = false;
+
   checkPlanPurchased() async {
     final customerProvider =
         Provider.of<CustomerProvider>(context, listen: false);
 
     bool isThereInternet = await ApiService.checkInternetConnection(context);
     if (isThereInternet) {
+      if (mounted) {
+        setState(() {
+          planPurchasedChecking = true;
+        });
+      }
+
       ApiService.listOfOrders.clear();
       print("customerId ${customerProvider.customerData[0]["id"]}");
       await ApiService.fetchOrders(customerProvider.customerData[0]["id"], 1);
@@ -79,9 +87,18 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
           print(
               "element.productId == widget.digiGoldPlan.id ${element.productId == widget.digiGoldPlan.id}");
           if (element.productId == widget.digiGoldPlan.id) {
-            setState(() {
-              isPlanAlreadyPurchased = true;
-            });
+            if (mounted) {
+              setState(() {
+                isPlanAlreadyPurchased = true;
+                planPurchasedChecking = false;
+              });
+            }
+          } else {
+            if (mounted) {
+              setState(() {
+                planPurchasedChecking = false;
+              });
+            }
           }
         }
       }
@@ -131,52 +148,65 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              isPlanAlreadyPurchased
-                  ? Stack(
-                      children: [
-                        widget.digiGoldPlan.images.isNotEmpty
-                            ? widget.digiGoldPlan.images[0].src != null
-                                ? Image.network(
-                                    widget.digiGoldPlan.images[0].src!)
+              planPurchasedChecking
+                  ? SizedBox(
+                      width: MediaQuery.of(context).size.width - 32,
+                      height: MediaQuery.of(context).size.width - 42,
+                      child: Center(
+                        child: CircularProgressIndicator(
+                          color: Theme.of(context).primaryColor,
+                        ),
+                      ),
+                    )
+                  : isPlanAlreadyPurchased
+                      ? Stack(
+                          children: [
+                            widget.digiGoldPlan.images.isNotEmpty
+                                ? widget.digiGoldPlan.images[0].src != null
+                                    ? Image.network(
+                                        widget.digiGoldPlan.images[0].src!)
+                                    : DigiGoldPlanSubCard(
+                                        price: widget.digiGoldPlan.price ?? "0",
+                                        isPlanAlreadyPurchased:
+                                            isPlanAlreadyPurchased,
+                                      )
                                 : DigiGoldPlanSubCard(
                                     price: widget.digiGoldPlan.price ?? "0",
                                     isPlanAlreadyPurchased:
                                         isPlanAlreadyPurchased,
-                                  )
-                            : DigiGoldPlanSubCard(
-                                price: widget.digiGoldPlan.price ?? "0",
-                                isPlanAlreadyPurchased: isPlanAlreadyPurchased,
+                                  ),
+                            Positioned(
+                              top: 20.0,
+                              left: 1.0,
+                              right: 1.0,
+                              child: Container(
+                                width: MediaQuery.of(context).size.width,
+                                color: Theme.of(context).primaryColor,
+                                padding: EdgeInsets.symmetric(vertical: 5.0),
+                                child: Text(
+                                  "You have already purchased this plan",
+                                  style: TextStyle(
+                                      color: Colors.yellow,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16.0),
+                                  textAlign: TextAlign.center,
+                                ),
                               ),
-                        Positioned(
-                          top: 20.0,
-                          left: 1.0,
-                          right: 1.0,
-                          child: Container(
-                            width: MediaQuery.of(context).size.width,
-                            color: Theme.of(context).primaryColor,
-                            padding: EdgeInsets.symmetric(vertical: 5.0),
-                            child: Text(
-                              "You have already purchased this plan",
-                              style: TextStyle(
-                                  color: Colors.yellow,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16.0),
-                              textAlign: TextAlign.center,
                             ),
-                          ),
-                        ),
-                      ],
-                    )
-                  : widget.digiGoldPlan.images.isNotEmpty
-                      ? widget.digiGoldPlan.images[0].src != null
-                          ? Image.network(widget.digiGoldPlan.images[0].src!)
+                          ],
+                        )
+                      : widget.digiGoldPlan.images.isNotEmpty
+                          ? widget.digiGoldPlan.images[0].src != null
+                              ? Image.network(
+                                  widget.digiGoldPlan.images[0].src!)
+                              : DigiGoldPlanSubCard(
+                                  price: widget.digiGoldPlan.price ?? "0",
+                                  isPlanAlreadyPurchased:
+                                      isPlanAlreadyPurchased)
                           : DigiGoldPlanSubCard(
                               price: widget.digiGoldPlan.price ?? "0",
-                              isPlanAlreadyPurchased: isPlanAlreadyPurchased)
-                      : DigiGoldPlanSubCard(
-                          price: widget.digiGoldPlan.price ?? "0",
-                          isPlanAlreadyPurchased: isPlanAlreadyPurchased,
-                        ),
+                              isPlanAlreadyPurchased: isPlanAlreadyPurchased,
+                            ),
               SizedBox(
                 height: 10.0,
               ),
@@ -343,8 +373,11 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                                     : BoxDecoration(
                                         border: Border.all(
                                             width: 2.0,
-                                            color:
-                                                Theme.of(context).primaryColor,
+                                            color: isPlanAlreadyPurchased
+                                                ? Color.fromARGB(
+                                                    255, 213, 167, 170)
+                                                : Theme.of(context)
+                                                    .primaryColor,
                                             style: BorderStyle.solid),
                                         borderRadius:
                                             BorderRadius.circular(5.0)),
@@ -388,8 +421,11 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                                     : BoxDecoration(
                                         border: Border.all(
                                             width: 2.0,
-                                            color:
-                                                Theme.of(context).primaryColor,
+                                            color: isPlanAlreadyPurchased
+                                                ? Color.fromARGB(
+                                                    255, 213, 167, 170)
+                                                : Theme.of(context)
+                                                    .primaryColor,
                                             style: BorderStyle.solid),
                                         borderRadius:
                                             BorderRadius.circular(5.0)),
@@ -403,7 +439,10 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                                           fontSize: 17.0,
                                           fontWeight: FontWeight.bold)
                                       : TextStyle(
-                                          color: Theme.of(context).primaryColor,
+                                          color: isPlanAlreadyPurchased
+                                              ? Color.fromARGB(
+                                                  255, 213, 167, 170, )
+                                              : Theme.of(context).primaryColor,fontWeight: FontWeight.bold,
                                           fontSize: 17.0),
                                 )),
                           )

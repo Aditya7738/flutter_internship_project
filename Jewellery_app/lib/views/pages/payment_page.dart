@@ -1,10 +1,5 @@
 import 'dart:convert';
 
-// @pragma('vm:web')
-// import 'dart:html' as html show window;
-// @pragma('vm:web')
-// import 'dart:js' as js;
-
 import 'package:Tiara_by_TJ/helpers/payment_helper.dart';
 import 'package:Tiara_by_TJ/providers/digigold_provider.dart';
 import 'package:Tiara_by_TJ/providers/order_provider.dart';
@@ -83,6 +78,7 @@ class PaymentPage extends StatefulWidget {
 
 class _PaymentPageState extends State<PaymentPage>
     implements PayUCheckoutProProtocol {
+  bool razorpayLoading = false;
   Razorpay _razorpay = Razorpay();
   late String order_id;
   // late Map<String, String> cashFreeData;
@@ -137,11 +133,12 @@ class _PaymentPageState extends State<PaymentPage>
       cartProvider.setIsOrderCreating(true);
       orderProvider.setIsOrderCreating(true);
 
-print("cartProvider.isCouponApplied ${cartProvider.isCouponApplied}");
+      print("cartProvider.isCouponApplied ${cartProvider.isCouponApplied}");
 
-print("cartProvider.totalAfterCouponApplied ${cartProvider.totalAfterCouponApplied}");
+      print(
+          "cartProvider.totalAfterCouponApplied ${cartProvider.totalAfterCouponApplied}");
 
-print("orderProvider.price ${orderProvider.price}");
+      print("orderProvider.price ${orderProvider.price}");
 
       http.Response response = await ApiService.createOrder(
           orderProvider.billingData,
@@ -192,7 +189,7 @@ print("orderProvider.price ${orderProvider.price}");
           orderProvider.price,
           orderProvider.metaData);
 
-          //jeweller contribution is not adding in metadata
+      //jeweller contribution is not adding in metadata
 
       orderProvider.setIsOrderCreating(false);
 
@@ -267,8 +264,15 @@ print("orderProvider.price ${orderProvider.price}");
     print("Payment $options");
 
     try {
+      setState(() {
+        razorpayLoading = true;
+      });
+
       final response = _razorpay.open(
           options); // add await, setstate and make async func, since it taking time to open
+      setState(() {
+        razorpayLoading = false;
+      });
     } catch (e) {
       debugPrint(e.toString());
     }
@@ -542,14 +546,20 @@ print("orderProvider.price ${orderProvider.price}");
                                                       vertical: 10.0,
                                                       horizontal: 20.0),
                                                   child: Center(
-                                                    child: const Text(
-                                                      "Pay now",
-                                                      style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 17.0,
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
+                                                    child: razorpayLoading
+                                                        ? CircularProgressIndicator(
+                                                            color: Colors.white,
+                                                          )
+                                                        : const Text(
+                                                            "Pay now",
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontSize: 17.0,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold),
+                                                          ),
                                                   )),
                                             ),
                                             SizedBox(

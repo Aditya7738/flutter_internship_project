@@ -10,6 +10,7 @@ import 'package:Tiara_by_TJ/views/pages/home_screen.dart';
 import 'package:Tiara_by_TJ/views/pages/home_screen2.dart';
 import 'package:Tiara_by_TJ/views/pages/home_screen3.dart';
 import 'package:Tiara_by_TJ/views/pages/search_page.dart';
+import 'package:Tiara_by_TJ/views/widgets/try.dart';
 import 'package:flutter/material.dart';
 import 'package:Tiara_by_TJ/api/api_service.dart';
 import 'package:Tiara_by_TJ/providers/cart_provider.dart';
@@ -199,6 +200,9 @@ class _MyAppState extends State<MyApp> {
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 
+    double deviceWidth = MediaQuery.of(context).size.width;
+    print("deviceWidth $deviceWidth");
+
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => CartProvider()),
@@ -220,19 +224,19 @@ class _MyAppState extends State<MyApp> {
             textTheme: TextTheme(
               headline1: TextStyle(
                 fontWeight: FontWeight.bold,
-                fontSize: 20.0,
+                fontSize: deviceWidth / 25,
               ),
               headline2: TextStyle(
                 fontWeight: FontWeight.bold,
-                fontSize: 18.0,
+                fontSize: deviceWidth / 30,
               ), //product details heading
               headline3: TextStyle(
                 fontWeight: FontWeight.bold,
-                fontSize: 17.0,
+                fontSize: deviceWidth / 35,
               ), //price text style
               headline4: TextStyle(
                 fontWeight: FontWeight.bold,
-                fontSize: 16.0,
+                fontSize: deviceWidth / 37,
               ),
             )),
         home: DashboardPage(),

@@ -99,18 +99,24 @@ class _GoldPlanDetailState extends State<GoldPlanDetail> {
 
   bool isJewellerContributing = false;
 
-  String getJewellerContribution() {
+  String jewellerContribution = "";
+
+  getJewellerContribution() {
     for (var i = 0; i < widget.orderModel.metaData.length; i++) {
+      print(
+          "widget.orderModel.metaData[i].key == jeweller_contribution ${widget.orderModel.metaData[i].key == "jeweller_contribution"}");
+
       if (widget.orderModel.metaData[i].key == "jeweller_contribution") {
+        print(
+            "widget.orderModel.metaData[i].value!.isNotEmpty ${widget.orderModel.metaData[i].value!.isNotEmpty}");
         if (widget.orderModel.metaData[i].value!.isNotEmpty) {
           setState(() {
             isJewellerContributing = true;
+            jewellerContribution = widget.orderModel.metaData[i].value!;
           });
-          return widget.orderModel.metaData[i].value!;
         }
       }
     }
-    return "";
   }
 
   String getPaymentDateFromList(OrderModel orderModel) {
@@ -170,6 +176,8 @@ class _GoldPlanDetailState extends State<GoldPlanDetail> {
 
     //getDates();
     sortOrderListByPaymentDate();
+
+    getJewellerContribution();
   }
 
   sortOrderListByPaymentDate() {
@@ -220,6 +228,7 @@ class _GoldPlanDetailState extends State<GoldPlanDetail> {
   Widget build(BuildContext context) {
     // addInTableData();
 
+    print("isJewellerContributing $isJewellerContributing");
     return Scaffold(
         appBar: AppBar(
           title: Text("Plan history"),
@@ -290,22 +299,26 @@ class _GoldPlanDetailState extends State<GoldPlanDetail> {
                 isJewellerContributing
                     ? Column(
                         children: [
-                          Row(
-                            children: [
-                              Text(
-                                "Jeweller Cotribution on last month:",
-                                style: TextStyle(
-                                    fontSize: 18.0,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              SizedBox(
-                                width: 5.0,
-                              ),
-                              Text("₹ ${getJewellerContribution()}",
+                          RichText(
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: "Jeweller contribution on last month: ",
                                   style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                TextSpan(
+                                  text: "₹ $jewellerContribution",
+                                  style: TextStyle(
+                                    color: Colors.black,
                                     fontSize: 18.0,
-                                  )),
-                            ],
+                                  ),
+                                )
+                              ],
+                            ),
+                            maxLines: 2,
                           ),
                           SizedBox(
                             height: 10.0,

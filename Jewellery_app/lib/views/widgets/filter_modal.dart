@@ -44,7 +44,7 @@ class _FilterModalState extends State<FilterModal> {
 
   @override
   Widget build(BuildContext context) {
- //   final filterOptionsProvider = Provider.of<FilterOptionsProvider>(context);
+    //   final filterOptionsProvider = Provider.of<FilterOptionsProvider>(context);
     final categoryProvider =
         Provider.of<CategoryProvider>(context, listen: false);
 
@@ -54,18 +54,31 @@ class _FilterModalState extends State<FilterModal> {
     print("filtersToSendValue ${filtersToSend["id"]!}");
     // }
 
+    // double width = MediaQuery.of(context).size.width;
+    // print("tablet width = $width");
+    // if (width > 600) {
+    //   width = 600.0;
+    // }
+
     return Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height / 1.66,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Text(
-                "Filter By",
-                style: Theme.of(context).textTheme.headline3,
-              ),
+            LayoutBuilder(
+              builder: (context, constraints) {
+
+                print("filter title height ${(constraints.maxWidth/ 12) + 6 }");
+                return Container(
+                    height: (constraints.maxWidth/ 12) + 6 ,
+                    padding: const EdgeInsets.only(left: 20.0, top: 15.0, bottom: 5.0),
+                    child: Text(
+                      "Filter By",
+                      style: Theme.of(context).textTheme.headline1,
+                    ));
+              },
+              // child:
             ),
             Divider(
               thickness: 2.0,
@@ -143,33 +156,8 @@ class _FilterModalState extends State<FilterModal> {
                           if (isThereInternet) {
                             value.setFilteredListLoading(true);
 
-                            // Map<String, dynamic> selectedSubOptionsdata =
-                            //     value.selectedSubOptionsdata;
-
-                            // if (selectedSubOptionsdata.containsKey("collection")) {
-                            //   selectedSubOptionsdata["collection"] = "";
-                            // }
-
-                            // if (selectedSubOptionsdata.containsKey("categories")) {
-                            //   selectedSubOptionsdata["categories"] = "";
-                            // }
-
-                            // if (selectedSubOptionsdata
-                            //     .containsKey("sub-categories")) {
-                            //   selectedSubOptionsdata["sub-categories"] = "";
-                            // }
-
-                            // if (selectedSubOptionsdata.containsKey("tags")) {
-                            //   selectedSubOptionsdata["tags"] = "";
-                            // }
-
-                            // if (selectedSubOptionsdata.containsKey("price_range")) {
-                            //   selectedSubOptionsdata["price_range"] = "";
-                            // }
-
-                            //value.list.clear();
                             value.clearFilterList();
-                            
+
                             print(
                                 "filterOptionsProvider.list length ${value.list.length}");
                             if (widget.fromProductsPage) {

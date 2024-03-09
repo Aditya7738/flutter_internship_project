@@ -44,70 +44,86 @@ class _FilterOptionsState extends State<FilterOptions> {
       width: MediaQuery.of(context).size.width -
           (MediaQuery.of(context).size.width / 3),
       height: (MediaQuery.of(context).size.height / 2) - 77,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 20.0, top: 20.0),
-            child: Text(
-              "Price Range",
-              style: TextStyle(fontSize: 16.0),
-            ),
-          ),
-          SizedBox(
-            height: 10.0,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          print(
+              "Price Range constraints.maxWidth ${constraints.maxWidth / 25}");
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Image.asset(
-                "assets/images/rupee.png",
-                width: 19.0,
-                height: 17.0,
+              Padding(
+                padding: const EdgeInsets.only(left: 20.0, top: 20.0),
+                child: Text(
+                  "Price Range",
+                  style: TextStyle(fontSize: constraints.maxWidth / 25),
+                ),
               ),
-              Text(
-                " ${selectedMin.toInt()} - ",
+              SizedBox(
+                height: 10.0,
               ),
-              Image.asset(
-                "assets/images/rupee.png",
-                width: 19.0,
-                height: 17.0,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "₹ ${selectedMin.toInt()} - ₹ ${selectedMax.toInt()}",
+                    style: TextStyle(fontSize: constraints.maxWidth / 25),
+                  ),
+                  // Image.asset(
+                  //   "assets/images/rupee.png",
+                  //   width: 19.0,
+                  //   height: 17.0,
+                  // ),
+                  // Text(
+                  //   "",
+                  // ),
+                  // Image.asset(
+                  //   "assets/images/rupee.png",
+                  //   width: 19.0,
+                  //   height: 17.0,
+                  // ),
+                  // Text(
+                  //   " ${selectedMax.toInt()}",
+                  // )
+                ],
               ),
-              Text(
-                " ${selectedMax.toInt()}",
+              SizedBox(
+                height: 10.0,
+              ),
+              SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: RangeSlider(
+                  activeColor: Theme.of(context).primaryColor,
+                  min: 500.0,
+                  max: 139080.0,
+                  values: RangeValues(selectedMin, selectedMax),
+                  onChanged: (value) {
+                    print("SELECTED VALUE $value");
+                    if (mounted) {
+                      setState(() {
+                        selectedMin = value.start;
+                        selectedMax = value.end;
+                      });
+                    }
+                  },
+                  onChangeEnd: (value) {
+                    filterOptionsProvider.setSelectedSubOptionsdata({
+                      "price_range": {
+                        "min_price": value.start.toInt(),
+                        "max_price": value.end.toInt()
+                      },
+                      "parent": "price_range"
+                    });
+                    print(
+                        "filterOptionsProvider.list ${filterOptionsProvider.list}");
+                  },
+                  labels: RangeLabels(
+                      selectedMin.toString(), selectedMax.toString()),
+                ),
               )
             ],
-          ),
-          SizedBox(
-            height: 10.0,
-          ),
-          RangeSlider(
-            activeColor: Theme.of(context).primaryColor,
-            min: 500.0,
-            max: 139080.0,
-            values: RangeValues(selectedMin, selectedMax),
-            onChanged: (value) {
-              print("SELECTED VALUE $value");
-              if (mounted) {
-                setState(() {
-                  selectedMin = value.start;
-                  selectedMax = value.end;
-                });
-              }
-            },
-            onChangeEnd: (value) {
-              filterOptionsProvider.setSelectedSubOptionsdata({
-                "price_range": {
-                  "min_price": value.start.toInt(),
-                  "max_price": value.end.toInt()
-                },
-                "parent": "price_range"
-              });
-              print("filterOptionsProvider.list ${filterOptionsProvider.list}");
-            },
-            labels: RangeLabels(selectedMin.toString(), selectedMax.toString()),
-          )
-        ],
+          );
+        },
+        //child:
       ),
     );
 

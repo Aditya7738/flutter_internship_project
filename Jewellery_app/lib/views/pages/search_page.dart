@@ -4,10 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:Tiara_by_TJ/api/api_service.dart';
 import 'package:Tiara_by_TJ/constants/constants.dart';
 import 'package:Tiara_by_TJ/model/products_model.dart';
-import 'package:multi_select_flutter/bottom_sheet/multi_select_bottom_sheet_field.dart';
-import 'package:multi_select_flutter/chip_display/multi_select_chip_display.dart';
-import 'package:multi_select_flutter/util/multi_select_item.dart';
-import 'package:multi_select_flutter/util/multi_select_list_type.dart';
 import 'package:provider/provider.dart';
 import 'package:Tiara_by_TJ/views/pages/product_details_page.dart';
 
@@ -30,7 +26,7 @@ class _SearchPageState extends State<SearchPage> {
 
   bool isProductListEmpty = false;
   //List<Map<String, dynamic>> appliedFilter = <Map<String, dynamic>>[];
-late FilterOptionsProvider filterOptionsProvider;
+  late FilterOptionsProvider filterOptionsProvider;
   @override
   void initState() {
     // TODO: implement initState
@@ -80,12 +76,12 @@ late FilterOptionsProvider filterOptionsProvider;
     // TODO: implement dispose
     print("search page dispose called");
     _scrollController.dispose();
-   
+
     // final filterOptionsProvider =
     //     Provider.of<FilterOptionsProvider>(context, listen: false);
     filterOptionsProvider.setFilteredListLoading(false);
     filterOptionsProvider.clearFilterList();
-     super.dispose();
+    super.dispose();
   }
 
   TextEditingController textEditingController = TextEditingController();
@@ -93,7 +89,7 @@ late FilterOptionsProvider filterOptionsProvider;
   @override
   Widget build(BuildContext context) {
     final filterOptionsProvider = Provider.of<FilterOptionsProvider>(context);
-
+    print("kToolbarHeight - 37.5 ${kToolbarHeight - 37.5}");
     return Scaffold(
         appBar: AppBar(
           elevation: 5.0,
@@ -103,6 +99,7 @@ late FilterOptionsProvider filterOptionsProvider;
             height: 40.0,
             child: TextField(
               controller: textEditingController,
+              style: TextStyle(fontSize: kToolbarHeight - 37.5),
               onSubmitted: (value) async {
                 if (value == "") {
                   ApiService.listOfProductsModel.clear();
@@ -165,7 +162,7 @@ late FilterOptionsProvider filterOptionsProvider;
                   ),
                   fillColor: Colors.grey,
                   hintText: "Search for jewelleries",
-                  hintStyle: TextStyle(color: Colors.grey, fontSize: 18.0)),
+                  hintStyle: TextStyle(color: Colors.grey, fontSize: kToolbarHeight - 37.5)),
             ),
           ),
           actions: [
@@ -175,6 +172,10 @@ late FilterOptionsProvider filterOptionsProvider;
                   return;
                 } //- uncomment it
                 showModalBottomSheet(
+                  constraints: BoxConstraints.expand(
+                    width: MediaQuery.of(context).size.width,
+                    height: (MediaQuery.of(context).size.height / 1.78) + 30.0
+                  ),
                   isDismissible:
                       filterOptionsProvider.list.isEmpty ? true : false,
                   enableDrag: true,
@@ -185,7 +186,10 @@ late FilterOptionsProvider filterOptionsProvider;
                           topLeft: Radius.circular(20.0),
                           topRight: Radius.circular(20.0))),
                   builder: (context) {
-                    return FilterModal(searchText: searchText, fromProductsPage: false,);
+                    return FilterModal(
+                      searchText: searchText,
+                      fromProductsPage: false,
+                    );
                   },
                 );
 
@@ -373,8 +377,17 @@ late FilterOptionsProvider filterOptionsProvider;
                     padding: EdgeInsets.all(8.0),
                     alignment: Alignment.centerRight,
                     width: MediaQuery.of(context).size.width,
-                    child: Text(
-                        "Showing ${ApiService.listOfProductsModel.length} results")),
+                    child: LayoutBuilder(
+                      builder: (context, constraints) {
+                        print(
+                            "constraints.maxWidth / 16 ${(constraints.maxWidth / 26) - 0.9}");
+                        return Text(
+                          "Showing ${ApiService.listOfProductsModel.length} results",
+                          style: TextStyle(
+                              fontSize: (constraints.maxWidth / 26) - 0.9),
+                        );
+                      },
+                    )),
                 newListLoading || value.isFilteredListLoading
                     ? Expanded(
                         child: SizedBox(
@@ -438,39 +451,68 @@ late FilterOptionsProvider filterOptionsProvider;
                                                         borderRadius:
                                                             BorderRadius
                                                                 .circular(25.0),
-                                                        child: Image.network(
-                                                          productsModel.images
-                                                                  .isEmpty
-                                                              ? Constants
-                                                                  .defaultImageUrl
-                                                              : productsModel
-                                                                      .images[0]
-                                                                      .src ??
-                                                                  Constants
-                                                                      .defaultImageUrl,
-                                                          loadingBuilder: (context,
-                                                              child,
-                                                              loadingProgress) {
-                                                            if (loadingProgress ==
-                                                                null) {
-                                                              return child;
-                                                            }
-                                                            return Container(
-                                                              alignment:
-                                                                  Alignment
-                                                                      .center,
-                                                              width: 95.0,
-                                                              height: 92.0,
-                                                              child:
-                                                                  const CircularProgressIndicator(
-                                                                color: Colors
-                                                                    .black,
-                                                              ),
-                                                            );
-                                                          },
-                                                          fit: BoxFit.fill,
-                                                          width: 95.0,
-                                                          height: 92.0,
+                                                        child: SizedBox(
+                                                          width: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .width /
+                                                              4,
+                                                          height: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .width /
+                                                              4,
+                                                          child: LayoutBuilder(
+                                                            builder: (context,
+                                                                constraints) {
+                                                              print(
+                                                                  "constraints2.maxWidth ${(constraints.maxWidth)}");
+                                                              return Image
+                                                                  .network(
+                                                                productsModel
+                                                                        .images
+                                                                        .isEmpty
+                                                                    ? Constants
+                                                                        .defaultImageUrl
+                                                                    : productsModel
+                                                                            .images[
+                                                                                0]
+                                                                            .src ??
+                                                                        Constants
+                                                                            .defaultImageUrl,
+                                                                loadingBuilder:
+                                                                    (context,
+                                                                        child,
+                                                                        loadingProgress) {
+                                                                  if (loadingProgress ==
+                                                                      null) {
+                                                                    return child;
+                                                                  }
+                                                                  return Container(
+                                                                    alignment:
+                                                                        Alignment
+                                                                            .center,
+                                                                    width: 95.0,
+                                                                    height:
+                                                                        92.0,
+                                                                    child:
+                                                                        const CircularProgressIndicator(
+                                                                      color: Colors
+                                                                          .black,
+                                                                    ),
+                                                                  );
+                                                                },
+                                                                fit:
+                                                                    BoxFit.fill,
+                                                                width: (constraints
+                                                                        .maxWidth /
+                                                                    20),
+                                                                height: (constraints
+                                                                        .maxWidth /
+                                                                    20),
+                                                              );
+                                                            },
+                                                          ),
                                                         ),
                                                       ),
                                                     ),
@@ -478,54 +520,68 @@ late FilterOptionsProvider filterOptionsProvider;
                                                   const SizedBox(
                                                     height: 5.0,
                                                   ),
-                                                  Padding(
+                                                  Container(
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                    .size
+                                                                    .width /
+                                                                2 +
+                                                            46,
                                                     padding:
                                                         const EdgeInsets.all(
                                                             5.0),
-                                                    child: Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        SizedBox(
-                                                          width: MediaQuery.of(
-                                                                          context)
-                                                                      .size
-                                                                      .width /
-                                                                  2 +
-                                                              30,
-                                                          child: Text(
-                                                            ApiService
-                                                                    .listOfProductsModel[
-                                                                        index]
-                                                                    .name ??
-                                                                "Jewellery",
-                                                            softWrap: true,
-                                                            overflow:
-                                                                TextOverflow
-                                                                    .ellipsis,
-                                                          ),
-                                                        ),
-                                                        const SizedBox(
-                                                          height: 5.0,
-                                                        ),
-                                                        Row(
+                                                    child: LayoutBuilder(
+                                                      builder: (context,
+                                                          constraints) {
+                                                        return Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
                                                           children: [
-                                                            Image.asset(
-                                                              "assets/images/rupee.png",
-                                                              width: 20.0,
-                                                              height: 20.0,
+                                                            LayoutBuilder(
+                                                              builder: (BuildContext
+                                                                      context,
+                                                                  BoxConstraints
+                                                                      constraints) {
+                                                                print(
+                                                                    "constraints.maxWidth / 20 ${(constraints.maxWidth / 20) + 4}");
+                                                                return Text(
+                                                                  ApiService
+                                                                          .listOfProductsModel[
+                                                                              index]
+                                                                          .name ??
+                                                                      "Jewellery",
+                                                                  // softWrap: true,
+                                                                  // overflow:
+                                                                  //     TextOverflow
+                                                                  //         .ellipsis,
+                                                                  style: TextStyle(
+                                                                      fontSize:
+                                                                          (constraints.maxWidth / 20) +
+                                                                              4),
+                                                                );
+                                                              },
+                                                              //child:,
                                                             ),
-                                                            Text(productsModel
-                                                                        .regularPrice !=
-                                                                    ""
-                                                                ? productsModel
-                                                                        .regularPrice ??
-                                                                    "20000"
-                                                                : "20000")
+                                                            const SizedBox(
+                                                              height: 5.0,
+                                                            ),
+                                                            Text(
+                                                              productsModel
+                                                                          .regularPrice !=
+                                                                      ""
+                                                                  ? "₹ ${productsModel.regularPrice}" ??
+                                                                      "₹ 20000"
+                                                                  : "₹ 20000",
+                                                              style: TextStyle(
+                                                                  fontSize:
+                                                                      (constraints.maxWidth /
+                                                                              20) +
+                                                                          2),
+                                                            )
                                                           ],
-                                                        )
-                                                      ],
+                                                        );
+                                                      },
                                                     ),
                                                   )
                                                 ],

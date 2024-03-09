@@ -242,6 +242,8 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
         goldGross = widget.digiGoldPlanModel.metaData[i].value;
       }
     }
+
+    checkIsJewellerContributing();
   }
 
   String getPlanDuration() {
@@ -256,11 +258,15 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
   String jewellerContribution = "";
   checkIsJewellerContributing() {
     for (var i = 0; i < widget.digiGoldPlanModel.metaData.length; i++) {
+      print(
+          "widget.digiGoldPlanModel.metaData[i].key == jeweller_contribution ${widget.digiGoldPlanModel.metaData[i].key == "jeweller_contribution"}");
+
       if (widget.digiGoldPlanModel.metaData[i].key == "jeweller_contribution") {
         if (mounted) {
           setState(() {
             jewellerContribution = widget.digiGoldPlanModel.metaData[i].value;
           });
+          print("jewellerContribution $jewellerContribution");
         }
       }
     }
@@ -781,11 +787,14 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
         ];
       }
 
- print("jeweller_contribution ${jewellerContribution}");
-      print("widget.digiGoldPlanModel.description ${widget.digiGoldPlanModel.description}");
+      print("jeweller_contribution ${jewellerContribution}");
+      print(
+          "widget.digiGoldPlanModel.description ${widget.digiGoldPlanModel.description}");
 
       print(
           "customerProvider.customerId ${customerProvider.customerData[0]["id"]}");
+
+      print("DIGI ORDER META $meta_data");
 
       orderProvider.setBillingData(billingData);
       orderProvider.setCustomerId(customerProvider.customerData[0]["id"]);
