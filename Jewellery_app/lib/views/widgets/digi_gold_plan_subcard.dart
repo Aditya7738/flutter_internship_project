@@ -47,7 +47,7 @@ class DigiGoldPlanSubCard extends StatelessWidget {
             ),
             Text(
               "Per Month",
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: Theme.of(context).textTheme.headline4,
             )
           ],
         ),

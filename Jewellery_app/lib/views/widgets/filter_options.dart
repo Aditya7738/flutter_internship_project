@@ -55,7 +55,7 @@ class _FilterOptionsState extends State<FilterOptions> {
                 padding: const EdgeInsets.only(left: 20.0, top: 20.0),
                 child: Text(
                   "Price Range",
-                  style: TextStyle(fontSize: constraints.maxWidth / 25),
+                  style: Theme.of(context).textTheme.subtitle1,
                 ),
               ),
               SizedBox(

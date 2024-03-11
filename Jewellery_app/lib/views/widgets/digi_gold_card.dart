@@ -56,48 +56,52 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
   checkPlanPurchased() async {
     final customerProvider =
         Provider.of<CustomerProvider>(context, listen: false);
+    print("customerProvider.customerData.isNotEmpty ${customerProvider.customerData.isNotEmpty}");
 
-    bool isThereInternet = await ApiService.checkInternetConnection(context);
-    if (isThereInternet) {
-      if (mounted) {
-        setState(() {
-          planPurchasedChecking = true;
-        });
-      }
-
-      ApiService.listOfOrders.clear();
+    if (customerProvider.customerData.isNotEmpty) {
       print("customerId ${customerProvider.customerData[0]["id"]}");
-      await ApiService.fetchOrders(customerProvider.customerData[0]["id"], 1);
+      bool isThereInternet = await ApiService.checkInternetConnection(context);
+      if (isThereInternet) {
+        if (mounted) {
+          setState(() {
+            planPurchasedChecking = true;
+          });
+        }
 
-      List<OrderModel> listOfGoldPlans = <OrderModel>[];
+        ApiService.listOfOrders.clear();
+
+        await ApiService.fetchOrders(customerProvider.customerData[0]["id"], 1);
+
+        List<OrderModel> listOfGoldPlans = <OrderModel>[];
 //List<OrderModelMetaDatum> listOfMetaData = <OrderModelMetaDatum>[];
-      for (var i = 0; i < ApiService.listOfOrders.length; i++) {
-        for (var j = 0; j < ApiService.listOfOrders[i].metaData.length; j++) {
-          if (ApiService.listOfOrders[i].metaData[j].key == "virtual_order" &&
-              ApiService.listOfOrders[i].metaData[j].value == "digigold") {
-            listOfGoldPlans.add(ApiService.listOfOrders[i]);
+        for (var i = 0; i < ApiService.listOfOrders.length; i++) {
+          for (var j = 0; j < ApiService.listOfOrders[i].metaData.length; j++) {
+            if (ApiService.listOfOrders[i].metaData[j].key == "virtual_order" &&
+                ApiService.listOfOrders[i].metaData[j].value == "digigold") {
+              listOfGoldPlans.add(ApiService.listOfOrders[i]);
+            }
           }
         }
-      }
 
-      for (OrderModel orderModel in listOfGoldPlans) {
-        for (var element in orderModel.lineItems) {
-          print("element.productId ${element.productId}");
-          print("widget.digiGoldPlan.id ${widget.digiGoldPlan.id}");
-          print(
-              "element.productId == widget.digiGoldPlan.id ${element.productId == widget.digiGoldPlan.id}");
-          if (element.productId == widget.digiGoldPlan.id) {
-            if (mounted) {
+        for (OrderModel orderModel in listOfGoldPlans) {
+          for (var element in orderModel.lineItems) {
+            print("element.productId ${element.productId}");
+            print("widget.digiGoldPlan.id ${widget.digiGoldPlan.id}");
+            print(
+                "element.productId == widget.digiGoldPlan.id ${element.productId == widget.digiGoldPlan.id}");
+            if (element.productId == widget.digiGoldPlan.id) {
+              if (mounted) {
+                setState(() {
+                  isPlanAlreadyPurchased = true;
+                  planPurchasedChecking = false;
+                });
+              }
+            } else {
+              // if (mounted) {
               setState(() {
-                isPlanAlreadyPurchased = true;
                 planPurchasedChecking = false;
               });
-            }
-          } else {
-            if (mounted) {
-              setState(() {
-                planPurchasedChecking = false;
-              });
+              //}
             }
           }
         }
@@ -195,7 +199,7 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                             ),
                           ],
                         )
-                      : widget.digiGoldPlan.images.isNotEmpty
+                      :widget.digiGoldPlan.images.isNotEmpty
                           ? widget.digiGoldPlan.images[0].src != null
                               ? Image.network(
                                   widget.digiGoldPlan.images[0].src!)
@@ -211,13 +215,13 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                 height: 10.0,
               ),
               Padding(
-                padding: const EdgeInsets.all(10.0),
+                padding: const EdgeInsets.all(30.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       widget.digiGoldPlan.name ?? "Jewellery",
-                      style: Theme.of(context).textTheme.headline2,
+                      style: Theme.of(context).textTheme.headline1,
                     ),
                     SizedBox(
                       height: 10.0,
@@ -229,11 +233,11 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                         children: [
                           Text(
                             "Plan Type: ",
-                            style: Theme.of(context).textTheme.headline3,
+                            style: Theme.of(context).textTheme.headline2,
                           ),
                           Text(
                             "Amount",
-                            style: TextStyle(fontSize: 16.0),
+                            style: Theme.of(context).textTheme.headline6,
                           )
                         ],
                       ),
@@ -245,11 +249,11 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                         children: [
                           Text(
                             "Plan Duration: ",
-                            style: Theme.of(context).textTheme.headline3,
+                            style: Theme.of(context).textTheme.headline2,
                           ),
                           Text(
                             "$planDuration months",
-                            style: TextStyle(fontSize: 16.0),
+                            style: Theme.of(context).textTheme.headline6,
                           )
                         ],
                       ),
@@ -299,19 +303,24 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Checkbox(
-                          value: checkBoxChecked,
-                          onChanged: (value) {
-                            print("termsSeen2 ${termsSeen}");
-                            if (termsSeen) {
-                              if (mounted) {
-                                setState(() {
-                                  checkBoxChecked = value ?? false;
-                                });
+                        Transform.scale(
+                          scale: 1.3,
+                          child: Checkbox(
+                            activeColor: Theme.of(context).primaryColor,
+                            checkColor: Colors.white,
+                            value: checkBoxChecked,
+                            onChanged: (value) {
+                              print("termsSeen2 ${termsSeen}");
+                              if (termsSeen) {
+                                if (mounted) {
+                                  setState(() {
+                                    checkBoxChecked = value ?? false;
+                                  });
+                                }
+                                print("checkBoxChecked ${checkBoxChecked}");
                               }
-                              print("checkBoxChecked ${checkBoxChecked}");
-                            }
-                          },
+                            },
+                          ),
                         ),
                         GestureDetector(
                             onTap: () {
@@ -341,14 +350,12 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                             },
                             child: Text(
                               "Terms & Conditions",
-                              style: TextStyle(
-                                  decoration: TextDecoration.underline,
-                                  fontSize: 17.0),
+                              style: Theme.of(context).textTheme.headline6,
                             ))
                       ],
                     ),
                     SizedBox(
-                      height: 10.0,
+                      height: 50.0,
                     ),
                     isCustomerDataEmpty
                         ? GestureDetector(
@@ -386,13 +393,17 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                                 child: Text(
                                   "LOGIN",
                                   style: checkBoxChecked
-                                      ? TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 17.0,
-                                          fontWeight: FontWeight.bold)
-                                      : TextStyle(
-                                          color: Theme.of(context).primaryColor,
-                                          fontSize: 17.0),
+                                      ? Theme.of(context).textTheme.button
+                                      : Theme.of(context).textTheme.headline5
+                                  // TextStyle(
+                                  //     color: Colors.white,
+                                  //     fontSize: 17.0,
+                                  //     fontWeight: FontWeight.bold)
+                                  // :
+                                  // TextStyle(
+                                  //     color: Theme.of(context).primaryColor,
+                                  //     fontSize: 17.0)
+                                  ,
                                 )),
                           )
                         : GestureDetector(
@@ -441,8 +452,13 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                                       : TextStyle(
                                           color: isPlanAlreadyPurchased
                                               ? Color.fromARGB(
-                                                  255, 213, 167, 170, )
-                                              : Theme.of(context).primaryColor,fontWeight: FontWeight.bold,
+                                                  255,
+                                                  213,
+                                                  167,
+                                                  170,
+                                                )
+                                              : Theme.of(context).primaryColor,
+                                          fontWeight: FontWeight.bold,
                                           fontSize: 17.0),
                                 )),
                           )

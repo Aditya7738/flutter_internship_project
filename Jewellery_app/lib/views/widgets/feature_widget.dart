@@ -317,7 +317,7 @@ class _FeatureWidgetState extends State<FeatureWidget> {
                   padding: const EdgeInsets.all(2.0),
                   child: Text(
                     categoriesModel.name ?? "Jewellery",
-                    style: TextStyle(fontSize: (constraints.maxHeight / 12)),
+                    style: TextStyle(fontSize: (constraints.maxHeight / 10)),
                   ),
                 ),
               ],

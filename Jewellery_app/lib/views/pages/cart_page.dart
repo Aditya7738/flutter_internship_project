@@ -622,7 +622,7 @@ class _CartPageState extends State<CartPage> {
               return Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: SizedBox(
-                  height: MediaQuery.of(context).size.height,
+                  height: MediaQuery.of(context).size.height - 200,
                   width: MediaQuery.of(context).size.width,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -640,10 +640,11 @@ class _CartPageState extends State<CartPage> {
                         "Your Cart is Empty",
                         textAlign: TextAlign.center,
                         maxLines: 2,
-                        style: TextStyle(
-                            fontSize: 22.0,
-                            // color: Theme.of(context).primaryColor,
-                            fontWeight: FontWeight.bold),
+                        style:Theme.of(context).textTheme.headline1
+                        //  TextStyle(
+                        //     fontSize: 22.0,
+                        //     // color: Theme.of(context).primaryColor,
+                        //     fontWeight: FontWeight.bold),
                       ),
                       SizedBox(
                         height: 20.0,
@@ -652,7 +653,8 @@ class _CartPageState extends State<CartPage> {
                         "Looks like you don't have added any jewelleries to your cart yet",
                         maxLines: 2,
                         textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 17.0),
+                        style: Theme.of(context).textTheme.subtitle1
+                        //TextStyle(fontSize: 17.0),
                       ),
                       const SizedBox(
                         height: 50.0,
@@ -669,12 +671,14 @@ class _CartPageState extends State<CartPage> {
                                 borderRadius: BorderRadius.circular(5.0)),
                             padding: const EdgeInsets.symmetric(
                                 vertical: 10.0, horizontal: 40.0),
-                            child: const Text(
-                              "CONTINUE SHOPPING",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 17.0,
-                                  fontWeight: FontWeight.bold),
+                            child: Text(
+                              "Continue Shopping",
+                              style: 
+                               Theme.of(context).textTheme.button
+                              // TextStyle(
+                              //     color: Colors.white,
+                              //     fontSize: 17.0,
+                              //     fontWeight: FontWeight.bold),
                             )),
                       )
                     ],

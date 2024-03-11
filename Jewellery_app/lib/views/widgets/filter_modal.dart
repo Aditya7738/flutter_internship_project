@@ -62,7 +62,8 @@ class _FilterModalState extends State<FilterModal> {
 
     return Container(
         width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height / 1.66,
+        height:  MediaQuery.of(context).size.height / 1.66,
+        //MediaQuery.of(context).size.height / 1.66,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -188,9 +189,11 @@ class _FilterModalState extends State<FilterModal> {
                                 vertical: 10.0, horizontal: 20.0),
                             child: Text(
                               "Clear all",
-                              style: TextStyle(
-                                  color: Theme.of(context).primaryColor,
-                                  fontSize: 17.0),
+                              style: 
+                              Theme.of(context).textTheme.headline5
+                              // TextStyle(
+                              //     color: Theme.of(context).primaryColor,
+                              //     fontSize: 17.0),
                             )),
                       );
                     },
@@ -236,10 +239,12 @@ class _FilterModalState extends State<FilterModal> {
                                 borderRadius: BorderRadius.circular(5.0)),
                             padding: const EdgeInsets.symmetric(
                                 vertical: 10.0, horizontal: 20.0),
-                            child: const Text(
+                            child: Text(
                               "Apply",
-                              style: TextStyle(
-                                  color: Colors.white, fontSize: 17.0),
+                              style:
+                            Theme.of(context).textTheme.button
+                              //  TextStyle(
+                              //     color: Colors.white, fontSize: 17.0),
                             )),
                       );
                     },

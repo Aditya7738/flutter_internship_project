@@ -1,9 +1,16 @@
 import 'dart:convert';
-
+import 'package:Tiara_by_TJ/views/widgets/custom_searchbar.dart';
+import 'package:badges/badges.dart' as badges;
+import 'package:Tiara_by_TJ/constants/constants.dart';
 import 'package:Tiara_by_TJ/model/category_model.dart';
 import 'package:Tiara_by_TJ/model/choice_model.dart';
 import 'package:Tiara_by_TJ/providers/cache_provider.dart';
+import 'package:Tiara_by_TJ/providers/cart_provider.dart';
 import 'package:Tiara_by_TJ/providers/category_provider.dart';
+import 'package:Tiara_by_TJ/providers/wishlist_provider.dart';
+import 'package:Tiara_by_TJ/views/pages/cart_page.dart';
+import 'package:Tiara_by_TJ/views/pages/search_page.dart';
+import 'package:Tiara_by_TJ/views/pages/wishlist_page.dart';
 import 'package:Tiara_by_TJ/views/widgets/choice_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:Tiara_by_TJ/api/api_service.dart';
@@ -200,7 +207,7 @@ class _HomeScreenState extends State<HomeScreen> {
       "Home screen 2",
       "Home screen 3",
     ];
-   // CacheProvider cacheProvider = Provider.of(context, listen: false);
+    // CacheProvider cacheProvider = Provider.of(context, listen: false);
     ChoiceModel choiceModel =
         ChoiceModel(options: layoutsOptions, selectedOption: layoutsOptions[0]);
     CategoryProvider categoryProvider =
@@ -221,17 +228,69 @@ class _HomeScreenState extends State<HomeScreen> {
       //     fontFamily: 'Montserrat',
       //     listOfNavigationModel: listOfNavigationModel,
       //     fontWeight: FontWeight.bold),
-      appBar: AppBarWidget(
-          //  menuIcon: Icons.menu,
-          // onPressed: () {
-          //   if (scaffoldKey.currentState!.isDrawerOpen) {
-          //     scaffoldKey.currentState!.closeDrawer();
-          //   } else {
-          //     scaffoldKey.currentState!.openDrawer();
-          //   }
-          // },
-          isNeededForHome: true,
-          isNeededForProductPage: false),
+      appBar: AppBar(
+        toolbarHeight: kToolbarHeight + kToolbarHeight,
+        automaticallyImplyLeading: false,
+        title: Image.network(
+          Constants.app_logo,
+          width: 150,
+          height: kToolbarHeight,
+        ),
+        backgroundColor: Colors.white,
+        actions: <Widget>[
+          SizedBox(
+            height: 40.0,
+            width: 32.0,
+            child: badges.Badge(
+              badgeStyle: const badges.BadgeStyle(badgeColor: Colors.purple),
+              badgeContent:
+                  Consumer<WishlistProvider>(builder: (context, value, child) {
+                print("LENGTH OF FAV: ${value.favProductIds}");
+                return Text(
+                  value.favProductIds.length.toString(),
+                  style: const TextStyle(color: Colors.white),
+                );
+              }),
+              child: IconButton(
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const WishListPage()));
+                },
+                icon: const Icon(Icons.favorite_sharp, color: Colors.black),
+              ),
+            ),
+          ),
+          const SizedBox(
+            width: 12,
+          ),
+          SizedBox(
+            height: 40.0,
+            width: 32.0,
+            child: badges.Badge(
+              badgeStyle: const badges.BadgeStyle(badgeColor: Colors.purple),
+              badgeContent: Consumer<CartProvider>(
+                  builder: (context, value, child) => Text(
+                        value.cart.length.toString(),
+                        style: const TextStyle(color: Colors.white),
+                      )),
+              child: IconButton(
+                onPressed: () {
+                  print("CART CLICKED");
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => CartPage()));
+                },
+                icon: const Icon(Icons.shopping_cart),
+                color: Colors.black,
+              ),
+            ),
+          ),
+          const SizedBox(
+            width: 22,
+          ),
+        ],
+        bottom: const CustomSearchBar(),
+      ),
+
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -244,7 +303,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 )
               ],
             ),
-
+            SizedBox(
+              height: 10.0,
+            ),
             categoryFileStream != null
                 ? StreamBuilder(
                     stream: categoryFileStream!,
@@ -437,7 +498,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       SizedBox(
                           width: MediaQuery.of(context).size.width,
                           child: DotsIndicator(
-                            dotsCount: ApiService.listOfBanners.length > 0 ? ApiService.listOfBanners.length : 1,
+                            dotsCount: ApiService.listOfBanners.length > 0
+                                ? ApiService.listOfBanners.length
+                                : 1,
                             position: currentIndex,
                             onTap: (index) {
                               carouselController.animateToPage(index);

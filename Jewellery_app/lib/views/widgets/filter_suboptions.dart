@@ -69,9 +69,9 @@ class _FilterSubOptionsState extends State<FilterSubOptions> {
 
             return FilterSubOptionsWidget(
               subOptions: subOptions,
-             index: index,
-
-         
+              index: index,
+              width: MediaQuery.of(context).size.width -
+                  (MediaQuery.of(context).size.width / 3),
               filterKey: widget.filterKey,
             );
           },

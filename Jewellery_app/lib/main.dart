@@ -201,7 +201,7 @@ class _MyAppState extends State<MyApp> {
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 
     double deviceWidth = MediaQuery.of(context).size.width;
-    print("deviceWidth $deviceWidth");
+    print("deviceWidth / 30 ${(deviceWidth / 21) + 6}");
 
     return MultiProvider(
       providers: [
@@ -220,6 +220,11 @@ class _MyAppState extends State<MyApp> {
         navigatorKey: navigatorKey,
         title: Constants.app_name,
         theme: ThemeData(
+            appBarTheme: AppBarTheme(
+              actionsIconTheme: IconThemeData(size: (deviceWidth / 21) + 6),
+              titleTextStyle: TextStyle(
+                  fontSize: deviceWidth / 25, color: Colors.black), //product
+            ),
             primaryColor: Color(0xffCC868A),
             textTheme: TextTheme(
               headline1: TextStyle(
@@ -238,6 +243,21 @@ class _MyAppState extends State<MyApp> {
                 fontWeight: FontWeight.bold,
                 fontSize: deviceWidth / 37,
               ),
+              headline5: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: deviceWidth / 33,
+                  color: Color(0xffCC868A)),
+              headline6: TextStyle(
+                fontSize: deviceWidth / 30,
+              ),
+              subtitle1: TextStyle(
+                fontWeight: FontWeight.normal,
+                fontSize: deviceWidth / 33,
+              ),
+              button: TextStyle(
+                  color: Colors.white,
+                  fontSize: (deviceWidth / 31) - 2.5,
+                  fontWeight: FontWeight.bold),
             )),
         home: DashboardPage(),
         debugShowCheckedModeBanner: false,

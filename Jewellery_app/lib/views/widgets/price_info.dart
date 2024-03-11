@@ -12,14 +12,12 @@ class PriceInfo extends StatelessWidget {
                       Text(
                         
                         label,
-                        style: Theme.of(context).textTheme.headline3,
+                        style: Theme.of(context).textTheme.headline2,
                       ),
                     
                       Text(
                         "₹ $price",
-                        style: const TextStyle(
-                          fontSize: 16.0,
-                        ),
+                         style: Theme.of(context).textTheme.headline6,
                       ),
                     ],
                   );

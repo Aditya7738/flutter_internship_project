@@ -21,46 +21,22 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+     double deviceWidth = MediaQuery.of(context).size.width;
+    print("deviceWidth ${deviceWidth}");
     return AppBar(
+      actionsIconTheme: IconThemeData(
+        size: deviceWidth / 25
+      ),
       automaticallyImplyLeading: false,
-      title: isNeededForHome
-          ? Image.network(
+      title: Image.network(
               Constants.app_logo,
               width: 150,
               height: 80,
             )
-          : const TextField(
-              showCursor: true,
-              maxLines: 1,
-              autofocus: true,
-              cursorColor: Colors.grey,
-              decoration: InputDecoration(
-                  fillColor: Colors.grey,
-                  icon: Icon(
-                    Icons.search_rounded,
-                    color: Colors.grey,
-                    size: 24,
-                  ),
-                  hintText: "Search",
-                  hintStyle: TextStyle(
-                    color: Colors.grey,
-                  )),
-            ),
+          ,
       backgroundColor: Colors.white,
-      actions: isNeededForHome
-          ? <Widget>[
-              // const CircleAvatar(
-              //   radius: 12.0,
-
-              //   child: CircleAvatar(
-              //     backgroundImage: NetworkImage(
-              //         "https://upload.wikimedia.org/wikipedia/commons/b/bc/Flag_of_India.png"),
-              //     radius: 12,
-              //   ), //CircleAvatar,
-              // ),
-              // const SizedBox(
-              //   width: 10,
-              // ),
+      actions: <Widget>[
+           
               SizedBox(
                 height: 40.0,
                 width: 32.0,
@@ -129,24 +105,7 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
                 width: 12,
               ),
             ]
-          : [
-              // const TextField(
-              //   showCursor: true,
-              //     maxLines: 1,
-              //   autofocus: true,
-              //   decoration: InputDecoration(
-              //     icon: Icon(Icons.search_rounded),
-              //     hintText: "Search",
-              //     hintStyle: TextStyle(
-              //       color: Colors.grey
-              //     )
-              //   ),
-              // ),
-              const Icon(Icons.mic_none_rounded),
-              const SizedBox(
-                width: 5.0,
-              )
-            ],
+          ,
       bottom: !isNeededForHome || isNeededForProductPage
           ? null
           : const CustomSearchBar(),

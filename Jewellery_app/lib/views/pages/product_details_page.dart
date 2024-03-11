@@ -330,6 +330,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
         Provider.of<CustomizeOptionsProvider>(context, listen: false);
 
     return Scaffold(
+      
       appBar: AppBar(title: Text("Details"), actions: <Widget>[
         SizedBox(
           height: 40.0,

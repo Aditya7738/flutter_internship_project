@@ -5,13 +5,15 @@ import 'package:provider/provider.dart';
 class FilterSubOptionsWidget extends StatefulWidget {
   final Map<String, dynamic> subOptions;
   final int index;
+  final double width;
 
   final String filterKey;
   FilterSubOptionsWidget(
       {super.key,
       required this.subOptions,
       required this.index,
-      required this.filterKey});
+      required this.filterKey,
+      required this.width});
 
   @override
   State<FilterSubOptionsWidget> createState() => _FilterSubOptionsWidgetState();
@@ -45,8 +47,8 @@ class _FilterSubOptionsWidgetState extends State<FilterSubOptionsWidget> {
   Widget build(BuildContext context) {
     // final filterOptionsProvider =
     //     Provider.of<FilterOptionsProvider>(context, listen: true);
-    final filterOptionsProvider =
-        Provider.of<FilterOptionsProvider>(context, listen: false);
+    // final filterOptionsProvider =
+    //     Provider.of<FilterOptionsProvider>(context, listen: false);
     // for (var i = 0; i < filterOptionsProvider.list.length; i++) {
     //   if (filterOptionsProvider.list[i]["parent"] == widget.filterKey &&
     //       filterOptionsProvider.list[i]["id"] == widget.subOptions["id"]) {
@@ -130,34 +132,44 @@ class _FilterSubOptionsWidgetState extends State<FilterSubOptionsWidget> {
               }
             }
           },
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                SizedBox(
-                  width: MediaQuery.of(context).size.width / 2,
-                  child: Text(
-                    widget.subOptions["label"] ?? "filter${widget.index}",
-                    maxLines: 2,
-                    style: TextStyle(
-                        color: isSelected
-                            ? Theme.of(context).primaryColor
-                            : Colors.black,
-                        fontWeight:
-                            isSelected ? FontWeight.bold : FontWeight.normal,
-                        fontSize: 15.0),
+          child: Container(
+            width: widget.width,
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                print(
+                    "filter suboption constraints.maxWidth / 2 ${constraints.maxWidth / 23}");
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                          width: constraints.maxWidth - 100,
+                          child: Text(
+                            widget.subOptions["label"] ??
+                                "filter${widget.index}",
+                            maxLines: 2,
+                            style: isSelected
+                                ? Theme.of(context).textTheme.headline5
+                                : TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: constraints.maxWidth / 23),
+                          )),
+                      Text(
+                        widget.subOptions["count"].toString(),
+                        style: isSelected
+                            ? Theme.of(context).textTheme.headline5
+                            : TextStyle(
+                                color:  Colors.black,
+                                fontWeight: FontWeight.normal,
+                                fontSize: constraints.maxWidth / 23),
+                      )
+                    ],
                   ),
-                ),
-                Text(
-                  widget.subOptions["count"].toString(),
-                  style: TextStyle(
-                      color: isSelected
-                          ? Theme.of(context).primaryColor
-                          : Colors.black,
-                      fontSize: 15.0),
-                )
-              ],
+                );
+              },
+              //child:
             ),
           ),
         );

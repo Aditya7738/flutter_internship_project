@@ -99,7 +99,7 @@ class _SearchPageState extends State<SearchPage> {
             height: 40.0,
             child: TextField(
               controller: textEditingController,
-              style: TextStyle(fontSize: kToolbarHeight - 37.5),
+              style: TextStyle(fontSize: (kToolbarHeight - 37) + 2),
               onSubmitted: (value) async {
                 if (value == "") {
                   ApiService.listOfProductsModel.clear();
@@ -162,7 +162,8 @@ class _SearchPageState extends State<SearchPage> {
                   ),
                   fillColor: Colors.grey,
                   hintText: "Search for jewelleries",
-                  hintStyle: TextStyle(color: Colors.grey, fontSize: kToolbarHeight - 37.5)),
+                  hintStyle: TextStyle(
+                      color: Colors.grey, fontSize: kToolbarHeight - 37.5)),
             ),
           ),
           actions: [
@@ -173,9 +174,9 @@ class _SearchPageState extends State<SearchPage> {
                 } //- uncomment it
                 showModalBottomSheet(
                   constraints: BoxConstraints.expand(
-                    width: MediaQuery.of(context).size.width,
-                    height: (MediaQuery.of(context).size.height / 1.78) + 30.0
-                  ),
+                      width: MediaQuery.of(context).size.width,
+                      height:
+                          (MediaQuery.of(context).size.height / 1.78) + 40.0),
                   isDismissible:
                       filterOptionsProvider.list.isEmpty ? true : false,
                   enableDrag: true,
@@ -246,9 +247,11 @@ class _SearchPageState extends State<SearchPage> {
                                               "price_range"
                                           ? "₹${value.list[index]["price_range"]["min_price"]} - ₹${value.list[index]["price_range"]["max_price"]}"
                                           : value.list[index]["label"],
-                                      style: TextStyle(
-                                          fontSize: 16.0,
-                                          fontWeight: FontWeight.bold),
+                                      style:
+                                      Theme.of(context).textTheme.headline4
+                                      //  TextStyle(
+                                      //     fontSize: 16.0,
+                                      //     fontWeight: FontWeight.bold),
                                     ),
                                     deleteIcon: Container(
                                       decoration: const BoxDecoration(
@@ -383,8 +386,9 @@ class _SearchPageState extends State<SearchPage> {
                             "constraints.maxWidth / 16 ${(constraints.maxWidth / 26) - 0.9}");
                         return Text(
                           "Showing ${ApiService.listOfProductsModel.length} results",
-                          style: TextStyle(
-                              fontSize: (constraints.maxWidth / 26) - 0.9),
+                          style: Theme.of(context).textTheme.subtitle1
+                          // TextStyle(
+                          //     fontSize: (constraints.maxWidth / 26) - 0.9),
                         );
                       },
                     )),

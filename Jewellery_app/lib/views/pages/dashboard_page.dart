@@ -214,9 +214,13 @@ class _DashboardPageState extends State<DashboardPage> {
   @override
   Widget build(BuildContext context) {
     final tabs = <Widget>[DigiGoldPage(), const HomeScreen(), AccountPage()];
+double deviceWidth = MediaQuery.of(context).size.width;
+    print("deviceWidth ${deviceWidth / 40}");
+    
     return Scaffold(
       body: tabs[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
+        
           type: BottomNavigationBarType.fixed,
           onTap: (index) {
             print("TAB O: $index");
@@ -226,7 +230,14 @@ class _DashboardPageState extends State<DashboardPage> {
               });
             }
           },
+          selectedLabelStyle: TextStyle(
+           fontWeight: FontWeight.bold
+          ),
+          selectedItemColor: Theme.of(context).primaryColor,
           currentIndex: _currentIndex,
+          selectedFontSize: deviceWidth / 40,
+          unselectedFontSize: deviceWidth / 40,
+          iconSize: deviceWidth / 25,
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
                 icon: Image.asset(
