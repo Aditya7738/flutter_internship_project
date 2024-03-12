@@ -45,7 +45,6 @@ class _ProductPageState extends State<ProductPage> {
         Provider.of<FilterOptionsProvider>(context, listen: false);
 
     getProducts();
-    
 
     _scrollController.addListener(() async {
       print(
@@ -100,7 +99,7 @@ class _ProductPageState extends State<ProductPage> {
   @override
   void dispose() {
     // TODO: implement dispose
-  //  final filterProvider = Provider.of<FilterOptionsProvider>(context);
+    //  final filterProvider = Provider.of<FilterOptionsProvider>(context);
     filterOptionsProvider.clearFilterList();
     _scrollController.dispose();
     super.dispose();
@@ -115,13 +114,15 @@ class _ProductPageState extends State<ProductPage> {
 
   @override
   Widget build(BuildContext context) {
+    double deviceWidth = MediaQuery.of(context).size.width;
+    print("deviceWidth / 20 ${deviceWidth / 31}");
     return Scaffold(
         appBar: AppBar(
+            toolbarHeight: (kToolbarHeight + kToolbarHeight) - 40,
             title: Text("Products"),
             actions: <Widget>[
-              SizedBox(
-                height: 40.0,
-                width: 32.0,
+              Container(
+                width: (deviceWidth / 16) + 4,
                 child: badges.Badge(
                   badgeStyle:
                       const badges.BadgeStyle(badgeColor: Colors.purple),
@@ -130,7 +131,9 @@ class _ProductPageState extends State<ProductPage> {
                     print("LENGTH OF FAV: ${value.favProductIds}");
                     return Text(
                       value.favProductIds.length.toString(),
-                      style: const TextStyle(color: Colors.white),
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: (deviceWidth / 31) - 1),
                     );
                   }),
                   child: IconButton(
@@ -143,18 +146,20 @@ class _ProductPageState extends State<ProductPage> {
                 ),
               ),
               const SizedBox(
-                width: 12,
+                width: 24,
               ),
-              SizedBox(
-                height: 40.0,
-                width: 32.0,
+              Container(
+             
+                width: (deviceWidth / 16) + 4,
                 child: badges.Badge(
                   badgeStyle:
                       const badges.BadgeStyle(badgeColor: Colors.purple),
                   badgeContent: Consumer<CartProvider>(
                       builder: (context, value, child) => Text(
                             value.cart.length.toString(),
-                            style: const TextStyle(color: Colors.white),
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: (deviceWidth / 31) - 1),
                           )),
                   child: IconButton(
                     onPressed: () {
@@ -168,7 +173,7 @@ class _ProductPageState extends State<ProductPage> {
                 ),
               ),
               const SizedBox(
-                width: 12,
+                width: 34,
               ),
             ],
             bottom: SearchProductsOfCategory(categoryId: widget.id)),
@@ -188,6 +193,8 @@ class _ProductPageState extends State<ProductPage> {
             //     ),
             //   );
             // } else {
+            print("product page ${MediaQuery.of(context).size.width}");
+
             return Column(
               children: [
                 Consumer<FilterOptionsProvider>(
@@ -278,7 +285,8 @@ class _ProductPageState extends State<ProductPage> {
                 //   } else {
                 categoryProviderValue.isCategoryProductFetching
                     ? SizedBox(
-                        height: MediaQuery.of(context).size.height - 150,
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height - 136,
                         child: const Center(
                           child: CircularProgressIndicator(
                             backgroundColor: Colors.black,
@@ -292,21 +300,18 @@ class _ProductPageState extends State<ProductPage> {
                         child: Scrollbar(
                           child: GridView.builder(
                               controller: _scrollController,
-                              itemCount:
-                                  ApiService.listOfProductsCategoryWise.length +
-                                      (isLoading || !isThereMoreProducts
-                                          ? 1
-                                          : 0),
+                              itemCount: ApiService
+                                      .listOfProductsCategoryWise.length +
+                                  (isLoading || !isThereMoreProducts ? 1 : 0),
                               gridDelegate:
                                   SliverGridDelegateWithFixedCrossAxisCount(
-                                      childAspectRatio: 0.64,
-                                      crossAxisCount:
-                                          MediaQuery.of(context).size.width >
-                                                  600
-                                              ? 4
-                                              : 2,
-                                      crossAxisSpacing: 0.0,
-                                      mainAxisSpacing: 0.0),
+                                childAspectRatio: 0.64,
+                                //0.64,
+                                crossAxisCount:
+                                    MediaQuery.of(context).size.width > 600
+                                        ? 3
+                                        : 2,
+                              ),
                               itemBuilder: (BuildContext context, int index) {
                                 if (index <
                                     ApiService
@@ -318,14 +323,14 @@ class _ProductPageState extends State<ProductPage> {
                                   );
                                 } else if (!isThereMoreProducts ||
                                     categoryProviderValue.isProductListEmpty) {
-                                  return const Padding(
+                                  return Padding(
                                     padding: EdgeInsets.symmetric(
                                         vertical: 15.0, horizontal: 10.0),
                                     child: Center(
                                         child: Text(
                                       "There are no more products",
                                       style: TextStyle(
-                                          fontSize: 18.0,
+                                          fontSize: deviceWidth / 33,
                                           fontWeight: FontWeight.bold),
                                     )),
                                   );

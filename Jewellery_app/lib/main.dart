@@ -252,11 +252,11 @@ class _MyAppState extends State<MyApp> {
               ),
               subtitle1: TextStyle(
                 fontWeight: FontWeight.normal,
-                fontSize: deviceWidth / 33,
+                fontSize: (deviceWidth / 33) + 1.5,
               ),
               button: TextStyle(
                   color: Colors.white,
-                  fontSize: (deviceWidth / 31) - 2.5,
+                  fontSize: (deviceWidth / 30) - 1,
                   fontWeight: FontWeight.bold),
             )),
         home: DashboardPage(),

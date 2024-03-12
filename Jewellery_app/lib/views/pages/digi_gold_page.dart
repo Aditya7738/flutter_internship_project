@@ -58,7 +58,8 @@ class _DigiGoldPageState extends State<DigiGoldPage> {
   checkFlexiPlanPurchased() async {
     final customerProvider =
         Provider.of<CustomerProvider>(context, listen: false);
-    print("customerProvider.customerData.isNotEmpty ${customerProvider.customerData.isNotEmpty}");
+    print(
+        "customerProvider.customerData.isNotEmpty ${customerProvider.customerData.isNotEmpty}");
 
     if (customerProvider.customerData.isNotEmpty) {
       print("customerId ${customerProvider.customerData[0]["id"]}");
@@ -643,7 +644,7 @@ class _DigiGoldPageState extends State<DigiGoldPage> {
                                                         style: TextStyle(
                                                             fontSize: constraints
                                                                     .maxWidth /
-                                                                40,
+                                                                37,
                                                             color:
                                                                 Colors.white),
                                                       ),
@@ -753,7 +754,7 @@ class _DigiGoldPageState extends State<DigiGoldPage> {
                                                         style: TextStyle(
                                                             fontSize: constraints
                                                                     .maxWidth /
-                                                                40,
+                                                                37,
                                                             color:
                                                                 Colors.white),
                                                       ),
@@ -823,7 +824,7 @@ class _DigiGoldPageState extends State<DigiGoldPage> {
                                                         ],
                                                       ),
                                                       SizedBox(
-                                                        height: 20.0,
+                                                        height: 80.0,
                                                       ),
                                                       isCustomerDataEmpty
                                                           ? GestureDetector(

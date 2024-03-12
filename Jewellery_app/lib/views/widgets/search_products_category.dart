@@ -35,6 +35,10 @@ class _SearchProductsOfCategoryState extends State<SearchProductsOfCategory> {
   Widget build(BuildContext context) {
     final categoryProvider =
         Provider.of<CategoryProvider>(context, listen: true);
+
+    final filterOptionsProvider = Provider.of<FilterOptionsProvider>(context);
+
+    print("kToolbarHeight ${(kToolbarHeight / 2.6)}");
     return Container(
       padding: const EdgeInsets.only(bottom: 15.0, left: 15.0, right: 10.0),
       color: Colors.white,
@@ -42,10 +46,11 @@ class _SearchProductsOfCategoryState extends State<SearchProductsOfCategory> {
       child: Row(
         children: [
           SizedBox(
-            height: 46.0,
-            width: MediaQuery.of(context).size.width - 105,
+            height: (kToolbarHeight - 5),
+            width: MediaQuery.of(context).size.width - 140,
             child: TextField(
               controller: searchTextController,
+              style: TextStyle(fontSize: (kToolbarHeight / 2.67)),
               onSubmitted: (value) async {
                 print("cat search sub");
                 // if (value == "") {
@@ -114,9 +119,11 @@ class _SearchProductsOfCategoryState extends State<SearchProductsOfCategory> {
                   ),
                   fillColor: Colors.grey,
                   hintText: "Search for jewelleries",
-                  hintStyle: TextStyle(color: Colors.grey, fontSize: 18.0)),
+                  hintStyle: TextStyle(
+                      color: Colors.grey, fontSize: (kToolbarHeight - 37) + 2)),
             ),
           ),
+          SizedBox(width: 30.0),
           GestureDetector(
             onTap: () async {
               searchTextController.text = "";
@@ -140,7 +147,7 @@ class _SearchProductsOfCategoryState extends State<SearchProductsOfCategory> {
               child: const Icon(
                 Icons.close_rounded,
                 color: Colors.white,
-                size: 19.0,
+                size: (kToolbarHeight - 34),
               ),
             ),
           ),
@@ -150,6 +157,12 @@ class _SearchProductsOfCategoryState extends State<SearchProductsOfCategory> {
           GestureDetector(
             onTap: () {
               showModalBottomSheet(
+                constraints: BoxConstraints.expand(
+                    width: MediaQuery.of(context).size.width,
+                    height: (MediaQuery.of(context).size.height / 1.78) + 40.0),
+                     isDismissible:
+                      filterOptionsProvider.list.isEmpty ? true : false,
+                  enableDrag: true,
                 context: context,
                 isScrollControlled: true,
                 shape: RoundedRectangleBorder(
@@ -170,7 +183,7 @@ class _SearchProductsOfCategoryState extends State<SearchProductsOfCategory> {
                 child: Icon(
                   Icons.filter_list,
                   color: Colors.black,
-                  size: 30.0,
+                  size: (kToolbarHeight - 27),
                 )),
           ),
         ],

@@ -20,7 +20,7 @@ class CustomSearchBar extends StatelessWidget implements PreferredSizeWidget {
             children: [
               Icon(
                 Icons.search_rounded,
-                size: 20.0,
+                size:(deviceWidth / 35) + 3,
               ),
               SizedBox(
                 width: 10.0,

@@ -328,13 +328,13 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
 
     final customizationOptionsProvider =
         Provider.of<CustomizeOptionsProvider>(context, listen: false);
-
+    double deviceWidth = MediaQuery.of(context).size.width;
+    print("deviceWidth / 20 ${deviceWidth / 31}");
     return Scaffold(
-      
       appBar: AppBar(title: Text("Details"), actions: <Widget>[
-        SizedBox(
-          height: 40.0,
-          width: 32.0,
+        Container(
+          color: Colors.red,
+          width: (deviceWidth / 16) + 4,
           child: badges.Badge(
             badgeStyle: const badges.BadgeStyle(badgeColor: Colors.purple),
             badgeContent:
@@ -342,7 +342,8 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
               print("LENGTH OF FAV: ${value.favProductIds}");
               return Text(
                 value.favProductIds.length.toString(),
-                style: const TextStyle(color: Colors.white),
+                style: TextStyle(
+                    color: Colors.white, fontSize: (deviceWidth / 31) - 1),
               );
             }),
             child: IconButton(
@@ -355,17 +356,19 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
           ),
         ),
         const SizedBox(
-          width: 12,
+          width: 24,
         ),
-        SizedBox(
-          height: 40.0,
-          width: 32.0,
+        Container(
+          color: Colors.red,
+          width: (deviceWidth / 16) + 4,
           child: badges.Badge(
             badgeStyle: const badges.BadgeStyle(badgeColor: Colors.purple),
             badgeContent: Consumer<CartProvider>(
                 builder: (context, value, child) => Text(
                       value.cart.length.toString(),
-                      style: const TextStyle(color: Colors.white),
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: (deviceWidth / 31) - 1),
                     )),
             child: IconButton(
               onPressed: () {
@@ -379,7 +382,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
           ),
         ),
         const SizedBox(
-          width: 12,
+          width: 24,
         ),
       ]),
       body: Scrollbar(
@@ -391,7 +394,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
           ),
           Padding(
               padding: const EdgeInsets.only(
-                  left: 10.0, right: 10.0, top: 5.0, bottom: 86.0),
+                  left: 20.0, right: 20.0, top: 5.0, bottom: 110.0),
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -399,64 +402,55 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           productsModel.salePrice == ""
-                              ? Row(
-                                  children: [
-                                    Image.asset(
-                                      "assets/images/rupee.png",
-                                      width: 19.0,
-                                      height: 17.0,
-                                    ),
-                                    Text(
-                                        productsModel.regularPrice != ""
-                                            ? productsModel.regularPrice ??
-                                                "20000"
-                                            : "0.0",
-                                        // productsModel.regularPrice ??
-                                        //     "20,000",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headline3)
-                                  ],
-                                )
+                              ? Text(
+                                  productsModel.regularPrice != ""
+                                      ? "₹  ${productsModel.regularPrice}" ??
+                                          "₹ 20000"
+                                      : "₹ 0.0",
+                                  // productsModel.regularPrice ??
+                                  //     "20,000",
+                                  style: TextStyle(
+                                      fontSize: (deviceWidth / 36) + 4,
+                                      fontWeight: FontWeight.bold))
                               : Row(
                                   children: [
-                                    Image.asset(
-                                      "assets/images/rupee.png",
-                                      width: 20.0,
-                                      height: 20.0,
-                                    ),
                                     Text(
                                         productsModel.salePrice == ""
-                                            ? "10,000"
-                                            : productsModel.salePrice ??
-                                                "10,000",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headline2),
+                                            ? "₹ 10,000"
+                                            : "₹ ${productsModel.salePrice}" ??
+                                                "₹ 10,000",
+                                        style: TextStyle(
+                                            fontSize: (deviceWidth / 36) + 4,
+                                            fontWeight: FontWeight.bold)),
                                     const SizedBox(
                                       width: 5.0,
                                     ),
                                     Text(
                                       productsModel.regularPrice != ""
-                                          ? productsModel.regularPrice ??
-                                              "20000"
-                                          : "0.0",
+                                          ? "₹ ${productsModel.regularPrice}" ??
+                                              "₹ 20000"
+                                          : "₹ 0.0",
                                       style: const TextStyle(
-                                          decoration:
-                                              TextDecoration.lineThrough),
+                                        decoration: TextDecoration.lineThrough,
+                                      ),
                                     ),
                                   ],
                                 ),
                           Consumer<WishlistProvider>(
                               builder: (context, value, child) {
                             print("LENGTH OF FAV: ${value.favProductIds}");
+                            print("deviceWidth / 23 ${deviceWidth / 16}");
                             return IconButton(
                                 icon: Icon(
                                   value.favProductIds.contains(productsModel.id)
                                       ? Icons.favorite
                                       : Icons.favorite_border_outlined,
                                   color: Colors.red,
-                                  size: 30.0,
+                                  size: 
+                                  deviceWidth > 600 ?
+                                   deviceWidth / 23 :
+                                  deviceWidth / 16
+                                   ,
                                 ),
                                 onPressed: () {
                                   print("PRESSED");
@@ -479,13 +473,15 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 10.0, vertical: 5.0),
                         child: backordersAllowed
-                            ? const LabelWidget(
+                            ? LabelWidget(
                                 label: "Available on backorder",
                                 color: Color(0xff85BA60),
+                                fontSize: (deviceWidth / 36) + 4,
                               )
-                            : const LabelWidget(
+                            : LabelWidget(
                                 label: "Unavailable on backorder",
                                 color: Color(0xff85BA60),
+                                fontSize: (deviceWidth / 36) + 4,
                               )),
                     const SizedBox(
                       height: 10.0,
@@ -494,6 +490,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                 .customizeOptionsdata["enable_everything"] ==
                             "1"
                         ? SizedBox(
+                            width: MediaQuery.of(context).size.width,
                             height: customizationOptionsProvider
                                                 .customizeOptionsdata[
                                             "enable_color"] !=
@@ -506,7 +503,9 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                                 .customizeOptionsdata[
                                             "enable_kt"] !=
                                         "0"
-                                ? MediaQuery.of(context).size.height / 2.5
+                                ? MediaQuery.of(context).size.width > 600
+                                    ? 300
+                                    : MediaQuery.of(context).size.height / 2.5
                                 : 0.0,
                             child: Scrollbar(
                               child: GridView.builder(
@@ -518,7 +517,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                                       .size
                                                       .width >
                                                   600
-                                              ? 5
+                                              ? 3
                                               : 2,
                                           crossAxisSpacing: 1.0,
                                           mainAxisSpacing: 15.0),
@@ -534,13 +533,14 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                     const SizedBox(
                       height: 10.0,
                     ),
-                    const LabelWidget(
+                    LabelWidget(
                       label: Constants.description_label,
+                      fontSize: (deviceWidth / 36) + 5,
                     ),
                     HtmlWidget(productsModel.description ??
                         Constants.product_description),
                     const SizedBox(
-                      height: 10.0,
+                      height: 20.0,
                     ),
                     Row(
                       children: [
@@ -551,7 +551,12 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         const SizedBox(
                           width: 10.0,
                         ),
-                        Text(productsModel.sku ?? "12007AN"),
+                        Text(
+                          productsModel.sku ?? "12007AN",
+                          style: TextStyle(
+                            fontSize: (deviceWidth / 36) + 3,
+                          ),
+                        ),
                         const SizedBox(
                           width: 30.0,
                         ),
@@ -562,13 +567,18 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         const SizedBox(
                           width: 10.0,
                         ),
-                        Text(productsModel.categories != null
-                            ? productsModel.categories![0].name ?? "Jewellery"
-                            : "Jewellery")
+                        Text(
+                          productsModel.categories != null
+                              ? productsModel.categories![0].name ?? "Jewellery"
+                              : "Jewellery",
+                          style: TextStyle(
+                            fontSize: (deviceWidth / 36) + 3,
+                          ),
+                        )
                       ],
                     ),
                     const SizedBox(
-                      height: 10.0,
+                      height: 20.0,
                     ),
                     Text(
                       "Tags:",
@@ -578,7 +588,12 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                       height: 5.0,
                     ),
                     productsModel.tags == null
-                        ? const Text("Jewellery")
+                        ? Text(
+                            "Jewellery",
+                            style: TextStyle(
+                              fontSize: (deviceWidth / 36) + 3,
+                            ),
+                          )
                         : SizedBox(
                             height: 20.0,
                             width: MediaQuery.of(context).size.width,
@@ -596,7 +611,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                             ),
                           ),
                     const SizedBox(
-                      height: 10.0,
+                      height: 20.0,
                     ),
                     Text(
                       "Customer Reviews",
@@ -644,10 +659,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         ),
                         child: Text(
                           "WRITE A REVIEW",
-                          style: TextStyle(
-                            color: Theme.of(context).primaryColor,
-                            fontSize: 17.0,
-                          ),
+                          style: Theme.of(context).textTheme.headline5,
                         ),
                       ),
                     ),
@@ -772,9 +784,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                               )
                             : Text(
                                 "Be the first to review this product",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16.0),
+                                style: Theme.of(context).textTheme.headline6,
                               ),
                     ApiService.reviewsList.length > 3
                         ? InkWell(
@@ -800,6 +810,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
         ])),
       ),
       bottomSheet: BottomSheet(
+        constraints: BoxConstraints.expand(width: deviceWidth, height: 100),
         enableDrag: false,
         onClosing: () {},
         builder: (context) {
@@ -808,86 +819,57 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                productsModel.salePrice == ""
+                productsModel.salePrice != ""
                     ? Row(
                         children: [
-                          Image.asset(
-                            "assets/images/rupee.png",
-                            width: 25.0,
-                            height: 37.0,
+                          Text(
+                              productsModel.salePrice == ""
+                                  ? "₹ 10,000"
+                                  : "₹ ${productsModel.salePrice}" ??
+                                      "₹ 10,000",
+                              style: Theme.of(context).textTheme.headline1),
+                          SizedBox(
+                            width: 10.0,
                           ),
                           Text(
                               productsModel.regularPrice != ""
-                                  ? productsModel.regularPrice ?? "20000"
-                                  : "0.0",
+                                  ? "₹ ${productsModel.regularPrice}" ??
+                                      "₹ 20000"
+                                  : "₹ 0.0",
                               // productsModel.regularPrice ??
                               //     "20,000",
-                              style: Theme.of(context).textTheme.headline1)
+                              style: TextStyle(
+                                  decoration: TextDecoration.lineThrough)),
                         ],
+                        //child:
                       )
-                    : Row(
-                        children: [
-                          Image.asset(
-                            "assets/images/rupee.png",
-                            width: 25.0,
-                            height: 37.0,
-                          ),
-                          Text(
-                              productsModel.salePrice == ""
-                                  ? "10,000"
-                                  : productsModel.salePrice ?? "10,000",
-                              style: Theme.of(context).textTheme.headline1),
-                          const SizedBox(
-                            width: 5.0,
-                          ),
-                          Text(
-                            productsModel.regularPrice != ""
-                                ? productsModel.regularPrice ?? "20000"
-                                : "0.0",
-                            style: const TextStyle(
-                                decoration: TextDecoration.lineThrough),
-                          ),
-                        ],
-                      ),
+                    : Text(
+                        productsModel.regularPrice != ""
+                            ? "₹ ${productsModel.regularPrice}" ?? "₹ 20000"
+                            : "₹ 0.0",
+                        // productsModel.regularPrice ??
+                        //     "20,000",
+                        style: Theme.of(context).textTheme.headline1),
+
+                // Text(
+                //   productsModel.regularPrice != ""
+                //       ? "₹ ${productsModel.regularPrice}" ?? "₹ 20000"
+                //       : "₹ 0.0",
+                //   style:
+                //       const TextStyle(decoration: TextDecoration.lineThrough),
+                // ),
 
                 ////////////////
 
                 SizedBox(
-                  width: MediaQuery.of(context).size.width / 2,
-                  child: ButtonWidget(
-                      imagePath: "assets/images/grocery_store.png",
-                      btnString: Constants.cart_btn_text,
+                    width: MediaQuery.of(context).size.width > 600
+                        ? MediaQuery.of(context).size.width / 3.7
+                        : MediaQuery.of(context).size.width / 2,
+                    child: GestureDetector(
                       onTap: () async {
                         print("CART PRESSED");
                         cartProvider.addToCartId(productsModel.id!);
                         print("CART IDS : ${cartProvider.cartProductIds}");
-
-                        // if (customerProvider.customerData.isNotEmpty ||
-                        //     customerProvider.customerData.length != 0) {
-                        //   print(
-                        //       "customerData.isNotEmpty ${customerProvider.customerData.isNotEmpty}");
-
-                        //   List<CartProductModel> cart = <CartProductModel>[];
-                        //   cart.add(CartProductModel(
-                        //       cartProductid: productsModel.id,
-                        //       price: productsModel.regularPrice != ""
-                        //           ? productsModel.regularPrice ?? "20000"
-                        //           : "0.0",
-                        //       productName: productsModel.name ?? "Jewellery",
-                        //       quantity: "1",
-                        //       size: 5,
-                        //       deliveryDate: DateHelper.getCurrentDateInWords(),
-                        //       imageUrl: productsModel.images.isEmpty
-                        //           ? Constants.defaultImageUrl
-                        //           : productsModel.images[0].src ??
-                        //               Constants.defaultImageUrl,
-                        //       sku: productsModel.sku ?? "ABC",
-                        //       imageId: productsModel.images.isNotEmpty
-                        //           ? productsModel.images[0].id
-                        //           : 0));
-
-                        //   customerProvider.customerData[0]["cartList"] = cart;
-                        // }
 
                         cartProvider.addToCart(CartProductModel(
                             cartProductid: productsModel.id,
@@ -910,8 +892,101 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         print("Product is added to cart");
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => CartPage()));
-                      }),
-                )
+                      },
+                      child: Container(
+                        height: 100 - 50,
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 10.0, horizontal: 10.0),
+                        decoration: BoxDecoration(
+                            shape: BoxShape.rectangle,
+                            borderRadius: BorderRadius.circular(10.0),
+                            color: Theme.of(context).primaryColor),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              Constants.cart_btn_text,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize:
+                                    MediaQuery.of(context).size.width > 600
+                                        ? 23
+                                        : 17.0,
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 10.0,
+                            ),
+                            Image.asset(
+                              "assets/images/grocery_store.png",
+                              // width: 17.0,
+                              // height: 17.0,
+                              height: (deviceWidth / 19),
+                              color: Colors.white,
+                            )
+                          ],
+                        ),
+                      ),
+                    )
+
+                    // ButtonWidget(
+                    //     imagePath: "assets/images/grocery_store.png",
+                    //     btnString: Constants.cart_btn_text,
+                    //     onTap: () async {
+                    //       print("CART PRESSED");
+                    //       cartProvider.addToCartId(productsModel.id!);
+                    //       print("CART IDS : ${cartProvider.cartProductIds}");
+
+                    //       // if (customerProvider.customerData.isNotEmpty ||
+                    //       //     customerProvider.customerData.length != 0) {
+                    //       //   print(
+                    //       //       "customerData.isNotEmpty ${customerProvider.customerData.isNotEmpty}");
+
+                    //       //   List<CartProductModel> cart = <CartProductModel>[];
+                    //       //   cart.add(CartProductModel(
+                    //       //       cartProductid: productsModel.id,
+                    //       //       price: productsModel.regularPrice != ""
+                    //       //           ? productsModel.regularPrice ?? "20000"
+                    //       //           : "0.0",
+                    //       //       productName: productsModel.name ?? "Jewellery",
+                    //       //       quantity: "1",
+                    //       //       size: 5,
+                    //       //       deliveryDate: DateHelper.getCurrentDateInWords(),
+                    //       //       imageUrl: productsModel.images.isEmpty
+                    //       //           ? Constants.defaultImageUrl
+                    //       //           : productsModel.images[0].src ??
+                    //       //               Constants.defaultImageUrl,
+                    //       //       sku: productsModel.sku ?? "ABC",
+                    //       //       imageId: productsModel.images.isNotEmpty
+                    //       //           ? productsModel.images[0].id
+                    //       //           : 0));
+
+                    //       //   customerProvider.customerData[0]["cartList"] = cart;
+                    //       // }
+
+                    //       cartProvider.addToCart(CartProductModel(
+                    //           cartProductid: productsModel.id,
+                    //           price: productsModel.regularPrice != ""
+                    //               ? productsModel.regularPrice ?? "20000"
+                    //               : "0.0",
+                    //           productName: productsModel.name ?? "Jewellery",
+                    //           quantity: "1",
+                    //           size: 5,
+                    //           deliveryDate: DateHelper.getCurrentDateInWords(),
+                    //           imageUrl: productsModel.images.isEmpty
+                    //               ? Constants.defaultImageUrl
+                    //               : productsModel.images[0].src ??
+                    //                   Constants.defaultImageUrl,
+                    //           sku: productsModel.sku ?? "ABC",
+                    //           imageId: productsModel.images.isNotEmpty
+                    //               ? productsModel.images[0].id
+                    //               : 0));
+
+                    //       print("Product is added to cart");
+                    //       Navigator.of(context).push(MaterialPageRoute(
+                    //           builder: (context) => CartPage()));
+                    //     }),
+                    )
               ],
             ),
           );
@@ -919,6 +994,45 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
       ),
     );
   }
+
+//   List<Widget> showFilterOptionsList(
+//       {required CustomizeOptionsProvider customizationOptionsProvider}) {
+//     List<Widget> widgets = <Widget>[];
+
+//     if (customizationOptionsProvider
+//             .customizeOptionsdata["enable_everything"] ==
+//         "1") {
+// // GridView.builder(
+// //     itemCount: listOfChoiceModel.length,
+// //     gridDelegate:
+// //         SliverGridDelegateWithFixedCrossAxisCount(
+// //             childAspectRatio: 1.9,
+// //             crossAxisCount: MediaQuery.of(context)
+// //                         .size
+// //                         .width >
+// //                     600
+// //                 ? 3
+// //                 : 2,
+// //             crossAxisSpacing: 1.0,
+// //             mainAxisSpacing: 15.0),
+// //     itemBuilder: ((context, index) {
+// //       return ChoiceWidget(
+// //         choiceModel: listOfChoiceModel[index],
+// //         fromCart: false,
+// //       );
+// //     }))
+// //                         : SizedBox(),
+//       widgets.addAll(listOfChoiceModel.map((choiceModel) {
+//         return ChoiceWidget(
+//           choiceModel: choiceModel,
+//           fromCart: false,
+//         );
+//       }).toList());
+//     } else {
+//       widgets.add(SizedBox());
+//     }
+//     return widgets;
+//   }
 
   String? getGoldSelectedOption(String purityValue) {
     String? selectedoption = "";

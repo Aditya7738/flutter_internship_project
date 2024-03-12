@@ -59,6 +59,8 @@ class _SignupPageState extends State<SignupPage> {
     _passwordController.text = "Sldi4e@#45";
     _confirmPasswordController.text = "Sldi4e@#45";
     _phoneNoController.text = "4153516564";
+
+    final deviceWidth = MediaQuery.of(context).size.width;
     return Scaffold(
         appBar: AppBar(
           leading: GestureDetector(
@@ -84,11 +86,11 @@ class _SignupPageState extends State<SignupPage> {
                     children: [
                       Image.network(
                         Constants.app_logo,
-                        width: 150.0,
-                        height: 70.0,
+                      height: 60.0,
+                          fit: BoxFit.fill,
                       ),
                       const SizedBox(
-                        height: 20.0,
+                        height: 30.0,
                       ),
                       Text("Signup with Tiara By TJ",
                           style: Theme.of(context).textTheme.headline1),
@@ -124,12 +126,17 @@ class _SignupPageState extends State<SignupPage> {
                       SizedBox(
                         height: 75.0,
                         child: TextFormField(
+                           style: Theme.of(context).textTheme.subtitle1,
                           controller: _phoneNoController,
                           keyboardType: TextInputType.phone,
                           validator: (value) {
                             return ValidationHelper.isPhoneNoValid(value);
                           },
                           decoration: InputDecoration(
+                              errorStyle: TextStyle(
+                                  fontSize: (deviceWidth / 33) + 1.5,
+                                  color: Colors.red),
+                              labelStyle: Theme.of(context).textTheme.subtitle1,
                               border: const OutlineInputBorder(
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(20.0))),
@@ -158,13 +165,17 @@ class _SignupPageState extends State<SignupPage> {
                         height: 30.0,
                       ),
                       TextFormField(
+                        style: Theme.of(context).textTheme.subtitle1,
                         controller: _emailController,
                         keyboardType: TextInputType.emailAddress,
                         validator: (value) {
                           return ValidationHelper.isEmailValid(value);
                         },
-                        decoration: const InputDecoration(
-                          // errorText: ,
+                        decoration: InputDecoration(
+                          errorStyle: TextStyle(
+                              fontSize: (deviceWidth / 33) + 1.5,
+                              color: Colors.red),
+                          labelStyle: Theme.of(context).textTheme.subtitle1,
                           labelText: "Enter your email*",
                           border: OutlineInputBorder(
                               borderRadius:
@@ -179,14 +190,19 @@ class _SignupPageState extends State<SignupPage> {
                           SizedBox(
                             width: (MediaQuery.of(context).size.width / 2) - 35,
                             child: TextFormField(
+                              style: Theme.of(context).textTheme.subtitle1,
                               controller: _firstNameController,
                               keyboardType: TextInputType.name,
                               validator: (value) {
                                 return ValidationHelper.nullOrEmptyString(
                                     value);
                               },
-                              decoration: const InputDecoration(
-                                // errorText: ,
+                              decoration: InputDecoration(
+                                errorStyle: TextStyle(
+                                    fontSize: (deviceWidth / 33) + 1.5,
+                                    color: Colors.red),
+                                labelStyle:
+                                    Theme.of(context).textTheme.subtitle1,
                                 labelText: "First Name*",
                                 border: OutlineInputBorder(
                                     borderRadius: BorderRadius.all(
@@ -200,13 +216,19 @@ class _SignupPageState extends State<SignupPage> {
                           SizedBox(
                             width: (MediaQuery.of(context).size.width / 2) - 35,
                             child: TextFormField(
+                           style: Theme.of(context).textTheme.subtitle1,
                               controller: _lastNameController,
                               keyboardType: TextInputType.name,
                               validator: (value) {
                                 return ValidationHelper.nullOrEmptyString(
                                     value);
                               },
-                              decoration: const InputDecoration(
+                              decoration: InputDecoration(
+                            errorStyle: TextStyle(
+                              fontSize: (deviceWidth / 33) + 1.5,
+                              color: Colors.red
+                            ),
+                            labelStyle: Theme.of(context).textTheme.subtitle1,
                                 labelText: "Last Name*",
                                 border: OutlineInputBorder(
                                     borderRadius: BorderRadius.all(
@@ -220,6 +242,7 @@ class _SignupPageState extends State<SignupPage> {
                         height: 30.0,
                       ),
                       TextFormField(
+                           style: Theme.of(context).textTheme.subtitle1,
                         controller: _passwordController,
                         obscureText: isObscured,
                         keyboardType: TextInputType.visiblePassword,
@@ -227,6 +250,11 @@ class _SignupPageState extends State<SignupPage> {
                           return ValidationHelper.isPasswordContain(value);
                         },
                         decoration: InputDecoration(
+                            errorStyle: TextStyle(
+                              fontSize: (deviceWidth / 33) + 1.5,
+                              color: Colors.red
+                            ),
+                            labelStyle: Theme.of(context).textTheme.subtitle1,
                           suffixIcon: IconButton(
                             onPressed: () {
                               if (mounted) {
@@ -237,7 +265,9 @@ class _SignupPageState extends State<SignupPage> {
                             },
                             icon: Icon(isObscured
                                 ? Icons.visibility
-                                : Icons.visibility_off),
+                                : Icons.visibility_off,
+                                
+                                size: 34.0,),
                           ),
                           // errorText: ,
                           labelText: "Enter your password",
@@ -250,6 +280,7 @@ class _SignupPageState extends State<SignupPage> {
                         height: 30.0,
                       ),
                       TextFormField(
+                           style: Theme.of(context).textTheme.subtitle1,
                         controller: _confirmPasswordController,
                         obscureText: isObscured2,
                         keyboardType: TextInputType.visiblePassword,
@@ -258,6 +289,11 @@ class _SignupPageState extends State<SignupPage> {
                               _passwordController.text, value!);
                         },
                         decoration: InputDecoration(
+                            errorStyle: TextStyle(
+                              fontSize: (deviceWidth / 33) + 1.5,
+                              color: Colors.red
+                            ),
+                            labelStyle: Theme.of(context).textTheme.subtitle1,
                           suffixIcon: IconButton(
                             onPressed: () {
                               if (mounted) {
@@ -268,7 +304,8 @@ class _SignupPageState extends State<SignupPage> {
                             },
                             icon: Icon(isObscured
                                 ? Icons.visibility
-                                : Icons.visibility_off),
+                                : Icons.visibility_off,
+                                 size: 34.0,),
                           ),
                           // errorText: ,
                           labelText: "Confirm your password",
@@ -285,14 +322,11 @@ class _SignupPageState extends State<SignupPage> {
                               text: TextSpan(
                                   text:
                                       '*By clicking on Save chage, you accept our ',
-                                  style: const TextStyle(
-                                      color: Colors.black, fontSize: 16.0),
+                                  style: Theme.of(context).textTheme.subtitle1,
                                   children: <TextSpan>[
                             TextSpan(
                               text: 'T&C',
-                              style: const TextStyle(
-                                color: Color(0xffCC868A),
-                              ),
+                              style: Theme.of(context).textTheme.headline5,
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
                                   // Handle the click event for the specific word.
@@ -302,17 +336,13 @@ class _SignupPageState extends State<SignupPage> {
                                   // Add your custom action here.
                                 },
                             ),
-                            const TextSpan(
+                            TextSpan(
                               text: ' and ',
-                              style: TextStyle(
-                                color: Colors.black,
-                              ),
+                              style: Theme.of(context).textTheme.subtitle1,
                             ),
                             TextSpan(
                               text: 'Privacy Policy',
-                              style: const TextStyle(
-                                color: Color(0xffCC868A),
-                              ),
+                              style: Theme.of(context).textTheme.headline5,
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
                                   // Handle the click event for the specific word.
@@ -428,29 +458,27 @@ class _SignupPageState extends State<SignupPage> {
                         },
                         child: Container(
                             width: MediaQuery.of(context).size.width,
-                            height: 50.0,
+                            height: 65.0,
                             decoration: BoxDecoration(
                                 color: const Color(0xffCC868A),
                                 borderRadius: BorderRadius.circular(15.0)),
                             padding: const EdgeInsets.symmetric(
-                                vertical: 10.0, horizontal: 20.0),
+                                vertical: 5.0, horizontal: 20.0),
                             child: Center(
                               child: isLoading
-                                  ? const SizedBox(
-                                      width: 20.0,
-                                      height: 20.0,
-                                      child: CircularProgressIndicator(
+                                  ?  Container(
+                                     padding: EdgeInsets.symmetric(vertical: 5.0),
+                                        width: (deviceWidth / 28),
+                                        height:(deviceWidth / 28) + 5 ,
+                                        child: CircularProgressIndicator(
                                         color: Colors.white,
                                         strokeWidth: 2.0,
                                         backgroundColor: Color(0xffCC868A),
                                       ),
                                     )
-                                  : const Text(
+                                  :  Text(
                                       "Sign up",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 17.0,
-                                          fontWeight: FontWeight.bold),
+                                     style: Theme.of(context).textTheme.button,
                                     ),
                             )),
                       ),
@@ -461,16 +489,11 @@ class _SignupPageState extends State<SignupPage> {
                           child: RichText(
                               text: TextSpan(
                                   text: 'Already have an account?',
-                                  style: const TextStyle(
-                                      color: Colors.black, fontSize: 16.0),
+                                  style: Theme.of(context).textTheme.subtitle1,
                                   children: <TextSpan>[
                             TextSpan(
                               text: ' Login',
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16.0,
-                                color: Color(0xffCC868A),
-                              ),
+                              style: Theme.of(context).textTheme.headline5,
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
                                   Navigator.of(context).push(MaterialPageRoute(

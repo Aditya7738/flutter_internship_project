@@ -42,6 +42,9 @@ class _ChoiceWidgetState extends State<ChoiceWidget> {
 
   @override
   Widget build(BuildContext context) {
+    double deviceWidth = MediaQuery.of(context).size.width;
+    print("ddl deviceWidth ${(deviceWidth / 36) +  4}");
+
     Widget mobileDdl = DropdownButton(
         value: selectedOption,
         icon: const Icon(Icons.keyboard_arrow_down_rounded),
@@ -114,7 +117,7 @@ class _ChoiceWidgetState extends State<ChoiceWidget> {
       children: [
         LabelWidget(
           label: choiceModel.label ?? "",
-          fontSize: 16.0,
+          fontSize: (deviceWidth / 36) +  4,
         ),
         const SizedBox(
           height: 15.0,

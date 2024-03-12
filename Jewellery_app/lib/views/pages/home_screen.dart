@@ -218,7 +218,8 @@ class _HomeScreenState extends State<HomeScreen> {
     //   _downloadFile();
     // }
     // print("categoryFileStream == null ${categoryFileStream == null}");
-
+    double deviceWidth = MediaQuery.of(context).size.width;
+    print("deviceWidth / 20 ${deviceWidth / 31}");
     return Scaffold(
       key: scaffoldKey,
       // drawer: NavDrawer(
@@ -229,18 +230,21 @@ class _HomeScreenState extends State<HomeScreen> {
       //     listOfNavigationModel: listOfNavigationModel,
       //     fontWeight: FontWeight.bold),
       appBar: AppBar(
-        toolbarHeight: kToolbarHeight + kToolbarHeight,
+        toolbarHeight:( kToolbarHeight + kToolbarHeight) - 26,
         automaticallyImplyLeading: false,
-        title: Image.network(
-          Constants.app_logo,
-          width: 150,
-          height: kToolbarHeight,
-        ),
+      title: Image.network(
+            Constants.app_logo,
+            width: 239,
+          
+            height: kToolbarHeight,
+            fit: BoxFit.fitWidth,
+
+          ),
         backgroundColor: Colors.white,
         actions: <Widget>[
-          SizedBox(
-            height: 40.0,
-            width: 32.0,
+          Container(
+            color: Colors.red,
+            width: (deviceWidth / 16) + 4,
             child: badges.Badge(
               badgeStyle: const badges.BadgeStyle(badgeColor: Colors.purple),
               badgeContent:
@@ -248,7 +252,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 print("LENGTH OF FAV: ${value.favProductIds}");
                 return Text(
                   value.favProductIds.length.toString(),
-                  style: const TextStyle(color: Colors.white),
+                  style: TextStyle(
+                      color: Colors.white, fontSize: (deviceWidth / 31) - 1),
                 );
               }),
               child: IconButton(
@@ -261,17 +266,19 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           const SizedBox(
-            width: 12,
+            width: 24,
           ),
-          SizedBox(
-            height: 40.0,
-            width: 32.0,
+          Container(
+            color: Colors.red,
+            width: (deviceWidth / 16) + 4,
             child: badges.Badge(
               badgeStyle: const badges.BadgeStyle(badgeColor: Colors.purple),
               badgeContent: Consumer<CartProvider>(
                   builder: (context, value, child) => Text(
                         value.cart.length.toString(),
-                        style: const TextStyle(color: Colors.white),
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: (deviceWidth / 31) - 1),
                       )),
               child: IconButton(
                 onPressed: () {
@@ -285,7 +292,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           const SizedBox(
-            width: 22,
+            width: 34,
           ),
         ],
         bottom: const CustomSearchBar(),
