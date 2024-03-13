@@ -171,7 +171,7 @@ class AccountPage extends StatelessWidget {
                 )),
             ListTile(
               onTap: () {
-                isDataEmpty
+                false
                     ? Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -185,7 +185,7 @@ class AccountPage extends StatelessWidget {
               leading: Icon(
                 Icons.account_circle_outlined,
               ),
-              title: Text(isDataEmpty ? "Login" : "My profile",
+              title: Text(false ? "Login" : "My profile",
                   style: const TextStyle(fontSize: 17.0)),
             ),
             // SizedBox(

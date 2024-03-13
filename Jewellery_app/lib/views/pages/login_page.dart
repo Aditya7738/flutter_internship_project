@@ -151,7 +151,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
 
                         TextFormField(
-                          style: Theme.of(context).textTheme.subtitle1,
+                          style: Theme.of(context).textTheme.titleMedium,
                           controller: _emailController,
                           keyboardType: TextInputType.emailAddress,
                           validator: (value) {
@@ -165,7 +165,10 @@ class _LoginPageState extends State<LoginPage> {
                             labelStyle: Theme.of(context).textTheme.subtitle1,
                             // errorText: ,
                             labelText: "Enter your email*",
-                            border: OutlineInputBorder(
+                            border: 
+                            OutlineInputBorder(
+                              borderSide: BorderSide(color: Theme.of(context).primaryColor,
+                              ),
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(20.0))),
                           ),

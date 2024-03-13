@@ -404,8 +404,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                           productsModel.salePrice == ""
                               ? Text(
                                   productsModel.regularPrice != ""
-                                      ? "₹  ${productsModel.regularPrice}" ??
-                                          "₹ 20000"
+                                      ? "₹ ${productsModel.regularPrice ?? 20000}"
                                       : "₹ 0.0",
                                   // productsModel.regularPrice ??
                                   //     "20,000",
@@ -417,8 +416,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                     Text(
                                         productsModel.salePrice == ""
                                             ? "₹ 10,000"
-                                            : "₹ ${productsModel.salePrice}" ??
-                                                "₹ 10,000",
+                                            : "₹ ${productsModel.salePrice ?? 10000}",
                                         style: TextStyle(
                                             fontSize: (deviceWidth / 36) + 4,
                                             fontWeight: FontWeight.bold)),
@@ -427,8 +425,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                     ),
                                     Text(
                                       productsModel.regularPrice != ""
-                                          ? "₹ ${productsModel.regularPrice}" ??
-                                              "₹ 20000"
+                                          ? "₹ ${productsModel.regularPrice ?? 20000}"
                                           : "₹ 0.0",
                                       style: const TextStyle(
                                         decoration: TextDecoration.lineThrough,
@@ -446,11 +443,9 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                       ? Icons.favorite
                                       : Icons.favorite_border_outlined,
                                   color: Colors.red,
-                                  size: 
-                                  deviceWidth > 600 ?
-                                   deviceWidth / 23 :
-                                  deviceWidth / 16
-                                   ,
+                                  size: deviceWidth > 600
+                                      ? deviceWidth / 23
+                                      : deviceWidth / 16,
                                 ),
                                 onPressed: () {
                                   print("PRESSED");
@@ -659,7 +654,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         ),
                         child: Text(
                           "WRITE A REVIEW",
-                          style: Theme.of(context).textTheme.headline5,
+                          style: Theme.of(context).textTheme.subtitle2,
                         ),
                       ),
                     ),
@@ -825,16 +820,15 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                           Text(
                               productsModel.salePrice == ""
                                   ? "₹ 10,000"
-                                  : "₹ ${productsModel.salePrice}" ??
-                                      "₹ 10,000",
+                                  : "₹ ${productsModel.salePrice ?? 10000}",
                               style: Theme.of(context).textTheme.headline1),
                           SizedBox(
                             width: 10.0,
                           ),
                           Text(
                               productsModel.regularPrice != ""
-                                  ? "₹ ${productsModel.regularPrice}" ??
-                                      "₹ 20000"
+                                  ? "₹ ${productsModel.regularPrice ??
+                                      20000}" 
                                   : "₹ 0.0",
                               // productsModel.regularPrice ??
                               //     "20,000",
@@ -845,7 +839,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                       )
                     : Text(
                         productsModel.regularPrice != ""
-                            ? "₹ ${productsModel.regularPrice}" ?? "₹ 20000"
+                            ? "₹ ${productsModel.regularPrice ?? 20000}"
                             : "₹ 0.0",
                         // productsModel.regularPrice ??
                         //     "20,000",

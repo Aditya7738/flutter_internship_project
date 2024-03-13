@@ -475,10 +475,15 @@ class _PaymentPageState extends State<PaymentPage>
                                         expansionListItemModel.isExpanded =
                                             isExpanded;
                                         print(" ExpansionPanel $isExpanded");
-                                        return ListTile(
-                                          title: Text(
-                                            expansionListItemModel.title,
-                                            style: TextStyle(fontSize: 18.0),
+                                        return Padding(
+                                          padding: const EdgeInsets.all(10.0),
+                                          child: ListTile(
+                                            title: Text(
+                                              expansionListItemModel.title,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .headline6,
+                                            ),
                                           ),
                                         );
                                       },
@@ -490,11 +495,12 @@ class _PaymentPageState extends State<PaymentPage>
                                           children: [
                                             HtmlWidget(
                                               expansionListItemModel.body,
-                                              textStyle:
-                                                  TextStyle(fontSize: 17.0),
+                                              textStyle: Theme.of(context)
+                                                  .textTheme
+                                                  .subtitle1,
                                             ),
                                             SizedBox(
-                                              height: 10.0,
+                                              height: 20.0,
                                             ),
                                             GestureDetector(
                                               onTap: () {
@@ -533,7 +539,7 @@ class _PaymentPageState extends State<PaymentPage>
                                                 }
                                               },
                                               child: Container(
-                                                  width: 150.0,
+                                                  width: 200.0,
                                                   // height: 40.0,
                                                   decoration: BoxDecoration(
                                                       color: const Color(
@@ -550,15 +556,9 @@ class _PaymentPageState extends State<PaymentPage>
                                                         ? CircularProgressIndicator(
                                                             color: Colors.white,
                                                           )
-                                                        : const Text(
+                                                        : Text(
                                                             "Pay now",
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .white,
-                                                                fontSize: 17.0,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold),
+                                                            style: Theme.of(context).textTheme.button,
                                                           ),
                                                   )),
                                             ),

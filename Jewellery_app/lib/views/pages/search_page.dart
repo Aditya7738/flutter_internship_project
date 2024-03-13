@@ -243,16 +243,17 @@ class _SearchPageState extends State<SearchPage> {
                                 child: Chip(
                                     padding: EdgeInsets.all(7.0),
                                     label: Text(
-                                      value.list[index]["parent"] ==
-                                              "price_range"
-                                          ? "₹${value.list[index]["price_range"]["min_price"]} - ₹${value.list[index]["price_range"]["max_price"]}"
-                                          : value.list[index]["label"],
-                                      style:
-                                      Theme.of(context).textTheme.headline4
-                                      //  TextStyle(
-                                      //     fontSize: 16.0,
-                                      //     fontWeight: FontWeight.bold),
-                                    ),
+                                        value.list[index]["parent"] ==
+                                                "price_range"
+                                            ? "₹ ${value.list[index]["price_range"]["min_price"]} - ₹ ${value.list[index]["price_range"]["max_price"]}"
+                                            : value.list[index]["label"],
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline4
+                                        //  TextStyle(
+                                        //     fontSize: 16.0,
+                                        //     fontWeight: FontWeight.bold),
+                                        ),
                                     deleteIcon: Container(
                                       decoration: const BoxDecoration(
                                         color: Colors.black,
@@ -385,11 +386,11 @@ class _SearchPageState extends State<SearchPage> {
                         print(
                             "constraints.maxWidth / 16 ${(constraints.maxWidth / 26) - 0.9}");
                         return Text(
-                          "Showing ${ApiService.listOfProductsModel.length} results",
-                          style: Theme.of(context).textTheme.subtitle1
-                          // TextStyle(
-                          //     fontSize: (constraints.maxWidth / 26) - 0.9),
-                        );
+                            "Showing ${ApiService.listOfProductsModel.length} results",
+                            style: Theme.of(context).textTheme.subtitle1
+                            // TextStyle(
+                            //     fontSize: (constraints.maxWidth / 26) - 0.9),
+                            );
                       },
                     )),
                 newListLoading || value.isFilteredListLoading
@@ -574,8 +575,7 @@ class _SearchPageState extends State<SearchPage> {
                                                               productsModel
                                                                           .regularPrice !=
                                                                       ""
-                                                                  ? "₹ ${productsModel.regularPrice}" ??
-                                                                      "₹ 20000"
+                                                                  ? "₹ ${productsModel.regularPrice ?? 20000}"
                                                                   : "₹ 20000",
                                                               style: TextStyle(
                                                                   fontSize:

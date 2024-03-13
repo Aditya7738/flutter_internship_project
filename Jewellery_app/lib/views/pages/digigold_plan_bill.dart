@@ -150,84 +150,84 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
     super.initState();
     final customerProvider =
         Provider.of<CustomerProvider>(context, listen: false);
-    if (customerProvider.customerData[0].containsKey("first_name")) {
-      _firstNameController.text =
-          customerProvider.customerData[0]["first_name"];
-    }
+    // if (customerProvider.customerData[0].containsKey("first_name")) {
+    //   _firstNameController.text =
+    //       customerProvider.customerData[0]["first_name"];
+    // }
 
-    if (customerProvider.customerData[0].containsKey("last_name")) {
-      _lastNameController.text = customerProvider.customerData[0]["last_name"];
-    }
+    // if (customerProvider.customerData[0].containsKey("last_name")) {
+    //   _lastNameController.text = customerProvider.customerData[0]["last_name"];
+    // }
 
-    if (customerProvider.customerData[0].containsKey("email")) {
-      _emailController.text = customerProvider.customerData[0]["email"];
-    }
+    // if (customerProvider.customerData[0].containsKey("email")) {
+    //   _emailController.text = customerProvider.customerData[0]["email"];
+    // }
 
-    if (customerProvider.customerData[0]
-        .containsKey("digi_gold_billing_email")) {
-      _emailController.text =
-          customerProvider.customerData[0]["digi_gold_billing_email"];
-    }
+    // if (customerProvider.customerData[0]
+    //     .containsKey("digi_gold_billing_email")) {
+    //   _emailController.text =
+    //       customerProvider.customerData[0]["digi_gold_billing_email"];
+    // }
 
-    if (customerProvider.customerData[0].containsKey("mobile_no")) {
-      _phoneNoController.text = customerProvider.customerData[0]["mobile_no"];
-    }
+    // if (customerProvider.customerData[0].containsKey("mobile_no")) {
+    //   _phoneNoController.text = customerProvider.customerData[0]["mobile_no"];
+    // }
 
-    if (customerProvider.customerData[0]
-        .containsKey("digi_gold_billing_phone")) {
-      _phoneNoController.text =
-          customerProvider.customerData[0]["digi_gold_billing_phone"];
-    }
+    // if (customerProvider.customerData[0]
+    //     .containsKey("digi_gold_billing_phone")) {
+    //   _phoneNoController.text =
+    //       customerProvider.customerData[0]["digi_gold_billing_phone"];
+    // }
 
-    if (customerProvider.customerData[0].containsKey("address_1")) {
-      _addressController1.text = customerProvider.customerData[0]["address_1"];
-    }
+    // if (customerProvider.customerData[0].containsKey("address_1")) {
+    //   _addressController1.text = customerProvider.customerData[0]["address_1"];
+    // }
 
-    if (customerProvider.customerData[0].containsKey("address_2")) {
-      _addressController2.text = customerProvider.customerData[0]["address_2"];
-    }
+    // if (customerProvider.customerData[0].containsKey("address_2")) {
+    //   _addressController2.text = customerProvider.customerData[0]["address_2"];
+    // }
 
-    if (customerProvider.customerData[0].containsKey("pincode")) {
-      _pinNoController.text = customerProvider.customerData[0]["pincode"];
-    }
+    // if (customerProvider.customerData[0].containsKey("pincode")) {
+    //   _pinNoController.text = customerProvider.customerData[0]["pincode"];
+    // }
 
-    if (customerProvider.customerData[0].containsKey("company")) {
-      _companyNameController.text = customerProvider.customerData[0]["company"];
-    }
+    // if (customerProvider.customerData[0].containsKey("company")) {
+    //   _companyNameController.text = customerProvider.customerData[0]["company"];
+    // }
 
-    if (customerProvider.customerData[0].containsKey("city")) {
-      _cityController.text = customerProvider.customerData[0]["city"];
-      print("CITY ${_cityController.text}");
-    }
+    // if (customerProvider.customerData[0].containsKey("city")) {
+    //   _cityController.text = customerProvider.customerData[0]["city"];
+    //   print("CITY ${_cityController.text}");
+    // }
 
-    if (customerProvider.customerData[0].containsKey("aadhar_card_no")) {
-      _aadharCardController.text =
-          customerProvider.customerData[0]["aadhar_card_no"];
-    }
+    // if (customerProvider.customerData[0].containsKey("aadhar_card_no")) {
+    //   _aadharCardController.text =
+    //       customerProvider.customerData[0]["aadhar_card_no"];
+    // }
 
-    if (customerProvider.customerData[0].containsKey("pan_card_no")) {
-      _panCardController.text = customerProvider.customerData[0]["pan_card_no"];
-    }
+    // if (customerProvider.customerData[0].containsKey("pan_card_no")) {
+    //   _panCardController.text = customerProvider.customerData[0]["pan_card_no"];
+    // }
 
-    if (customerProvider.customerData[0].containsKey("passport_no")) {
-      _passportController.text =
-          customerProvider.customerData[0]["passport_no"];
-    }
+    // if (customerProvider.customerData[0].containsKey("passport_no")) {
+    //   _passportController.text =
+    //       customerProvider.customerData[0]["passport_no"];
+    // }
 
-    if (customerProvider.customerData[0].containsKey("driving_license_no")) {
-      _licenseNoController.text =
-          customerProvider.customerData[0]["driving_license_no"];
-    }
+    // if (customerProvider.customerData[0].containsKey("driving_license_no")) {
+    //   _licenseNoController.text =
+    //       customerProvider.customerData[0]["driving_license_no"];
+    // }
 
-    if (customerProvider.customerData[0].containsKey("nominee_name")) {
-      _nomineeNameController.text =
-          customerProvider.customerData[0]["nominee_name"];
-    }
+    // if (customerProvider.customerData[0].containsKey("nominee_name")) {
+    //   _nomineeNameController.text =
+    //       customerProvider.customerData[0]["nominee_name"];
+    // }
 
-    if (customerProvider.customerData[0].containsKey("nominee_relation")) {
-      _nomineeRelationController.text =
-          customerProvider.customerData[0]["nominee_relation"];
-    }
+    // if (customerProvider.customerData[0].containsKey("nominee_relation")) {
+    //   _nomineeRelationController.text =
+    //       customerProvider.customerData[0]["nominee_relation"];
+    // }
 
     for (var i = 0; i < widget.digiGoldPlanModel.metaData.length; i++) {
       if (widget.digiGoldPlanModel.metaData[i].key == "digi_plan_duration") {
@@ -277,7 +277,7 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
     final customerProvider =
         Provider.of<CustomerProvider>(context, listen: false);
     final orderProvider = Provider.of<OrderProvider>(context);
-
+    double deviceWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
         title: Text("Billing details"),
@@ -293,8 +293,13 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
                 // const SizedBox(
                 //   height: 15.0,
                 // ),
-                Text("Plan details",
-                    style: Theme.of(context).textTheme.headline1),
+                Text(
+                  "Plan details",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: deviceWidth / 27,
+                  ),
+                ),
                 const SizedBox(
                   height: 5.0,
                 ),
@@ -396,13 +401,16 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
                   countryCodeOptions: countryCodeOptions,
                 ),
                 TextFormField(
+                  style: Theme.of(context).textTheme.subtitle1,
                   controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
                   validator: (value) {
                     return ValidationHelper.isEmailValid(value);
                   },
-                  decoration: const InputDecoration(
-                    // errorText: ,
+                  decoration: InputDecoration(
+                    errorStyle: TextStyle(
+                        fontSize: (deviceWidth / 33) + 1.5, color: Colors.red),
+                    labelStyle: Theme.of(context).textTheme.subtitle1,
                     labelText: "Enter your email*",
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(20.0))),
@@ -412,23 +420,29 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
                   height: 30.0,
                 ),
                 Text("Personal Details",
-                    style: Theme.of(context).textTheme.headline1),
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: deviceWidth / 27,
+                    )),
                 SizedBox(
                   height: 10.0,
                 ),
-                const Padding(
+                Padding(
                   padding: EdgeInsets.only(left: 10.0),
                   child: Text(
                     "Proof Type (optional)",
-                    style: TextStyle(fontSize: 16.0),
+                    style: TextStyle(
+                        fontSize: deviceWidth > 600 ? deviceWidth / 38 : 16.0),
                   ),
                 ),
                 const SizedBox(
                   height: 5.0,
                 ),
                 Container(
+                  alignment: Alignment.center,
                   padding: const EdgeInsets.only(right: 10.0, left: 5.0),
                   width: MediaQuery.of(context).size.width,
+                  height: deviceWidth > 600 ? deviceWidth / 11 : 75.0,
                   decoration: BoxDecoration(
                       borderRadius:
                           const BorderRadius.all(Radius.circular(20.0)),
@@ -458,179 +472,194 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
                       }),
                 ),
                 const SizedBox(
-                  height: 20.0,
+                  height: 30.0,
                 ),
 
                 isProofSelected
-                    ? Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          getSelectedProofWidget(selectedProof),
-                          const SizedBox(
-                            height: 10.0,
-                          ),
-                          showFileName
-                              ? Padding(
-                                  padding: const EdgeInsets.only(left: 8.0),
-                                  child: Column(
-                                    children: [
-                                      Text(
-                                        "Uploaded file name: ${path.basename(imagePath)}",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 16.0),
-                                      ),
-                                      const SizedBox(
-                                        height: 20.0,
-                                      ),
-                                    ],
-                                  ),
-                                )
-                              : SizedBox(),
-                          showForgotToUploadFileMsg
-                              ? Padding(
-                                  padding: const EdgeInsets.only(left: 8.0),
-                                  child: Column(
-                                    children: [
-                                      Text(
-                                        "You have to upload document image",
-                                        style: TextStyle(
-                                            color: Colors.red,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 16.0),
-                                      ),
-                                      SizedBox(
-                                        height: 20.0,
-                                      )
-                                    ],
-                                  ),
-                                )
-                              : SizedBox(),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              GestureDetector(
-                                onTap: () async {
-                                  var image = await ImagePicker()
-                                      .pickImage(source: ImageSource.gallery);
-                                  if (image != null) {
-                                    if (mounted) {
-                                      setState(() {
-                                        imagePath = image.path;
-                                      });
-                                    }
-                                    print("imagePath $imagePath");
-
-                                    bool isThereInternet = await ApiService
-                                        .checkInternetConnection(context);
-                                    if (isThereInternet) {
+                    ? Container(
+                        color: Colors.red,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            getSelectedProofWidget(selectedProof, deviceWidth),
+                            const SizedBox(
+                              height: 10.0,
+                            ),
+                            showFileName
+                                ? Padding(
+                                    padding: const EdgeInsets.only(left: 8.0),
+                                    child: Column(
+                                      children: [
+                                        Text(
+                                          "Uploaded file name: ${path.basename(imagePath)}",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 16.0),
+                                        ),
+                                        const SizedBox(
+                                          height: 20.0,
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                : SizedBox(),
+                            showForgotToUploadFileMsg
+                                ? Padding(
+                                    padding: const EdgeInsets.only(left: 8.0),
+                                    child: Column(
+                                      children: [
+                                        Text(
+                                          "You have to upload document image",
+                                          style: TextStyle(
+                                              color: Colors.red,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 16.0),
+                                        ),
+                                        SizedBox(
+                                          height: 20.0,
+                                        )
+                                      ],
+                                    ),
+                                  )
+                                : SizedBox(),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                GestureDetector(
+                                  onTap: () async {
+                                    var image = await ImagePicker()
+                                        .pickImage(source: ImageSource.gallery);
+                                    if (image != null) {
                                       if (mounted) {
                                         setState(() {
-                                          isImageUploading = true;
+                                          imagePath = image.path;
                                         });
                                       }
+                                      print("imagePath $imagePath");
 
-                                      http.StreamedResponse response =
-                                          await ApiService.uploadDocumentImage(
-                                              imagePath);
+                                      bool isThereInternet = await ApiService
+                                          .checkInternetConnection(context);
+                                      if (isThereInternet) {
+                                        if (mounted) {
+                                          setState(() {
+                                            isImageUploading = true;
+                                          });
+                                        }
 
-                                      if (mounted) {
-                                        setState(() {
-                                          isImageUploading = false;
-                                        });
-                                      }
-
-                                      if (response.statusCode == 201) {
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(SnackBar(
-                                                padding: EdgeInsets.all(15.0),
-                                                backgroundColor:
-                                                    Theme.of(context)
-                                                        .primaryColor,
-                                                content: Text(
-                                                  "Image upload successfully",
-                                                  style: TextStyle(
-                                                      color: Colors.white),
-                                                )));
+                                        http.StreamedResponse response =
+                                            await ApiService
+                                                .uploadDocumentImage(imagePath);
 
                                         if (mounted) {
                                           setState(() {
-                                            showFileName = true;
-                                            showForgotToUploadFileMsg = false;
+                                            isImageUploading = false;
                                           });
                                         }
-                                      } else {
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(SnackBar(
-                                                padding: EdgeInsets.all(15.0),
-                                                backgroundColor: Colors.red,
-                                                content: Text(
-                                                  "Failed upload image",
-                                                  style: TextStyle(
-                                                      color: Colors.white),
-                                                )));
+
+                                        if (response.statusCode == 201) {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                                  padding: EdgeInsets.all(15.0),
+                                                  backgroundColor:
+                                                      Theme.of(context)
+                                                          .primaryColor,
+                                                  content: Text(
+                                                    "Image upload successfully",
+                                                    style: TextStyle(
+                                                        color: Colors.white),
+                                                  )));
+
+                                          if (mounted) {
+                                            setState(() {
+                                              showFileName = true;
+                                              showForgotToUploadFileMsg = false;
+                                            });
+                                          }
+                                        } else {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                                  padding: EdgeInsets.all(15.0),
+                                                  backgroundColor: Colors.red,
+                                                  content: Text(
+                                                    "Failed upload image",
+                                                    style: TextStyle(
+                                                        color: Colors.white),
+                                                  )));
+                                        }
                                       }
                                     }
-                                  }
-                                },
-                                child: Container(
-                                    decoration: BoxDecoration(
-                                        border: Border.all(
-                                            color:
-                                                Theme.of(context).primaryColor,
-                                            style: BorderStyle.solid),
-                                        borderRadius:
-                                            BorderRadius.circular(5.0)),
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 10.0, horizontal: 20.0),
-                                    child: isImageUploading
-                                        ? SizedBox(
-                                            width: 200.0,
-                                            child: Center(
-                                              child: CircularProgressIndicator(
-                                                strokeWidth: 3.0,
-                                                color: Theme.of(context)
-                                                    .primaryColor,
+                                  },
+                                  child: Container(
+                                      decoration: BoxDecoration(
+                                          border: Border.all(
+                                              color: Theme.of(context)
+                                                  .primaryColor,
+                                              style: BorderStyle.solid),
+                                          borderRadius:
+                                              BorderRadius.circular(5.0)),
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 10.0, horizontal: 20.0),
+                                      child: isImageUploading
+                                          ? SizedBox(
+                                              width: 200.0,
+                                              child: Center(
+                                                child:
+                                                    CircularProgressIndicator(
+                                                  strokeWidth: 3.0,
+                                                  color: Theme.of(context)
+                                                      .primaryColor,
+                                                ),
                                               ),
-                                            ),
-                                          )
-                                        : Text(
-                                            "Upload document image",
-                                            style: TextStyle(
-                                                color: Theme.of(context)
-                                                    .primaryColor,
-                                                fontSize: 17.0),
-                                          )),
-                              ),
-                            ],
-                          ),
-                        ],
+                                            )
+                                          : Text(
+                                              "Upload document image",
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .subtitle2,
+                                            )),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 30.0,
+                            ),
+                          ],
+                        ),
                       )
                     : SizedBox(),
-                const SizedBox(
-                  height: 30.0,
-                ),
+
                 Text("Nominee Details",
-                    style: Theme.of(context).textTheme.headline1),
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: deviceWidth / 27,
+                    )),
                 SizedBox(
-                  height: 20.0,
+                  height: 10.0,
                 ),
                 TextFormField(
+                  style: Theme.of(context).textTheme.subtitle1,
                   controller: _nomineeNameController,
                   keyboardType: TextInputType.name,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
+                    errorStyle: TextStyle(
+                        fontSize: (deviceWidth / 33) + 1.5, color: Colors.red),
+                    labelStyle: Theme.of(context).textTheme.subtitle1,
                     labelText: "Nominee Name (Optional)",
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(20.0))),
                   ),
                 ),
                 const SizedBox(
-                  height: 30.0,
+                  height: 20.0,
                 ),
                 TextFormField(
+                  style: Theme.of(context).textTheme.subtitle1,
                   controller: _nomineeRelationController,
                   keyboardType: TextInputType.name,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
+                    errorStyle: TextStyle(
+                        fontSize: (deviceWidth / 33) + 1.5, color: Colors.red),
+                    labelStyle: Theme.of(context).textTheme.subtitle1,
                     labelText: "Nominee Relation (Optional)",
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(20.0))),
@@ -657,7 +686,7 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
                   },
                   child: Container(
                       width: MediaQuery.of(context).size.width,
-                      height: 50.0,
+                      height: deviceWidth > 600 ? 70.0 : 50.0,
                       decoration: BoxDecoration(
                           color: const Color(0xffCC868A),
                           borderRadius: BorderRadius.circular(5.0)),
@@ -665,7 +694,7 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
                           vertical: 10.0, horizontal: 20.0),
                       child: Center(
                         child: isOrderCreating
-                            ? const SizedBox(
+                            ? SizedBox(
                                 width: 20.0,
                                 height: 20.0,
                                 child: CircularProgressIndicator(
@@ -676,10 +705,7 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
                               )
                             : Text(
                                 "Continue",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 17.0,
-                                    fontWeight: FontWeight.bold),
+                                style: Theme.of(context).textTheme.button,
                               ),
                       )),
                 ),
@@ -791,13 +817,13 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
       print(
           "widget.digiGoldPlanModel.description ${widget.digiGoldPlanModel.description}");
 
-      print(
-          "customerProvider.customerId ${customerProvider.customerData[0]["id"]}");
+      // print(
+      //     "customerProvider.customerId ${customerProvider.customerData[0]["id"]}");
 
       print("DIGI ORDER META $meta_data");
 
       orderProvider.setBillingData(billingData);
-      orderProvider.setCustomerId(customerProvider.customerData[0]["id"]);
+   //   orderProvider.setCustomerId(customerProvider.customerData[0]["id"]);
       orderProvider.setLineItems(line_items);
       orderProvider.setMetaData(meta_data);
       orderProvider.setPrice(widget.flexiPlanData != null
@@ -845,15 +871,15 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
       print(
           "DigiGoldPlanName ${widget.digiGoldPlanModel.name ?? "Digi Gold Plan"}");
 
-      customerProvider.addCustomerData({
-        "address_1": _addressController1.text,
-        "address_2": _addressController2.text,
-        "city": _cityController.text,
-        "pincode": _pinNoController.text,
-        "digi_gold_billing_email": _emailController.text,
-        "digi_gold_billing_phone": _phoneNoController.text,
-        "digi_gold_plan_name": widget.digiGoldPlanModel.name ?? "Digi Gold Plan"
-      });
+      // customerProvider.addCustomerData({
+      //   "address_1": _addressController1.text,
+      //   "address_2": _addressController2.text,
+      //   "city": _cityController.text,
+      //   "pincode": _pinNoController.text,
+      //   "digi_gold_billing_email": _emailController.text,
+      //   "digi_gold_billing_phone": _phoneNoController.text,
+      //   "digi_gold_plan_name": widget.digiGoldPlanModel.name ?? "Digi Gold Plan"
+      // });
 
       for (var i = 0; i < customerProvider.customerData.length; i++) {
         print("CUSTOMERDATA[$i] ${customerProvider.customerData[i]}");
@@ -865,10 +891,10 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
           "nominee_name": _nomineeNameController.text,
           "nominee_relation": _nomineeRelationController.text
         };
-        customerProvider.addCustomerData(nomineeData);
+      //  customerProvider.addCustomerData(nomineeData);
       }
 
-      customerProvider.addCustomerData(personalData);
+     // customerProvider.addCustomerData(personalData);
 
       if (mounted) {
         setState(() {
@@ -888,16 +914,20 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
     }
   }
 
-  Widget getSelectedProofWidget(String selectedProof) {
+  Widget getSelectedProofWidget(String selectedProof, double deviceWidth) {
     switch (selectedProof) {
       case "Aadhar card":
         return TextFormField(
+          style: Theme.of(context).textTheme.subtitle1,
           controller: _aadharCardController,
           keyboardType: TextInputType.number,
           validator: (value) {
             return ValidationHelper.isAadharCardNoValid(value);
           },
-          decoration: const InputDecoration(
+          decoration: InputDecoration(
+            errorStyle: TextStyle(
+                fontSize: (deviceWidth / 33) + 1.5, color: Colors.red),
+            labelStyle: Theme.of(context).textTheme.subtitle1,
             // errorText: ,
             labelText: "Aadhar card* ",
             border: OutlineInputBorder(
@@ -907,12 +937,16 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
 
       case "Pan card":
         return TextFormField(
+          style: Theme.of(context).textTheme.subtitle1,
           controller: _panCardController,
           keyboardType: TextInputType.text,
           validator: (value) {
             return ValidationHelper.isPanCardValid(value);
           },
-          decoration: const InputDecoration(
+          decoration: InputDecoration(
+            errorStyle: TextStyle(
+                fontSize: (deviceWidth / 33) + 1.5, color: Colors.red),
+            labelStyle: Theme.of(context).textTheme.subtitle1,
             // errorText: ,
             labelText: "Pan card* ",
             border: OutlineInputBorder(
@@ -922,12 +956,16 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
 
       case "Passport":
         return TextFormField(
+          style: Theme.of(context).textTheme.subtitle1,
           controller: _passportController,
           keyboardType: TextInputType.text,
           validator: (value) {
             return ValidationHelper.isPassportValid(value);
           },
-          decoration: const InputDecoration(
+          decoration: InputDecoration(
+            errorStyle: TextStyle(
+                fontSize: (deviceWidth / 33) + 1.5, color: Colors.red),
+            labelStyle: Theme.of(context).textTheme.subtitle1,
             // errorText: ,
             labelText: "Passport* ",
             border: OutlineInputBorder(
@@ -937,12 +975,16 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
 
       case "Driving License":
         return TextFormField(
+          style: Theme.of(context).textTheme.subtitle1,
           controller: _licenseNoController,
           keyboardType: TextInputType.text,
           validator: (value) {
             return ValidationHelper.isDrivingLicenseValid(value);
           },
-          decoration: const InputDecoration(
+          decoration: InputDecoration(
+            errorStyle: TextStyle(
+                fontSize: (deviceWidth / 33) + 1.5, color: Colors.red),
+            labelStyle: Theme.of(context).textTheme.subtitle1,
             // errorText: ,
             labelText: "Driving License* ",
             border: OutlineInputBorder(

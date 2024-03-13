@@ -56,7 +56,8 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
   checkPlanPurchased() async {
     final customerProvider =
         Provider.of<CustomerProvider>(context, listen: false);
-    print("customerProvider.customerData.isNotEmpty ${customerProvider.customerData.isNotEmpty}");
+    print(
+        "customerProvider.customerData.isNotEmpty ${customerProvider.customerData.isNotEmpty}");
 
     if (customerProvider.customerData.isNotEmpty) {
       print("customerId ${customerProvider.customerData[0]["id"]}");
@@ -199,7 +200,7 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                             ),
                           ],
                         )
-                      :widget.digiGoldPlan.images.isNotEmpty
+                      : widget.digiGoldPlan.images.isNotEmpty
                           ? widget.digiGoldPlan.images[0].src != null
                               ? Image.network(
                                   widget.digiGoldPlan.images[0].src!)
@@ -357,7 +358,7 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                     SizedBox(
                       height: 50.0,
                     ),
-                    isCustomerDataEmpty
+                    false
                         ? GestureDetector(
                             onTap: () {
                               if (checkBoxChecked) {
@@ -445,10 +446,7 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                                 child: Text(
                                   "Buy Plan",
                                   style: checkBoxChecked
-                                      ? TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 17.0,
-                                          fontWeight: FontWeight.bold)
+                                      ? Theme.of(context).textTheme.button
                                       : TextStyle(
                                           color: isPlanAlreadyPurchased
                                               ? Color.fromARGB(
@@ -459,7 +457,16 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                                                 )
                                               : Theme.of(context).primaryColor,
                                           fontWeight: FontWeight.bold,
-                                          fontSize: 17.0),
+                                          fontSize: MediaQuery.of(context)
+                                                      .size
+                                                      .width >
+                                                  600
+                                              ? MediaQuery.of(context)
+                                                      .size
+                                                      .width /
+                                                  33
+                                              : 17.0,
+                                        ),
                                 )),
                           )
                   ],

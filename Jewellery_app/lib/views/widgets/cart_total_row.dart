@@ -18,21 +18,12 @@ class CartTotalRow extends StatelessWidget {
       children: [
         Text(
           label,
-          style: Theme.of(context).textTheme.headline3,
+          style: Theme.of(context).textTheme.headline2,
           maxLines: 2,
         ),
         showMoney
-            ? Row(
-                children: [
-                  Image.asset(
-                    "assets/images/rupee.png",
-                    width: 19.0,
-                    height: 17.0,
-                  ),
-                  Text(value, style: Theme.of(context).textTheme.headline3)
-                ],
-              )
-            : Text(value[0].toUpperCase() + value.substring(1).toLowerCase(), style: Theme.of(context).textTheme.headline3)
+            ? Text("₹ $value", style: Theme.of(context).textTheme.headline2)
+            : Text(value[0].toUpperCase() + value.substring(1).toLowerCase(), style: Theme.of(context).textTheme.headline2)
       ],
     );
   }

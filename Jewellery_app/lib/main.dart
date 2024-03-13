@@ -254,6 +254,11 @@ class _MyAppState extends State<MyApp> {
                 fontWeight: FontWeight.normal,
                 fontSize: (deviceWidth / 33) + 1.5,
               ),
+              subtitle2: TextStyle(
+                color: Color(0xffCC868A),
+                fontWeight: FontWeight.normal,
+                fontSize: (deviceWidth / 33),
+              ),
               button: TextStyle(
                   color: Colors.white,
                   fontSize: (deviceWidth / 30) - 1,

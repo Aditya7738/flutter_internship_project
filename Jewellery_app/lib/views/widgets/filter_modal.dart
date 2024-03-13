@@ -190,7 +190,7 @@ class _FilterModalState extends State<FilterModal> {
                             child: Text(
                               "Clear all",
                               style: 
-                              Theme.of(context).textTheme.headline5
+                              Theme.of(context).textTheme.subtitle2
                               // TextStyle(
                               //     color: Theme.of(context).primaryColor,
                               //     fontSize: 17.0),

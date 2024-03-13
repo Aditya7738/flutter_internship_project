@@ -51,7 +51,6 @@ class _ProductItemState extends State<ProductItem> {
                 ProductDetailsPage(productsModel: productsModel)));
       },
       child: Container(
-     
         decoration: BoxDecoration(
           border: Border.all(
               color: Colors.grey, style: BorderStyle.solid, width: 0.5),
@@ -61,11 +60,13 @@ class _ProductItemState extends State<ProductItem> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              productsModel.images.isEmpty || productsModel.images[0].src == null
+              productsModel.images.isEmpty ||
+                      productsModel.images[0].src == null
                   ? ClipRRect(
                       child: Image.asset("assets/images/image_placeholder.jpg",
                           width: (MediaQuery.of(context).size.width / 2) - 1.0,
-                          height: (MediaQuery.of(context).size.width / 2) + 10.0),
+                          height:
+                              (MediaQuery.of(context).size.width / 2) + 10.0),
                     )
                   : CachedNetworkImage(
                       imageUrl: productsModel.images.isEmpty
@@ -75,7 +76,8 @@ class _ProductItemState extends State<ProductItem> {
                       placeholder: (context, url) {
                         return SizedBox(
                           width: (MediaQuery.of(context).size.width / 2) + 16.0,
-                          height: (MediaQuery.of(context).size.width / 2) + 10.0,
+                          height:
+                              (MediaQuery.of(context).size.width / 2) + 10.0,
                           child: const Center(
                             child: CircularProgressIndicator(
                               color: Colors.black,
@@ -93,9 +95,7 @@ class _ProductItemState extends State<ProductItem> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
-                      padding: EdgeInsets.only(
-                        left: 15.0
-                      ),
+                      padding: EdgeInsets.only(left: 15.0),
                       width: MediaQuery.of(context).size.width > 600
                           ? (MediaQuery.of(context).size.width / 3) - 75
                           : (MediaQuery.of(context).size.width / 2) - 66,
@@ -121,8 +121,7 @@ class _ProductItemState extends State<ProductItem> {
                               productsModel.salePrice == ""
                                   ? Text(
                                       productsModel.regularPrice != ""
-                                          ? "₹ ${productsModel.regularPrice}" ??
-                                              "₹ 20000"
+                                          ? "₹ ${productsModel.regularPrice ?? 20000}"
                                           : "₹ 0.0",
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
@@ -134,8 +133,7 @@ class _ProductItemState extends State<ProductItem> {
                                         Text(
                                           productsModel.salePrice == ""
                                               ? "₹ 10,000"
-                                              : "₹ ${productsModel.salePrice}" ??
-                                                  "₹ 10,000",
+                                              : "₹ ${productsModel.salePrice ?? 10000}",
                                           style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: constraints.maxWidth / 10,
@@ -146,8 +144,7 @@ class _ProductItemState extends State<ProductItem> {
                                         ),
                                         Text(
                                           productsModel.regularPrice != ""
-                                              ? "₹ ${productsModel.regularPrice}" ??
-                                                  "₹ 20000"
+                                              ? "₹ ${productsModel.regularPrice ?? 20000}"
                                               : "₹ 0.0",
                                           style: TextStyle(
                                             decoration:
@@ -162,10 +159,10 @@ class _ProductItemState extends State<ProductItem> {
                               ),
                               productsModel.averageRating != null
                                   ? Container(
-                                      width:
-                                          MediaQuery.of(context).size.width > 600
-                                              ? constraints.maxWidth / 2.1
-                                              : constraints.maxWidth / 1.5,
+                                      width: MediaQuery.of(context).size.width >
+                                              600
+                                          ? constraints.maxWidth / 2.1
+                                          : constraints.maxWidth / 1.5,
                                       alignment: Alignment.center,
                                       padding: const EdgeInsets.symmetric(
                                           vertical: 5.0, horizontal: 10.0),
@@ -181,11 +178,13 @@ class _ProductItemState extends State<ProductItem> {
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
                                           Text(
-                                            productsModel.averageRating ?? "3.5",
+                                            productsModel.averageRating ??
+                                                "3.5",
                                             style: TextStyle(
                                               color: Colors.black,
                                               fontWeight: FontWeight.bold,
-                                              fontSize: constraints.maxWidth / 10,
+                                              fontSize:
+                                                  constraints.maxWidth / 10,
                                             ),
                                           ),
                                           const SizedBox(
@@ -199,9 +198,9 @@ class _ProductItemState extends State<ProductItem> {
                                       ),
                                     )
                                   : SizedBox(
-                                      width:
-                                          MediaQuery.of(context).size.width / 2 -
-                                              60,
+                                      width: MediaQuery.of(context).size.width /
+                                              2 -
+                                          60,
                                     ),
                             ],
                           );
@@ -221,9 +220,8 @@ class _ProductItemState extends State<ProductItem> {
                                     CartProductModel(
                                         cartProductid: productsModel.id,
                                         price: productsModel.regularPrice != ""
-                                            ? "₹ ${productsModel.regularPrice}" ??
-                                                "₹ 20000"
-                                            : "₹ 0.0",
+                                            ? "${productsModel.regularPrice ?? 20000}"
+                                            : "0.0",
                                         productName: productsModel.name,
                                         quantity: "1",
                                         size: 5,
@@ -236,11 +234,11 @@ class _ProductItemState extends State<ProductItem> {
                                         imageId: productsModel.images.isNotEmpty
                                             ? productsModel.images[0].id
                                             : 0);
-          
+
                                 if (value.cartProductIds
                                     .contains(productsModel.id)) {
                                   value.removeFromCartId(productsModel.id!);
-          
+
                                   value.removeFromCart(
                                       cartProductModel, productsModel.id!);
                                 } else {
@@ -307,8 +305,10 @@ class _ProductItemState extends State<ProductItem> {
                                   : Icons.favorite_border_outlined,
                               color: Colors.red,
                               size: MediaQuery.of(context).size.width > 600
-                                  ? (MediaQuery.of(context).size.width / 3) - 260
-                                  : (MediaQuery.of(context).size.width / 3) - 116,
+                                  ? (MediaQuery.of(context).size.width / 3) -
+                                      260
+                                  : (MediaQuery.of(context).size.width / 3) -
+                                      116,
                             ),
                             onPressed: () {
                               print("PRESSED");
@@ -318,7 +318,8 @@ class _ProductItemState extends State<ProductItem> {
                                     .removeFromWishlist(productsModel.id!);
                                 print("Product is removed from wishlist");
                               } else {
-                                wishListProvider.addToWishlist(productsModel.id!);
+                                wishListProvider
+                                    .addToWishlist(productsModel.id!);
                                 print("Product is added to wishlist");
                               }
                             }),

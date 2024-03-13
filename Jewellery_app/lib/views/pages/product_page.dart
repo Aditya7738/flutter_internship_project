@@ -220,7 +220,7 @@ class _ProductPageState extends State<ProductPage> {
                                       label: Text(
                                         value.list[index]["parent"] ==
                                                 "price_range"
-                                            ? "₹${value.list[index]["price_range"]["min_price"]} - ₹${value.list[index]["price_range"]["max_price"]}"
+                                            ? "₹ ${value.list[index]["price_range"]["min_price"]} - ₹ ${value.list[index]["price_range"]["max_price"]}"
                                             : value.list[index]["label"],
                                         style: TextStyle(
                                             fontSize: 16.0,

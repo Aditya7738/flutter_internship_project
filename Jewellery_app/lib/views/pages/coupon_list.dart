@@ -244,6 +244,8 @@ class _CouponListPageState extends State<CouponListPage> {
 
   @override
   Widget build(BuildContext context) {
+    double deviceWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Apply Coupon"),
@@ -261,6 +263,7 @@ class _CouponListPageState extends State<CouponListPage> {
                   color: Colors.white,
                   padding: EdgeInsets.all(16.0),
                   child: TextFormField(
+                    style: Theme.of(context).textTheme.subtitle1,
                     controller: _couponController,
                     keyboardType: TextInputType.text,
                     onChanged: (value) {
@@ -305,21 +308,29 @@ class _CouponListPageState extends State<CouponListPage> {
                               },
                               child: Container(
                                 margin: EdgeInsets.only(right: 15.0),
-                                width: 45.0,
+                                width:
+                                    deviceWidth > 600 ? deviceWidth / 3 : 60.0,
                                 height: 20.0,
-                                alignment: Alignment.center,
-                                child: Text(
-                                  "APPLY",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      color: Theme.of(context).primaryColor,
-                                      fontWeight: FontWeight.bold),
-                                ),
+                                alignment: Alignment.centerRight,
+                                child: Text("APPLY",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: deviceWidth > 600
+                                            ? deviceWidth / 40
+                                            : 13.0,
+                                        color: Theme.of(context).primaryColor)),
                               ),
                             )
                           : SizedBox(),
-                      // errorText: ,
+                      labelStyle: TextStyle(
+                        color: Theme.of(context).primaryColor,
+                        fontWeight: FontWeight.normal,
+                        fontSize: (deviceWidth / 33) + 1.5,
+                      ),
                       labelText: "Enter coupon code",
+                      errorStyle: TextStyle(
+                          fontSize: (deviceWidth / 36), color: Colors.red),
                       border: OutlineInputBorder(
                           borderRadius:
                               BorderRadius.all(Radius.circular(20.0))),
@@ -344,399 +355,23 @@ class _CouponListPageState extends State<CouponListPage> {
                           SizedBox(
                             height: 16.0,
                           ),
-                          Text(
-                            "Great deal for you!",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 16.0),
-                          ),
+                          Text("Great deal for you!",
+                              style: Theme.of(context).textTheme.headline2),
                           SizedBox(
                             height: 16.0,
                           ),
                           ...getListOfApplyCoupons(),
-                          // Scrollbar(
-                          //   child: Container(
-                          //     color: Colors.red,
-                          //     padding: EdgeInsets.all(16.0),
-                          //     width: MediaQuery.of(context).size.width,
-                          //     height: MediaQuery.of(context).size.height - 195,
-                          //     child: ListView.builder(
-                          //       itemCount: listOfApplyCoupons.length,
-                          //       itemBuilder: (context, index) {
-                          //         CouponsModel couponsModel =
-                          //             listOfApplyCoupons[index];
-                          //         return Stack(
-                          //           children: [
-                          //             Container(
-                          //               margin: EdgeInsets.only(bottom: 16.0),
-                          //               decoration: BoxDecoration(
-                          //                   color: Colors.white,
-                          //                   borderRadius:
-                          //                       BorderRadius.circular(20.0)),
-                          //               width: MediaQuery.of(context).size.width,
-                          //               height: 150,
-                          //               child: Row(
-                          //                 children: [
-                          //                   Container(
-                          //                     padding: EdgeInsets.only(
-                          //                         left: 16.0,
-                          //                         right: 2.0,
-                          //                         top: 16.0,
-                          //                         bottom: 16.0),
-                          //                     alignment: Alignment.center,
-                          //                     height: 150,
-                          //                     width: 84,
-                          //                     // width: 100,
-                          //                     decoration: BoxDecoration(
-                          //                         color:
-                          //                             //  listOfApplicableCoupons[
-                          //                             //                 index][
-                          //                             //             "${couponsModel.id}"]! ==
-                          //                             //         "Not Applicable"
-                          //                             //     ? Colors.grey
-                          //                             //     :
-                          //                             Theme.of(context)
-                          //                                 .primaryColor,
-                          //                         borderRadius: BorderRadius.only(
-                          //                             topLeft:
-                          //                                 Radius.circular(20.0),
-                          //                             bottomLeft:
-                          //                                 Radius.circular(20.0))),
-                          //                     child: RotatedBox(
-                          //                       quarterTurns: -1,
-                          //                       child: Text(
-                          //                         "${discounts[index]} OFF",
-                          //                         style: TextStyle(
-                          //                             color: Colors.white,
-                          //                             fontWeight: FontWeight.bold,
-                          //                             fontSize: 23.0),
-                          //                         textAlign: TextAlign.center,
-                          //                       ),
-                          //                     ),
-                          //                   ),
-                          //                   Padding(
-                          //                     padding: const EdgeInsets.all(16.0),
-                          //                     child: Column(
-                          //                       mainAxisAlignment:
-                          //                           MainAxisAlignment
-                          //                               .spaceBetween,
-                          //                       crossAxisAlignment:
-                          //                           CrossAxisAlignment.start,
-                          //                       children: [
-                          //                         Column(
-                          //                           crossAxisAlignment:
-                          //                               CrossAxisAlignment.start,
-                          //                           children: [
-                          //                             SizedBox(
-                          //                               width:
-                          //                                   MediaQuery.of(context)
-                          //                                           .size
-                          //                                           .width -
-                          //                                       148,
-                          //                               child: Row(
-                          //                                 mainAxisAlignment:
-                          //                                     MainAxisAlignment
-                          //                                         .spaceBetween,
-                          //                                 children: [
-                          //                                   Text(
-                          //                                     couponsModel.code ??
-                          //                                         "",
-                          //                                     style: TextStyle(
-                          //                                         fontWeight:
-                          //                                             FontWeight
-                          //                                                 .bold,
-                          //                                         fontSize: 18.0),
-                          //                                   ),
-                          //                                   GestureDetector(
-                          //                                     onTap: () {
-                          //                                       if (listOfApplicableCoupons[
-                          //                                                   index]
-                          //                                               [
-                          //                                               "${couponsModel.id}"]! !=
-                          //                                           "Not Applicable") {}
-                          //                                     },
-                          //                                     child: Text(
-                          //                                         listOfApplicableCoupons[
-                          //                                                 index][
-                          //                                             "${couponsModel.id}"]!,
-                          //                                         style: TextStyle(
-                          //                                             color: listOfApplicableCoupons[index]["${couponsModel.id}"]! ==
-                          //                                                     "Not Applicable"
-                          //                                                 ? Colors
-                          //                                                     .grey
-                          //                                                 : Theme.of(context)
-                          //                                                     .primaryColor,
-                          //                                             fontWeight:
-                          //                                                 FontWeight
-                          //                                                     .bold,
-                          //                                             fontSize:
-                          //                                                 17.0)),
-                          //                                   )
-                          //                                 ],
-                          //                               ),
-                          //                             ),
-                          //                             SizedBox(
-                          //                               height: 5.0,
-                          //                             ),
-                          //                             Text(
-                          //                               "Valid till ${couponsModel.dateExpires}",
-                          //                               style: TextStyle(
-                          //                                   fontSize: 15.0),
-                          //                             )
-                          //                           ],
-                          //                         ),
-                          //                         SizedBox(
-                          //                           child: Text(
-                          //                             couponsModel.description ??
-                          //                                 "Description;",
-                          //                             style: TextStyle(
-                          //                                 fontSize: 15.0),
-                          //                             maxLines: 2,
-                          //                           ),
-                          //                           width: MediaQuery.of(context)
-                          //                                   .size
-                          //                                   .width -
-                          //                               148,
-                          //                         )
-                          //                       ],
-                          //                     ),
-                          //                   )
-                          //                 ],
-                          //               ),
-                          //               // Rectangle color
-                          //             ),
-                          //             Positioned(
-                          //               top: 55,
-                          //               left: -15.0,
-                          //               child: Container(
-                          //                 width: 30,
-                          //                 height: 30,
-                          //                 decoration: BoxDecoration(
-                          //                   shape: BoxShape.circle,
-                          //                   color: Color.fromARGB(255, 255, 227,
-                          //                       230), // First circle color
-                          //                 ),
-                          //               ),
-                          //             ),
-                          //             Positioned(
-                          //               top: 55,
-                          //               right: -15.0,
-                          //               child: Container(
-                          //                 width: 30,
-                          //                 height: 30,
-                          //                 decoration: BoxDecoration(
-                          //                   shape: BoxShape.circle,
-                          //                   color: Color.fromARGB(255, 255, 227,
-                          //                       230), // First circle color
-                          //                 ),
-                          //               ),
-                          //             ),
-                          //           ],
-                          //         );
-                          //       },
-                          //     ),
-                          //   ),
-                          // ),
+
                           ///////////////////////////////////////////////////////////
                           SizedBox(
                             height: 16.0,
                           ),
-                          Text(
-                            "Other Offers at Tiara by TJ!",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 16.0),
-                          ),
+                          Text("Other Offers at Tiara by TJ!",
+                              style: Theme.of(context).textTheme.headline2),
                           SizedBox(
                             height: 16.0,
                           ),
                           ...getListOfNonApplicableCoupons()
-                          // Scrollbar(
-                          //   child: Container(
-                          //     color: Colors.red,
-                          //     padding: EdgeInsets.all(16.0),
-                          //     width: MediaQuery.of(context).size.width,
-                          //     height: MediaQuery.of(context).size.height - 195,
-                          //     child: ListView.builder(
-                          //       itemCount: listOfNonApplicableCoupons.length,
-                          //       itemBuilder: (context, index) {
-                          //         CouponsModel couponsModel =
-                          //             listOfNonApplicableCoupons[index];
-                          //         return Stack(
-                          //           children: [
-                          //             Container(
-                          //               margin: EdgeInsets.only(bottom: 16.0),
-                          //               decoration: BoxDecoration(
-                          //                   color: Colors.white,
-                          //                   borderRadius:
-                          //                       BorderRadius.circular(20.0)),
-                          //               width: MediaQuery.of(context).size.width,
-                          //               height: 150,
-                          //               child: Row(
-                          //                 children: [
-                          //                   Container(
-                          //                     padding: EdgeInsets.only(
-                          //                         left: 16.0,
-                          //                         right: 2.0,
-                          //                         top: 16.0,
-                          //                         bottom: 16.0),
-                          //                     alignment: Alignment.center,
-                          //                     height: 150,
-                          //                     width: 84,
-                          //                     // width: 100,
-                          //                     decoration: BoxDecoration(
-                          //                         color:
-                          //                             // listOfApplicableCoupons[
-                          //                             //                 index][
-                          //                             //             "${couponsModel.id}"]! ==
-                          //                             //         "Not Applicable"
-                          //                             //     ?
-                          //                             Colors.grey,
-                          //                         // : Theme.of(context)
-                          //                         //     .primaryColor,
-                          //                         borderRadius: BorderRadius.only(
-                          //                             topLeft:
-                          //                                 Radius.circular(20.0),
-                          //                             bottomLeft:
-                          //                                 Radius.circular(20.0))),
-                          //                     child: RotatedBox(
-                          //                       quarterTurns: -1,
-                          //                       child: Text(
-                          //                         "${discounts[index]} OFF",
-                          //                         style: TextStyle(
-                          //                             color: Colors.white,
-                          //                             fontWeight: FontWeight.bold,
-                          //                             fontSize: 23.0),
-                          //                         textAlign: TextAlign.center,
-                          //                       ),
-                          //                     ),
-                          //                   ),
-                          //                   Padding(
-                          //                     padding: const EdgeInsets.all(16.0),
-                          //                     child: Column(
-                          //                       mainAxisAlignment:
-                          //                           MainAxisAlignment
-                          //                               .spaceBetween,
-                          //                       crossAxisAlignment:
-                          //                           CrossAxisAlignment.start,
-                          //                       children: [
-                          //                         Column(
-                          //                           crossAxisAlignment:
-                          //                               CrossAxisAlignment.start,
-                          //                           children: [
-                          //                             SizedBox(
-                          //                               width:
-                          //                                   MediaQuery.of(context)
-                          //                                           .size
-                          //                                           .width -
-                          //                                       148,
-                          //                               child: Row(
-                          //                                 mainAxisAlignment:
-                          //                                     MainAxisAlignment
-                          //                                         .spaceBetween,
-                          //                                 children: [
-                          //                                   Text(
-                          //                                     couponsModel.code ??
-                          //                                         "",
-                          //                                     style: TextStyle(
-                          //                                         fontWeight:
-                          //                                             FontWeight
-                          //                                                 .bold,
-                          //                                         fontSize: 18.0),
-                          //                                   ),
-                          //                                   GestureDetector(
-                          //                                     onTap: () {
-                          //                                       if (listOfApplicableCoupons[
-                          //                                                   index]
-                          //                                               [
-                          //                                               "${couponsModel.id}"]! !=
-                          //                                           "Not Applicable") {}
-                          //                                     },
-                          //                                     child: Text(
-                          //                                         listOfApplicableCoupons[index]
-                          //                                                     [
-                          //                                                     "${couponsModel.id}"] !=
-                          //                                                 null
-                          //                                             ? listOfApplicableCoupons[
-                          //                                                     index]
-                          //                                                 [
-                          //                                                 "${couponsModel.id}"]!
-                          //                                             : "",
-                          //                                         style: TextStyle(
-                          //                                             color:
-                          //                                                 //listOfApplicableCoupons[index]["${couponsModel.id}"]! ==
-                          //                                                 //             "Not Applicable"
-                          //                                                 //         ?
-                          //                                                 Colors.grey
-                          //                                             // : Theme.of(context)
-                          //                                             //     .primaryColor
-                          //                                             ,
-                          //                                             fontWeight: FontWeight.bold,
-                          //                                             fontSize: 17.0)),
-                          //                                   )
-                          //                                 ],
-                          //                               ),
-                          //                             ),
-                          //                             SizedBox(
-                          //                               height: 5.0,
-                          //                             ),
-                          //                             Text(
-                          //                               "Valid till ${couponsModel.dateExpires}",
-                          //                               style: TextStyle(
-                          //                                   fontSize: 15.0),
-                          //                             )
-                          //                           ],
-                          //                         ),
-                          //                         SizedBox(
-                          //                           child: Text(
-                          //                             couponsModel.description ??
-                          //                                 "Description;",
-                          //                             style: TextStyle(
-                          //                                 fontSize: 15.0),
-                          //                             maxLines: 2,
-                          //                           ),
-                          //                           width: MediaQuery.of(context)
-                          //                                   .size
-                          //                                   .width -
-                          //                               148,
-                          //                         )
-                          //                       ],
-                          //                     ),
-                          //                   )
-                          //                 ],
-                          //               ),
-                          //               // Rectangle color
-                          //             ),
-                          //             Positioned(
-                          //               top: 55,
-                          //               left: -15.0,
-                          //               child: Container(
-                          //                 width: 30,
-                          //                 height: 30,
-                          //                 decoration: BoxDecoration(
-                          //                   shape: BoxShape.circle,
-                          //                   color: Color.fromARGB(255, 255, 227,
-                          //                       230), // First circle color
-                          //                 ),
-                          //               ),
-                          //             ),
-                          //             Positioned(
-                          //               top: 55,
-                          //               right: -15.0,
-                          //               child: Container(
-                          //                 width: 30,
-                          //                 height: 30,
-                          //                 decoration: BoxDecoration(
-                          //                   shape: BoxShape.circle,
-                          //                   color: Color.fromARGB(255, 255, 227,
-                          //                       230), // First circle color
-                          //                 ),
-                          //               ),
-                          //             ),
-                          //           ],
-                          //         );
-                          //       },
-                          //     ),
-                          //   ),
-                          // ),
                         ],
                       ),
                     )
@@ -748,6 +383,7 @@ class _CouponListPageState extends State<CouponListPage> {
   }
 
   List<Widget> getListOfApplyCoupons() {
+    double deviceWidth = MediaQuery.of(context).size.width;
     List<Widget> widgets = <Widget>[];
     for (var i = 0; i < listOfApplyCoupons.length; i++) {
       CouponsModel couponsModel = listOfApplyCoupons[i];
@@ -765,25 +401,18 @@ class _CouponListPageState extends State<CouponListPage> {
             decoration: BoxDecoration(
                 color: Colors.white, borderRadius: BorderRadius.circular(20.0)),
             width: MediaQuery.of(context).size.width,
-            height: 150,
+            height: deviceWidth > 600 ? 180 : 133,
             child: Row(
               children: [
                 Container(
                   padding: EdgeInsets.only(
                       left: 16.0, right: 2.0, top: 16.0, bottom: 16.0),
                   alignment: Alignment.center,
-                  height: 150,
+                  height: 180,
                   width: 84,
                   // width: 100,
                   decoration: BoxDecoration(
-                      color:
-                          //  listOfApplicableCoupons[
-                          //                 index][
-                          //             "${couponsModel.id}"]! ==
-                          //         "Not Applicable"
-                          //     ? Colors.grey
-                          //     :
-                          Theme.of(context).primaryColor,
+                      color: Theme.of(context).primaryColor,
                       borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(20.0),
                           bottomLeft: Radius.circular(20.0))),
@@ -793,9 +422,10 @@ class _CouponListPageState extends State<CouponListPage> {
                       discount,
                       // "${couponsModel.amount} OFF",
                       style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 23.0),
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: deviceWidth > 600 ? deviceWidth / 30 : 23.0,
+                      ),
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -817,8 +447,11 @@ class _CouponListPageState extends State<CouponListPage> {
                                 Text(
                                   couponsModel.code ?? "",
                                   style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18.0),
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: deviceWidth > 600
+                                        ? deviceWidth / 30
+                                        : 18.0,
+                                  ),
                                 ),
                                 GestureDetector(
                                   onTap: () {
@@ -832,15 +465,12 @@ class _CouponListPageState extends State<CouponListPage> {
                                   },
                                   child: Text("Apply",
                                       style: TextStyle(
-                                          color:
-                                              // listOfApplicableCoupons[i]
-                                              //             ["${couponsModel.id}"]! ==
-                                              //         "Not Applicable"
-                                              //     ? Colors.grey
-                                              //     :
-                                              Theme.of(context).primaryColor,
                                           fontWeight: FontWeight.bold,
-                                          fontSize: 19.0)),
+                                          fontSize: deviceWidth > 600
+                                              ? deviceWidth / 35
+                                              : 13.0,
+                                          color:
+                                              Theme.of(context).primaryColor)),
                                 )
                               ],
                             ),
@@ -850,14 +480,21 @@ class _CouponListPageState extends State<CouponListPage> {
                           ),
                           Text(
                             "Valid till ${couponsModel.dateExpires}",
-                            style: TextStyle(fontSize: 15.0),
+                            style: Theme.of(context).textTheme.headline6,
                           )
                         ],
                       ),
                       SizedBox(
+                        height: 20.0,
+                      ),
+                      SizedBox(
                         child: Text(
-                          couponsModel.description ?? "Description;",
-                          style: TextStyle(fontSize: 15.0),
+                          //couponsModel.description ??
+                           "Description",
+                          style: TextStyle(
+                            fontSize:
+                                deviceWidth > 600 ? deviceWidth / 32 : 15.0,
+                          ),
                           maxLines: 2,
                         ),
                         width: MediaQuery.of(context).size.width - 148,
@@ -900,6 +537,7 @@ class _CouponListPageState extends State<CouponListPage> {
   }
 
   List<Widget> getListOfNonApplicableCoupons() {
+    double deviceWidth = MediaQuery.of(context).size.width;
     List<Widget> widgets = <Widget>[];
     for (var i = 0; i < listOfNonApplicableCoupons.length; i++) {
       CouponsModel couponsModel = listOfNonApplicableCoupons[i];
@@ -910,26 +548,18 @@ class _CouponListPageState extends State<CouponListPage> {
             decoration: BoxDecoration(
                 color: Colors.white, borderRadius: BorderRadius.circular(20.0)),
             width: MediaQuery.of(context).size.width,
-            height: 150,
+            height: deviceWidth > 600 ? 180 : 130,
             child: Row(
               children: [
                 Container(
                   padding: EdgeInsets.only(
                       left: 16.0, right: 2.0, top: 16.0, bottom: 16.0),
                   alignment: Alignment.center,
-                  height: 150,
+                  height: deviceWidth > 600 ? 180 : 130,
                   width: 84,
                   // width: 100,
                   decoration: BoxDecoration(
-                      color:
-                          // listOfApplicableCoupons[
-                          //                 index][
-                          //             "${couponsModel.id}"]! ==
-                          //         "Not Applicable"
-                          //     ?
-                          Colors.grey,
-                      // : Theme.of(context)
-                      //     .primaryColor,
+                      color: Colors.grey,
                       borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(20.0),
                           bottomLeft: Radius.circular(20.0))),
@@ -940,15 +570,16 @@ class _CouponListPageState extends State<CouponListPage> {
                           ? "₹ ${(double.parse(couponsModel.amount!)).toInt()} OFF"
                           : "${(double.parse(couponsModel.amount!)).toInt()}% OFF",
                       style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 23.0),
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: deviceWidth > 600 ? deviceWidth / 33 : 19.0,
+                      ),
                       textAlign: TextAlign.center,
                     ),
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(15.0),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -961,24 +592,24 @@ class _CouponListPageState extends State<CouponListPage> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(
-                                  couponsModel.code ?? "",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18.0),
-                                ),
+                                Text(couponsModel.code ?? "",
+                                    style:
+                                        Theme.of(context).textTheme.headline2),
                                 Text("Not Applicable",
                                     style: TextStyle(
-                                        color:
-                                            //listOfApplicableCoupons[index]["${couponsModel.id}"]! ==
-                                            //             "Not Applicable"
-                                            //         ?
-                                            Colors.grey
-                                        // : Theme.of(context)
-                                        //     .primaryColor
-                                        ,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 17.0))
+                                      color:
+                                          //listOfApplicableCoupons[index]["${couponsModel.id}"]! ==
+                                          //             "Not Applicable"
+                                          //         ?
+                                          Colors.grey
+                                      // : Theme.of(context)
+                                      //     .primaryColor
+                                      ,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: deviceWidth > 600
+                                          ? deviceWidth / 36
+                                          : 13.0,
+                                    ))
                               ],
                             ),
                           ),
@@ -987,14 +618,23 @@ class _CouponListPageState extends State<CouponListPage> {
                           ),
                           Text(
                             "Valid till ${couponsModel.dateExpires}",
-                            style: TextStyle(fontSize: 15.0),
+                            style: TextStyle(
+                              fontSize:
+                                  deviceWidth > 600 ? deviceWidth / 32 : 15.0,
+                            ),
                           )
                         ],
                       ),
                       SizedBox(
+                        height: 20.0,
+                      ),
+                      SizedBox(
                         child: Text(
                           couponsModel.description ?? "Description;",
-                          style: TextStyle(fontSize: 15.0),
+                          style: TextStyle(
+                            fontSize:
+                                deviceWidth > 600 ? deviceWidth / 32 : 15.0,
+                          ),
                           maxLines: 2,
                         ),
                         width: MediaQuery.of(context).size.width - 148,
