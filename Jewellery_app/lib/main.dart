@@ -259,6 +259,16 @@ class _MyAppState extends State<MyApp> {
                 fontWeight: FontWeight.normal,
                 fontSize: (deviceWidth / 33),
               ),
+              bodyText1: TextStyle(
+                color: Color(0xffCC868A),
+                fontWeight: FontWeight.bold,
+                fontSize: deviceWidth / 25,
+              ),
+              bodyText2: TextStyle(
+             
+                fontWeight: FontWeight.bold,
+                 fontSize: (deviceWidth / 33) + 1.5,
+              ),
               button: TextStyle(
                   color: Colors.white,
                   fontSize: (deviceWidth / 30) - 1,

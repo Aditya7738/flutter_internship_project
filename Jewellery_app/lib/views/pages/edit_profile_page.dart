@@ -25,13 +25,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   final TextEditingController _lastNameController = TextEditingController();
 
- 
-
   final TextEditingController _addressController = TextEditingController();
 
   final TextEditingController _phoneNoController = TextEditingController();
-
- 
 
   final TextEditingController _pinNoController = TextEditingController();
 
@@ -55,12 +51,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
         lastDate: DateTime(2025));
 
     if (picked != null && picked != selectedDate) {
-      // if (mounted) {
-      // setState(() {
-      //   print("CALENDAR PRESSED");
-      //   // selectedDate = picked;
-
-      // });
       print(" DATE ${picked.toLocal().toString()}");
       return "${picked.day}/${picked.month}/${picked.year}";
     } else {
@@ -75,56 +65,53 @@ class _EditProfilePageState extends State<EditProfilePage> {
     final customerProvider =
         Provider.of<CustomerProvider>(context, listen: false);
 
-    if (customerProvider.customerData[0].containsKey("first_name")) {
-      _firstNameController.text =
-          customerProvider.customerData[0]["first_name"];
-    }
+    // if (customerProvider.customerData[0].containsKey("first_name")) {
+    //   _firstNameController.text =
+    //       customerProvider.customerData[0]["first_name"];
+    // }
 
-    if (customerProvider.customerData[0].containsKey("last_name")) {
-      _lastNameController.text = customerProvider.customerData[0]["last_name"];
-    }
+    // if (customerProvider.customerData[0].containsKey("last_name")) {
+    //   _lastNameController.text = customerProvider.customerData[0]["last_name"];
+    // }
 
-    if (customerProvider.customerData[0].containsKey("email")) {
-      _emailController.text = customerProvider.customerData[0]["email"];
-    }
+    // if (customerProvider.customerData[0].containsKey("email")) {
+    //   _emailController.text = customerProvider.customerData[0]["email"];
+    // }
 
-    if (customerProvider.customerData[0].containsKey("mobile_no")) {
-      _phoneNoController.text = customerProvider.customerData[0]["mobile_no"];
-    }
-    // _phoneNoController.text = customerProvider.customerData[0]["mobile_no"];
-    // _addressController.text = customerProvider.customerData[0]["fulladdress"];
-    if (customerProvider.customerData[0].containsKey("fulladdress")) {
-      _addressController.text = customerProvider.customerData[0]["fulladdress"];
-    }
-    if (customerProvider.customerData[0].containsKey("pincode")) {
-      _pinNoController.text = customerProvider.customerData[0]["pincode"];
-    }
+    // if (customerProvider.customerData[0].containsKey("mobile_no")) {
+    //   _phoneNoController.text = customerProvider.customerData[0]["mobile_no"];
+    // }
 
-    //_pinNoController.text = customerProvider.customerData[0]["pincode"];
-    if (customerProvider.customerData[0].containsKey("birthday")) {
-      _birthdateController.text = customerProvider.customerData[0]["birthday"];
-    }
-    // _birthdateController.text = customerProvider.customerData[0]["birthday"];
-    if (customerProvider.customerData[0].containsKey("anniversary")) {
-      _anniversarydateController.text =
-          customerProvider.customerData[0]["anniversary"];
-    }
+    // if (customerProvider.customerData[0].containsKey("fulladdress")) {
+    //   _addressController.text = customerProvider.customerData[0]["fulladdress"];
+    // }
+    // if (customerProvider.customerData[0].containsKey("pincode")) {
+    //   _pinNoController.text = customerProvider.customerData[0]["pincode"];
+    // }
 
-    // _anniversarydateController.text =
-    //     customerProvider.customerData[0]["anniversary"];
-    if (customerProvider.customerData[0].containsKey("spouse_birthday")) {
-      _spousebirthdateController.text =
-          customerProvider.customerData[0]["spouse_birthday"];
-    }
-    // _spousebirthdateController.text =
-    //     customerProvider.customerData[0]["spouse_birthday"];
+    // if (customerProvider.customerData[0].containsKey("birthday")) {
+    //   _birthdateController.text = customerProvider.customerData[0]["birthday"];
+    // }
+
+    // if (customerProvider.customerData[0].containsKey("anniversary")) {
+    //   _anniversarydateController.text =
+    //       customerProvider.customerData[0]["anniversary"];
+    // }
+
+    // if (customerProvider.customerData[0].containsKey("spouse_birthday")) {
+    //   _spousebirthdateController.text =
+    //       customerProvider.customerData[0]["spouse_birthday"];
+    // }
   }
+
+  bool isPhoneValid = true;
 
   @override
   Widget build(BuildContext context) {
     final customerProvider =
         Provider.of<CustomerProvider>(context, listen: false);
-    int customerId = customerProvider.customerData[0]["id"];
+    //int customerId = customerProvider.customerData[0]["id"];
+    double deviceWidth = MediaQuery.of(context).size.width;
     return Scaffold(
         appBar: AppBar(
           title: const Text("Edit Profile"),
@@ -142,12 +129,17 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   Padding(
                     padding: const EdgeInsets.only(top: 7.0),
                     child: TextFormField(
+                      style: Theme.of(context).textTheme.subtitle1,
                       controller: _firstNameController,
                       keyboardType: TextInputType.name,
                       validator: (value) {
                         return ValidationHelper.nullOrEmptyString(value);
                       },
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
+                        errorStyle: TextStyle(
+                            fontSize: (deviceWidth / 33) + 1.5,
+                            color: Colors.red),
+                        labelStyle: Theme.of(context).textTheme.subtitle1,
                         // errorText: ,
                         labelText: "First Name*",
                         border: OutlineInputBorder(
@@ -160,12 +152,17 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     height: 30.0,
                   ),
                   TextFormField(
+                    style: Theme.of(context).textTheme.subtitle1,
                     controller: _lastNameController,
                     keyboardType: TextInputType.name,
                     validator: (value) {
                       return ValidationHelper.nullOrEmptyString(value);
                     },
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
+                      errorStyle: TextStyle(
+                          fontSize: (deviceWidth / 33) + 1.5,
+                          color: Colors.red),
+                      labelStyle: Theme.of(context).textTheme.subtitle1,
                       labelText: "Last Name*",
                       border: OutlineInputBorder(
                           borderRadius:
@@ -175,15 +172,26 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   const SizedBox(
                     height: 30.0,
                   ),
-                  SizedBox(
-                    height: 75.0,
+                  Container(
+                    
+                    height: isPhoneValid ?
+                    80.0 : 
+                    130.0,
                     child: TextFormField(
+                      style: Theme.of(context).textTheme.subtitle1,
                       keyboardType: TextInputType.phone,
                       controller: _phoneNoController,
                       validator: (value) {
+                        setState(() {
+                          isPhoneValid = ValidationHelper.isPhoneNoValidbool(value);
+                        });
                         return ValidationHelper.isPhoneNoValid(value);
                       },
                       decoration: InputDecoration(
+                          errorStyle: TextStyle(
+                              fontSize: (deviceWidth / 33) + 1.5,
+                              color: Colors.red),
+                          labelStyle: Theme.of(context).textTheme.subtitle1,
                           // suffix: GestureDetector(
                           //     onTap: () {
                           //       value.setPhoneNoVerified(true);
@@ -220,8 +228,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                   BorderRadius.all(Radius.circular(20.0))),
                           prefix: DropdownButton(
                               value: selectedOption,
-                              icon:
-                                  const Icon(Icons.keyboard_arrow_down_rounded),
+                              icon: const Icon(Icons.keyboard_arrow_down_rounded),
                               items: options.map((String option) {
                                 return DropdownMenuItem(
                                   value: option,
@@ -244,51 +251,53 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     height: 30.0,
                   ),
 
-                  SizedBox(
-                    height: 75.0,
-                    child: TextFormField(
-                      keyboardType: TextInputType.emailAddress,
-                      controller: _emailController,
-                      validator: (value) {
-                        return ValidationHelper.isEmailValid(value);
-                      },
-                      decoration: InputDecoration(
-                        //labelText: "Enter your email",
-                        labelText: "Enter your email*",
-                        border: const OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(20.0))),
-                        // suffix: GestureDetector(
-                        //     onTap: () {
-                        //       value.setEmailVerified(true);
-                        //     },
-                        //     child: value.phoneNoVerified
-                        //         ? Container(
-                        //             width: 100.0,
-                        //             height: 40.0,
-                        //             decoration: BoxDecoration(
-                        //                 color: const Color(0xffCC868A),
-                        //                 borderRadius:
-                        //                     BorderRadius.circular(10.0)),
-                        //             padding: const EdgeInsets.symmetric(
-                        //                 vertical: 10.0, horizontal: 20.0),
-                        //             child: const Center(
-                        //               child: Text(
-                        //                 "VERIFY",
-                        //                 style: TextStyle(
-                        //                     color: Colors.white,
-                        //                     fontSize: 15.0),
-                        //               ),
-                        //             ))
-                        //         : Padding(
-                        //             padding: const EdgeInsets.only(bottom: 0.0),
-                        //             child: Image.asset(
-                        //               "assets/images/yes.png",
-                        //               width: 30.0,
-                        //               height: 25.0,
-                        //             ),
-                        //           )),
-                      ),
+                  TextFormField(
+                    style: Theme.of(context).textTheme.subtitle1,
+                    keyboardType: TextInputType.emailAddress,
+                    controller: _emailController,
+                    validator: (value) {
+                      return ValidationHelper.isEmailValid(value);
+                    },
+                    decoration: InputDecoration(
+                      errorStyle: TextStyle(
+                          fontSize: (deviceWidth / 33) + 1.5,
+                          color: Colors.red),
+                      labelStyle: Theme.of(context).textTheme.subtitle1,
+                      //labelText: "Enter your email",
+                      labelText: "Enter your email*",
+                      border: const OutlineInputBorder(
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(20.0))),
+                      // suffix: GestureDetector(
+                      //     onTap: () {
+                      //       value.setEmailVerified(true);
+                      //     },
+                      //     child: value.phoneNoVerified
+                      //         ? Container(
+                      //             width: 100.0,
+                      //             height: 40.0,
+                      //             decoration: BoxDecoration(
+                      //                 color: const Color(0xffCC868A),
+                      //                 borderRadius:
+                      //                     BorderRadius.circular(10.0)),
+                      //             padding: const EdgeInsets.symmetric(
+                      //                 vertical: 10.0, horizontal: 20.0),
+                      //             child: const Center(
+                      //               child: Text(
+                      //                 "VERIFY",
+                      //                 style: TextStyle(
+                      //                     color: Colors.white,
+                      //                     fontSize: 15.0),
+                      //               ),
+                      //             ))
+                      //         : Padding(
+                      //             padding: const EdgeInsets.only(bottom: 0.0),
+                      //             child: Image.asset(
+                      //               "assets/images/yes.png",
+                      //               width: 30.0,
+                      //               height: 25.0,
+                      //             ),
+                      //           )),
                     ),
                   ),
 
@@ -300,6 +309,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   ),
 
                   TextFormField(
+                    style: Theme.of(context).textTheme.subtitle1,
                     minLines: 2,
                     maxLines: 3,
                     controller: _addressController,
@@ -307,7 +317,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       return ValidationHelper.isFullAddress(value);
                     },
                     keyboardType: TextInputType.streetAddress,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
+                      errorStyle: TextStyle(
+                          fontSize: (deviceWidth / 33) + 1.5,
+                          color: Colors.red),
+                      labelStyle: Theme.of(context).textTheme.subtitle1,
                       labelText: "Address*",
                       border: OutlineInputBorder(
                           borderRadius:
@@ -319,12 +333,17 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   ),
 
                   TextFormField(
+                    style: Theme.of(context).textTheme.subtitle1,
                     controller: _pinNoController,
                     validator: (value) {
                       return ValidationHelper.isPincodeValid(value);
                     },
                     keyboardType: TextInputType.number,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
+                      errorStyle: TextStyle(
+                          fontSize: (deviceWidth / 33) + 1.5,
+                          color: Colors.red),
+                      labelStyle: Theme.of(context).textTheme.subtitle1,
                       labelText: "Pin code*",
                       border: OutlineInputBorder(
                           borderRadius:
@@ -337,6 +356,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   ),
 
                   TextFormField(
+                    style: Theme.of(context).textTheme.subtitle1,
                     controller: _birthdateController,
                     keyboardType: TextInputType.datetime,
                     onTap: () async {
@@ -344,7 +364,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
                       _birthdateController.text = await _selectedDate(context);
                     },
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
+                      errorStyle: TextStyle(
+                          fontSize: (deviceWidth / 33) + 1.5,
+                          color: Colors.red),
+                      labelStyle: Theme.of(context).textTheme.subtitle1,
                       suffixIcon: SuffixIcon(icon: Icons.calendar_month),
                       labelText: "Birthday (Optional)",
                       border: OutlineInputBorder(
@@ -358,6 +382,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   ),
 
                   TextFormField(
+                    style: Theme.of(context).textTheme.subtitle1,
                     onTap: () async {
                       print("CALENDAR PRESSED");
 
@@ -366,7 +391,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     },
                     controller: _anniversarydateController,
                     keyboardType: TextInputType.datetime,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
+                      errorStyle: TextStyle(
+                          fontSize: (deviceWidth / 33) + 1.5,
+                          color: Colors.red),
+                      labelStyle: Theme.of(context).textTheme.subtitle1,
                       suffixIcon: SuffixIcon(icon: Icons.calendar_month),
                       labelText: "Anniversary (Optional)",
                       border: OutlineInputBorder(
@@ -380,6 +409,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   ),
 
                   TextFormField(
+                    style: Theme.of(context).textTheme.subtitle1,
                     onTap: () async {
                       print("CALENDAR PRESSED");
 
@@ -388,7 +418,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     },
                     controller: _spousebirthdateController,
                     keyboardType: TextInputType.datetime,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
+                      errorStyle: TextStyle(
+                          fontSize: (deviceWidth / 33) + 1.5,
+                          color: Colors.red),
+                      labelStyle: Theme.of(context).textTheme.subtitle1,
                       suffixIcon: SuffixIcon(icon: Icons.calendar_month),
                       labelText: "Spouse Birthday (Optional)",
                       border: OutlineInputBorder(
@@ -399,7 +433,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   ),
 
                   const SizedBox(
-                    height: 30.0,
+                    height: 50.0,
                   ),
 
                   // Center(
@@ -425,46 +459,46 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             });
                           }
 
-                          final response =
-                              await ApiService.updateCustomerProfile(
-                                  customerId, updatedData);
+                          // final response =
+                          //     await ApiService.updateCustomerProfile(
+                          //         customerId, updatedData);
 
-                          if (response != null) {
-                            if (response.statusCode == 200) {
-                              List<Map<String, dynamic>> data =
-                                  <Map<String, dynamic>>[];
+                          // if (response != null) {
+                          //   if (response.statusCode == 200) {
+                          //     List<Map<String, dynamic>> data =
+                          //         <Map<String, dynamic>>[];
 
-                              String body =
-                                  await response.stream.bytesToString();
-                              print(body);
+                          //     String body =
+                          //         await response.stream.bytesToString();
+                          //     print(body);
 
-                              try {
-                                data.add(jsonDecode(body));
-                                print("${body.runtimeType}");
-                                print("JSON DECODE DATA $data");
-                              } catch (e) {
-                                print('Error decoding: $e');
-                              }
+                          //     try {
+                          //       data.add(jsonDecode(body));
+                          //       print("${body.runtimeType}");
+                          //       print("JSON DECODE DATA $data");
+                          //     } catch (e) {
+                          //       print('Error decoding: $e');
+                          //     }
 
-                              customerProvider.setCustomerData(data);
+                          //   //  customerProvider.setCustomerData(data);
 
-                              Map<String, String> updatedData2 = {
-                                "mobile_no": _phoneNoController.text,
-                                "fulladdress": _addressController.text,
-                                "pincode": _pinNoController.text,
-                                "birthday": _birthdateController.text,
-                                "anniversary": _anniversarydateController.text,
-                                "spouse_birthday":
-                                    _spousebirthdateController.text,
-                              };
+                          //     Map<String, String> updatedData2 = {
+                          //       "mobile_no": _phoneNoController.text,
+                          //       "fulladdress": _addressController.text,
+                          //       "pincode": _pinNoController.text,
+                          //       "birthday": _birthdateController.text,
+                          //       "anniversary": _anniversarydateController.text,
+                          //       "spouse_birthday":
+                          //           _spousebirthdateController.text,
+                          //     };
 
-                              customerProvider.addCustomerData(updatedData2);
+                          //    // customerProvider.addCustomerData(updatedData2);
 
-                              print(
-                                  "updated customerData list ${customerProvider.customerData[0]}");
-                              Navigator.pop(context);
-                            }
-                          }
+                          //     // print(
+                          //     //     "updated customerData list ${customerProvider.customerData[0]}");
+                          //     Navigator.pop(context);
+                          //   }
+                          // }
                           if (mounted) {
                             setState(() {
                               isUpdating = false;
@@ -475,11 +509,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     },
                     child: Container(
                         width: MediaQuery.of(context).size.width,
-                        height: 50.0,
+                      
                         decoration: BoxDecoration(
                             color: const Color(0xffCC868A),
                             borderRadius: BorderRadius.circular(5.0)),
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        padding: const EdgeInsets.symmetric(vertical: 14.0),
                         margin: EdgeInsets.only(bottom: 10.0),
                         child: Center(
                           child: isUpdating
@@ -493,9 +527,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                   ),
                                 )
                               : Text(
-                                  "SAVE CHAGES",
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 17.0),
+                                  "SAVE CHANGES",
+                                  style: Theme.of(context).textTheme.button,
+
                                 ),
                         )),
                   ),

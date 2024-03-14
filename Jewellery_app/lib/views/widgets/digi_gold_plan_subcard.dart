@@ -14,7 +14,7 @@ class DigiGoldPlanSubCard extends StatelessWidget {
       const Color.fromARGB(255, 255, 248, 180)
       : Colors.yellow,
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 90.0),
+        padding: const EdgeInsets.symmetric(vertical: 180.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

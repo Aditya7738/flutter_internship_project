@@ -15,6 +15,7 @@ class _NoInternetConnectionPageState extends State<NoInternetConnectionPage> {
 
   @override
   Widget build(BuildContext context) {
+    final deviceWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.only(top: 28.0),
@@ -33,18 +34,21 @@ class _NoInternetConnectionPageState extends State<NoInternetConnectionPage> {
               ),
               Text(
                 "No internet connection!",
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18.0,
-                    color: Theme.of(context).primaryColor),
+                style:
+                Theme.of(context).textTheme.bodyText1
+                //  TextStyle(
+                //     fontWeight: FontWeight.bold,
+                //     fontSize: 18.0,
+                //     color: Theme.of(context).primaryColor)
+                    ,
               ),
               const SizedBox(
                 height: 20.0,
               ),
               Text(
                 "Please check your network connection",
-                style: TextStyle(
-                    fontSize: 18.0, color: Theme.of(context).primaryColor),
+               style:
+                Theme.of(context).textTheme.subtitle2
               ),
               const SizedBox(
                 height: 50.0,
@@ -76,8 +80,10 @@ class _NoInternetConnectionPageState extends State<NoInternetConnectionPage> {
                   }
                 },
                 child: Container(
-                    width: 155,
+                    width: deviceWidth > 600 ? deviceWidth / 4.7 : 2.8,
+                   
                     decoration: BoxDecoration(
+                     
                         border: Border.all(
                             color: Theme.of(context).primaryColor,
                             style: BorderStyle.solid),
@@ -94,17 +100,15 @@ class _NoInternetConnectionPageState extends State<NoInternetConnectionPage> {
                             : Image.asset(
                                 "assets/images/reload.png",
                                 color: Theme.of(context).primaryColor,
-                                width: 20.0,
-                                height: 20.0,
+                                width: deviceWidth > 600 ? 25.0 : 20.0,
+                                height: deviceWidth > 600 ? 25.0 : 20.0,
                               ),
                         SizedBox(
                           width: 10.0,
                         ),
                         Text(
                           "Try again",
-                          style: TextStyle(
-                              color: Theme.of(context).primaryColor,
-                              fontSize: 17.0),
+                          style: Theme.of(context).textTheme.subtitle2,
                         ),
                       ],
                     )),

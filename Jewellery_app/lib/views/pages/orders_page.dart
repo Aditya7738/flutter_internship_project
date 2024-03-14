@@ -7,39 +7,41 @@ class OrderPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double deviceWidth = MediaQuery.of(context).size.width;
     List<Widget> tabs = [
-      const Tab(child: Text("Pending orders", style: TextStyle(fontSize: 16.0),),),
-      const Tab(child: Text("Cancelled Orders", style: TextStyle(fontSize: 16.0)),)
+      Tab(
+        child: Text(
+          "Pending orders",
+          style: TextStyle(fontSize: deviceWidth > 600 ? 26.0 : 16.0),
+        ),
+      ),
+      Tab(
+        child: Text("Cancelled Orders",
+            style: TextStyle(fontSize: deviceWidth > 600 ? 26.0 : 16.0)),
+      )
     ];
-
 
     return DefaultTabController(
       length: tabs.length,
       child: Scaffold(
-        appBar: AppBar(
-          title: const Text(
-            "My Orders"
+          appBar: AppBar(
+            title: const Text("My Orders"),
+            bottom: TabBar(
+                unselectedLabelColor: Colors.black,
+                labelColor: Theme.of(context).primaryColor,
+                indicatorColor: Theme.of(context).primaryColor,
+                tabs: tabs),
           ),
-          bottom: TabBar(
-            unselectedLabelColor: Colors.black,
-            labelColor: Theme.of(context).primaryColor,
-          indicatorColor: Theme.of(context).primaryColor,
-          tabs: tabs
-          ),
-        
-        ),
-        body: TabBarView(
-          children: [
+          body: TabBarView(children: [
+            //EmptyListWidget(imagePath: "assets/images/delivery_service.png", message: "Oops! You haven't placed an order yet!"),
+            MyOrderTab(),
 
-
-          //EmptyListWidget(imagePath: "assets/images/delivery_service.png", message: "Oops! You haven't placed an order yet!"),
-          MyOrderTab(),
-
-          EmptyListWidget(imagePath: "assets/images/cancel.png", message: "You don't have any cancelled order.", forCancelledOrder: true,),
-          ]
-
-          )
-      ),
+            EmptyListWidget(
+              imagePath: "assets/images/cancel.png",
+              message: "You don't have any cancelled order.",
+              forCancelledOrder: true,
+            ),
+          ])),
     );
   }
 }

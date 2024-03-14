@@ -13,19 +13,31 @@ class ValidationHelper {
       }
       return null;
     }
-    return null;
+    return nullOrEmptyString(input);
   }
 
   static String? isPhoneNoValid(String? input) {
     if (nullOrEmptyString(input) == null) {
       if (input!.length != 10) {
-        return "Phone no is not valid";
+        return "Mobile number is not valid";
       }
 
       return null;
     }
 
     return nullOrEmptyString(input);
+  }
+
+  static bool isPhoneNoValidbool(String? input) {
+    if (nullOrEmptyString(input) == null) {
+      if (input!.length != 10) {
+        return false;
+      }
+
+      return true;
+    }
+
+    return false;
   }
 
   static String? isEmailValid(String? input) {

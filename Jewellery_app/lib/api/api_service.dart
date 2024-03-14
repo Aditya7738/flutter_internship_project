@@ -32,11 +32,11 @@ class ApiService {
   static Future<bool> checkInternetConnection(BuildContext context) async {
     final connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.none) {
-      // return await Navigator.push(
-      //     context,
-      //     MaterialPageRoute(
-      //       builder: (context) => NoInternetConnectionPage(),
-      //     ));
+      return await Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => NoInternetConnectionPage(),
+          ));
       return true;
     } else {
       return true;

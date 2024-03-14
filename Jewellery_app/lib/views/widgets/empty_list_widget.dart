@@ -92,10 +92,7 @@ class EmptyListWidget extends StatelessWidget {
               message,
               textAlign: TextAlign.center,
               maxLines: 2,
-              style: TextStyle(
-                  fontSize: 19.0,
-                  color: Theme.of(context).primaryColor,
-                  fontWeight: FontWeight.bold),
+              style: Theme.of(context).textTheme.subtitle2
             ),
             const SizedBox(
               height: 50.0,

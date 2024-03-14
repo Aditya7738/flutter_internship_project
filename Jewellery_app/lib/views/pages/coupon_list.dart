@@ -364,7 +364,7 @@ class _CouponListPageState extends State<CouponListPage> {
 
                           ///////////////////////////////////////////////////////////
                           SizedBox(
-                            height: 16.0,
+                            height: 30.0,
                           ),
                           Text("Other Offers at Tiara by TJ!",
                               style: Theme.of(context).textTheme.headline2),

@@ -13,6 +13,7 @@ import 'package:Tiara_by_TJ/views/pages/search_page.dart';
 import 'package:Tiara_by_TJ/views/pages/wishlist_page.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:provider/provider.dart';
+import 'package:Tiara_by_TJ/api/api_service.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AccountPage extends StatelessWidget {
@@ -41,7 +42,10 @@ class AccountPage extends StatelessWidget {
   List<String> title3 = ["Return", "Exchange", "Repair", "Shipping", "FAQ"];
 
   void _launchGmailCompose(
-      {required String to, String? subject, String? body}) async {
+      {required String to,
+      String? subject,
+      String? body,
+      required BuildContext context}) async {
     final Uri emailLaunchUri = Uri(
         scheme: 'mailto',
         path: to,
@@ -49,20 +53,25 @@ class AccountPage extends StatelessWidget {
           if (subject != null) 'subject': subject,
           if (body != null) 'body': body
         });
-
-    if (await canLaunchUrl(emailLaunchUri)) {
-      await launchUrl(emailLaunchUri);
-    } else {
-      throw 'Could not launch $emailLaunchUri';
+    bool isThereInternet = await ApiService.checkInternetConnection(context);
+    if (isThereInternet) {
+      if (await canLaunchUrl(emailLaunchUri)) {
+        await launchUrl(emailLaunchUri);
+      } else {
+        throw 'Could not launch $emailLaunchUri';
+      }
     }
   }
 
-  Future<void> onLinkClicked(String url) async {
+  Future<void> onLinkClicked(String url, BuildContext context) async {
     Uri uri = Uri.parse(url);
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri);
-    } else {
-      print("Could not launch Terms and condition's URL");
+    bool isThereInternet = await ApiService.checkInternetConnection(context);
+    if (isThereInternet) {
+      if (await canLaunchUrl(uri)) {
+        await launchUrl(uri);
+      } else {
+        print("Could not launch Terms and condition's URL");
+      }
     }
   }
 
@@ -76,6 +85,7 @@ class AccountPage extends StatelessWidget {
     print("CUSTOMERDATA ${customerProvider.customerData.length}");
     double deviceWidth = MediaQuery.of(context).size.width;
     print("deviceWidth / 20 ${deviceWidth / 31}");
+
     return Scaffold(
       appBar: AppBar(
           toolbarHeight: kToolbarHeight + 20,
@@ -83,10 +93,8 @@ class AccountPage extends StatelessWidget {
           title: Image.network(
             Constants.app_logo,
             width: 260,
-          
             height: kToolbarHeight,
             fit: BoxFit.fitWidth,
-
           ),
           backgroundColor: Colors.white,
           actions: <Widget>[
@@ -104,8 +112,7 @@ class AccountPage extends StatelessWidget {
               width: 15,
             ),
             Container(
-              color: Colors.red,
-           
+            
               width: (deviceWidth / 16) + 4,
               child: badges.Badge(
                 badgeStyle: const badges.BadgeStyle(badgeColor: Colors.purple),
@@ -115,8 +122,7 @@ class AccountPage extends StatelessWidget {
                   return Text(
                     value.favProductIds.length.toString(),
                     style: TextStyle(
-                      color: Colors.white,
-                      fontSize: (deviceWidth / 31) - 1),
+                        color: Colors.white, fontSize: (deviceWidth / 31) - 1),
                   );
                 }),
                 child: IconButton(
@@ -132,14 +138,16 @@ class AccountPage extends StatelessWidget {
               width: 24,
             ),
             Container(
-              color: Colors.red,
-                width: (deviceWidth / 16) + 4,
+         
+              width: (deviceWidth / 16) + 4,
               child: badges.Badge(
                 badgeStyle: const badges.BadgeStyle(badgeColor: Colors.purple),
                 badgeContent: Consumer<CartProvider>(
                     builder: (context, value, child) => Text(
                           value.cart.length.toString(),
-                          style: TextStyle(color: Colors.white, fontSize: (deviceWidth / 31) - 1),
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: (deviceWidth / 31) - 1),
                         )),
                 child: IconButton(
                   onPressed: () {
@@ -155,21 +163,24 @@ class AccountPage extends StatelessWidget {
             const SizedBox(
               width: 34,
             ),
-          ]),
+          ]
+          ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-                padding: const EdgeInsets.symmetric(
-                    vertical: 10.0, horizontal: 15.0),
+                padding:
+                    const EdgeInsets.only(left: 15.0, top: 30.0, bottom: 10.0),
                 width: MediaQuery.of(context).size.width,
                 color: const Color.fromARGB(255, 237, 237, 237),
-                child: const Text(
-                  "Hello, there!",
-                  style: TextStyle(fontSize: 17.0),
-                )),
+                child: Text("Hello, there!",
+                    style: TextStyle(
+                      fontSize: deviceWidth > 600 ? 26.0 : 17.0,
+                    ))),
             ListTile(
+              contentPadding:
+                  EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
               onTap: () {
                 false
                     ? Navigator.push(
@@ -184,9 +195,12 @@ class AccountPage extends StatelessWidget {
               },
               leading: Icon(
                 Icons.account_circle_outlined,
+                size: deviceWidth > 600 ? 40.0 : 30.0,
               ),
               title: Text(false ? "Login" : "My profile",
-                  style: const TextStyle(fontSize: 17.0)),
+                  style: TextStyle(
+                      fontSize: deviceWidth > 600 ? 32.0 : 18.0,
+                      fontWeight: FontWeight.normal)),
             ),
             // SizedBox(
             //   width: MediaQuery.of(context).size.width,
@@ -235,25 +249,26 @@ class AccountPage extends StatelessWidget {
             // ),
             Container(
                 padding:
-                    const EdgeInsets.only(left: 15.0, top: 30.0, bottom: 5.0),
+                    const EdgeInsets.only(left: 15.0, top: 30.0, bottom: 10.0),
                 alignment: Alignment.bottomLeft,
                 width: MediaQuery.of(context).size.width,
                 color: const Color.fromARGB(255, 237, 237, 237),
-                child: const Text(
+                child: Text(
                   "CONTACT US",
-                  style: TextStyle(fontSize: 15.0),
+                  style: TextStyle(fontSize: deviceWidth > 600 ? 24.0 : 15.0),
                 )),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8.0),
-                  child: Column(
+            Padding(
+              padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Column(
                     children: [
                       GestureDetector(
                         onTap: () async {
                           String url = 'tel:9833566117';
                           Uri uri = Uri.parse(url);
+
                           if (await canLaunchUrl(uri)) {
                             await launchUrl(uri);
                           } else {
@@ -262,88 +277,93 @@ class AccountPage extends StatelessWidget {
                         },
                         child: Container(
                           margin: const EdgeInsets.symmetric(vertical: 10.0),
-                          width: 50.0,
-                          height: 50.0,
+                          width: deviceWidth > 600 ? 100.0 : 50.0,
+                          height: deviceWidth > 600 ? 100.0 : 50.0,
                           decoration: const BoxDecoration(
                               shape: BoxShape.rectangle,
                               color: Color.fromARGB(255, 230, 230, 230),
                               borderRadius: BorderRadius.all(
                                 Radius.circular(15.0),
                               )),
-                          child: const Icon(Icons.call),
+                          child: Icon(
+                            Icons.call,
+                            size: deviceWidth > 600 ? 50.0 : 30.0,
+                          ),
                         ),
                       ),
-                      const Text(
+                      Text(
                         "Call",
-                        style: TextStyle(fontSize: 17.0),
+                        style: TextStyle(
+                            fontSize: deviceWidth > 600 ? 27.0 : 17.0),
                       )
                     ],
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8.0),
-                  child: Column(
+                  Column(
                     children: [
                       GestureDetector(
                         onTap: () {
-                          onLinkClicked("https://tiarabytj.com/");
+                          onLinkClicked("https://tiarabytj.com/", context);
                         },
                         child: Container(
                           margin: const EdgeInsets.symmetric(vertical: 10.0),
-                          width: 50.0,
-                          height: 50.0,
+                          width: deviceWidth > 600 ? 100.0 : 50.0,
+                          height: deviceWidth > 600 ? 100.0 : 50.0,
                           decoration: const BoxDecoration(
                               shape: BoxShape.rectangle,
                               color: Color.fromARGB(255, 230, 230, 230),
                               borderRadius: BorderRadius.all(
                                 Radius.circular(15.0),
                               )),
-                          child: const Icon(Icons.web),
+                          child: Icon(
+                            Icons.web,
+                            size: deviceWidth > 600 ? 50.0 : 30.0,
+                          ),
                         ),
                       ),
-                      const Text("Visit our website",
-                          style: TextStyle(fontSize: 17.0))
+                      Text("Visit our website",
+                          style: TextStyle(
+                              fontSize: deviceWidth > 600 ? 27.0 : 17.0))
                     ],
                   ),
-                ),
-                // Padding(
-                //   padding: const EdgeInsets.only(bottom: 8.0),
-                //   child: Column(
-                //     children: [
-                //       Container(
-                //         margin: const EdgeInsets.symmetric(vertical: 10.0),
-                //         width: 50.0,
-                //         height: 50.0,
-                //         padding: const EdgeInsets.all(10.0),
-                //         decoration: const BoxDecoration(
-                //             shape: BoxShape.rectangle,
-                //             color: Color.fromARGB(255, 230, 230, 230),
-                //             borderRadius: BorderRadius.all(
-                //               Radius.circular(15.0),
-                //             )),
-                //         child: Image.asset(
-                //           "assets/images/whatsapp.png",
-                //         ),
-                //       ),
-                //       const Text("Whatsapp", style: TextStyle(fontSize: 17.0))
-                //     ],
-                //   ),
-                // )
-              ],
+                  // Padding(
+                  //   padding: const EdgeInsets.only(bottom: 8.0),
+                  //   child: Column(
+                  //     children: [
+                  //       Container(
+                  //         margin: const EdgeInsets.symmetric(vertical: 10.0),
+                  //         width: 50.0,
+                  //         height: 50.0,
+                  //         padding: const EdgeInsets.all(10.0),
+                  //         decoration: const BoxDecoration(
+                  //             shape: BoxShape.rectangle,
+                  //             color: Color.fromARGB(255, 230, 230, 230),
+                  //             borderRadius: BorderRadius.all(
+                  //               Radius.circular(15.0),
+                  //             )),
+                  //         child: Image.asset(
+                  //           "assets/images/whatsapp.png",
+                  //         ),
+                  //       ),
+                  //       const Text("Whatsapp", style: TextStyle(fontSize: 17.0))
+                  //     ],
+                  //   ),
+                  // )
+                ],
+              ),
             ),
             Container(
                 padding:
-                    const EdgeInsets.only(left: 15.0, top: 30.0, bottom: 5.0),
+                    const EdgeInsets.only(left: 15.0, top: 30.0, bottom: 10.0),
                 alignment: Alignment.bottomLeft,
                 width: MediaQuery.of(context).size.width,
                 color: const Color.fromARGB(255, 237, 237, 237),
-                child: const Text(
+                child: Text(
                   "SPREAD THE WORD",
-                  style: TextStyle(fontSize: 15.0),
+                  style: TextStyle(fontSize: deviceWidth > 600 ? 24.0 : 15.0),
                 )),
             SizedBox(
               width: MediaQuery.of(context).size.width,
-              height: 210.0,
+              height: deviceWidth > 600 ? 286 : 230.0,
               child: ListView.separated(
                 itemCount: icons2.length,
                 itemBuilder: (context, index) {
@@ -354,7 +374,8 @@ class AccountPage extends StatelessWidget {
                           _launchGmailCompose(
                               to: 'tiarabytj@gmail.com',
                               subject: 'Feedback',
-                              body: 'Respected sir/mam');
+                              body: 'Respected sir/mam',
+                              context: context);
                           break;
                         case 1:
                           // Navigator.of(context).push(MaterialPageRoute(
@@ -374,9 +395,18 @@ class AccountPage extends StatelessWidget {
                       }
                     },
                     child: ListTile(
-                      leading: Icon(icons2[index]),
+                     
+                      contentPadding: EdgeInsets.symmetric(
+                          vertical: deviceWidth > 600 ? 10.0 : 5.0,
+                          horizontal: 20.0),
+                      leading: Icon(
+                        icons2[index],
+                        size: deviceWidth > 600 ? 40.0 : 30.0,
+                      ),
                       title: Text(title2[index],
-                          style: const TextStyle(fontSize: 17.0)),
+                          style: TextStyle(
+                              fontSize: deviceWidth > 600 ? 32.0 : 18.0,
+                              fontWeight: FontWeight.normal)),
                     ),
                   );
                 },
@@ -386,17 +416,17 @@ class AccountPage extends StatelessWidget {
             ),
             Container(
                 padding:
-                    const EdgeInsets.only(left: 15.0, top: 30.0, bottom: 5.0),
+                    const EdgeInsets.only(left: 15.0, top: 30.0, bottom: 10.0),
                 alignment: Alignment.bottomLeft,
                 width: MediaQuery.of(context).size.width,
                 color: const Color.fromARGB(255, 237, 237, 237),
-                child: const Text(
+                child: Text(
                   "POLICIES",
-                  style: TextStyle(fontSize: 15.0),
+                  style: TextStyle(fontSize: deviceWidth > 600 ? 24.0 : 15.0),
                 )),
             SizedBox(
               width: MediaQuery.of(context).size.width,
-              height: 100.0,
+              height:  deviceWidth > 600 ? 201.0 :100.0,
               child: GridView.builder(
                 itemCount: title3.length,
                 itemBuilder: (context, index) {
@@ -405,26 +435,32 @@ class AccountPage extends StatelessWidget {
                       switch (index) {
                         case 0:
                           onLinkClicked(
-                              "https://tiarabytj.com/blog/quotations/return-policy/");
+                              "https://tiarabytj.com/blog/quotations/return-policy/",
+                              context);
                           break;
                         default:
                       }
                     },
                     child: Container(
+                      alignment: Alignment.center,
                       decoration: BoxDecoration(
+                        
                         border: Border.all(
                             color: Colors.grey, style: BorderStyle.solid),
                       ),
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 30.0, vertical: 10.0),
-                        child: Text(title3[index]),
+                             vertical: 10.0),
+                        child: Text(title3[index],
+                            style: TextStyle(
+                                fontSize: deviceWidth > 600 ? 32.0 : 16.0,
+                                fontWeight: FontWeight.normal)),
                       ),
                     ),
                   );
                 },
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    childAspectRatio: 2.9,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    childAspectRatio: deviceWidth > 600 ? 3.3 :2.9,
                     crossAxisCount: 3,
                     mainAxisSpacing: 0.0),
               ),

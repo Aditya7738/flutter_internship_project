@@ -50,7 +50,7 @@ class _SearchProductsOfCategoryState extends State<SearchProductsOfCategory> {
             width: MediaQuery.of(context).size.width - 140,
             child: TextField(
               controller: searchTextController,
-              style: TextStyle(fontSize: (kToolbarHeight / 2.67)),
+              style: TextStyle(fontSize: (kToolbarHeight / 2.67), color: Colors.black, fontWeight: FontWeight.normal),
               onSubmitted: (value) async {
                 print("cat search sub");
                 // if (value == "") {

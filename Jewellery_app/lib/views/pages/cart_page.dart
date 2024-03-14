@@ -88,7 +88,9 @@ class _CartPageState extends State<CartPage> {
 
     print("calculateTotalPriceAfterApplyCoupon $totalAfterDiscount");
 
+print("mounted error might be below");
     value.setTotalAfterCouponApplied(totalAfterDiscount);
+    print("mounted error might be above");
     return totalAfterDiscount;
   }
 
@@ -150,39 +152,95 @@ class _CartPageState extends State<CartPage> {
                                     title: Image.asset(
                                       "assets/images/discount.png",
                                       color: Theme.of(context).primaryColor,
-                                      width: 30.0,
-                                      height: 30.0,
+                                      width: deviceWidth > 600 ? 40.0 : 30.0,
+                                      height: deviceWidth > 600 ? 40.0 : 30.0,
                                     ),
                                     content: Container(
-                                      height: 250,
+                                      // color: Colors.red,
+                                      height: deviceWidth > 600 ? 268 : 260,
                                       child: Column(
                                         children: [
                                           Text(
-                                              "'${selectedCouponData!["couponcode"]}' applied"),
+                                            "'${selectedCouponData!["couponcode"]}' applied",
+                                            style: TextStyle(
+                                              fontSize: deviceWidth > 600
+                                                  ? deviceWidth / 33
+                                                  : 17,
+                                            ),
+                                          ),
                                           SizedBox(
                                             height: 30.0,
                                           ),
-                                          Text(
-                                            selectedCouponData![
-                                                        "discountString"]
-                                                    .toString()
-                                                    .contains("%")
-                                                ? "You got ${selectedCouponData!["discountString"]} discount with this coupon!"
-                                                : "${selectedCouponData!["discountString"]} saved with this coupon!",
+                                          RichText(
                                             textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                                fontSize: 22.0,
-                                                fontWeight: FontWeight.bold),
+                                            text: TextSpan(
+                                              children: selectedCouponData![
+                                                          "discountString"]
+                                                      .toString()
+                                                      .contains("%")
+                                                  ? [
+                                                      TextSpan(
+                                                          text: "You got "),
+                                                      TextSpan(
+                                                          text:
+                                                              "discountString",
+                                                          // "${selectedCouponData!["discountString"]}",
+                                                          style: TextStyle(
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .primaryColor)),
+                                                      TextSpan(
+                                                          text:
+                                                              " discount with this coupon!"),
+                                                    ]
+                                                  : [
+                                                      TextSpan(
+                                                          text:
+                                                              "${selectedCouponData!["discountString"]}",
+                                                          style: TextStyle(
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .primaryColor)),
+                                                      TextSpan(
+                                                          text:
+                                                              " saved with this coupon!")
+                                                    ],
+                                              style: TextStyle(
+                                                  fontSize: deviceWidth > 600
+                                                      ? (deviceWidth / 33) + 6
+                                                      : 19.0,
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
                                           ),
+                                          // Text(
+                                          //   selectedCouponData![
+                                          //               "discountString"]
+                                          //           .toString()
+                                          //           .contains("%")
+                                          //       ? "You got ${selectedCouponData!["discountString"]} discount with this coupon!"
+                                          //       : "${selectedCouponData!["discountString"]} saved with this coupon!",
+                                          //   textAlign: TextAlign.center,
+                                          //   style: TextStyle(
+                                          //       fontSize: deviceWidth > 600
+                                          //           ? (deviceWidth / 33) + 2
+                                          //           : 22.0,
+                                          //       fontWeight: FontWeight.bold),
+                                          // ),
                                           SizedBox(
                                             height: 30.0,
                                           ),
                                           Text(
                                             "Woohoo! Your coupon is successfully applied!",
+                                            style: TextStyle(
+                                              fontSize: deviceWidth > 600
+                                                  ? deviceWidth / 33
+                                                  : 17,
+                                            ),
                                             textAlign: TextAlign.center,
                                           ),
                                           SizedBox(
-                                            height: 20.0,
+                                            height: 30.0,
                                           ),
                                           GestureDetector(
                                             onTap: () {
@@ -199,11 +257,11 @@ class _CartPageState extends State<CartPage> {
                                                     const EdgeInsets.symmetric(
                                                         vertical: 10.0,
                                                         horizontal: 20.0),
-                                                child: const Text(
+                                                child: Text(
                                                   "YAYY!",
-                                                  style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 17.0),
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .button,
                                                 )),
                                           ),
                                         ],
@@ -225,6 +283,11 @@ class _CartPageState extends State<CartPage> {
                                     shape: BoxShape.rectangle,
                                     borderRadius: BorderRadius.circular(10.0)),
                                 child: ListTile(
+                                  contentPadding: EdgeInsets.only(
+                                      top: 8.0,
+                                      bottom: 8.0,
+                                      left: 20.0,
+                                      right: 20.0),
                                   title: Text(
                                     //"'couponcode' applied"
                                     "'${value.selectedCouponData!["couponcode"]}' applied",
@@ -232,7 +295,8 @@ class _CartPageState extends State<CartPage> {
                                         // color: Theme.of(context).primaryColor,
                                         fontSize: deviceWidth > 600
                                             ? deviceWidth / 35
-                                            : 19.0),
+                                            : 16.0,
+                                        fontWeight: FontWeight.normal),
                                   ),
                                   subtitle: Expanded(
                                     // height: 40.0,
@@ -245,16 +309,20 @@ class _CartPageState extends State<CartPage> {
                                                   .contains("%")
                                               ? " ₹ ${((value.selectedCouponData!["discountAmount"] / 100) * value.calculateTotalPrice()).round()}"
                                               : " ${value.selectedCouponData!["discountString"]}",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .headline5,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: deviceWidth > 600
+                                                  ? deviceWidth / 35
+                                                  : 16.0,
+                                              color: Theme.of(context)
+                                                  .primaryColor),
                                         ),
                                         TextSpan(
                                           text: " saved on this order",
                                           style: TextStyle(
                                               fontSize: deviceWidth > 600
-                                            ? deviceWidth / 35
-                                            : 19.0,
+                                                  ? deviceWidth / 35
+                                                  : 16.0,
                                               color: Colors.black),
                                         )
                                       ]),
@@ -269,9 +337,8 @@ class _CartPageState extends State<CartPage> {
                                     },
                                     child: Text(
                                       "Remove",
-                                      style: Theme.of(context)
-                                              .textTheme
-                                              .headline5,
+                                      style:
+                                          Theme.of(context).textTheme.headline5,
                                     ),
                                   ),
                                 ),
@@ -689,12 +756,18 @@ class _CartPageState extends State<CartPage> {
         bottomSheet: Consumer<CartProvider>(
           builder: (context, value, child) {
             if (value.cart.isNotEmpty) {
+
+
               return BottomSheet(
                 constraints:
                     BoxConstraints.expand(width: deviceWidth, height: 100),
                 enableDrag: false,
                 onClosing: () {},
                 builder: (context) {
+
+                  print("totalAfterCouponApplied ${value.totalAfterCouponApplied.round()}");
+
+                  print("calculateTotalPrice ${value.calculateTotalPrice().round()}");
                   return Padding(
                     padding: const EdgeInsets.all(18.0),
                     child: Row(
@@ -706,9 +779,9 @@ class _CartPageState extends State<CartPage> {
                                 : "₹ ${value.calculateTotalPrice().round().toString()}",
                             style: Theme.of(context).textTheme.headline1),
                         SizedBox(
-                            width: MediaQuery.of(context).size.width > 600
-                                ? MediaQuery.of(context).size.width / 3.7
-                                : MediaQuery.of(context).size.width / 2,
+                            width: deviceWidth > 600
+                                ? deviceWidth / 3.7
+                                : deviceWidth / 2,
                             child: GestureDetector(
                               onTap: () {
                                 final customerProvider =
@@ -762,10 +835,11 @@ class _CartPageState extends State<CartPage> {
                                       style: TextStyle(
                                         color: Colors.white,
                                         fontSize:
-                                            MediaQuery.of(context).size.width >
+                                            deviceWidth >
                                                     600
                                                 ? 23
                                                 : 17.0,
+                                                fontWeight: FontWeight.bold
                                       ),
                                     ),
                                     const SizedBox(
@@ -846,14 +920,12 @@ class _CartPageState extends State<CartPage> {
                       builder: (context, constraints) {
                         print("spacing ${(constraints.maxHeight / 13)}");
                         return Padding(
-                          padding:
-                              const EdgeInsets.symmetric(horizontal: 10.0),
+                          padding: const EdgeInsets.only(left: 15.0),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text("₹ ${cartData.price ?? 20000}",
-                                  style:
-                                      Theme.of(context).textTheme.headline1),
+                                  style: Theme.of(context).textTheme.headline1),
                               SizedBox(
                                   height: deviceWidth > 600
                                       ? (constraints.maxHeight / 13)
@@ -889,20 +961,18 @@ class _CartPageState extends State<CartPage> {
                                           value: cartData.quantity,
                                           icon: const Icon(Icons
                                               .keyboard_arrow_down_rounded),
-                                          items: quantityList
-                                              .map((String option) {
+                                          items:
+                                              quantityList.map((String option) {
                                             return DropdownMenuItem(
                                               value: option,
                                               child: Text(option),
                                             );
                                           }).toList(),
-                                          onChanged:
-                                              (String? newValue) {
+                                          onChanged: (String? newValue) {
                                             if (mounted) {
                                               setState(() {
                                                 value.updateQuantity(
-                                                    cartData
-                                                        .cartProductid!,
+                                                    cartData.cartProductid!,
                                                     newValue!);
                                               });
                                             }
@@ -925,8 +995,7 @@ class _CartPageState extends State<CartPage> {
                                           value: selectedSize,
                                           icon: const Icon(Icons
                                               .keyboard_arrow_down_rounded),
-                                          items: sizeList
-                                              .map((String option) {
+                                          items: sizeList.map((String option) {
                                             return DropdownMenuItem(
                                               value: option,
                                               child: Text(option),
@@ -948,15 +1017,13 @@ class _CartPageState extends State<CartPage> {
                                       ? (constraints.maxHeight / 13)
                                       : 5),
                               Text("Expected Delivery : ",
-                                  style:
-                                      Theme.of(context).textTheme.headline2),
+                                  style: Theme.of(context).textTheme.headline2),
                               SizedBox(
                                   height: deviceWidth > 600
                                       ? (constraints.maxHeight / 33)
                                       : 1),
                               Text(cartData.deliveryDate ?? "After 5 days",
-                                  style:
-                                      Theme.of(context).textTheme.headline3)
+                                  style: Theme.of(context).textTheme.headline3)
                             ],
                           ),
                         );

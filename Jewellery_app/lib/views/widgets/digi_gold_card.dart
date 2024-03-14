@@ -169,7 +169,10 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                             widget.digiGoldPlan.images.isNotEmpty
                                 ? widget.digiGoldPlan.images[0].src != null
                                     ? Image.network(
-                                        widget.digiGoldPlan.images[0].src!)
+                                        widget.digiGoldPlan.images[0].src!,
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                      )
                                     : DigiGoldPlanSubCard(
                                         price: widget.digiGoldPlan.price ?? "0",
                                         isPlanAlreadyPurchased:
@@ -203,13 +206,23 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                       : widget.digiGoldPlan.images.isNotEmpty
                           ? widget.digiGoldPlan.images[0].src != null
                               ? Image.network(
-                                  widget.digiGoldPlan.images[0].src!)
+                                  widget.digiGoldPlan.images[0].src!,
+                                  width: MediaQuery.of(context).size.width,
+                                )
                               : DigiGoldPlanSubCard(
-                                  price: widget.digiGoldPlan.price ?? "0",
+                                  price: widget.digiGoldPlan.price != null
+                                      ? widget.digiGoldPlan.price!.isEmpty
+                                          ? "0"
+                                          : widget.digiGoldPlan.price!
+                                      : "0",
                                   isPlanAlreadyPurchased:
                                       isPlanAlreadyPurchased)
                           : DigiGoldPlanSubCard(
-                              price: widget.digiGoldPlan.price ?? "0",
+                              price: widget.digiGoldPlan.price != null
+                                  ? widget.digiGoldPlan.price!.isEmpty
+                                      ? "0"
+                                      : widget.digiGoldPlan.price!
+                                  : "0",
                               isPlanAlreadyPurchased: isPlanAlreadyPurchased,
                             ),
               SizedBox(
@@ -228,7 +241,7 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                       height: 10.0,
                     ),
                     Container(
-                      width: MediaQuery.of(context).size.width / 2,
+                      width: MediaQuery.of(context).size.width,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -243,8 +256,11 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                         ],
                       ),
                     ),
+                    SizedBox(
+                      height: 10.0,
+                    ),
                     Container(
-                      width: MediaQuery.of(context).size.width / 1.8,
+                      width: MediaQuery.of(context).size.width,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -260,9 +276,10 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8.0, vertical: 8.0),
                       child: Divider(
-                        height: 20.0,
+                        height: 30.0,
                       ),
                     ),
                     PriceInfo(
@@ -272,6 +289,9 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                                 ? widget.digiGoldPlan.price!
                                 : "0"
                             : "0"),
+                    SizedBox(
+                      height: 10.0,
+                    ),
                     PriceInfo(
                         label: "Total Amount You Pay: ",
                         price: widget.digiGoldPlan.price != null
@@ -279,13 +299,16 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                                 ? "${int.parse(widget.digiGoldPlan.price!) * planDuration}"
                                 : "0"
                             : "0"),
+                    SizedBox(
+                      height: 10.0,
+                    ),
                     isJewellerContributing
                         ? PriceInfo(
                             label: "Jeweller Contribution: ",
                             price: jeweller_contribution)
                         : SizedBox(),
                     SizedBox(
-                      height: 10.0,
+                      height: 30.0,
                     ),
                     isJewellerContributing
                         ? PriceInfo(
@@ -296,10 +319,10 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                                     : "0"
                                 : "0")
                         : SizedBox(
-                            height: 10.0,
+                          
                           ),
                     SizedBox(
-                      height: 20.0,
+                      height: 40.0,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -358,7 +381,9 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                     SizedBox(
                       height: 50.0,
                     ),
-                    false
+                   
+                   // customerProvider.customerData.isEmpty 
+                   false
                         ? GestureDetector(
                             onTap: () {
                               if (checkBoxChecked) {

@@ -1,3 +1,4 @@
+import 'package:Tiara_by_TJ/providers/wishlist_provider.dart';
 import 'package:Tiara_by_TJ/views/pages/my_gold_plans.dart';
 import 'package:flutter/material.dart';
 import 'package:Tiara_by_TJ/providers/cart_provider.dart';
@@ -20,8 +21,8 @@ class MyProfilePage extends StatelessWidget {
     "assets/images/order_delivery.png",
     // "assets/images/credit_card.png",
     //"assets/images/refund.png",
-   // "assets/images/wishlist.png",
-   "assets/images/heart_outlined.png",
+    // "assets/images/wishlist.png",
+    "assets/images/heart_outlined.png",
     "assets/images/gold_bars_menu.png",
     //  "assets/images/home.png",
     //"assets/images/discount.png",
@@ -41,6 +42,7 @@ class MyProfilePage extends StatelessWidget {
   ];
 
   void showLogoutDialog(BuildContext context) {
+      double deviceWidth = MediaQuery.of(context).size.width;
     //TextEditingController textEditingController = TextEditingController();
     final customerProvider =
         Provider.of<CustomerProvider>(context, listen: false);
@@ -50,9 +52,11 @@ class MyProfilePage extends StatelessWidget {
       builder: (context) {
         return AlertDialog(
           alignment: Alignment.center,
-          title: const Text("Confirm Logout"),
-          content: const Text(
-              "Please click on confirm button for logout else cancel", style: TextStyle(fontSize: 17.0),),
+          title:  Text("Confirm Logout", style: Theme.of(context).textTheme.bodyText1,),
+          content:  Text(
+            "Please click on confirm button for logout else cancel",
+            style: Theme.of(context).textTheme.subtitle1,
+          ),
           actions: [
             GestureDetector(
               onTap: () {
@@ -65,11 +69,12 @@ class MyProfilePage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(5.0)),
                   padding: const EdgeInsets.symmetric(
                       vertical: 10.0, horizontal: 20.0),
-                  child: const Text(
+                  child:  Text(
                     "Cancel",
-                    style: TextStyle(color: Colors.black, fontSize: 17.0),
+                    style: TextStyle(color: Colors.black, fontSize: deviceWidth > 600 ? 25.0 : 17.0),
                   )),
             ),
+            SizedBox(width: 10.0,),
             GestureDetector(
               onTap: () {
                 customerProvider.customerData.clear();
@@ -91,9 +96,9 @@ class MyProfilePage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(5.0)),
                   padding: const EdgeInsets.symmetric(
                       vertical: 10.0, horizontal: 20.0),
-                  child: const Text(
+                  child:  Text(
                     "Confirm",
-                    style: TextStyle(color: Colors.white, fontSize: 17.0),
+                    style: TextStyle(color: Colors.white, fontSize: deviceWidth > 600 ? 25.0 : 17.0),
                   )),
             ),
           ],
@@ -106,10 +111,12 @@ class MyProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final customerProvider =
         Provider.of<CustomerProvider>(context, listen: false);
-    String name = customerProvider.customerData[0]["first_name"];
-    print(name);
+    // String name = customerProvider.customerData[0]["first_name"];
+    //print(name);
+    double deviceWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
+          toolbarHeight: kToolbarHeight + 20,
           title: const Text("My Account"),
           backgroundColor: Colors.white,
           actions: <Widget>[
@@ -119,23 +126,24 @@ class MyProfilePage extends StatelessWidget {
                   builder: (context) => SearchPage(),
                 ));
               },
-              child: Icon(
+              child: const Icon(
                 Icons.search_rounded,
-                size: 30.0,
               ),
             ),
             const SizedBox(
-              width: 12,
+              width: 15,
             ),
-            SizedBox(
-              height: 40.0,
-              width: 32.0,
+            Container(
+             
+              width: (deviceWidth / 16) + 4,
               child: badges.Badge(
                 badgeStyle: const badges.BadgeStyle(badgeColor: Colors.purple),
                 badgeContent: Consumer<CartProvider>(
                     builder: (context, value, child) => Text(
                           value.cart.length.toString(),
-                          style: const TextStyle(color: Colors.white),
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: (deviceWidth / 31) - 1),
                         )),
                 child: IconButton(
                   onPressed: () {
@@ -149,7 +157,7 @@ class MyProfilePage extends StatelessWidget {
               ),
             ),
             const SizedBox(
-              width: 12,
+              width: 34,
             ),
           ]),
       body: SingleChildScrollView(
@@ -166,15 +174,18 @@ class MyProfilePage extends StatelessWidget {
                     vertical: 20.0, horizontal: 30.0),
                 child: Row(children: [
                   Container(
+                    height: deviceWidth > 600 ? 150.0 : 90.0,
+                    width: deviceWidth > 600 ? 150.0 : 90.0,
                     color: Colors.red,
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 35.0, vertical: 20.0),
-                    child: const Text(
+                    alignment: Alignment.center,
+                    // padding: const EdgeInsets.symmetric(
+                    //     horizontal: 35.0, vertical: 20.0),
+                    child: Text(
                       "A",
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
-                          fontSize: 30.0),
+                          fontSize: deviceWidth > 600 ? 70.0 : 30.0),
                     ),
                   ),
                   const SizedBox(
@@ -183,31 +194,59 @@ class MyProfilePage extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(customerProvider.customerData[0]["first_name"],
-                          style: Theme.of(context).textTheme.headline1),
-                      Text(customerProvider.customerData[0]["last_name"],
-                          style: Theme.of(context).textTheme.headline1),
+                      Text("Aditya",
+                          style: deviceWidth > 600
+                              ? TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: deviceWidth / 28,
+                                )
+                              : TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: (deviceWidth / 30) + 3,
+                                )),
+
+                      // SizedBox(
+                      //   height: 5.0,
+                      // ),
+                      Text("Shigwan",
+                          style: deviceWidth > 600
+                              ? TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: deviceWidth / 28,
+                                )
+                              : TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: (deviceWidth / 30) + 3,
+                                )),
+                      // Text(customerProvider.customerData[0]["first_name"],
+                      //     style: Theme.of(context).textTheme.headline1),
+                      // Text(customerProvider.customerData[0]["last_name"],
+                      //     style: Theme.of(context).textTheme.headline1),
                       const SizedBox(
                         height: 15.0,
                       ),
                       InkWell(
                           onTap: () => Navigator.of(context).push(
                               MaterialPageRoute(
-                                  builder: (context) => const EditProfilePage())),
+                                  builder: (context) =>
+                                      const EditProfilePage())),
                           child: Container(
-                            padding: EdgeInsets.symmetric(vertical: 1.0, horizontal: 10.0),
+                            padding: EdgeInsets.symmetric(
+                                vertical: 1.0, horizontal: 10.0),
                             child: Row(
                               children: [
                                 Text(
                                   "Edit Profile",
-                                  style: TextStyle(
-                                      color: Theme.of(context).primaryColor,
-                                      fontSize: 16.0, fontWeight: FontWeight.bold),
+                                  style: Theme.of(context).textTheme.headline5,
                                 ),
                                 SizedBox(
                                   width: 5.0,
                                 ),
-                                Icon(Icons.edit, color: Theme.of(context).primaryColor,)
+                                Icon(
+                                  Icons.edit,
+                                  color: Theme.of(context).primaryColor,
+                                  size: deviceWidth > 600 ? 28.0 : 23.0,
+                                )
                               ],
                             ),
                             decoration: BoxDecoration(
@@ -233,10 +272,12 @@ class MyProfilePage extends StatelessWidget {
                   itemBuilder: (context, index) {
                     return Card(
                       margin: const EdgeInsets.symmetric(
-                          horizontal: 10.0, vertical: 5.0),
+                          horizontal: 10.0, vertical: 10.0),
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: ListTile(
+                          contentPadding: EdgeInsets.symmetric(
+                              horizontal: 20.0, vertical: 10.0),
                           onTap: () {
                             switch (index) {
                               case 0:
@@ -264,11 +305,13 @@ class MyProfilePage extends StatelessWidget {
                           },
                           leading: Image.asset(
                             icons[index],
-                            width: 40.0,
-                            height: 40.0,
+                            width: deviceWidth > 600 ? 55.0 : 40.0,
+                            height: deviceWidth > 600 ? 55.0 : 40.0,
                           ),
                           title: Text(titles[index],
-                              style: const TextStyle(fontSize: 18.0)),
+                              style: TextStyle(
+                                  fontSize: deviceWidth > 600 ? 27.0 : 18.0,
+                                  fontWeight: FontWeight.normal)),
                           trailing: const Icon(Icons.chevron_right_outlined),
                         ),
                       ),

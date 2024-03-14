@@ -243,7 +243,7 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: Colors.white,
         actions: <Widget>[
           Container(
-            color: Colors.red,
+    
             width: (deviceWidth / 16) + 4,
             child: badges.Badge(
               badgeStyle: const badges.BadgeStyle(badgeColor: Colors.purple),
@@ -269,7 +269,7 @@ class _HomeScreenState extends State<HomeScreen> {
             width: 24,
           ),
           Container(
-            color: Colors.red,
+     
             width: (deviceWidth / 16) + 4,
             child: badges.Badge(
               badgeStyle: const badges.BadgeStyle(badgeColor: Colors.purple),

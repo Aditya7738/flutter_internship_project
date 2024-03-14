@@ -73,10 +73,10 @@ class CartProvider with ChangeNotifier {
   double get totalAfterCouponApplied => _totalAfterCouponApplied;
 
   void setTotalAfterCouponApplied(double totalAfterCouponApplied) {
-    //  WidgetsBinding.instance.addPostFrameCallback((_) {
+     WidgetsBinding.instance.addPostFrameCallback((_) {
     _totalAfterCouponApplied = totalAfterCouponApplied;
     notifyListeners();
-    //   });
+      });
   }
 
   void addToCartId(int id) {

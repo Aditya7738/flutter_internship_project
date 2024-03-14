@@ -96,10 +96,14 @@ class _SearchPageState extends State<SearchPage> {
           backgroundColor: Colors.white,
           foregroundColor: Colors.black,
           title: SizedBox(
-            height: 40.0,
+            height: 50.0,
             child: TextField(
+              
               controller: textEditingController,
-              style: TextStyle(fontSize: (kToolbarHeight - 37) + 2),
+              style: 
+              
+              TextStyle(fontSize: (kToolbarHeight - 37) + 2, color: Colors.black, fontWeight: FontWeight.normal),
+              
               onSubmitted: (value) async {
                 if (value == "") {
                   ApiService.listOfProductsModel.clear();
@@ -163,7 +167,7 @@ class _SearchPageState extends State<SearchPage> {
                   fillColor: Colors.grey,
                   hintText: "Search for jewelleries",
                   hintStyle: TextStyle(
-                      color: Colors.grey, fontSize: kToolbarHeight - 37.5)),
+                      color: Colors.grey, fontSize: (kToolbarHeight - 37) + 2,)),
             ),
           ),
           actions: [

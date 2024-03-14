@@ -363,10 +363,13 @@ class _DigiGoldPageState extends State<DigiGoldPage> {
 
   Future<void> onLinkClicked(String url) async {
     Uri uri = Uri.parse(url);
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri);
-    } else {
-      print("Could not launch Terms and condition's URL");
+    bool isThereInternet = await ApiService.checkInternetConnection(context);
+    if (isThereInternet) {
+      if (await canLaunchUrl(uri)) {
+        await launchUrl(uri);
+      } else {
+        print("Could not launch Terms and condition's URL");
+      }
     }
   }
 
@@ -522,11 +525,7 @@ class _DigiGoldPageState extends State<DigiGoldPage> {
                                                                       10,
                                                               color:
                                                                   Colors.white)
-                                                          //  TextStyle(
-                                                          //     fontSize: 20.0,
-                                                          //     color: Colors.white,
-                                                          //     fontWeight:
-                                                          //         FontWeight.bold),
+                                                  
                                                           ),
                                                       SizedBox(
                                                         height: 20.0,
@@ -601,14 +600,13 @@ class _DigiGoldPageState extends State<DigiGoldPage> {
                                                             fontWeight:
                                                                 FontWeight
                                                                     .bold),
-                                                        // style: Theme.of(context).textTheme.headline2,
+                                                      
                                                       ),
                                                       Row(
                                                         children: [
                                                           Image.asset(
                                                               "assets/images/rupee.png",
-                                                              // width: 25.0,
-                                                              // height: 37.0,
+                                                         
                                                               scale: 14.5,
                                                               color:
                                                                   Colors.white),

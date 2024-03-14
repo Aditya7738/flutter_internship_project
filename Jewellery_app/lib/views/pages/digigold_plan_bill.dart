@@ -409,7 +409,7 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
                   },
                   decoration: InputDecoration(
                     errorStyle: TextStyle(
-                        fontSize: (deviceWidth / 33) + 1.5, color: Colors.red),
+                        fontSize: (deviceWidth / 36), color: Colors.red),
                     labelStyle: Theme.of(context).textTheme.subtitle1,
                     labelText: "Enter your email*",
                     border: OutlineInputBorder(
@@ -476,155 +476,153 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
                 ),
 
                 isProofSelected
-                    ? Container(
-                        color: Colors.red,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            getSelectedProofWidget(selectedProof, deviceWidth),
-                            const SizedBox(
-                              height: 10.0,
-                            ),
-                            showFileName
-                                ? Padding(
-                                    padding: const EdgeInsets.only(left: 8.0),
-                                    child: Column(
-                                      children: [
-                                        Text(
-                                          "Uploaded file name: ${path.basename(imagePath)}",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 16.0),
+                    ? Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          getSelectedProofWidget(selectedProof, deviceWidth),
+                          const SizedBox(
+                            height: 10.0,
+                          ),
+                          showFileName
+                              ? Padding(
+                                  padding: const EdgeInsets.only(left: 8.0),
+                                  child: Column(
+                                    children: [
+                                      Text(
+                                        "Uploaded file name: ${path.basename(imagePath)}",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: deviceWidth > 600
+                                                ? deviceWidth / 36
+                                                : 16.0),
+                                      ),
+                                      const SizedBox(
+                                        height: 20.0,
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              : SizedBox(),
+                          showForgotToUploadFileMsg
+                              ? Padding(
+                                  padding: const EdgeInsets.only(left: 8.0),
+                                  child: Column(
+                                    children: [
+                                      Text(
+                                        "You have to upload document image",
+                                        style: TextStyle(
+                                          color: Colors.red,
+                                          fontSize: (deviceWidth / 36),
                                         ),
-                                        const SizedBox(
-                                          height: 20.0,
-                                        ),
-                                      ],
-                                    ),
-                                  )
-                                : SizedBox(),
-                            showForgotToUploadFileMsg
-                                ? Padding(
-                                    padding: const EdgeInsets.only(left: 8.0),
-                                    child: Column(
-                                      children: [
-                                        Text(
-                                          "You have to upload document image",
-                                          style: TextStyle(
-                                              color: Colors.red,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 16.0),
-                                        ),
-                                        SizedBox(
-                                          height: 20.0,
-                                        )
-                                      ],
-                                    ),
-                                  )
-                                : SizedBox(),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                GestureDetector(
-                                  onTap: () async {
-                                    var image = await ImagePicker()
-                                        .pickImage(source: ImageSource.gallery);
-                                    if (image != null) {
+                                      ),
+                                      SizedBox(
+                                        height: 20.0,
+                                      )
+                                    ],
+                                  ),
+                                )
+                              : SizedBox(),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              GestureDetector(
+                                onTap: () async {
+                                  var image = await ImagePicker()
+                                      .pickImage(source: ImageSource.gallery);
+                                  if (image != null) {
+                                    if (mounted) {
+                                      setState(() {
+                                        imagePath = image.path;
+                                      });
+                                    }
+                                    print("imagePath $imagePath");
+
+                                    bool isThereInternet = await ApiService
+                                        .checkInternetConnection(context);
+                                    if (isThereInternet) {
                                       if (mounted) {
                                         setState(() {
-                                          imagePath = image.path;
+                                          isImageUploading = true;
                                         });
                                       }
-                                      print("imagePath $imagePath");
 
-                                      bool isThereInternet = await ApiService
-                                          .checkInternetConnection(context);
-                                      if (isThereInternet) {
+                                      http.StreamedResponse response =
+                                          await ApiService.uploadDocumentImage(
+                                              imagePath);
+
+                                      if (mounted) {
+                                        setState(() {
+                                          isImageUploading = false;
+                                        });
+                                      }
+
+                                      if (response.statusCode == 201) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(SnackBar(
+                                                padding: EdgeInsets.all(15.0),
+                                                backgroundColor:
+                                                    Theme.of(context)
+                                                        .primaryColor,
+                                                content: Text(
+                                                  "Image upload successfully",
+                                                  style: TextStyle(
+                                                      color: Colors.white),
+                                                )));
+
                                         if (mounted) {
                                           setState(() {
-                                            isImageUploading = true;
+                                            showFileName = true;
+                                            showForgotToUploadFileMsg = false;
                                           });
                                         }
-
-                                        http.StreamedResponse response =
-                                            await ApiService
-                                                .uploadDocumentImage(imagePath);
-
-                                        if (mounted) {
-                                          setState(() {
-                                            isImageUploading = false;
-                                          });
-                                        }
-
-                                        if (response.statusCode == 201) {
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(SnackBar(
-                                                  padding: EdgeInsets.all(15.0),
-                                                  backgroundColor:
-                                                      Theme.of(context)
-                                                          .primaryColor,
-                                                  content: Text(
-                                                    "Image upload successfully",
-                                                    style: TextStyle(
-                                                        color: Colors.white),
-                                                  )));
-
-                                          if (mounted) {
-                                            setState(() {
-                                              showFileName = true;
-                                              showForgotToUploadFileMsg = false;
-                                            });
-                                          }
-                                        } else {
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(SnackBar(
-                                                  padding: EdgeInsets.all(15.0),
-                                                  backgroundColor: Colors.red,
-                                                  content: Text(
-                                                    "Failed upload image",
-                                                    style: TextStyle(
-                                                        color: Colors.white),
-                                                  )));
-                                        }
+                                      } else {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(SnackBar(
+                                                padding: EdgeInsets.all(15.0),
+                                                backgroundColor: Colors.red,
+                                                content: Text(
+                                                  "Failed upload image",
+                                                  style: TextStyle(
+                                                      color: Colors.white),
+                                                )));
                                       }
                                     }
-                                  },
-                                  child: Container(
-                                      decoration: BoxDecoration(
-                                          border: Border.all(
-                                              color: Theme.of(context)
-                                                  .primaryColor,
-                                              style: BorderStyle.solid),
-                                          borderRadius:
-                                              BorderRadius.circular(5.0)),
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 10.0, horizontal: 20.0),
-                                      child: isImageUploading
-                                          ? SizedBox(
-                                              width: 200.0,
-                                              child: Center(
-                                                child:
-                                                    CircularProgressIndicator(
-                                                  strokeWidth: 3.0,
-                                                  color: Theme.of(context)
-                                                      .primaryColor,
-                                                ),
+                                  }
+                                },
+                                child: Container(
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color:
+                                                Theme.of(context).primaryColor,
+                                            style: BorderStyle.solid),
+                                        borderRadius:
+                                            BorderRadius.circular(5.0)),
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 10.0, horizontal: 20.0),
+                                    child: isImageUploading
+                                        ? SizedBox(
+                                            width: 200.0,
+                                            child: Center(
+                                              child: CircularProgressIndicator(
+                                                strokeWidth: 3.0,
+                                                color: Theme.of(context)
+                                                    .primaryColor,
                                               ),
-                                            )
-                                          : Text(
-                                              "Upload document image",
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .subtitle2,
-                                            )),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 30.0,
-                            ),
-                          ],
-                        ),
+                                            ),
+                                          )
+                                        : Text(
+                                            "Upload document image",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .subtitle2,
+                                          )),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 30.0,
+                          ),
+                        ],
                       )
                     : SizedBox(),
 
@@ -823,7 +821,7 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
       print("DIGI ORDER META $meta_data");
 
       orderProvider.setBillingData(billingData);
-   //   orderProvider.setCustomerId(customerProvider.customerData[0]["id"]);
+      //   orderProvider.setCustomerId(customerProvider.customerData[0]["id"]);
       orderProvider.setLineItems(line_items);
       orderProvider.setMetaData(meta_data);
       orderProvider.setPrice(widget.flexiPlanData != null
@@ -891,10 +889,10 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
           "nominee_name": _nomineeNameController.text,
           "nominee_relation": _nomineeRelationController.text
         };
-      //  customerProvider.addCustomerData(nomineeData);
+        //  customerProvider.addCustomerData(nomineeData);
       }
 
-     // customerProvider.addCustomerData(personalData);
+      // customerProvider.addCustomerData(personalData);
 
       if (mounted) {
         setState(() {

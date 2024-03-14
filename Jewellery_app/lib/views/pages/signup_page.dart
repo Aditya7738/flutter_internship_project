@@ -47,10 +47,13 @@ class _SignupPageState extends State<SignupPage> {
 
   Future<void> onLinkClicked(String url) async {
     Uri uri = Uri.parse(url);
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri);
-    } else {
-      print("Could not launch Terms and condition's URL");
+    bool isThereInternet = await ApiService.checkInternetConnection(context);
+    if (isThereInternet) {
+      if (await canLaunchUrl(uri)) {
+        await launchUrl(uri);
+      } else {
+        print("Could not launch Terms and condition's URL");
+      }
     }
   }
 
@@ -86,8 +89,8 @@ class _SignupPageState extends State<SignupPage> {
                     children: [
                       Image.network(
                         Constants.app_logo,
-                      height: 60.0,
-                          fit: BoxFit.fill,
+                        height: 60.0,
+                        fit: BoxFit.fill,
                       ),
                       const SizedBox(
                         height: 30.0,
@@ -126,7 +129,7 @@ class _SignupPageState extends State<SignupPage> {
                       SizedBox(
                         height: 75.0,
                         child: TextFormField(
-                           style: Theme.of(context).textTheme.subtitle1,
+                          style: Theme.of(context).textTheme.subtitle1,
                           controller: _phoneNoController,
                           keyboardType: TextInputType.phone,
                           validator: (value) {
@@ -216,7 +219,7 @@ class _SignupPageState extends State<SignupPage> {
                           SizedBox(
                             width: (MediaQuery.of(context).size.width / 2) - 35,
                             child: TextFormField(
-                           style: Theme.of(context).textTheme.subtitle1,
+                              style: Theme.of(context).textTheme.subtitle1,
                               controller: _lastNameController,
                               keyboardType: TextInputType.name,
                               validator: (value) {
@@ -224,11 +227,11 @@ class _SignupPageState extends State<SignupPage> {
                                     value);
                               },
                               decoration: InputDecoration(
-                            errorStyle: TextStyle(
-                              fontSize: (deviceWidth / 33) + 1.5,
-                              color: Colors.red
-                            ),
-                            labelStyle: Theme.of(context).textTheme.subtitle1,
+                                errorStyle: TextStyle(
+                                    fontSize: (deviceWidth / 33) + 1.5,
+                                    color: Colors.red),
+                                labelStyle:
+                                    Theme.of(context).textTheme.subtitle1,
                                 labelText: "Last Name*",
                                 border: OutlineInputBorder(
                                     borderRadius: BorderRadius.all(
@@ -242,7 +245,7 @@ class _SignupPageState extends State<SignupPage> {
                         height: 30.0,
                       ),
                       TextFormField(
-                           style: Theme.of(context).textTheme.subtitle1,
+                        style: Theme.of(context).textTheme.subtitle1,
                         controller: _passwordController,
                         obscureText: isObscured,
                         keyboardType: TextInputType.visiblePassword,
@@ -250,11 +253,10 @@ class _SignupPageState extends State<SignupPage> {
                           return ValidationHelper.isPasswordContain(value);
                         },
                         decoration: InputDecoration(
-                            errorStyle: TextStyle(
+                          errorStyle: TextStyle(
                               fontSize: (deviceWidth / 33) + 1.5,
-                              color: Colors.red
-                            ),
-                            labelStyle: Theme.of(context).textTheme.subtitle1,
+                              color: Colors.red),
+                          labelStyle: Theme.of(context).textTheme.subtitle1,
                           suffixIcon: IconButton(
                             onPressed: () {
                               if (mounted) {
@@ -263,11 +265,12 @@ class _SignupPageState extends State<SignupPage> {
                                 });
                               }
                             },
-                            icon: Icon(isObscured
-                                ? Icons.visibility
-                                : Icons.visibility_off,
-                                
-                                size: 34.0,),
+                            icon: Icon(
+                              isObscured
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              size: 34.0,
+                            ),
                           ),
                           // errorText: ,
                           labelText: "Enter your password",
@@ -280,7 +283,7 @@ class _SignupPageState extends State<SignupPage> {
                         height: 30.0,
                       ),
                       TextFormField(
-                           style: Theme.of(context).textTheme.subtitle1,
+                        style: Theme.of(context).textTheme.subtitle1,
                         controller: _confirmPasswordController,
                         obscureText: isObscured2,
                         keyboardType: TextInputType.visiblePassword,
@@ -289,11 +292,10 @@ class _SignupPageState extends State<SignupPage> {
                               _passwordController.text, value!);
                         },
                         decoration: InputDecoration(
-                            errorStyle: TextStyle(
+                          errorStyle: TextStyle(
                               fontSize: (deviceWidth / 33) + 1.5,
-                              color: Colors.red
-                            ),
-                            labelStyle: Theme.of(context).textTheme.subtitle1,
+                              color: Colors.red),
+                          labelStyle: Theme.of(context).textTheme.subtitle1,
                           suffixIcon: IconButton(
                             onPressed: () {
                               if (mounted) {
@@ -302,10 +304,12 @@ class _SignupPageState extends State<SignupPage> {
                                 });
                               }
                             },
-                            icon: Icon(isObscured
-                                ? Icons.visibility
-                                : Icons.visibility_off,
-                                 size: 34.0,),
+                            icon: Icon(
+                              isObscured
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              size: 34.0,
+                            ),
                           ),
                           // errorText: ,
                           labelText: "Confirm your password",
@@ -466,19 +470,20 @@ class _SignupPageState extends State<SignupPage> {
                                 vertical: 5.0, horizontal: 20.0),
                             child: Center(
                               child: isLoading
-                                  ?  Container(
-                                     padding: EdgeInsets.symmetric(vertical: 5.0),
-                                        width: (deviceWidth / 28),
-                                        height:(deviceWidth / 28) + 5 ,
-                                        child: CircularProgressIndicator(
+                                  ? Container(
+                                      padding:
+                                          EdgeInsets.symmetric(vertical: 5.0),
+                                      width: (deviceWidth / 28),
+                                      height: (deviceWidth / 28) + 5,
+                                      child: CircularProgressIndicator(
                                         color: Colors.white,
                                         strokeWidth: 2.0,
                                         backgroundColor: Color(0xffCC868A),
                                       ),
                                     )
-                                  :  Text(
+                                  : Text(
                                       "Sign up",
-                                     style: Theme.of(context).textTheme.button,
+                                      style: Theme.of(context).textTheme.button,
                                     ),
                             )),
                       ),

@@ -7,19 +7,21 @@ class PriceInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Row(
-                    children: [
-                      Text(
-                        
-                        label,
-                        style: Theme.of(context).textTheme.headline2,
-                      ),
-                    
-                      Text(
-                        "₹ $price",
-                         style: Theme.of(context).textTheme.headline6,
-                      ),
-                    ],
-                  );
+    return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            label,
+            style: Theme.of(context).textTheme.headline2,
+          ),
+          Text(
+            "₹ $price",
+            style: Theme.of(context).textTheme.headline6,
+          ),
+        ],
+      ),
+    );
   }
 }

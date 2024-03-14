@@ -241,8 +241,8 @@ class _ShippingFormState extends State<ShippingForm> {
           controller: address2Controller2,
           keyboardType: TextInputType.name,
           decoration: InputDecoration(
-            errorStyle:
-                TextStyle(fontSize: (deviceWidth / 36), color: Colors.red),
+            errorStyle:  TextStyle(fontSize: (deviceWidth / 36), color: Colors.red),
+              
             labelStyle: Theme.of(context).textTheme.subtitle1,
             // errorText: ,
             hintText: "Apartment, suite, unit, etc. (optional)",
