@@ -176,7 +176,7 @@ class AccountPage extends StatelessWidget {
                 color: const Color.fromARGB(255, 237, 237, 237),
                 child: Text("Hello, there!",
                     style: TextStyle(
-                      fontSize: deviceWidth > 600 ? 26.0 : 17.0,
+                      fontSize: deviceWidth > 600 ? 26.0 : 17.0, fontWeight: FontWeight.normal
                     ))),
             ListTile(
               contentPadding:
@@ -255,7 +255,7 @@ class AccountPage extends StatelessWidget {
                 color: const Color.fromARGB(255, 237, 237, 237),
                 child: Text(
                   "CONTACT US",
-                  style: TextStyle(fontSize: deviceWidth > 600 ? 24.0 : 15.0),
+                  style: TextStyle(fontSize: deviceWidth > 600 ? 24.0 : 15.0, fontWeight: FontWeight.normal),
                 )),
             Padding(
               padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
@@ -294,7 +294,7 @@ class AccountPage extends StatelessWidget {
                       Text(
                         "Call",
                         style: TextStyle(
-                            fontSize: deviceWidth > 600 ? 27.0 : 17.0),
+                            fontSize: deviceWidth > 600 ? 27.0 : 17.0, fontWeight: FontWeight.normal),
                       )
                     ],
                   ),
@@ -322,7 +322,7 @@ class AccountPage extends StatelessWidget {
                       ),
                       Text("Visit our website",
                           style: TextStyle(
-                              fontSize: deviceWidth > 600 ? 27.0 : 17.0))
+                              fontSize: deviceWidth > 600 ? 27.0 : 17.0, fontWeight: FontWeight.normal))
                     ],
                   ),
                   // Padding(
@@ -359,7 +359,7 @@ class AccountPage extends StatelessWidget {
                 color: const Color.fromARGB(255, 237, 237, 237),
                 child: Text(
                   "SPREAD THE WORD",
-                  style: TextStyle(fontSize: deviceWidth > 600 ? 24.0 : 15.0),
+                  style: TextStyle(fontSize: deviceWidth > 600 ? 24.0 : 15.0, fontWeight: FontWeight.normal),
                 )),
             SizedBox(
               width: MediaQuery.of(context).size.width,
@@ -422,7 +422,7 @@ class AccountPage extends StatelessWidget {
                 color: const Color.fromARGB(255, 237, 237, 237),
                 child: Text(
                   "POLICIES",
-                  style: TextStyle(fontSize: deviceWidth > 600 ? 24.0 : 15.0),
+                  style: TextStyle(fontSize: deviceWidth > 600 ? 24.0 : 15.0, fontWeight: FontWeight.normal),
                 )),
             SizedBox(
               width: MediaQuery.of(context).size.width,

@@ -74,7 +74,7 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
         await ApiService.fetchOrders(customerProvider.customerData[0]["id"], 1);
 
         List<OrderModel> listOfGoldPlans = <OrderModel>[];
-//List<OrderModelMetaDatum> listOfMetaData = <OrderModelMetaDatum>[];
+
         for (var i = 0; i < ApiService.listOfOrders.length; i++) {
           for (var j = 0; j < ApiService.listOfOrders[i].metaData.length; j++) {
             if (ApiService.listOfOrders[i].metaData[j].key == "virtual_order" &&
@@ -318,9 +318,7 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                                     ? "${int.parse(jeweller_contribution) + int.parse(widget.digiGoldPlan.price!) * planDuration}"
                                     : "0"
                                 : "0")
-                        : SizedBox(
-                          
-                          ),
+                        : SizedBox(),
                     SizedBox(
                       height: 40.0,
                     ),
@@ -381,9 +379,7 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                     SizedBox(
                       height: 50.0,
                     ),
-                   
-                   // customerProvider.customerData.isEmpty 
-                   false
+                    customerProvider.customerData.isEmpty
                         ? GestureDetector(
                             onTap: () {
                               if (checkBoxChecked) {
@@ -421,14 +417,7 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                                   style: checkBoxChecked
                                       ? Theme.of(context).textTheme.button
                                       : Theme.of(context).textTheme.headline5
-                                  // TextStyle(
-                                  //     color: Colors.white,
-                                  //     fontSize: 17.0,
-                                  //     fontWeight: FontWeight.bold)
-                                  // :
-                                  // TextStyle(
-                                  //     color: Theme.of(context).primaryColor,
-                                  //     fontSize: 17.0)
+                              
                                   ,
                                 )),
                           )

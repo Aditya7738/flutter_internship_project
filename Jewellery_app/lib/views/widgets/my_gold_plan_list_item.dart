@@ -78,51 +78,23 @@ class _MyGoldPlanListItemState extends State<MyGoldPlanListItem> {
     return "";
   }
 
-  // String getCurrentMonthIndexPlanWise() {
-  //   // DateFormat format = DateFormat("MMMM d, yyyy, HH:mm:ss");
-
-  //   for (var i = 0; i < widget.orderModel.metaData.length; i++) {
-  //     if (widget.orderModel.metaData[i].key == "payment_date") {
-  //       DateTime paymentDateTime =
-  //           DateTime.parse(widget.orderModel.metaData[i].value!);
-  //       print("getPaymentDate $paymentDateTime");
-
-  //       DateTime currentDate = DateTime.now();
-  //       int diffMonths = (currentDate.year - paymentDateTime.year) * 12 +
-  //           currentDate.month -
-  //           paymentDateTime.month;
-  //       print("getPlanDuration int ${int.parse(getPlanDuration())}");
-  //       print("currentMonthIndex ${diffMonths % int.parse(getPlanDuration())}");
-
-  //       int currentMonthIndex = diffMonths % int.parse(getPlanDuration());
-
-  //       if (currentMonthIndex < 0) {
-  //         currentMonthIndex += int.parse(getPlanDuration());
-  //       }
-
-  //       return currentMonthIndex.toString();
-  //     }
-  //   }
-  //   return "";
-  // }
-
   int getPlanId() {
     for (var element in widget.orderModel.lineItems) {
       return element.id ?? 0;
     }
-    // for (var i = 0; i < widget.orderModel.lineItems.length; i++) {
-    //   return widget.orderModel.lineItems[i].id.toString();
-    // }
+
     return 0;
   }
 
-  // getData() {
   @override
   Widget build(BuildContext context) {
     print("widget.allOrdersList.length ${widget.allOrdersList.length}");
     print("int.parse(getPlanDuration()) ${int.parse(getPlanDuration())}");
     print(
         "widget.allOrdersList.length == int.parse(getPlanDuration()) ${widget.allOrdersList.length == int.parse(getPlanDuration())}");
+
+    double deviceWidth = MediaQuery.of(context).size.width;
+
     return Padding(
       padding: const EdgeInsets.only(bottom: 8.0),
       child: Card(
@@ -138,22 +110,21 @@ class _MyGoldPlanListItemState extends State<MyGoldPlanListItem> {
                       Text(
                         "₹ ${widget.orderModel.total}",
                         style: TextStyle(
-                            fontSize: 18.0, fontWeight: FontWeight.bold),
+                            fontSize: deviceWidth > 600 ? 28.0 : 18.0,
+                            fontWeight: FontWeight.bold),
                       ),
                       SizedBox(
                         width: 5.0,
                       ),
                       Image.asset(
                         "assets/images/gold_coin.png",
-                        width: 24.0,
-                        height: 24.0,
+                        width: deviceWidth > 600 ? 34.0 : 24.0,
+                        height: deviceWidth > 600 ? 34.0 : 24.0,
                       )
                     ],
                   ),
                   Container(
-                      height: 30.0,
-
-                      // height: 40.0,
+                      height: deviceWidth > 600 ? 43.0 : 33.0,
                       decoration: BoxDecoration(
                           color: widget.allOrdersList.length >=
                                   int.parse(getPlanDuration())
@@ -169,9 +140,10 @@ class _MyGoldPlanListItemState extends State<MyGoldPlanListItem> {
                               ? "Completed"
                               : "On going",
                           style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 17.0,
-                              fontWeight: FontWeight.bold),
+                            color: Colors.white,
+                            fontSize: deviceWidth > 600 ? 27.0 : 16.0,
+                            //fontWeight: FontWeight.bold
+                          ),
                         ),
                       )),
                 ],
@@ -187,13 +159,14 @@ class _MyGoldPlanListItemState extends State<MyGoldPlanListItem> {
                         Text(
                           "Plan name: ",
                           style: TextStyle(
-                              fontSize: 17.0, fontWeight: FontWeight.bold),
+                              fontSize: deviceWidth > 600 ? 27.0 : 17.0,
+                              fontWeight: FontWeight.bold),
                         ),
                         Text(
                           getPlaneName(),
                           style: TextStyle(
-                            fontSize: 17.0,
-                          ),
+                              fontSize: deviceWidth > 600 ? 27.0 : 17.0,
+                              fontWeight: FontWeight.normal),
                           maxLines: 2,
                         )
                       ]),
@@ -201,13 +174,14 @@ class _MyGoldPlanListItemState extends State<MyGoldPlanListItem> {
                         Text(
                           "Plan purchased date: ",
                           style: TextStyle(
-                              fontSize: 17.5, fontWeight: FontWeight.bold),
+                              fontSize: deviceWidth > 600 ? 27.0 : 17.0,
+                              fontWeight: FontWeight.bold),
                         ),
                         Text(
                           getPaymentDate(),
                           style: TextStyle(
-                            fontSize: 17.0,
-                          ),
+                              fontSize: deviceWidth > 600 ? 27.0 : 17.0,
+                              fontWeight: FontWeight.normal),
                           maxLines: 2,
                         )
                       ]),
@@ -215,13 +189,14 @@ class _MyGoldPlanListItemState extends State<MyGoldPlanListItem> {
                         Text(
                           "Duration: ",
                           style: TextStyle(
-                              fontSize: 17.0, fontWeight: FontWeight.bold),
+                              fontSize: deviceWidth > 600 ? 27.0 : 17.0,
+                              fontWeight: FontWeight.bold),
                         ),
                         Text(
                           "${widget.allOrdersList.length}/${getPlanDuration()} months",
                           style: TextStyle(
-                            fontSize: 17.0,
-                          ),
+                              fontSize: deviceWidth > 600 ? 27.0 : 17.0,
+                              fontWeight: FontWeight.normal),
                           maxLines: 2,
                         )
                       ]),
@@ -230,7 +205,7 @@ class _MyGoldPlanListItemState extends State<MyGoldPlanListItem> {
                 ],
               ),
               SizedBox(
-                height: 10.0,
+                height: 30.0,
               ),
               Row(
                 children: [
@@ -246,7 +221,6 @@ class _MyGoldPlanListItemState extends State<MyGoldPlanListItem> {
                     },
                     child: Container(
                         width: MediaQuery.of(context).size.width / 2 - 34,
-                        // height: 40.0,
                         decoration: BoxDecoration(
                             border: Border.all(
                                 width: 2.0,
@@ -260,7 +234,7 @@ class _MyGoldPlanListItemState extends State<MyGoldPlanListItem> {
                             "Details",
                             style: TextStyle(
                                 color: Theme.of(context).primaryColor,
-                                fontSize: 18.0,
+                                fontSize: deviceWidth > 600 ? 28.0 : 18.0,
                                 fontWeight: FontWeight.bold),
                           ),
                         )),
@@ -270,7 +244,7 @@ class _MyGoldPlanListItemState extends State<MyGoldPlanListItem> {
                   ),
                   GestureDetector(
                     onTap: widget.allOrdersList.length >=
-                            int.parse(getPlanDuration()) 
+                            int.parse(getPlanDuration())
                         ? () {}
                         : () async {
                             OrderProvider orderProvider =
@@ -420,7 +394,6 @@ class _MyGoldPlanListItemState extends State<MyGoldPlanListItem> {
                           },
                     child: Container(
                         width: MediaQuery.of(context).size.width / 2 - 34,
-                        // height: 40.0,
                         decoration: BoxDecoration(
                             color: widget.allOrdersList.length >=
                                     int.parse(getPlanDuration())
@@ -431,7 +404,7 @@ class _MyGoldPlanListItemState extends State<MyGoldPlanListItem> {
                             vertical: 9.0, horizontal: 20.0),
                         child: Center(
                           child: isOrderCreating
-                              ? SizedBox(
+                              ? const SizedBox(
                                   height: 25.0,
                                   width: 25.0,
                                   child: CircularProgressIndicator(
@@ -439,15 +412,15 @@ class _MyGoldPlanListItemState extends State<MyGoldPlanListItem> {
                                     strokeWidth: 2.0,
                                   ),
                                 )
-                              : const Text(
+                              : Text(
                                   "Pay now",
                                   style: TextStyle(
                                       color: Colors.white,
-                                      fontSize: 19.0,
+                                      fontSize: deviceWidth > 600 ? 28.0 : 18.0,
                                       fontWeight: FontWeight.bold),
                                 ),
                         )),
-                  )
+                  ),
                 ],
               )
             ],

@@ -35,7 +35,9 @@ class _ProductItemState extends State<ProductItem> {
   Widget build(BuildContext context) {
     final wishListProvider = Provider.of<WishlistProvider>(context);
     // final cartProvider = Provider.of<CartProvider>(context);
-    print("product item ${(MediaQuery.of(context).size.width / 3) - 75}");
+double deviceWidth = MediaQuery.of(context).size.width;
+
+    print("product item ${(deviceWidth / 3) - 75}");
     print(productsModel.toJson());
     String deliveryDate = DateHelper.getCurrentDateInWords();
     return GestureDetector(
@@ -63,21 +65,23 @@ class _ProductItemState extends State<ProductItem> {
               productsModel.images.isEmpty ||
                       productsModel.images[0].src == null
                   ? ClipRRect(
-                      child: Image.asset("assets/images/image_placeholder.jpg",
-                          width: (MediaQuery.of(context).size.width / 2) - 1.0,
-                          height:
-                              (MediaQuery.of(context).size.width / 2) + 10.0),
+                      child: Image.asset(
+                        "assets/images/image_placeholder.jpg",
+                        width: (deviceWidth / 2) + 16.0,
+                        height: (deviceWidth / 2) + 10.0,
+                      ),
                     )
                   : CachedNetworkImage(
                       imageUrl: productsModel.images.isEmpty
                           ? Constants.defaultImageUrl
                           : productsModel.images[0].src ??
                               Constants.defaultImageUrl,
+                      width: (deviceWidth / 2) + 16.0,
+                      height: deviceWidth > 600 ? (deviceWidth / 2) - 111 : (deviceWidth / 2) - 10,
                       placeholder: (context, url) {
                         return SizedBox(
-                          width: (MediaQuery.of(context).size.width / 2) + 16.0,
-                          height:
-                              (MediaQuery.of(context).size.width / 2) + 10.0,
+                          width: (deviceWidth / 2) + 16.0,
+                          height: deviceWidth > 600 ? (deviceWidth / 2) - 111 : (deviceWidth / 2) - 10,
                           child: const Center(
                             child: CircularProgressIndicator(
                               color: Colors.black,
@@ -90,15 +94,16 @@ class _ProductItemState extends State<ProductItem> {
                 padding: const EdgeInsets.only(
                   right: 12.0,
                   left: 5.0,
+                  bottom: 12.0
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
                       padding: EdgeInsets.only(left: 15.0),
-                      width: MediaQuery.of(context).size.width > 600
-                          ? (MediaQuery.of(context).size.width / 3) - 75
-                          : (MediaQuery.of(context).size.width / 2) - 66,
+                      width: deviceWidth > 600
+                          ? (deviceWidth / 3) - 75
+                          : (deviceWidth / 2) - 66,
                       child: LayoutBuilder(
                         builder: (context, constraints) {
                           return Column(
@@ -111,13 +116,7 @@ class _ProductItemState extends State<ProductItem> {
                                 ),
                                 softWrap: true,
                                 overflow: TextOverflow.ellipsis,
-                              )
-                              //       ;
-                              //     },
-                              //     //   child:
-                              //   ),
-                              // )
-                              ,
+                              ),
                               productsModel.salePrice == ""
                                   ? Text(
                                       productsModel.regularPrice != ""
@@ -159,7 +158,7 @@ class _ProductItemState extends State<ProductItem> {
                               ),
                               productsModel.averageRating != null
                                   ? Container(
-                                      width: MediaQuery.of(context).size.width >
+                                      width: deviceWidth >
                                               600
                                           ? constraints.maxWidth / 2.1
                                           : constraints.maxWidth / 1.5,
@@ -198,7 +197,7 @@ class _ProductItemState extends State<ProductItem> {
                                       ),
                                     )
                                   : SizedBox(
-                                      width: MediaQuery.of(context).size.width /
+                                      width: deviceWidth /
                                               2 -
                                           60,
                                     ),
@@ -270,23 +269,23 @@ class _ProductItemState extends State<ProductItem> {
                                       .contains(productsModel.id)
                                   ? Icon(
                                       Icons.shopping_cart,
-                                      size: MediaQuery.of(context).size.width >
+                                      size: deviceWidth >
                                               600
-                                          ? (MediaQuery.of(context).size.width /
+                                          ? (deviceWidth /
                                                   3) -
                                               260
-                                          : (MediaQuery.of(context).size.width /
+                                          : (deviceWidth /
                                                   3) -
                                               116,
                                     )
                                   : Icon(
                                       Icons.add_shopping_cart_rounded,
-                                      size: MediaQuery.of(context).size.width >
+                                      size: deviceWidth >
                                               600
-                                          ? (MediaQuery.of(context).size.width /
+                                          ? (deviceWidth /
                                                   3) -
                                               260
-                                          : (MediaQuery.of(context).size.width /
+                                          : (deviceWidth /
                                                   3) -
                                               116,
                                     ),
@@ -304,10 +303,10 @@ class _ProductItemState extends State<ProductItem> {
                                   ? Icons.favorite
                                   : Icons.favorite_border_outlined,
                               color: Colors.red,
-                              size: MediaQuery.of(context).size.width > 600
-                                  ? (MediaQuery.of(context).size.width / 3) -
+                              size: deviceWidth > 600
+                                  ? (deviceWidth / 3) -
                                       260
-                                  : (MediaQuery.of(context).size.width / 3) -
+                                  : (deviceWidth / 3) -
                                       116,
                             ),
                             onPressed: () {

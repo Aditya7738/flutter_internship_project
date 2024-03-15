@@ -213,21 +213,20 @@ class _GoldPlanDetailState extends State<GoldPlanDetail> {
     }
   }
 
-  // getDates() {
-  //   for (var i = 0; i < widget.allOrdersList.length; i++) {
-  //     for (var j = 0; j < widget.allOrdersList[i].metaData.length; j++) {
-  //       if (widget.allOrdersList[i].metaData[i].key == "payment_date") {
-  //         print(
-  //             "payment_dates$i ${DateFormat('MMMM dd, yyyy').format(DateTime.parse(widget.orderModel.metaData[i].value!))}");
-  //       }
-  //     }
-  //   }
-  // }
+  // // getDates() {
+  // //   for (var i = 0; i < widget.allOrdersList.length; i++) {
+  // //     for (var j = 0; j < widget.allOrdersList[i].metaData.length; j++) {
+  // //       if (widget.allOrdersList[i].metaData[i].key == "payment_date") {
+  // //         print(
+  // //             "payment_dates$i ${DateFormat('MMMM dd, yyyy').format(DateTime.parse(widget.orderModel.metaData[i].value!))}");
+  // //       }
+  // //     }
+  // //   }
+  // // }
 
   @override
   Widget build(BuildContext context) {
-    // addInTableData();
-
+    double deviceWidth = MediaQuery.of(context).size.width;
     print("isJewellerContributing $isJewellerContributing");
     return Scaffold(
         appBar: AppBar(
@@ -244,15 +243,16 @@ class _GoldPlanDetailState extends State<GoldPlanDetail> {
                     Text(
                       "Plan Name:",
                       style: TextStyle(
-                          fontSize: 18.0, fontWeight: FontWeight.bold),
+                          fontSize: deviceWidth > 600 ? 32.0 : 18.0,
+                          fontWeight: FontWeight.bold),
                     ),
                     SizedBox(
                       width: 5.0,
                     ),
                     Text("${getPlaneName()}",
                         style: TextStyle(
-                          fontSize: 18.0,
-                        )),
+                            fontSize: deviceWidth > 600 ? 32.0 : 17.0,
+                            fontWeight: FontWeight.normal)),
                   ],
                 ),
                 SizedBox(
@@ -263,15 +263,16 @@ class _GoldPlanDetailState extends State<GoldPlanDetail> {
                     Text(
                       "Plan Type:",
                       style: TextStyle(
-                          fontSize: 18.0, fontWeight: FontWeight.bold),
+                          fontSize: deviceWidth > 600 ? 32.0 : 18.0,
+                          fontWeight: FontWeight.bold),
                     ),
                     SizedBox(
                       width: 5.0,
                     ),
                     Text(" ${getPlanType()}",
                         style: TextStyle(
-                          fontSize: 18.0,
-                        )),
+                            fontSize: deviceWidth > 600 ? 32.0 : 17.0,
+                            fontWeight: FontWeight.normal)),
                   ],
                 ),
                 SizedBox(
@@ -282,15 +283,16 @@ class _GoldPlanDetailState extends State<GoldPlanDetail> {
                     Text(
                       "Plan Amount:",
                       style: TextStyle(
-                          fontSize: 18.0, fontWeight: FontWeight.bold),
+                          fontSize: deviceWidth > 600 ? 32.0 : 18.0,
+                          fontWeight: FontWeight.bold),
                     ),
                     SizedBox(
                       width: 5.0,
                     ),
                     Text("₹ ${widget.orderModel.total}",
                         style: TextStyle(
-                          fontSize: 18.0,
-                        )),
+                            fontSize: deviceWidth > 600 ? 32.0 : 17.0,
+                            fontWeight: FontWeight.normal)),
                   ],
                 ),
                 SizedBox(
@@ -306,15 +308,15 @@ class _GoldPlanDetailState extends State<GoldPlanDetail> {
                                   text: "Jeweller contribution on last month: ",
                                   style: TextStyle(
                                       color: Colors.black,
-                                      fontSize: 18.0,
+                                      fontSize: deviceWidth > 600 ? 32.0 : 18.0,
                                       fontWeight: FontWeight.bold),
                                 ),
                                 TextSpan(
                                   text: "₹ $jewellerContribution",
                                   style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 18.0,
-                                  ),
+                                      color: Colors.black,
+                                      fontSize: deviceWidth > 600 ? 32.0 : 18.0,
+                                      fontWeight: FontWeight.normal),
                                 )
                               ],
                             ),
@@ -331,15 +333,16 @@ class _GoldPlanDetailState extends State<GoldPlanDetail> {
                     Text(
                       "Date of joining:",
                       style: TextStyle(
-                          fontSize: 18.0, fontWeight: FontWeight.bold),
+                          fontSize: deviceWidth > 600 ? 32.0 : 18.0,
+                          fontWeight: FontWeight.bold),
                     ),
                     SizedBox(
                       width: 5.0,
                     ),
                     Text("${getPaymentDate()}",
                         style: TextStyle(
-                          fontSize: 18.0,
-                        )),
+                            fontSize: deviceWidth > 600 ? 32.0 : 18.0,
+                            fontWeight: FontWeight.normal)),
                   ],
                 ),
                 SizedBox(
@@ -349,16 +352,16 @@ class _GoldPlanDetailState extends State<GoldPlanDetail> {
                   children: [
                     Text(
                       "Duration:",
-                      style: TextStyle(
-                          fontSize: 18.0, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: deviceWidth > 600 ? 32.0 : 18.0),
                     ),
                     SizedBox(
                       width: 5.0,
                     ),
                     Text("${getPlanDuration()} months",
                         style: TextStyle(
-                          fontSize: 18.0,
-                        )),
+                            fontSize: deviceWidth > 600 ? 32.0 : 18.0,
+                            fontWeight: FontWeight.normal)),
                   ],
                 ),
                 SizedBox(
@@ -366,21 +369,25 @@ class _GoldPlanDetailState extends State<GoldPlanDetail> {
                 ),
                 Text(
                   "Description:",
-                  style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      fontSize: deviceWidth > 600 ? 32.0 : 18.0,
+                      fontWeight: FontWeight.bold),
                 ),
                 SizedBox(
                   height: 5.0,
                 ),
                 HtmlWidget("<p>${getPlanDescription()}</p>",
                     textStyle: TextStyle(
-                      fontSize: 18.0,
-                    )),
+                        fontSize: deviceWidth > 600 ? 32.0 : 18.0,
+                        fontWeight: FontWeight.normal)),
                 SizedBox(
                   height: 15.0,
                 ),
                 Text(
                   "Payment Details",
-                  style: TextStyle(fontSize: 19.0, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      fontSize: deviceWidth > 600 ? 32.0 : 19.0,
+                      fontWeight: FontWeight.bold),
                 ),
                 SizedBox(
                   height: 10.0,
@@ -422,140 +429,14 @@ class _GoldPlanDetailState extends State<GoldPlanDetail> {
                 SizedBox(
                   height: 30.0,
                 ),
-                // Container(
-                //   height: MediaQuery.of(context).size.height,
-                //   child: ListView.builder(
-                //     itemCount: widget.allOrdersList.length,
-                //     itemBuilder: (context, index) {
-                //       OrderModel orderModel = widget.allOrdersList[index];
-                //       return Padding(
-                //         padding: const EdgeInsets.only(bottom: 8.0),
-                //         child: Card(
-                //           child: Padding(
-                //             padding: const EdgeInsets.all(16.0),
-                //             child: Column(
-                //               children: [
-                //                 Row(
-                //                   mainAxisAlignment:
-                //                       MainAxisAlignment.spaceBetween,
-                //                   children: [
-                //                     Text(
-                //                       "Month ${index + 1}",
-                //                       style: TextStyle(
-                //                           fontSize: 18.0,
-                //                           fontWeight: FontWeight.bold),
-                //                     ),
-                //                     Text(
-                //                       "${getPaymentDateFromList(orderModel)}",
-                //                       style: TextStyle(
-                //                           fontSize: 18.0,
-                //                           fontWeight: FontWeight.bold),
-                //                     ),
-                //                   ],
-                //                 ),
-                //                 Divider(
-                //                   thickness: 1.0,
-                //                 ),
-                //                 Column(
-                //                   children: [
-                //                     Table(
-                //                       children: [
-                //                         TableRow(children: [
-                //                           Text(
-                //                             "Payment Ref ID: ",
-                //                             style: TextStyle(
-                //                                 fontSize: 18.0,
-                //                                 fontWeight: FontWeight.bold),
-                //                           ),
-                //                           Text(
-                //                             "${getPaymentRefIdFromList(orderModel)}",
-                //                             style: TextStyle(
-                //                               fontSize: 18.0,
-                //                             ),
-                //                             maxLines: 2,
-                //                           )
-                //                         ]),
-                //                         TableRow(children: [
-                //                           Text(
-                //                             "Mode of payment: ",
-                //                             style: TextStyle(
-                //                                 fontSize: 18.0,
-                //                                 fontWeight: FontWeight.bold),
-                //                           ),
-                //                           Text(
-                //                             "${getPaymentMethodFromList(orderModel)}",
-                //                             style: TextStyle(
-                //                               fontSize: 18.0,
-                //                             ),
-                //                             maxLines: 2,
-                //                           )
-                //                         ]),
-                //                         TableRow(children: [
-                //                           Text(
-                //                             "Amount paid: ",
-                //                             style: TextStyle(
-                //                                 fontSize: 18.0,
-                //                                 fontWeight: FontWeight.bold),
-                //                           ),
-                //                           Text(
-                //                             "₹ ${widget.orderModel.total}",
-                //                             style: TextStyle(
-                //                               fontSize: 18.0,
-                //                             ),
-                //                             maxLines: 2,
-                //                           )
-                //                         ]),
-                //                       ],
-                //                     )
-                //                   ],
-                //                 ),
-                //                 Divider(
-                //                   thickness: 1.0,
-                //                 ),
-                //                 Row(
-                //                   mainAxisAlignment: MainAxisAlignment.start,
-                //                   children: [
-                //                     Text(
-                //                       "Gold credited: ",
-                //                       style: TextStyle(
-                //                           fontSize: 18.0,
-                //                           fontWeight: FontWeight.bold),
-                //                     ),
-                //                     SizedBox(
-                //                       width: 5.0,
-                //                     ),
-                //                     Text(
-                //                       "${getGoldCreditedFromList(orderModel)}",
-                //                       style: TextStyle(
-                //                         fontSize: 19.0,
-                //                       ),
-                //                     ),
-                //                     SizedBox(
-                //                       width: 5.0,
-                //                     ),
-                //                     Image.asset(
-                //                       "assets/images/gold_coin.png",
-                //                       width: 24.0,
-                //                       height: 24.0,
-                //                     )
-                //                   ],
-                //                 )
-                //               ],
-                //             ),
-                //           ),
-                //         ),
-                //       );
-                //     },
-                //   ),
-                // )
-                ...getPlanPayments()
+                ...getPlanPayments(deviceWidth)
               ],
             ),
           ),
         ));
   }
 
-  List<Widget> getPlanPayments() {
+  List<Widget> getPlanPayments(double deviceWidth) {
     List<Widget> widgets = <Widget>[];
     for (var i = 0; i < widget.allOrdersList.length; i++) {
       OrderModel orderModel = widget.allOrdersList[i];
@@ -572,12 +453,14 @@ class _GoldPlanDetailState extends State<GoldPlanDetail> {
                     Text(
                       "Month ${i + 1}",
                       style: TextStyle(
-                          fontSize: 18.0, fontWeight: FontWeight.bold),
+                          fontSize: deviceWidth > 600 ? 29.0 : 17.0,
+                          fontWeight: FontWeight.bold),
                     ),
                     Text(
                       "${getPaymentDateFromList(orderModel)}",
                       style: TextStyle(
-                          fontSize: 18.0, fontWeight: FontWeight.bold),
+                          fontSize: deviceWidth > 600 ? 29.0 : 17.0,
+                          fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
@@ -592,13 +475,14 @@ class _GoldPlanDetailState extends State<GoldPlanDetail> {
                           Text(
                             "Payment Ref ID: ",
                             style: TextStyle(
-                                fontSize: 18.0, fontWeight: FontWeight.bold),
+                                fontSize: deviceWidth > 600 ? 28.0 : 16.0,
+                                fontWeight: FontWeight.bold),
                           ),
                           Text(
                             "${getPaymentRefIdFromList(orderModel)}",
                             style: TextStyle(
-                              fontSize: 18.0,
-                            ),
+                                fontSize: deviceWidth > 600 ? 28.0 : 16.0,
+                                fontWeight: FontWeight.normal),
                             maxLines: 2,
                           )
                         ]),
@@ -606,13 +490,14 @@ class _GoldPlanDetailState extends State<GoldPlanDetail> {
                           Text(
                             "Mode of payment: ",
                             style: TextStyle(
-                                fontSize: 18.0, fontWeight: FontWeight.bold),
+                                fontSize: deviceWidth > 600 ? 28.0 : 16.0,
+                                fontWeight: FontWeight.bold),
                           ),
                           Text(
                             "${getPaymentMethodFromList(orderModel)}",
                             style: TextStyle(
-                              fontSize: 18.0,
-                            ),
+                                fontSize: deviceWidth > 600 ? 28.0 : 16.0,
+                                fontWeight: FontWeight.normal),
                             maxLines: 2,
                           )
                         ]),
@@ -620,13 +505,14 @@ class _GoldPlanDetailState extends State<GoldPlanDetail> {
                           Text(
                             "Amount paid: ",
                             style: TextStyle(
-                                fontSize: 18.0, fontWeight: FontWeight.bold),
+                                fontSize: deviceWidth > 600 ? 28.0 : 16.0,
+                                fontWeight: FontWeight.bold),
                           ),
                           Text(
                             "₹ ${widget.orderModel.total}",
                             style: TextStyle(
-                              fontSize: 18.0,
-                            ),
+                                fontSize: deviceWidth > 600 ? 28.0 : 16.0,
+                                fontWeight: FontWeight.normal),
                             maxLines: 2,
                           )
                         ]),
@@ -642,25 +528,26 @@ class _GoldPlanDetailState extends State<GoldPlanDetail> {
                   children: [
                     Text(
                       "Gold credited: ",
-                      style: TextStyle(
-                          fontSize: 18.0, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: deviceWidth > 600 ? 28.0 : 18.0),
                     ),
                     SizedBox(
                       width: 5.0,
                     ),
                     Text(
-                      "${getGoldCreditedFromList(orderModel)}",
+                      getGoldCreditedFromList(orderModel),
                       style: TextStyle(
-                        fontSize: 19.0,
+                        fontWeight: FontWeight.normal,
+                        fontSize: deviceWidth > 600 ? 29.0 : 17.0,
                       ),
                     ),
                     SizedBox(
-                      width: 5.0,
+                      width: deviceWidth > 600 ? 7.0 : 5.0,
                     ),
                     Image.asset(
                       "assets/images/gold_coin.png",
-                      width: 24.0,
-                      height: 24.0,
+                      width: deviceWidth > 600 ? 34.0 : 24.0,
+                      height: deviceWidth > 600 ? 34.0 : 24.0,
                     )
                   ],
                 )

@@ -36,16 +36,16 @@ class _MyGoldPlansState extends State<MyGoldPlans> {
     bool isThereInternet = await ApiService.checkInternetConnection(context);
     if (isThereInternet) {
       if (mounted) {
-      setState(() {
-        isOrderFetching = true;
-      });
+        setState(() {
+          isOrderFetching = true;
+        });
       }
 
       ApiService.listOfOrders.clear();
       print("customerId ${customerProvider.customerData[0]["id"]}");
       await ApiService.fetchOrders(customerProvider.customerData[0]["id"], 1);
 
-//List<OrderModelMetaDatum> listOfMetaData = <OrderModelMetaDatum>[];
+
       for (var i = 0; i < ApiService.listOfOrders.length; i++) {
         for (var j = 0; j < ApiService.listOfOrders[i].metaData.length; j++) {
           if (ApiService.listOfOrders[i].metaData[j].key == "virtual_order" &&
@@ -55,22 +55,7 @@ class _MyGoldPlansState extends State<MyGoldPlans> {
         }
       }
 
-      // Map<String, dynamic> plan_counter = <String, String>{};
-
-      // for (var i = 0; i < listOfGoldPlans.length; i++) {
-      //   String digi_plan_name = "";
-
-      //   for (var j = 0; j < listOfGoldPlans[i].metaData.length; j++) {
-      //    if (listOfGoldPlans[i].metaData[j].key == "digi_plan_name") {
-      //     if (listOfGoldPlans[i].metaData[j].value == plan_counter["digi_plan"]) {
-      //       plan_counter["${plan_counter["digi_plan"]}_counter"] += 1;
-      //     }
-      //     plan_counter["digi_plan$i"] = listOfGoldPlans[i].metaData[j].value!;
-      //      digi_plan_name = listOfGoldPlans[i].metaData[j].value!;
-      //     }
-      //   }
-      //    listOfGoldPlans.add(listOfGoldPlans[i]);
-      // }
+    
 
       for (OrderModel orderModel in listOfGoldPlans) {
         for (OrderModelMetaDatum map in orderModel.metaData) {
@@ -95,16 +80,7 @@ class _MyGoldPlansState extends State<MyGoldPlans> {
         }
       }
 
-      // digiPlanModelMap.forEach((key, value) {
-
-      //   value.forEach((element) {
-      //     for (var i = 0; i < element.metaData.length; i++) {
-      //       if (element.metaData[i].key == "payment_date") {
-      //         print("payment_date$i ${element.metaData[i].value}");
-      //       }
-      //     }
-      //   });
-      // });
+    
 
       digiPlanModelMap.forEach((key, value) {
         purchasedPlans.add(value.last);
@@ -121,12 +97,12 @@ class _MyGoldPlansState extends State<MyGoldPlans> {
 
     if (mounted) {
       setState(() {
-      isOrderFetching = false;
-    });
+        isOrderFetching = false;
+      });
     }
   }
 
-  // print("listOfGoldPlans $listOfGoldPlans");
+
 
   @override
   Widget build(BuildContext context) {
@@ -136,7 +112,8 @@ class _MyGoldPlansState extends State<MyGoldPlans> {
       appBar: AppBar(
         title: Text("My Gold Plans"),
       ),
-      body: orderProvider.isOrderCreating || isOrderFetching
+      body: 
+           orderProvider.isOrderCreating || isOrderFetching
           ? Center(
               child: CircularProgressIndicator(
                 color: Theme.of(context).primaryColor,
@@ -163,7 +140,8 @@ class _MyGoldPlansState extends State<MyGoldPlans> {
 
                   return MyGoldPlanListItem(
                       orderModel: orderModel,
-                      allOrdersList: allOrdersOfThatPlan);
+                      allOrdersList: allOrdersOfThatPlan
+                      );
                 },
               ),
             ),

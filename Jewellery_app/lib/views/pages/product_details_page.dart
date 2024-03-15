@@ -333,7 +333,6 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
     return Scaffold(
       appBar: AppBar(title: Text("Details"), actions: <Widget>[
         Container(
-          color: Colors.red,
           width: (deviceWidth / 16) + 4,
           child: badges.Badge(
             badgeStyle: const badges.BadgeStyle(badgeColor: Colors.purple),
@@ -359,7 +358,6 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
           width: 24,
         ),
         Container(
-          color: Colors.red,
           width: (deviceWidth / 16) + 4,
           child: badges.Badge(
             badgeStyle: const badges.BadgeStyle(badgeColor: Colors.purple),
@@ -549,8 +547,8 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         Text(
                           productsModel.sku ?? "12007AN",
                           style: TextStyle(
-                            fontSize: (deviceWidth / 36) + 3,
-                          ),
+                              fontSize: (deviceWidth / 36) + 3,
+                              fontWeight: FontWeight.normal),
                         ),
                         const SizedBox(
                           width: 30.0,
@@ -567,8 +565,8 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                               ? productsModel.categories![0].name ?? "Jewellery"
                               : "Jewellery",
                           style: TextStyle(
-                            fontSize: (deviceWidth / 36) + 3,
-                          ),
+                              fontSize: (deviceWidth / 36) + 3,
+                              fontWeight: FontWeight.normal),
                         )
                       ],
                     ),
@@ -586,8 +584,8 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         ? Text(
                             "Jewellery",
                             style: TextStyle(
-                              fontSize: (deviceWidth / 36) + 3,
-                            ),
+                                fontSize: (deviceWidth / 36) + 3,
+                                fontWeight: FontWeight.normal),
                           )
                         : SizedBox(
                             height: 20.0,
@@ -598,8 +596,13 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                 return Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 10.0),
-                                  child: Text(productsModel.tags?[index].name ??
-                                      "Category"),
+                                  child: Text(
+                                    productsModel.tags?[index].name ??
+                                        "Category",
+                                    style: TextStyle(
+                                        fontSize: (deviceWidth / 36) + 3,
+                                        fontWeight: FontWeight.normal),
+                                  ),
                                 );
                               },
                               scrollDirection: Axis.horizontal,
@@ -686,89 +689,108 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                         ReviewsModel reviewsModel =
                                             ApiService.reviewsList[index];
 
-                                        return Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Row(
-                                              children: [
-                                                Container(
-                                                  padding: EdgeInsets.all(5.0),
-                                                  decoration: BoxDecoration(
-                                                      shape: BoxShape.circle,
-                                                      border: Border.all(
-                                                          color: Colors.grey)),
-                                                  child: Icon(
-                                                    Icons.person,
-                                                    color: Colors.grey,
+                                        return Container(
+                                          color: Colors.yellow,
+                                          padding: EdgeInsets.all(10.0),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  Container(
+                                                    padding:
+                                                        EdgeInsets.all(5.0),
+                                                    decoration: BoxDecoration(
+                                                        shape: BoxShape.circle,
+                                                        border: Border.all(
+                                                            color:
+                                                                Colors.grey)),
+                                                    child: Icon(
+                                                      Icons.person,
+                                                      color: Colors.grey,
+                                                      size: deviceWidth > 600
+                                                          ? 45.0
+                                                          : 27.0,
+                                                    ),
                                                   ),
-                                                ),
-                                                SizedBox(
-                                                  width: 10.0,
-                                                ),
-                                                Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Row(
-                                                      children: [
-                                                        Text(
-                                                            reviewsModel
-                                                                    .reviewer ??
-                                                                "Reviewer",
+                                                  SizedBox(
+                                                    width: 10.0,
+                                                  ),
+                                                  Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Row(
+                                                        children: [
+                                                          Text(
+                                                              reviewsModel
+                                                                      .reviewer ??
+                                                                  "Reviewer",
+                                                              style: TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold)),
+                                                          SizedBox(
+                                                            width: 10.0,
+                                                          ),
+                                                          Text(
+                                                            reviewsModel.verified !=
+                                                                    null
+                                                                ? reviewsModel
+                                                                            .verified! ==
+                                                                        true
+                                                                    ? "(Verified Purchase)"
+                                                                    : ""
+                                                                : "",
                                                             style: TextStyle(
+                                                                color: Theme.of(
+                                                                        context)
+                                                                    .primaryColor,
                                                                 fontWeight:
                                                                     FontWeight
-                                                                        .bold)),
-                                                        SizedBox(
-                                                          width: 10.0,
-                                                        ),
-                                                        Text(
-                                                          reviewsModel.verified !=
-                                                                  null
-                                                              ? reviewsModel
-                                                                          .verified! ==
-                                                                      true
-                                                                  ? "(Verified Purchase)"
-                                                                  : ""
-                                                              : "",
-                                                          style: TextStyle(
-                                                              color: Theme.of(
-                                                                      context)
-                                                                  .primaryColor,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold),
-                                                        )
-                                                      ],
-                                                    ),
-                                                    Row(
-                                                      mainAxisSize:
-                                                          MainAxisSize.min,
-                                                      children: List.generate(5,
-                                                          (index) {
-                                                        return Icon(
-                                                          index <
-                                                                  (reviewsModel
-                                                                          .rating ??
-                                                                      0)
-                                                              ? Icons.star
-                                                              : Icons
-                                                                  .star_border,
-                                                          color: Colors.amber,
-                                                        );
-                                                      }),
-                                                    ),
-                                                  ],
-                                                )
-                                              ],
-                                            ),
-                                            HtmlWidget(reviewsModel.review ??
-                                                "<p>Review</p>"),
-                                            SizedBox(
-                                              height: 10.0,
-                                            )
-                                          ],
+                                                                        .bold),
+                                                          )
+                                                        ],
+                                                      ),
+                                                      Row(
+                                                        mainAxisSize:
+                                                            MainAxisSize.min,
+                                                        children: List.generate(
+                                                            5, (index) {
+                                                          return Icon(
+                                                            index <
+                                                                    (reviewsModel
+                                                                            .rating ??
+                                                                        0)
+                                                                ? Icons.star
+                                                                : Icons
+                                                                    .star_border,
+                                                            color: Colors.amber,
+                                                            size: deviceWidth >
+                                                                    600
+                                                                ? 33.0
+                                                                : 22.0,
+                                                          );
+                                                        }),
+                                                      ),
+                                                    ],
+                                                  )
+                                                ],
+                                              ),
+                                              SizedBox(
+                                                height: 10.0,
+                                              ),
+                                              HtmlWidget(
+                                                // reviewsModel.review ??
+                                                "<p>Reviewwwwwwwwwwwwwwwwwwwwwwwwwwwwwww</p>",
+                                                textStyle: TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.normal),
+                                              ),
+                                            ],
+                                          ),
                                         );
                                       },
                                       separatorBuilder: (context, index) =>
@@ -787,7 +809,8 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                               "Read all ${ApiService.reviewsList.length} Reviews",
                               style: TextStyle(
                                   color: Theme.of(context).primaryColor,
-                                  fontSize: 16.0,
+                                  fontSize: deviceWidth > 600 ? 26.0 : 16.0,
+                                  fontWeight: FontWeight.normal,
                                   decoration: TextDecoration.underline),
                             ),
                             onTap: () {
@@ -827,8 +850,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                           ),
                           Text(
                               productsModel.regularPrice != ""
-                                  ? "₹ ${productsModel.regularPrice ??
-                                      20000}" 
+                                  ? "₹ ${productsModel.regularPrice ?? 20000}"
                                   : "₹ 0.0",
                               // productsModel.regularPrice ??
                               //     "20,000",

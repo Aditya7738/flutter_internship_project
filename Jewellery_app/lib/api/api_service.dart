@@ -98,7 +98,7 @@ class ApiService {
   static List<ProductsModel> listOfProductsCategoryWise = [];
 
   static int categoryPageNo = 1;
-  static late int categoryId;
+  static int categoryId = 0;
 
   static int responseofCategoryPages = 1;
   static Future<bool> showNextPagesCategoryProduct() async {

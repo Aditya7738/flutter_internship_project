@@ -230,20 +230,17 @@ class _HomeScreenState extends State<HomeScreen> {
       //     listOfNavigationModel: listOfNavigationModel,
       //     fontWeight: FontWeight.bold),
       appBar: AppBar(
-        toolbarHeight:( kToolbarHeight + kToolbarHeight) - 26,
+        toolbarHeight: (kToolbarHeight + kToolbarHeight) - 26,
         automaticallyImplyLeading: false,
-      title: Image.network(
-            Constants.app_logo,
-            width: 239,
-          
-            height: kToolbarHeight,
-            fit: BoxFit.fitWidth,
-
-          ),
+        title: Image.network(
+          Constants.app_logo,
+          width: 239,
+          height: kToolbarHeight,
+          fit: BoxFit.fitWidth,
+        ),
         backgroundColor: Colors.white,
         actions: <Widget>[
           Container(
-    
             width: (deviceWidth / 16) + 4,
             child: badges.Badge(
               badgeStyle: const badges.BadgeStyle(badgeColor: Colors.purple),
@@ -269,7 +266,6 @@ class _HomeScreenState extends State<HomeScreen> {
             width: 24,
           ),
           Container(
-     
             width: (deviceWidth / 16) + 4,
             child: badges.Badge(
               badgeStyle: const badges.BadgeStyle(badgeColor: Colors.purple),
@@ -457,70 +453,220 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   )
-                : Column(
-                    children: [
-                      CarouselSlider(
-                        carouselController: carouselController,
-                        items: ApiService.listOfBanners
-                            .map((banner) => Container(
-                                  margin: const EdgeInsets.all(5.0),
-                                  child: Image.network(
-                                    banner.metadata != null
-                                        ? banner.metadata!.bgImageMobile[0]
-                                        : "https://rotationalmoulding.com/wp-content/uploads/2017/02/NoImageAvailable.jpg",
-                                    loadingBuilder:
-                                        (context, child, loadingProgress) {
-                                      if (loadingProgress == null) {
-                                        return child;
-                                      }
-                                      return Container(
-                                        alignment: Alignment.center,
-                                        width:
-                                            MediaQuery.of(context).size.width,
-                                        height: 92.0,
-                                        child: const CircularProgressIndicator(
-                                          color: Colors.black,
-                                        ),
-                                      );
-                                    },
-                                    fit: BoxFit.fill,
-                                  ),
-                                ))
-                            .toList(),
-                        options: CarouselOptions(
-                            viewportFraction: 1.04,
-                            height: MediaQuery.of(context).size.height / 2,
-                            enlargeCenterPage: true,
-                            autoPlay: true,
-                            aspectRatio: 16 / 9,
-                            autoPlayInterval: const Duration(seconds: 3),
-                            onPageChanged: (index, reason) {
-                              if (mounted) {
-                                setState(() {
-                                  currentIndex = index;
-                                });
+                : Builder(builder: (context) {
+                    bool bgImageTabletIsNotEmpty = false;
+                    bool bgImageMobileIsNotEmpty = false;
+
+ApiService.listOfBanners.forEach((banner) { 
+ if (banner.metadata != null) {
+                        if (deviceWidth > 600) {
+                          if (banner.metadata!
+                              .bgImageTablet.isNotEmpty) {
+                            for (var i = 0;
+                                i <
+                                    banner.metadata!
+                                        .bgImageTablet.length;
+                                i++) {
+                              if (banner.metadata!
+                                  .bgImageTablet[i].isNotEmpty) {
+                                bgImageTabletIsNotEmpty = true;
                               }
-                            }),
-                      ),
-                      SizedBox(
-                          width: MediaQuery.of(context).size.width,
-                          child: DotsIndicator(
-                            dotsCount: ApiService.listOfBanners.length > 0
-                                ? ApiService.listOfBanners.length
-                                : 1,
-                            position: currentIndex,
-                            onTap: (index) {
-                              carouselController.animateToPage(index);
-                            },
-                            decorator: const DotsDecorator(
-                              color: Colors.grey,
-                              activeColor: Colors.black,
-                              size: Size.square(12.0),
-                              activeSize: Size.square(15.0),
-                            ),
-                          )),
-                    ],
-                  )
+                            }
+                          }
+                        } else {
+                          if (banner.metadata!
+                              .bgImageMobile.isNotEmpty) {
+                            for (var i = 0;
+                                i <
+                                    banner.metadata!
+                                        .bgImageMobile.length;
+                                i++) {
+                              if (banner.metadata!
+                                  .bgImageMobile[i].isNotEmpty) {
+                                bgImageMobileIsNotEmpty = true;
+                              }
+                            }
+                          }
+                        }
+                      } 
+});
+
+
+                    // for (var i = 0; i < ApiService.listOfBanners.length; i++) {
+                    //   if (ApiService.listOfBanners[i].metadata != null) {
+                    //     if (deviceWidth > 600) {
+                    //       if (ApiService.listOfBanners[i].metadata!
+                    //           .bgImageTablet.isNotEmpty) {
+                    //         for (var i = 0;
+                    //             i <
+                    //                 ApiService.listOfBanners[i].metadata!
+                    //                     .bgImageTablet.length;
+                    //             i++) {
+                    //           if (ApiService.listOfBanners[i].metadata!
+                    //               .bgImageTablet[i].isNotEmpty) {
+                    //             bgImageTabletIsNotEmpty = true;
+                    //           }
+                    //         }
+                    //       }
+                    //     } else {
+                    //       if (ApiService.listOfBanners[i].metadata!
+                    //           .bgImageMobile.isNotEmpty) {
+                    //         for (var i = 0;
+                    //             i <
+                    //                 ApiService.listOfBanners[i].metadata!
+                    //                     .bgImageMobile.length;
+                    //             i++) {
+                    //           if (ApiService.listOfBanners[i].metadata!
+                    //               .bgImageMobile[i].isNotEmpty) {
+                    //             bgImageMobileIsNotEmpty = true;
+                    //           }
+                    //         }
+                    //       }
+                    //     }
+                    //   } 
+                    //   // else {
+                    //   //   return SizedBox();
+                    //   // }
+                    // }
+
+                    if (bgImageTabletIsNotEmpty) {
+                      return Column(
+                        children: [
+                          CarouselSlider(
+                            carouselController: carouselController,
+                            items: ApiService.listOfBanners
+                                .map((banner) => Container(
+                                      margin: const EdgeInsets.all(5.0),
+                                      child: Image.network(
+                                        banner.metadata != null
+                                            ? banner.metadata!.bgImageTablet[0]
+                                            : "https://rotationalmoulding.com/wp-content/uploads/2017/02/NoImageAvailable.jpg",
+                                        loadingBuilder:
+                                            (context, child, loadingProgress) {
+                                          if (loadingProgress == null) {
+                                            return child;
+                                          }
+                                          return Container(
+                                            alignment: Alignment.center,
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width,
+                                            height: 92.0,
+                                            child:
+                                                const CircularProgressIndicator(
+                                              color: Colors.black,
+                                            ),
+                                          );
+                                        },
+                                        fit: BoxFit.fill,
+                                      ),
+                                    ))
+                                .toList(),
+                            options: CarouselOptions(
+                                viewportFraction: 1.04,
+                                height: MediaQuery.of(context).size.height / 2,
+                                enlargeCenterPage: true,
+                                autoPlay: true,
+                                aspectRatio: 16 / 9,
+                                autoPlayInterval: const Duration(seconds: 3),
+                                onPageChanged: (index, reason) {
+                                  if (mounted) {
+                                    setState(() {
+                                      currentIndex = index;
+                                    });
+                                  }
+                                }),
+                          ),
+                          SizedBox(
+                              width: MediaQuery.of(context).size.width,
+                              child: DotsIndicator(
+                                dotsCount: ApiService.listOfBanners.length > 0
+                                    ? ApiService.listOfBanners.length
+                                    : 1,
+                                position: currentIndex,
+                                onTap: (index) {
+                                  carouselController.animateToPage(index);
+                                },
+                                decorator: const DotsDecorator(
+                                  color: Colors.grey,
+                                  activeColor: Colors.black,
+                                  size: Size.square(12.0),
+                                  activeSize: Size.square(15.0),
+                                ),
+                              )),
+                        ],
+                      );
+                    } else if (bgImageMobileIsNotEmpty) {
+                      return Column(
+                        children: [
+                          CarouselSlider(
+                            carouselController: carouselController,
+                            items: ApiService.listOfBanners
+                                .map((banner) => Container(
+                                      margin: const EdgeInsets.all(5.0),
+                                      child: Image.network(
+                                        banner.metadata != null
+                                            ? banner.metadata!.bgImageMobile[0]
+                                            : "https://rotationalmoulding.com/wp-content/uploads/2017/02/NoImageAvailable.jpg",
+                                        loadingBuilder:
+                                            (context, child, loadingProgress) {
+                                          if (loadingProgress == null) {
+                                            return child;
+                                          }
+                                          return Container(
+                                            alignment: Alignment.center,
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width,
+                                            height: 92.0,
+                                            child:
+                                                const CircularProgressIndicator(
+                                              color: Colors.black,
+                                            ),
+                                          );
+                                        },
+                                        fit: BoxFit.fill,
+                                      ),
+                                    ))
+                                .toList(),
+                            options: CarouselOptions(
+                                viewportFraction: 1.04,
+                                height: MediaQuery.of(context).size.height / 2,
+                                enlargeCenterPage: true,
+                                autoPlay: true,
+                                aspectRatio: 16 / 9,
+                                autoPlayInterval: const Duration(seconds: 3),
+                                onPageChanged: (index, reason) {
+                                  if (mounted) {
+                                    setState(() {
+                                      currentIndex = index;
+                                    });
+                                  }
+                                }),
+                          ),
+                          SizedBox(
+                              width: MediaQuery.of(context).size.width,
+                              child: DotsIndicator(
+                                dotsCount: ApiService.listOfBanners.length > 0
+                                    ? ApiService.listOfBanners.length
+                                    : 1,
+                                position: currentIndex,
+                                onTap: (index) {
+                                  carouselController.animateToPage(index);
+                                },
+                                decorator: const DotsDecorator(
+                                  color: Colors.grey,
+                                  activeColor: Colors.black,
+                                  size: Size.square(12.0),
+                                  activeSize: Size.square(15.0),
+                                ),
+                              )),
+                        ],
+                      );
+                    } else {
+                      return SizedBox();
+                    }
+                  })
 
             // Padding(
             //   padding: const EdgeInsets.symmetric(horizontal: 10.0),

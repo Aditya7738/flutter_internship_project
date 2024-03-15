@@ -32,6 +32,7 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
 
   @override
   Widget build(BuildContext context) {
+    double deviceWidth = MediaQuery.of(context).size.width;
     final customerProvider =
         Provider.of<CustomerProvider>(context, listen: false);
 
@@ -52,7 +53,9 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
                   child: Column(children: [
                     Text(
                       widget.productsModel.name ?? "Jewellery",
-                      style: Theme.of(context).textTheme.headline2,
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.headline1,
+                      maxLines: 2,
                     ),
                     SizedBox(
                       height: 30.0,
@@ -66,10 +69,14 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
                               style: BorderStyle.solid,
                               color: Theme.of(context).primaryColor)),
                       child: CachedNetworkImage(
-                        imageUrl: widget.productsModel.images.isEmpty
-                            ? Constants.defaultImageUrl
-                            : widget.productsModel.images[0].src ??
-                                Constants.defaultImageUrl,
+                        imageUrl:
+                            //
+                            // Constants.defaultImageUrl
+                            //:
+                            widget.productsModel.images.isNotEmpty
+                                ? widget.productsModel.images[0].src ??
+                                    Constants.defaultImageUrl
+                                : Constants.defaultImageUrl,
                         width: MediaQuery.of(context).size.width / 3,
                         height: MediaQuery.of(context).size.width / 3,
                         placeholder: (context, url) {
@@ -107,7 +114,7 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
                       },
                     ),
                     SizedBox(
-                      height: 30.0,
+                      height: 40.0,
                     ),
                   ]),
                 ),
@@ -200,7 +207,7 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
           }
         },
         child: Container(
-          height: 50.0,
+          height: deviceWidth > 600 ? 60.0 : 50.0,
           width: MediaQuery.of(context).size.width - 30,
           padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 10.0),
           decoration: BoxDecoration(
@@ -220,9 +227,9 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
                   )
                 : Text(
                     "Submit Review",
-                    style: const TextStyle(
+                    style: TextStyle(
                         color: Colors.white,
-                        fontSize: 17.0,
+                        fontSize: deviceWidth > 600 ? 27.0 : 17.0,
                         fontWeight: FontWeight.bold),
                   ),
           ),
