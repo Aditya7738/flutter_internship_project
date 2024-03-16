@@ -29,6 +29,15 @@ class _SearchProductsOfCategoryState extends State<SearchProductsOfCategory> {
   //bool isProductListEmpty = false;
 //  bool newListLoading = true;
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    final filterOptionsProvider =
+        Provider.of<FilterOptionsProvider>(context, listen: false);
+    filterOptionsProvider.setHaveSubmitClicked(false);
+  }
+
   TextEditingController searchTextController = TextEditingController();
 
   @override
@@ -37,20 +46,26 @@ class _SearchProductsOfCategoryState extends State<SearchProductsOfCategory> {
         Provider.of<CategoryProvider>(context, listen: true);
 
     final filterOptionsProvider = Provider.of<FilterOptionsProvider>(context);
+    double deviceWidth = MediaQuery.of(context).size.width;
 
     print("kToolbarHeight ${(kToolbarHeight / 2.6)}");
     return Container(
       padding: const EdgeInsets.only(bottom: 15.0, left: 15.0, right: 10.0),
       color: Colors.white,
-      width: MediaQuery.of(context).size.width,
+      width: deviceWidth,
       child: Row(
         children: [
           SizedBox(
-            height: (kToolbarHeight - 5),
-            width: MediaQuery.of(context).size.width - 140,
+            height: (kToolbarHeight),
+            width: deviceWidth - 140,
             child: TextField(
               controller: searchTextController,
-              style: TextStyle(fontSize: (kToolbarHeight / 2.67), color: Colors.black, fontWeight: FontWeight.normal),
+              style: TextStyle(
+                  fontSize: deviceWidth > 600
+                      ? (kToolbarHeight - 37) + 8
+                      : (kToolbarHeight - 40),
+                  color: Colors.black,
+                  fontWeight: FontWeight.normal),
               onSubmitted: (value) async {
                 print("cat search sub");
                 // if (value == "") {
@@ -66,6 +81,7 @@ class _SearchProductsOfCategoryState extends State<SearchProductsOfCategory> {
                 //     isSearchFieldEmpty = false;
                 //   });
                 // }
+                filterOptionsProvider.setHaveSubmitClicked(true);
 
                 if (value.length >= 3) {
                   bool isThereInternet =
@@ -109,34 +125,42 @@ class _SearchProductsOfCategoryState extends State<SearchProductsOfCategory> {
               showCursor: true,
               maxLines: 1,
               cursorColor: Colors.grey,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                   focusedBorder: UnderlineInputBorder(
                       borderSide: BorderSide(color: Colors.grey)),
                   prefixIcon: Icon(
                     Icons.search_rounded,
                     color: Colors.black,
-                    size: 30.0,
+                    size: deviceWidth > 600 ? 33.0 : 25.0,
                   ),
                   fillColor: Colors.grey,
                   hintText: "Search for jewelleries",
                   hintStyle: TextStyle(
-                      color: Colors.grey, fontSize: (kToolbarHeight - 37) + 2)),
+                    color: Colors.grey,
+                    fontSize: deviceWidth > 600
+                        ? (kToolbarHeight - 37) + 8
+                        : (kToolbarHeight - 40),
+                  )),
             ),
           ),
           SizedBox(width: 30.0),
           GestureDetector(
             onTap: () async {
               searchTextController.text = "";
-              bool isThereInternet =
-                  await ApiService.checkInternetConnection(context);
-              if (isThereInternet) {
-                categoryProvider.setIsCategoryProductFetching(true);
+              print(
+                  "haveSubmitClicked ${filterOptionsProvider.haveSubmitClicked}");
+              if (filterOptionsProvider.haveSubmitClicked) {
+                bool isThereInternet =
+                    await ApiService.checkInternetConnection(context);
+                if (isThereInternet) {
+                  categoryProvider.setIsCategoryProductFetching(true);
 
-                ApiService.listOfProductsCategoryWise.clear();
-                await ApiService.fetchProductsCategoryWise(
-                    id: widget.categoryId, pageNo: 1);
+                  ApiService.listOfProductsCategoryWise.clear();
+                  await ApiService.fetchProductsCategoryWise(
+                      id: widget.categoryId, pageNo: 1);
 
-                categoryProvider.setIsCategoryProductFetching(false);
+                  categoryProvider.setIsCategoryProductFetching(false);
+                }
               }
             },
             child: Container(
@@ -158,11 +182,11 @@ class _SearchProductsOfCategoryState extends State<SearchProductsOfCategory> {
             onTap: () {
               showModalBottomSheet(
                 constraints: BoxConstraints.expand(
-                    width: MediaQuery.of(context).size.width,
+                    width: deviceWidth,
                     height: (MediaQuery.of(context).size.height / 1.78) + 40.0),
-                     isDismissible:
-                      filterOptionsProvider.list.isEmpty ? true : false,
-                  enableDrag: true,
+                isDismissible:
+                    filterOptionsProvider.list.isEmpty ? true : false,
+                enableDrag: true,
                 context: context,
                 isScrollControlled: true,
                 shape: RoundedRectangleBorder(

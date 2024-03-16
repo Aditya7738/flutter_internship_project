@@ -5,6 +5,8 @@ import 'package:Tiara_by_TJ/providers/digigold_provider.dart';
 import 'package:Tiara_by_TJ/providers/filteroptions_provider.dart';
 import 'package:Tiara_by_TJ/providers/order_provider.dart';
 import 'package:Tiara_by_TJ/views/pages/digi_gold_page.dart';
+import 'package:Tiara_by_TJ/views/pages/payment_failed.dart';
+import 'package:Tiara_by_TJ/views/pages/payment_successful.dart';
 import 'package:Tiara_by_TJ/views/widgets/filter_modal.dart';
 import 'package:Tiara_by_TJ/views/pages/home_screen.dart';
 import 'package:Tiara_by_TJ/views/pages/home_screen2.dart';

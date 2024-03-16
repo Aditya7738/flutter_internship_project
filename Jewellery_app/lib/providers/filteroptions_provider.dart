@@ -140,22 +140,21 @@ class FilterOptionsProvider with ChangeNotifier {
     //         _list[i].containsValue(selectedSubOptionsdata["parent"])) {
     //       print("list $_list");
     //       removeFromList(i);
-         
+
     //       return;
     //     }
     //   }
     // }
 
-    // if (selectedSubOptionsdata["parent"] == "price_range") {
-    //   if (_list.length > 0) {
-    //     for (var i = 0; i < _list.length; i++) {
-    //       if (_list[i].containsValue(selectedSubOptionsdata["parent"])) {
-    //         removeFromList(i);
-           
-    //       }
-    //     }
-    //   }
-    // }
+    if (selectedSubOptionsdata["parent"] == "price_range") {
+      if (_list.length > 0) {
+        for (var i = 0; i < _list.length; i++) {
+          if (_list[i].containsValue(selectedSubOptionsdata["parent"])) {
+            removeFromList(i);
+          }
+        }
+      }
+    }
 
     _list.add(selectedSubOptionsdata);
 
@@ -165,6 +164,17 @@ class FilterOptionsProvider with ChangeNotifier {
 
   bool _isFilteredListLoading = false;
   bool get isFilteredListLoading => _isFilteredListLoading;
+
+  bool _haveSubmitClicked = false;
+  bool get haveSubmitClicked => _haveSubmitClicked;
+
+  void setHaveSubmitClicked(bool haveSubmitClicked) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _haveSubmitClicked = haveSubmitClicked;
+      print("_haveSubmitClicked $_haveSubmitClicked");
+      notifyListeners();
+    });
+  }
 
   void setFilteredListLoading(bool listLoading) {
     WidgetsBinding.instance.addPostFrameCallback((_) {

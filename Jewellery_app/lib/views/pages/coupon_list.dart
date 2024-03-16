@@ -324,7 +324,7 @@ class _CouponListPageState extends State<CouponListPage> {
                             )
                           : SizedBox(),
                       labelStyle: TextStyle(
-                        color: Theme.of(context).primaryColor,
+                    
                         fontWeight: FontWeight.normal,
                         fontSize: (deviceWidth / 33) + 1.5,
                       ),

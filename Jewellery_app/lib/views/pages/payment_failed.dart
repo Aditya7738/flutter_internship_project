@@ -47,12 +47,9 @@ class PaymentFailedPage extends StatelessWidget {
                     borderRadius: BorderRadius.circular(5.0)),
                 padding: const EdgeInsets.symmetric(
                     vertical: 10.0, horizontal: 40.0),
-                child: const Text(
+                child:  Text(
                   "RETRY",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 17.0,
-                      fontWeight: FontWeight.bold),
+                  style: Theme.of(context).textTheme.button,
                 )),
           )
         ],

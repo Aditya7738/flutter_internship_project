@@ -8,7 +8,7 @@ import 'package:Tiara_by_TJ/model/cart_product_model.dart';
 import 'package:Tiara_by_TJ/providers/cart_provider.dart';
 import 'package:Tiara_by_TJ/providers/wishlist_provider.dart';
 import 'package:Tiara_by_TJ/views/pages/cart_page.dart';
-
+import 'package:share_plus/share_plus.dart';
 import 'package:provider/provider.dart';
 
 class WishListPage extends StatefulWidget {
@@ -123,12 +123,7 @@ class _WishListPageState extends State<WishListPage> {
                         padding: const EdgeInsets.symmetric(
                             vertical: 10.0, horizontal: 40.0),
                         child: Text("Continue Shopping",
-                            style: Theme.of(context).textTheme.button
-                            // TextStyle(
-                            //     color: Colors.white,
-                            //     fontSize: 17.0,
-                            //     fontWeight: FontWeight.bold),
-                            )),
+                            style: Theme.of(context).textTheme.button)),
                   )
                 ],
               ),
@@ -150,10 +145,11 @@ class _WishListPageState extends State<WishListPage> {
                         final wishListItem = value.wishlistProducts[index];
 
                         return Padding(
-                          padding: const EdgeInsets.only(bottom: 10.0),
+                          padding: const EdgeInsets.only(bottom: 15.0),
                           child: Card(
                               elevation: 5.0,
                               child: Container(
+                              
                                 padding: const EdgeInsets.all(15.0),
                                 width: deviceWidth > 600
                                     ? (deviceWidth / 3) - 60
@@ -180,11 +176,6 @@ class _WishListPageState extends State<WishListPage> {
                                               return child;
                                             }
                                             return SizedBox(
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width /
-                                                  3,
-                                              height: 130.0,
                                               child: const Center(
                                                 child:
                                                     CircularProgressIndicator(
@@ -199,7 +190,6 @@ class _WishListPageState extends State<WishListPage> {
                                         width: 15.0,
                                       ),
                                       Container(
-                                       
                                         child: Column(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
@@ -222,8 +212,15 @@ class _WishListPageState extends State<WishListPage> {
                                                   children: [
                                                     Container(
                                                       width: deviceWidth > 600
-                                                          ? (deviceWidth / 1.46) - 10
-                                                          : (MediaQuery.of(context).size.width / 2) + 16.0,
+                                                          ? (deviceWidth /
+                                                                  1.46) -
+                                                              10
+                                                          : (MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .width /
+                                                                  2) +
+                                                              16.0,
                                                       child: Text(
                                                         wishListItem.name ??
                                                             "Jewellery",
@@ -236,8 +233,9 @@ class _WishListPageState extends State<WishListPage> {
                                                                 (deviceWidth /
                                                                         33) +
                                                                     3,
-                                                            fontWeight: FontWeight
-                                                                .normal),
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .normal),
                                                       ),
                                                     ),
                                                     SizedBox(
@@ -247,30 +245,30 @@ class _WishListPageState extends State<WishListPage> {
                                                       onTap: () {
                                                         value
                                                             .removeFromLocalWishlist(
-                                                                wishListItem.id!);
-                                        
-                                                        value.removeFromWishlist(
-                                                            wishListItem.id!);
-                                        
-                                                        // setState(() async {
-                                                        //   await getFavProducts(value.favProductIds);
-                                        
-                                                        // });
+                                                                wishListItem
+                                                                    .id!);
+
+                                                        value
+                                                            .removeFromWishlist(
+                                                                wishListItem
+                                                                    .id!);
                                                       },
                                                       child: Container(
                                                         decoration:
                                                             const BoxDecoration(
                                                           color: Colors.black,
-                                                          shape: BoxShape.circle,
+                                                          shape:
+                                                              BoxShape.circle,
                                                         ),
                                                         child: Padding(
                                                           padding:
-                                                              EdgeInsets.all(3.0),
+                                                              EdgeInsets.all(
+                                                                  3.0),
                                                           child: Icon(
-                                                            size:
-                                                                deviceWidth > 600
-                                                                    ? 28.0
-                                                                    : 15.0,
+                                                            size: deviceWidth >
+                                                                    600
+                                                                ? 28.0
+                                                                : 15.0,
                                                             Icons.close_rounded,
                                                             color: Colors.white,
                                                           ),
@@ -283,7 +281,8 @@ class _WishListPageState extends State<WishListPage> {
                                                   width: 20.0,
                                                 ),
                                                 Text(
-                                                  wishListItem.regularPrice != ""
+                                                  wishListItem.regularPrice !=
+                                                          ""
                                                       ? "₹ ${wishListItem.regularPrice ?? 20000}"
                                                       : "₹ 20000",
                                                   // softWrap: true,
@@ -293,13 +292,15 @@ class _WishListPageState extends State<WishListPage> {
                                                       fontWeight:
                                                           FontWeight.normal,
                                                       fontSize:
-                                                          (deviceWidth / 33) + 3),
+                                                          (deviceWidth / 33) +
+                                                              3),
                                                 ),
                                               ],
                                             ),
                                             Container(
-                                              height:
-                                                  deviceWidth > 600 ? 50.0 : 38.0,
+                                              height: deviceWidth > 600
+                                                  ? 50.0
+                                                  : 38.0,
                                               child: Row(
                                                 children: [
                                                   GestureDetector(
@@ -308,7 +309,7 @@ class _WishListPageState extends State<WishListPage> {
                                                           wishListItem.id!);
                                                       print(
                                                           "CART IDS : ${cartProvider.cartProductIds}");
-                                        
+
                                                       cartProvider.addToCart(
                                                           CartProductModel(
                                                         cartProductid:
@@ -338,7 +339,8 @@ class _WishListPageState extends State<WishListPage> {
                                                                     .defaultImageUrl,
                                                         sku: wishListItem.sku,
                                                         imageId: wishListItem
-                                                                .images.isNotEmpty
+                                                                .images
+                                                                .isNotEmpty
                                                             ? wishListItem
                                                                 .images[0].id
                                                             : 0,
@@ -347,11 +349,11 @@ class _WishListPageState extends State<WishListPage> {
                                                           MaterialPageRoute(
                                                               builder: (context) =>
                                                                   CartPage()));
-                                        
+
                                                       value
                                                           .removeFromLocalWishlist(
                                                               wishListItem.id!);
-                                        
+
                                                       value.removeFromWishlist(
                                                           wishListItem.id!);
                                                     },
@@ -360,17 +362,20 @@ class _WishListPageState extends State<WishListPage> {
                                                           color: Colors.green,
                                                           borderRadius:
                                                               BorderRadius.all(
-                                                                  Radius.circular(
-                                                                      5.0))),
+                                                                  Radius
+                                                                      .circular(
+                                                                          5.0))),
                                                       child: Padding(
-                                                        padding:
-                                                            EdgeInsets.symmetric(
-                                                                horizontal: 15.0,
+                                                        padding: EdgeInsets
+                                                            .symmetric(
+                                                                horizontal:
+                                                                    15.0,
                                                                 vertical: 5.0),
                                                         child: Text(
                                                           "Move to Cart",
                                                           style: TextStyle(
-                                                              color: Colors.white,
+                                                              color:
+                                                                  Colors.white,
                                                               fontSize:
                                                                   deviceWidth >
                                                                           600
@@ -384,7 +389,17 @@ class _WishListPageState extends State<WishListPage> {
                                                     width: 15.0,
                                                   ),
                                                   GestureDetector(
-                                                    onTap: () {},
+                                                    onTap: () async {
+                                                      // await Share.shareUri(
+                                                      //     Uri.parse(wishListItem
+                                                      //                 .permalink !=
+                                                      //             null
+                                                      //         ? wishListItem
+                                                      //             .permalink!
+                                                      //         : "https://tiarabytj.com/"));
+                                                      await Share.share(
+                                                          "My Favourite 'Tiara by TJ' Design \n\n${wishListItem.name ?? "Jewellery"} \n\n ${wishListItem.permalink ?? "https://tiarabytj.com/"}");
+                                                    },
                                                     child: Container(
                                                       width: deviceWidth > 600
                                                           ? 45.0
@@ -396,15 +411,17 @@ class _WishListPageState extends State<WishListPage> {
                                                           border: Border.all(
                                                               color:
                                                                   Colors.black),
-                                                          shape:
-                                                              BoxShape.rectangle,
+                                                          shape: BoxShape
+                                                              .rectangle,
                                                           borderRadius:
                                                               BorderRadius
-                                                                  .circular(5.0)),
-                                                      child: const Padding(
+                                                                  .circular(
+                                                                      5.0)),
+                                                      child: Padding(
                                                         padding:
                                                             EdgeInsets.all(3.0),
-                                                        child: Icon(Icons.share),
+                                                        child:
+                                                            Icon(Icons.share, size: deviceWidth > 600 ? 25.0 : 20.0,),
                                                       ),
                                                     ),
                                                   )
@@ -420,220 +437,6 @@ class _WishListPageState extends State<WishListPage> {
                       },
                     ));
         }
-
-        // : ListView.builder(
-        //     itemCount: value.wishlistProducts.length,
-        //     itemBuilder: (context, index) {
-        //       final wishListItem = value.wishlistProducts[index];
-
-        //       return Padding(
-        //         padding: const EdgeInsets.symmetric(vertical: 3.0),
-        //         child: Card(
-        //             elevation: 5.0,
-        //             child: Row(
-        //                 crossAxisAlignment: CrossAxisAlignment.start,
-        //                 children: [
-        //                   Image.network(
-        //                     wishListItem.images.isEmpty
-        //                         ? Constants.defaultImageUrl
-        //                         : wishListItem.images[0].src ??
-        //                             Constants.defaultImageUrl,
-        //                     width:
-        //                         MediaQuery.of(context).size.width / 3,
-        //                     height: 170.0,
-        //                     loadingBuilder:
-        //                         (context, child, loadingProgress) {
-        //                       if (loadingProgress == null) {
-        //                         return child;
-        //                       }
-        //                       return SizedBox(
-        //                         width:
-        //                             MediaQuery.of(context).size.width /
-        //                                 3,
-        //                         height: 160.0,
-        //                         child: const Center(
-        //                           child: CircularProgressIndicator(
-        //                             color: Colors.black,
-        //                           ),
-        //                         ),
-        //                       );
-        //                     },
-        //                   ),
-        //                   Padding(
-        //                     padding: const EdgeInsets.only(
-        //                         left: 10.0,
-        //                         right: 0.0,
-        //                         top: 10.0,
-        //                         bottom: 20.0),
-        //                     child: SizedBox(
-        //                       width:
-        //                           (MediaQuery.of(context).size.width -
-        //                                   (MediaQuery.of(context)
-        //                                           .size
-        //                                           .width /
-        //                                       3)) -
-        //                               44,
-        //                       height: 130.0,
-        //                       child: Column(
-        //                         mainAxisAlignment:
-        //                             MainAxisAlignment.spaceBetween,
-        //                         children: [
-        //                           Column(
-        //                             crossAxisAlignment:
-        //                                 CrossAxisAlignment.start,
-        //                             children: [
-        //                               Row(
-        //                                 mainAxisAlignment:
-        //                                     MainAxisAlignment
-        //                                         .spaceBetween,
-        //                                 children: [
-        //                                   Text(
-        //                                     wishListItem.name ??
-        //                                         "Jewellery",
-        //                                     style: const TextStyle(
-        //                                         fontSize: 16.0),
-        //                                   ),
-        //                                   GestureDetector(
-        //                                     onTap: () {
-        //                                       value.removeFromLocalWishlist(
-        //                                           ProductsModel(
-        //                                               id: wishListItem
-        //                                                   .id,
-        //                                               name: wishListItem
-        //                                                   .name,
-        //                                               regularPrice:
-        //                                                   wishListItem
-        //                                                       .regularPrice,
-        //                                               images:
-        //                                                   wishListItem
-        //                                                       .images));
-
-        //                                       value.removeFromWishlist(
-        //                                           wishListItem.id!);
-        //                                     },
-        //                                     child: Container(
-        //                                       decoration:
-        //                                           const BoxDecoration(
-        //                                         color: Colors.black,
-        //                                         shape: BoxShape.circle,
-        //                                       ),
-        //                                       child: const Padding(
-        //                                         padding:
-        //                                             EdgeInsets.all(3.0),
-        //                                         child: Icon(
-        //                                           size: 15.0,
-        //                                           Icons.close_rounded,
-        //                                           color: Colors.white,
-        //                                         ),
-        //                                       ),
-        //                                     ),
-        //                                   )
-        //                                 ],
-        //                               ),
-        //                               Row(
-        //                                 children: [
-        //                                   Image.asset(
-        //                                     "assets/images/rupee.png",
-        //                                     width: 19.0,
-        //                                     height: 17.0,
-        //                                   ),
-        //                                   Text(
-        //                                     wishListItem.regularPrice ??
-        //                                         "20,000",
-        //                                     softWrap: true,
-        //                                     overflow:
-        //                                         TextOverflow.ellipsis,
-        //                                     style: const TextStyle(
-        //                                       fontSize: 17.0,
-        //                                     ),
-        //                                   )
-        //                                 ],
-        //                               ),
-        //                             ],
-        //                           ),
-        //                           Row(
-        //                             children: [
-        //                               GestureDetector(
-        //                                 onTap: () {
-        //                                   cartProvider.addToCart(CartProductModel(
-        //                                       cartProductid:
-        //                                           wishListItem.id,
-        //                                       price: wishListItem
-        //                                               .regularPrice ??
-        //                                           "20000",
-        //                                       productName:
-        //                                           wishListItem.name ??
-        //                                               "Jewellery",
-        //                                       quantity: "1",
-        //                                       size: 5,
-        //                                       deliveryDate: DateHelper
-        //                                           .getCurrentDateInWords(),
-        //                                       imageUrl: wishListItem
-        //                                               .images.isEmpty
-        //                                           ? Constants
-        //                                               .defaultImageUrl
-        //                                           : wishListItem
-        //                                                   .images[0]
-        //                                                   .src ??
-        //                                               Constants
-        //                                                   .defaultImageUrl));
-        //                                   Navigator.of(context).push(
-        //                                       MaterialPageRoute(
-        //                                           builder: (context) =>
-        //                                               CartPage()));
-        //                                 },
-        //                                 child: Container(
-        //                                   decoration:
-        //                                       const BoxDecoration(
-        //                                           color: Colors.green,
-        //                                           borderRadius:
-        //                                               BorderRadius.all(
-        //                                                   Radius
-        //                                                       .circular(
-        //                                                           5.0))),
-        //                                   child: const Padding(
-        //                                     padding:
-        //                                         EdgeInsets.symmetric(
-        //                                             horizontal: 15.0,
-        //                                             vertical: 5.0),
-        //                                     child: Text(
-        //                                       "Move to Cart",
-        //                                       style: TextStyle(
-        //                                           color: Colors.white),
-        //                                     ),
-        //                                   ),
-        //                                 ),
-        //                               ),
-        //                               const SizedBox(
-        //                                 width: 15.0,
-        //                               ),
-        //                               GestureDetector(
-        //                                 onTap: () {},
-        //                                 child: Container(
-        //                                   decoration: BoxDecoration(
-        //                                       border: Border.all(
-        //                                           color: Colors.black),
-        //                                       shape: BoxShape.rectangle,
-        //                                       borderRadius:
-        //                                           BorderRadius.circular(
-        //                                               5.0)),
-        //                                   child: const Padding(
-        //                                     padding:
-        //                                         EdgeInsets.all(3.0),
-        //                                     child: Icon(Icons.share),
-        //                                   ),
-        //                                 ),
-        //                               )
-        //                             ],
-        //                           )
-        //                         ],
-        //                       ),
-        //                     ),
-        //                   ),
-        //                 ])),
-        //       );
-        //     },
-        //   ));
       }),
     );
   }

@@ -182,7 +182,9 @@ class AccountPage extends StatelessWidget {
               contentPadding:
                   EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
               onTap: () {
-                false
+
+                customerProvider.customerData.isEmpty
+// false
                     ? Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -197,7 +199,10 @@ class AccountPage extends StatelessWidget {
                 Icons.account_circle_outlined,
                 size: deviceWidth > 600 ? 40.0 : 30.0,
               ),
-              title: Text(false ? "Login" : "My profile",
+              title: Text(
+                customerProvider.customerData.isEmpty
+               // false
+                 ? "Login" : "My profile",
                   style: TextStyle(
                       fontSize: deviceWidth > 600 ? 32.0 : 18.0,
                       fontWeight: FontWeight.normal)),
@@ -378,10 +383,7 @@ class AccountPage extends StatelessWidget {
                               context: context);
                           break;
                         case 1:
-                          // Navigator.of(context).push(MaterialPageRoute(
-                          //   builder: (context) => const NotificationPage(),
-                          // ));
-
+               
                           break;
                         case 2:
                           if (await inAppReview.isAvailable()) {
@@ -472,10 +474,7 @@ class AccountPage extends StatelessWidget {
   }
 
   _callNumber() async {
-    // print("_callNumber");
-    // const number = '9833566117'; //set the number here
-    // bool? res = await FlutterPhoneDirectCaller.callNumber(number);
-    // print("_callNumber $res");
+ 
     String url = 'tel:9833566117';
     Uri uri = Uri.parse(url);
     if (await canLaunchUrl(uri)) {

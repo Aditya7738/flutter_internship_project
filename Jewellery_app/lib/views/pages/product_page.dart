@@ -149,7 +149,6 @@ class _ProductPageState extends State<ProductPage> {
                 width: 24,
               ),
               Container(
-             
                 width: (deviceWidth / 16) + 4,
                 child: badges.Badge(
                   badgeStyle:
@@ -223,7 +222,8 @@ class _ProductPageState extends State<ProductPage> {
                                             ? "₹ ${value.list[index]["price_range"]["min_price"]} - ₹ ${value.list[index]["price_range"]["max_price"]}"
                                             : value.list[index]["label"],
                                         style: TextStyle(
-                                            fontSize: 16.0,
+                                          color: Colors.black,
+                                            fontSize: deviceWidth > 600 ? 26.0 : 16.0,
                                             fontWeight: FontWeight.bold),
                                       ),
                                       deleteIcon: Container(
@@ -231,10 +231,10 @@ class _ProductPageState extends State<ProductPage> {
                                           color: Colors.black,
                                           shape: BoxShape.circle,
                                         ),
-                                        child: const Icon(
+                                        child: Icon(
                                           Icons.close_rounded,
                                           color: Colors.white,
-                                          size: 19.0,
+                                          size: deviceWidth > 600 ? 25.0 : 19.0,
                                         ),
                                       ),
                                       onDeleted: () async {
@@ -316,6 +316,7 @@ class _ProductPageState extends State<ProductPage> {
                                 if (index <
                                     ApiService
                                         .listOfProductsCategoryWise.length) {
+                                  print(" productIndex: $index");
                                   return ProductItem(
                                     productIndex: index,
                                     productsModel: ApiService

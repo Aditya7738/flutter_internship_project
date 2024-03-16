@@ -438,10 +438,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   ),
-            // const Padding(
-            //   padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-            //   child: PincodeWidget(),
-            // ),
+          
 
             isBannerLoading
                 ? SizedBox(

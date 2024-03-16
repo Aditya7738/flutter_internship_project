@@ -531,7 +531,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                       fontSize: (deviceWidth / 36) + 5,
                     ),
                     HtmlWidget(productsModel.description ??
-                        Constants.product_description),
+                        Constants.product_description, textStyle: TextStyle(fontWeight: FontWeight.normal),),
                     const SizedBox(
                       height: 20.0,
                     ),
@@ -588,17 +588,18 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                 fontWeight: FontWeight.normal),
                           )
                         : SizedBox(
-                            height: 20.0,
+                            height: deviceWidth > 600 ? 30.0 : 20.0,
                             width: MediaQuery.of(context).size.width,
                             child: ListView.builder(
                               itemCount: productsModel.tags?.length,
+                              
                               itemBuilder: (context, index) {
                                 return Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 10.0),
                                   child: Text(
                                     productsModel.tags?[index].name ??
-                                        "Category",
+                                        "Category ",
                                     style: TextStyle(
                                         fontSize: (deviceWidth / 36) + 3,
                                         fontWeight: FontWeight.normal),

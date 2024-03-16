@@ -1189,6 +1189,7 @@ class ApiService {
           id: json[i]["id"],
           name: json[i]["name"],
           regularPrice: json[i]["regular_price"],
+          permalink: json[i]["permalink"],
           images: json[i]["images"] == null
               ? []
               : List<ProductImage>.from(
@@ -1204,8 +1205,7 @@ class ApiService {
     }
   }
 
-  static Future<http.Response> createCustomer(
-      Map<String, dynamic> customerData) async {
+  static Future<void> createCustomer(Map<String, dynamic> customerData) async {
     // checkInternetConnection(context);
     const endpoint =
         "${Constants.baseUrl}/wp-json/wc/v3/customers?consumer_key=${Constants.consumerKey}&consumer_secret=${Constants.consumerSecret}";
@@ -1218,49 +1218,48 @@ class ApiService {
     print("BODY ${response.body}");
 
     if (response.statusCode == 201) {
-      print("BODY ${response.body}");
-
       final json = jsonDecode(response.body);
       print("JSON $json");
 
-      return response;
+      // return response;
     } else {
-      return response;
+      // return response;
+      print("ERROR SIGNUP BODY ${response.body}");
     }
   }
 
-  static Future<void> signupCustomer(Map<String, String> customerData) async {
-    String endpoint = "${Constants.baseUrl}/wp-json/wc/v3/customers";
-    String basicAuth = base64Encode(utf8.encode(
-        "${Constants.consumerKeySignup} : ${Constants.consumerSecretSignup}"));
+  // static Future<void> signupCustomer(Map<String, String> customerData) async {
+  //   String endpoint = "${Constants.baseUrl}/wp-json/wc/v3/customers";
+  //   String basicAuth = base64Encode(utf8.encode(
+  //       "${Constants.consumerKeySignup} : ${Constants.consumerSecretSignup}"));
 
-    var headers = {
-      HttpHeaders.authorizationHeader: "Basic $basicAuth",
-      //   HttpHeaders.contentTypeHeader: "text/html"
-    };
+  //   var headers = {
+  //     HttpHeaders.authorizationHeader: "Basic $basicAuth",
+  //     //   HttpHeaders.contentTypeHeader: "text/html"
+  //   };
 
-    Uri uri = Uri.parse(endpoint);
+  //   Uri uri = Uri.parse(endpoint);
 
-    http.Response response =
-        await http.post(uri, headers: headers, body: customerData);
+  //   http.Response response =
+  //       await http.post(uri, headers: headers, body: customerData);
 
-    print("signupCustomer statusCode ${response.statusCode}");
+  //   print("signupCustomer statusCode ${response.statusCode}");
 
-    print("signupCustomer body ${response.body}");
+  //   print("signupCustomer body ${response.body}");
 
-    print("signupCustomer headers ${response.headers}");
+  //   print("signupCustomer headers ${response.headers}");
 
-    print("signupCustomer reasonPhrase ${response.reasonPhrase}");
+  //   print("signupCustomer reasonPhrase ${response.reasonPhrase}");
 
-    if (response.statusCode == 201) {
-      // try {
-      //   final json = jsonDecode(response.body);
-      //   print("signupCustomer json $json");
-      // } catch (e) {
-      //   print("${e.toString()}");
-      // }
-    }
-  }
+  //   if (response.statusCode == 201) {
+  //     // try {
+  //     //   final json = jsonDecode(response.body);
+  //     //   print("signupCustomer json $json");
+  //     // } catch (e) {
+  //     //   print("${e.toString()}");
+  //     // }
+  //   }
+  // }
 
   static Future<http.StreamedResponse?> loginCustomer(
       String email, String password, String username) async {

@@ -19,6 +19,7 @@ class _FilterOptionsState extends State<FilterOptions> {
   double selectedMax = 100000.0;
   @override
   Widget build(BuildContext context) {
+    double deviceWidth = MediaQuery.of(context).size.width;
     final filterOptionsProvider =
         Provider.of<FilterOptionsProvider>(context, listen: false);
     // Map<String, dynamic> selectedSubOptionsdata =
@@ -41,8 +42,8 @@ class _FilterOptionsState extends State<FilterOptions> {
     }
 
     Widget priceRange = Container(
-      width: MediaQuery.of(context).size.width -
-          (MediaQuery.of(context).size.width / 3),
+      width: deviceWidth -
+          (deviceWidth / 3),
       height: (MediaQuery.of(context).size.height / 2) - 77,
       child: LayoutBuilder(
         builder: (context, constraints) {
@@ -66,7 +67,7 @@ class _FilterOptionsState extends State<FilterOptions> {
                 children: [
                   Text(
                     "₹ ${selectedMin.toInt()} - ₹ ${selectedMax.toInt()}",
-                    style: TextStyle(fontSize: constraints.maxWidth / 25),
+                    style: TextStyle(fontSize: deviceWidth > 600 ? constraints.maxWidth / 22 : constraints.maxWidth / 22),
                   ),
                   // Image.asset(
                   //   "assets/images/rupee.png",
@@ -90,36 +91,39 @@ class _FilterOptionsState extends State<FilterOptions> {
                 height: 10.0,
               ),
               SizedBox(
-                width: MediaQuery.of(context).size.width,
-                child: RangeSlider(
-                  activeColor: Theme.of(context).primaryColor,
-                  min: 500.0,
-                  max: 139080.0,
-                  values: RangeValues(selectedMin, selectedMax),
-                  onChanged: (value) {
-                    print("SELECTED VALUE $value");
-                    if (mounted) {
-                      setState(() {
-                        selectedMin = value.start;
-                        selectedMax = value.end;
-                      });
-                    }
-                  },
-                  onChangeEnd: (value) {
-                    filterOptionsProvider.setSelectedSubOptionsdata({
-                      "price_range": {
-                        "min_price": value.start.toInt(),
-                        "max_price": value.end.toInt()
+                width: deviceWidth,
+                child: Consumer<FilterOptionsProvider>(
+                  builder: (context, filterProvider, child) {
+                    return RangeSlider(
+                      activeColor: Theme.of(context).primaryColor,
+                      min: 500.0,
+                      max: 139080.0,
+                      values: RangeValues(selectedMin, selectedMax),
+                      onChanged: (value)  {
+                        print("SELECTED VALUE $value");
+                        // if (mounted) {
+                          setState(() {
+                            selectedMin = value.start;
+                            selectedMax = value.end;
+                          });
+                        //}
                       },
-                      "parent": "price_range"
-                    });
-                    print(
-                        "filterOptionsProvider.list ${filterOptionsProvider.list}");
+                      onChangeEnd: (value) async {
+                       filterProvider.setSelectedSubOptionsdata({
+                          "price_range": {
+                            "min_price": value.start.toInt(),
+                            "max_price": value.end.toInt()
+                          },
+                          "parent": "price_range"
+                        });
+                        print("filterProvider.list ${filterProvider.list}");
+                      },
+                      labels: RangeLabels(
+                          selectedMin.toString(), selectedMax.toString()),
+                    );
                   },
-                  labels: RangeLabels(
-                      selectedMin.toString(), selectedMax.toString()),
                 ),
-              )
+              ),
             ],
           );
         },

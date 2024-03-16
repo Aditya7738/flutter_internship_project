@@ -42,7 +42,7 @@ class MyProfilePage extends StatelessWidget {
   ];
 
   void showLogoutDialog(BuildContext context) {
-      double deviceWidth = MediaQuery.of(context).size.width;
+    double deviceWidth = MediaQuery.of(context).size.width;
     //TextEditingController textEditingController = TextEditingController();
     final customerProvider =
         Provider.of<CustomerProvider>(context, listen: false);
@@ -52,8 +52,11 @@ class MyProfilePage extends StatelessWidget {
       builder: (context) {
         return AlertDialog(
           alignment: Alignment.center,
-          title:  Text("Confirm Logout", style: Theme.of(context).textTheme.bodyText1,),
-          content:  Text(
+          title: Text(
+            "Confirm Logout",
+            style: Theme.of(context).textTheme.bodyText1,
+          ),
+          content: Text(
             "Please click on confirm button for logout else cancel",
             style: Theme.of(context).textTheme.subtitle1,
           ),
@@ -69,12 +72,16 @@ class MyProfilePage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(5.0)),
                   padding: const EdgeInsets.symmetric(
                       vertical: 10.0, horizontal: 20.0),
-                  child:  Text(
+                  child: Text(
                     "Cancel",
-                    style: TextStyle(color: Colors.black, fontSize: deviceWidth > 600 ? 25.0 : 17.0),
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: deviceWidth > 600 ? 25.0 : 17.0),
                   )),
             ),
-            SizedBox(width: 10.0,),
+            SizedBox(
+              width: 10.0,
+            ),
             GestureDetector(
               onTap: () {
                 customerProvider.customerData.clear();
@@ -96,9 +103,11 @@ class MyProfilePage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(5.0)),
                   padding: const EdgeInsets.symmetric(
                       vertical: 10.0, horizontal: 20.0),
-                  child:  Text(
+                  child: Text(
                     "Confirm",
-                    style: TextStyle(color: Colors.white, fontSize: deviceWidth > 600 ? 25.0 : 17.0),
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: deviceWidth > 600 ? 25.0 : 17.0),
                   )),
             ),
           ],
@@ -111,8 +120,11 @@ class MyProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final customerProvider =
         Provider.of<CustomerProvider>(context, listen: false);
-    // String name = customerProvider.customerData[0]["first_name"];
-    //print(name);
+    String name = customerProvider.customerData[0]["first_name"];
+    print(name);
+
+    String firstCharacter = name.substring(0, 1);
+
     double deviceWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
@@ -134,7 +146,6 @@ class MyProfilePage extends StatelessWidget {
               width: 15,
             ),
             Container(
-             
               width: (deviceWidth / 16) + 4,
               child: badges.Badge(
                 badgeStyle: const badges.BadgeStyle(badgeColor: Colors.purple),
@@ -181,7 +192,7 @@ class MyProfilePage extends StatelessWidget {
                     // padding: const EdgeInsets.symmetric(
                     //     horizontal: 35.0, vertical: 20.0),
                     child: Text(
-                      "A",
+                      firstCharacter,
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
@@ -194,34 +205,35 @@ class MyProfilePage extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Aditya",
-                          style: deviceWidth > 600
-                              ? TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: deviceWidth / 28,
-                                )
-                              : TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: (deviceWidth / 30) + 3,
-                                )),
+                      // Text("Aditya",
+                      //     style: deviceWidth > 600
+                      //         ? TextStyle(
+                      //             fontWeight: FontWeight.bold,
+                      //             fontSize: deviceWidth / 28,
+                      //           )
+                      //         : TextStyle(
+                      //             fontWeight: FontWeight.bold,
+                      //             fontSize: (deviceWidth / 30) + 3,
+                      //           )),
 
-                      // SizedBox(
-                      //   height: 5.0,
-                      // ),
-                      Text("Shigwan",
-                          style: deviceWidth > 600
-                              ? TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: deviceWidth / 28,
-                                )
-                              : TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: (deviceWidth / 30) + 3,
-                                )),
-                      // Text(customerProvider.customerData[0]["first_name"],
-                      //     style: Theme.of(context).textTheme.headline1),
-                      // Text(customerProvider.customerData[0]["last_name"],
-                      //     style: Theme.of(context).textTheme.headline1),
+                      // // SizedBox(
+                      // //   height: 5.0,
+                      // // ),
+                      // Text("Shigwan",
+                      //     style: deviceWidth > 600
+                      //         ? TextStyle(
+                      //             fontWeight: FontWeight.bold,
+                      //             fontSize: deviceWidth / 28,
+                      //           )
+                      //         : TextStyle(
+                      //             fontWeight: FontWeight.bold,
+                      //             fontSize: (deviceWidth / 30) + 3,
+                      //           )),
+
+                      Text(customerProvider.customerData[0]["first_name"],
+                          style: Theme.of(context).textTheme.headline1),
+                      Text(customerProvider.customerData[0]["last_name"],
+                          style: Theme.of(context).textTheme.headline1),
                       const SizedBox(
                         height: 15.0,
                       ),
@@ -284,10 +296,7 @@ class MyProfilePage extends StatelessWidget {
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) => const OrderPage()));
                                 break;
-                              // case 1:
-                              //   Navigator.of(context).push(MaterialPageRoute(
-                              //       builder: (context) => const ActivePayments()));
-                              //   break;
+                    
                               case 1:
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) =>

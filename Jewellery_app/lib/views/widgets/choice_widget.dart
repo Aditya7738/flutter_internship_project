@@ -1,3 +1,4 @@
+import 'package:Tiara_by_TJ/views/pages/dashboard_page.dart';
 import 'package:Tiara_by_TJ/views/pages/home_screen.dart';
 import 'package:Tiara_by_TJ/views/pages/home_screen2.dart';
 import 'package:Tiara_by_TJ/views/pages/home_screen3.dart';
@@ -89,7 +90,7 @@ class _ChoiceWidgetState extends State<ChoiceWidget> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => HomeScreen(),
+                          builder: (context) => DashboardPage(),
                         ));
                     break;
                   case "Home screen 2":

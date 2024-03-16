@@ -88,7 +88,7 @@ class _CartPageState extends State<CartPage> {
 
     print("calculateTotalPriceAfterApplyCoupon $totalAfterDiscount");
 
-print("mounted error might be below");
+    print("mounted error might be below");
     value.setTotalAfterCouponApplied(totalAfterDiscount);
     print("mounted error might be above");
     return totalAfterDiscount;
@@ -640,53 +640,12 @@ print("mounted error might be below");
                           ],
                         ),
                       ),
-                      const SizedBox(
-                        height: 90.0,
+                      SizedBox(
+                        height: deviceWidth > 600 ? 120.0 : 100.0,
                       ),
                     ]),
               );
             } else {
-              // return Padding(
-              //   padding: const EdgeInsets.only(top: 28.0),
-              //   child: Center(
-              //     child: Column(
-              //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //       children: [
-              //         Image.asset(
-              //           "assets/images/empty_shopping_cart.png",
-              //           width: 200.0,
-              //           height: 200.0,
-              //         ),
-              //         const SizedBox(
-              //           height: 40.0,
-              //         ),
-              //         Text("Your Shopping Bag is Empty",
-              //             style: Theme.of(context).textTheme.headline1),
-              //         const SizedBox(
-              //           height: 50.0,
-              //         ),
-              //         GestureDetector(
-              //           onTap: () {
-              //             Navigator.of(context).pushReplacement(
-              //                 MaterialPageRoute(
-              //                     builder: (context) => const DashboardPage()));
-              //           },
-              //           child: Container(
-              //               decoration: BoxDecoration(
-              //                   color: Colors.green,
-              //                   borderRadius: BorderRadius.circular(5.0)),
-              //               padding: const EdgeInsets.symmetric(
-              //                   vertical: 10.0, horizontal: 20.0),
-              //               child: const Text(
-              //                 "Continue Shopping",
-              //                 style: TextStyle(
-              //                     color: Colors.white, fontSize: 17.0),
-              //               )),
-              //         )
-              //       ],
-              //     ),
-              //   ),
-              // );
               return Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: SizedBox(
@@ -756,18 +715,17 @@ print("mounted error might be below");
         bottomSheet: Consumer<CartProvider>(
           builder: (context, value, child) {
             if (value.cart.isNotEmpty) {
-
-
               return BottomSheet(
                 constraints:
                     BoxConstraints.expand(width: deviceWidth, height: 100),
                 enableDrag: false,
                 onClosing: () {},
                 builder: (context) {
+                  print(
+                      "totalAfterCouponApplied ${value.totalAfterCouponApplied.round()}");
 
-                  print("totalAfterCouponApplied ${value.totalAfterCouponApplied.round()}");
-
-                  print("calculateTotalPrice ${value.calculateTotalPrice().round()}");
+                  print(
+                      "calculateTotalPrice ${value.calculateTotalPrice().round()}");
                   return Padding(
                     padding: const EdgeInsets.all(18.0),
                     child: Row(
@@ -778,90 +736,63 @@ print("mounted error might be below");
                                 ? "₹ ${value.totalAfterCouponApplied.round().toString()}"
                                 : "₹ ${value.calculateTotalPrice().round().toString()}",
                             style: Theme.of(context).textTheme.headline1),
-                        SizedBox(
+                        GestureDetector(
+                          onTap: () {
+                            final customerProvider =
+                                Provider.of<CustomerProvider>(context,
+                                    listen: false);
+                            if (value.selectedCouponData != null) {
+                              value.setIsCouponApplied(true);
+                            } else {
+                              value.setIsCouponApplied(false);
+                            }
+                            //List<Map<String,dynamic>> oldCartDataList = <Map<String,dynamic>>[];
+
+                            //user old cart item should be added to cart again when he login and direct to cart page
+                            // for (var i = 0; i < cartProvider.cart.length; i++) {
+                            //   oldCartDataList.add(
+
+                            //   );
+                            // }
+
+                            // customerProvider.customerData.addAll(
+
+                            // );
+
+                            bool isDataEmpty =
+                                customerProvider.customerData.isEmpty;
+
+                            if (isDataEmpty) {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => const LoginPage(
+                                        isComeFromCart: true,
+                                      )));
+                            } else {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => const ShippingPage()));
+                            }
+                          },
+                          child: Container(
+                            alignment: Alignment.center,
                             width: deviceWidth > 600
-                                ? deviceWidth / 3.7
-                                : deviceWidth / 2,
-                            child: GestureDetector(
-                              onTap: () {
-                                final customerProvider =
-                                    Provider.of<CustomerProvider>(context,
-                                        listen: false);
-                                if (value.selectedCouponData != null) {
-                                  value.setIsCouponApplied(true);
-                                } else {
-                                  value.setIsCouponApplied(false);
-                                }
-                                //List<Map<String,dynamic>> oldCartDataList = <Map<String,dynamic>>[];
-
-                                //user old cart item should be added to cart again when he login and direct to cart page
-                                // for (var i = 0; i < cartProvider.cart.length; i++) {
-                                //   oldCartDataList.add(
-
-                                //   );
-                                // }
-
-                                // customerProvider.customerData.addAll(
-
-                                // );
-
-                                bool isDataEmpty =
-                                    customerProvider.customerData.isEmpty;
-
-                                if (isDataEmpty) {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) => const LoginPage(
-                                            isComeFromCart: true,
-                                          )));
-                                } else {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) =>
-                                          const ShippingPage()));
-                                }
-                              },
-                              child: Container(
-                                height: 100 - 50,
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 10.0, horizontal: 10.0),
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.rectangle,
-                                    borderRadius: BorderRadius.circular(10.0),
-                                    color: Theme.of(context).primaryColor),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      Constants.cart_btn_text,
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize:
-                                            deviceWidth >
-                                                    600
-                                                ? 23
-                                                : 17.0,
-                                                fontWeight: FontWeight.bold
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      width: 10.0,
-                                    ),
-                                    Image.asset(
-                                      "assets/images/grocery_store.png",
-                                      // width: 17.0,
-                                      // height: 17.0,
-                                      height: (deviceWidth / 19),
-                                      color: Colors.white,
-                                    )
-                                  ],
-                                ),
-                              ),
-                            )
-
-                            // ButtonWidget(
-                            //   btnString:,
-                            //   onTap:
-                            // ),
-                            )
+                                ? deviceWidth / 4
+                                : (deviceWidth / 2) - 50,
+                            height: deviceWidth > 600 ? 60 : 50,
+                            // padding: const EdgeInsets.symmetric(
+                            //     vertical: 10.0, horizontal: 10.0),
+                            decoration: BoxDecoration(
+                                shape: BoxShape.rectangle,
+                                borderRadius: BorderRadius.circular(10.0),
+                                color: Theme.of(context).primaryColor),
+                            child: Text(
+                              "PLACE ORDER",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: deviceWidth > 600 ? 23 : 17.0,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        )
                       ],
                     ),
                   );
@@ -884,10 +815,10 @@ print("mounted error might be below");
 
     return cartList.map((cartData) {
       return Padding(
-        padding: const EdgeInsets.only(bottom: 8.0),
+        padding: const EdgeInsets.only(bottom: 10.0, left: 8.0, right: 8.0),
         child: Card(
             child: Container(
-          height: deviceWidth > 600 ? dimension + 30 : dimension + 21,
+          height: deviceWidth > 600 ? dimension + 32 : dimension + 22,
           padding:
               deviceWidth > 600 ? EdgeInsets.all(15.0) : EdgeInsets.all(8.0),
           child: Row(
@@ -924,98 +855,104 @@ print("mounted error might be below");
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text("₹ ${cartData.price ?? 20000}",
-                                  style: Theme.of(context).textTheme.headline1),
-                              SizedBox(
-                                  height: deviceWidth > 600
-                                      ? (constraints.maxHeight / 13)
-                                      : 5),
-                              SizedBox(
-                                  width: deviceWidth > 600
-                                      ? (deviceWidth / 1.8)
-                                      : (deviceWidth / 2) - 10,
-                                  child: Text(
-                                    cartData.productName ?? "Jewellery",
-                                    maxLines: 2,
-                                    style:
-                                        Theme.of(context).textTheme.headline2,
-                                    overflow: TextOverflow.ellipsis,
-                                    softWrap: true,
-                                  )),
-                              SizedBox(
-                                  height: deviceWidth > 600
-                                      ? (constraints.maxHeight / 13)
-                                      : 5),
-                              Row(
-                                children: [
-                                  Row(
-                                    children: [
-                                      Text("Qty: ",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .headline2),
-                                      const SizedBox(
-                                        width: 5.0,
-                                      ),
-                                      DropdownButton<String>(
-                                          value: cartData.quantity,
-                                          icon: const Icon(Icons
-                                              .keyboard_arrow_down_rounded),
-                                          items:
-                                              quantityList.map((String option) {
-                                            return DropdownMenuItem(
-                                              value: option,
-                                              child: Text(option),
-                                            );
-                                          }).toList(),
-                                          onChanged: (String? newValue) {
-                                            if (mounted) {
-                                              setState(() {
-                                                value.updateQuantity(
-                                                    cartData.cartProductid!,
-                                                    newValue!);
-                                              });
-                                            }
-                                          })
-                                    ],
+                              Container(
+                             
+                                width: deviceWidth > 600
+                                    ? (deviceWidth / 1.8) + 12.0
+                                    : (deviceWidth / 2) - 25,
+                                child: Text(
+                                  cartData.productName ?? "Jewellery",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: deviceWidth > 600 ? deviceWidth / 28 : deviceWidth / 25,
                                   ),
-                                  SizedBox(
-                                    width: deviceWidth > 600 ? 51 : 11,
-                                  ),
-                                  Row(
-                                    children: [
-                                      Text("Size: ",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .headline2),
-                                      const SizedBox(
-                                        width: 5.0,
-                                      ),
-                                      DropdownButton<String>(
-                                          value: selectedSize,
-                                          icon: const Icon(Icons
-                                              .keyboard_arrow_down_rounded),
-                                          items: sizeList.map((String option) {
-                                            return DropdownMenuItem(
-                                              value: option,
-                                              child: Text(option),
-                                            );
-                                          }).toList(),
-                                          onChanged: (String? newValue) {
-                                            if (mounted) {
-                                              setState(() {
-                                                selectedSize = newValue!;
-                                              });
-                                            }
-                                          })
-                                    ],
-                                  ),
-                                ],
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  softWrap: true,
+                                ),
                               ),
-                              SizedBox(
-                                  height: deviceWidth > 600
-                                      ? (constraints.maxHeight / 13)
-                                      : 5),
+                              SizedBox(height: deviceWidth > 600 ? 10 : 5),
+                              Text(
+                                "₹ ${cartData.price ?? 20000}",
+                                style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                                    fontSize: deviceWidth > 600 ? (deviceWidth / 33) + 3 : (deviceWidth / 33) + 3,
+                                  ),
+                              ),
+                              SizedBox(height: deviceWidth > 600 ? 10 : 5),
+                              Container(
+                                height: deviceWidth > 600
+                                    ? (constraints.maxHeight / 6)
+                                    : 35,
+                                child: Row(
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Text("Qty: ",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headline2),
+                                        const SizedBox(
+                                          width: 5.0,
+                                        ),
+                                        DropdownButton<String>(
+                                            value: cartData.quantity,
+                                            icon: const Icon(Icons
+                                                .keyboard_arrow_down_rounded),
+                                            items: quantityList
+                                                .map((String option) {
+                                              return DropdownMenuItem(
+                                                value: option,
+                                                child: Text(option),
+                                              );
+                                            }).toList(),
+                                            onChanged: (String? newValue) {
+                                              if (mounted) {
+                                                setState(() {
+                                                  value.updateQuantity(
+                                                      cartData.cartProductid!,
+                                                      newValue!);
+                                                });
+                                              }
+                                            })
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      width: deviceWidth > 600 ? 51 : 11,
+                                    ),
+                                    Row(
+                                      children: [
+                                        Text("Size: ",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headline2),
+                                        const SizedBox(
+                                          width: 5.0,
+                                        ),
+                                        DropdownButton<String>(
+                                            value: selectedSize,
+                                            icon: const Icon(Icons
+                                                .keyboard_arrow_down_rounded),
+                                            items:
+                                                sizeList.map((String option) {
+                                              return DropdownMenuItem(
+                                                value: option,
+                                                child: Text(option),
+                                              );
+                                            }).toList(),
+                                            onChanged: (String? newValue) {
+                                              if (mounted) {
+                                                setState(() {
+                                                  selectedSize = newValue!;
+                                                });
+                                              }
+                                            })
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(height: deviceWidth > 600 ? 10 : 5),
                               Text("Expected Delivery : ",
                                   style: Theme.of(context).textTheme.headline2),
                               SizedBox(
@@ -1023,7 +960,7 @@ print("mounted error might be below");
                                       ? (constraints.maxHeight / 33)
                                       : 1),
                               Text(cartData.deliveryDate ?? "After 5 days",
-                                  style: Theme.of(context).textTheme.headline3)
+                                  style: Theme.of(context).textTheme.headline6)
                             ],
                           ),
                         );
@@ -1032,6 +969,7 @@ print("mounted error might be below");
                     ),
                   ],
                 ),
+                SizedBox(width: 8.0,),
                 LayoutBuilder(
                   builder: (context, constraints) {
                     return Column(

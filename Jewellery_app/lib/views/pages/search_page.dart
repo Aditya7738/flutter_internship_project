@@ -34,6 +34,7 @@ class _SearchPageState extends State<SearchPage> {
 
     filterOptionsProvider =
         Provider.of<FilterOptionsProvider>(context, listen: false);
+     
     print(
         "filterOptionsProvider.list.length ${filterOptionsProvider.list.length}");
     filterOptionsProvider.clearFilterList();
@@ -88,6 +89,7 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
+    double deviceWidth = MediaQuery.of(context).size.width;
     final filterOptionsProvider = Provider.of<FilterOptionsProvider>(context);
     print("kToolbarHeight - 37.5 ${kToolbarHeight - 37.5}");
     return Scaffold(
@@ -98,12 +100,13 @@ class _SearchPageState extends State<SearchPage> {
           title: SizedBox(
             height: 50.0,
             child: TextField(
-              
               controller: textEditingController,
-              style: 
-              
-              TextStyle(fontSize: (kToolbarHeight - 37) + 2, color: Colors.black, fontWeight: FontWeight.normal),
-              
+              style: TextStyle(
+                  fontSize: deviceWidth > 600
+                      ? (kToolbarHeight - 37) + 2
+                      : (kToolbarHeight - 40),
+                  color: Colors.black,
+                  fontWeight: FontWeight.normal),
               onSubmitted: (value) async {
                 if (value == "") {
                   ApiService.listOfProductsModel.clear();
@@ -156,7 +159,7 @@ class _SearchPageState extends State<SearchPage> {
               maxLines: 1,
               autofocus: true,
               cursorColor: Colors.grey,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                   focusedBorder: UnderlineInputBorder(
                       borderSide: BorderSide(color: Colors.grey)),
                   prefixIcon: Icon(
@@ -167,7 +170,11 @@ class _SearchPageState extends State<SearchPage> {
                   fillColor: Colors.grey,
                   hintText: "Search for jewelleries",
                   hintStyle: TextStyle(
-                      color: Colors.grey, fontSize: (kToolbarHeight - 37) + 2,)),
+                    color: Colors.grey,
+                    fontSize: deviceWidth > 600
+                        ? (kToolbarHeight - 37) + 2
+                        : (kToolbarHeight - 39),
+                  )),
             ),
           ),
           actions: [
@@ -207,7 +214,7 @@ class _SearchPageState extends State<SearchPage> {
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: Icon(
                     Icons.filter_list,
-                    color: Colors.grey,
+                    color: Colors.black,
                     size: 30.0,
                   )),
             ),
@@ -391,7 +398,7 @@ class _SearchPageState extends State<SearchPage> {
                             "constraints.maxWidth / 16 ${(constraints.maxWidth / 26) - 0.9}");
                         return Text(
                             "Showing ${ApiService.listOfProductsModel.length} results",
-                            style: Theme.of(context).textTheme.subtitle1
+                            style: TextStyle(fontSize: deviceWidth > 600 ? 27.0 : 15.0, fontWeight: FontWeight.normal) 
                             // TextStyle(
                             //     fontSize: (constraints.maxWidth / 26) - 0.9),
                             );
@@ -585,7 +592,7 @@ class _SearchPageState extends State<SearchPage> {
                                                                   fontSize:
                                                                       (constraints.maxWidth /
                                                                               20) +
-                                                                          2),
+                                                                          2, fontWeight: FontWeight.normal),
                                                             )
                                                           ],
                                                         );

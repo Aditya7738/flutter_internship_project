@@ -35,7 +35,7 @@ class _ProductItemState extends State<ProductItem> {
   Widget build(BuildContext context) {
     final wishListProvider = Provider.of<WishlistProvider>(context);
     // final cartProvider = Provider.of<CartProvider>(context);
-double deviceWidth = MediaQuery.of(context).size.width;
+    double deviceWidth = MediaQuery.of(context).size.width;
 
     print("product item ${(deviceWidth / 3) - 75}");
     print(productsModel.toJson());
@@ -43,14 +43,19 @@ double deviceWidth = MediaQuery.of(context).size.width;
     return GestureDetector(
       onTap: () {
         print("CATEGORY PRODUCT PRESSED");
-        if (widget.productIndex != null) {
+        print("widget.productIndex != null ${widget.productIndex != null}");
+        print("widget.productIndex ${widget.productIndex}");
+
+        // if (widget.productIndex != null) {
+        //   print("in widget.productIndex != null");
           Navigator.of(context).push(MaterialPageRoute(
               builder: (context) =>
                   DetailsView(productIndex: widget.productIndex!)));
-        }
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) =>
-                ProductDetailsPage(productsModel: productsModel)));
+        // } else {
+        //   Navigator.of(context).push(MaterialPageRoute(
+        //       builder: (context) =>
+        //           ProductDetailsPage(productsModel: productsModel)));
+        // }
       },
       child: Container(
         decoration: BoxDecoration(
@@ -77,11 +82,15 @@ double deviceWidth = MediaQuery.of(context).size.width;
                           : productsModel.images[0].src ??
                               Constants.defaultImageUrl,
                       width: (deviceWidth / 2) + 16.0,
-                      height: deviceWidth > 600 ? (deviceWidth / 2) - 111 : (deviceWidth / 2) - 10,
+                      height: deviceWidth > 600
+                          ? (deviceWidth / 2) - 111
+                          : (deviceWidth / 2) - 10,
                       placeholder: (context, url) {
                         return SizedBox(
                           width: (deviceWidth / 2) + 16.0,
-                          height: deviceWidth > 600 ? (deviceWidth / 2) - 111 : (deviceWidth / 2) - 10,
+                          height: deviceWidth > 600
+                              ? (deviceWidth / 2) - 111
+                              : (deviceWidth / 2) - 10,
                           child: const Center(
                             child: CircularProgressIndicator(
                               color: Colors.black,
@@ -91,11 +100,8 @@ double deviceWidth = MediaQuery.of(context).size.width;
                       },
                     ),
               Padding(
-                padding: const EdgeInsets.only(
-                  right: 12.0,
-                  left: 5.0,
-                  bottom: 12.0
-                ),
+                padding:
+                    const EdgeInsets.only(right: 12.0, left: 5.0, bottom: 12.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -158,8 +164,7 @@ double deviceWidth = MediaQuery.of(context).size.width;
                               ),
                               productsModel.averageRating != null
                                   ? Container(
-                                      width: deviceWidth >
-                                              600
+                                      width: deviceWidth > 600
                                           ? constraints.maxWidth / 2.1
                                           : constraints.maxWidth / 1.5,
                                       alignment: Alignment.center,
@@ -197,9 +202,7 @@ double deviceWidth = MediaQuery.of(context).size.width;
                                       ),
                                     )
                                   : SizedBox(
-                                      width: deviceWidth /
-                                              2 -
-                                          60,
+                                      width: deviceWidth / 2 - 60,
                                     ),
                             ],
                           );
@@ -269,25 +272,15 @@ double deviceWidth = MediaQuery.of(context).size.width;
                                       .contains(productsModel.id)
                                   ? Icon(
                                       Icons.shopping_cart,
-                                      size: deviceWidth >
-                                              600
-                                          ? (deviceWidth /
-                                                  3) -
-                                              260
-                                          : (deviceWidth /
-                                                  3) -
-                                              116,
+                                      size: deviceWidth > 600
+                                          ? (deviceWidth / 3) - 260
+                                          : (deviceWidth / 3) - 116,
                                     )
                                   : Icon(
                                       Icons.add_shopping_cart_rounded,
-                                      size: deviceWidth >
-                                              600
-                                          ? (deviceWidth /
-                                                  3) -
-                                              260
-                                          : (deviceWidth /
-                                                  3) -
-                                              116,
+                                      size: deviceWidth > 600
+                                          ? (deviceWidth / 3) - 260
+                                          : (deviceWidth / 3) - 116,
                                     ),
                             );
                           },
@@ -304,10 +297,8 @@ double deviceWidth = MediaQuery.of(context).size.width;
                                   : Icons.favorite_border_outlined,
                               color: Colors.red,
                               size: deviceWidth > 600
-                                  ? (deviceWidth / 3) -
-                                      260
-                                  : (deviceWidth / 3) -
-                                      116,
+                                  ? (deviceWidth / 3) - 260
+                                  : (deviceWidth / 3) - 116,
                             ),
                             onPressed: () {
                               print("PRESSED");

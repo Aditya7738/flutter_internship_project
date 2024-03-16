@@ -19,7 +19,6 @@ class SignupPage extends StatefulWidget {
 class _SignupPageState extends State<SignupPage> {
   final _formKey = GlobalKey<FormState>();
 
-  final TextEditingController _phoneNoController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
@@ -61,7 +60,6 @@ class _SignupPageState extends State<SignupPage> {
   Widget build(BuildContext context) {
     _passwordController.text = "Sldi4e@#45";
     _confirmPasswordController.text = "Sldi4e@#45";
-    _phoneNoController.text = "4153516564";
 
     final deviceWidth = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -80,7 +78,7 @@ class _SignupPageState extends State<SignupPage> {
         ),
         body: SingleChildScrollView(
           child: Padding(
-              padding: const EdgeInsets.all(20.0),
+              padding: EdgeInsets.all(deviceWidth > 600 ? 30.0 : 20.0),
               child: Center(
                   child: Form(
                 key: _formKey,
@@ -126,47 +124,47 @@ class _SignupPageState extends State<SignupPage> {
                       const SizedBox(
                         height: 30.0,
                       ),
-                      SizedBox(
-                        height: 75.0,
-                        child: TextFormField(
-                          style: Theme.of(context).textTheme.subtitle1,
-                          controller: _phoneNoController,
-                          keyboardType: TextInputType.phone,
-                          validator: (value) {
-                            return ValidationHelper.isPhoneNoValid(value);
-                          },
-                          decoration: InputDecoration(
-                              errorStyle: TextStyle(
-                                  fontSize: (deviceWidth / 33) + 1.5,
-                                  color: Colors.red),
-                              labelStyle: Theme.of(context).textTheme.subtitle1,
-                              border: const OutlineInputBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(20.0))),
-                              prefix: DropdownButton(
-                                  value: selectedOption,
-                                  icon: const Icon(
-                                      Icons.keyboard_arrow_down_rounded),
-                                  items: options.map((String option) {
-                                    return DropdownMenuItem(
-                                      value: option,
-                                      child: Text(option),
-                                    );
-                                  }).toList(),
-                                  onChanged: (String? newValue) {
-                                    if (mounted) {
-                                      setState(() {
-                                        selectedOption = newValue!;
-                                      });
-                                    }
-                                  }),
-                              labelText: "Mobile number*"),
-                          maxLines: 1,
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 30.0,
-                      ),
+                      // SizedBox(
+                      //   height: 75.0,
+                      //   child: TextFormField(
+                      //     style: Theme.of(context).textTheme.subtitle1,
+                      //     controller: _phoneNoController,
+                      //     keyboardType: TextInputType.phone,
+                      //     validator: (value) {
+                      //       return ValidationHelper.isPhoneNoValid(value);
+                      //     },
+                      //     decoration: InputDecoration(
+                      //         errorStyle: TextStyle(
+                      //             fontSize: (deviceWidth / 33) + 1.5,
+                      //             color: Colors.red),
+                      //         labelStyle: Theme.of(context).textTheme.subtitle1,
+                      //         border: const OutlineInputBorder(
+                      //             borderRadius:
+                      //                 BorderRadius.all(Radius.circular(20.0))),
+                      //         prefix: DropdownButton(
+                      //             value: selectedOption,
+                      //             icon: const Icon(
+                      //                 Icons.keyboard_arrow_down_rounded),
+                      //             items: options.map((String option) {
+                      //               return DropdownMenuItem(
+                      //                 value: option,
+                      //                 child: Text(option),
+                      //               );
+                      //             }).toList(),
+                      //             onChanged: (String? newValue) {
+                      //               if (mounted) {
+                      //                 setState(() {
+                      //                   selectedOption = newValue!;
+                      //                 });
+                      //               }
+                      //             }),
+                      //         labelText: "Mobile number*"),
+                      //     maxLines: 1,
+                      //   ),
+                      // ),
+                      // const SizedBox(
+                      //   height: 30.0,
+                      // ),
                       TextFormField(
                         style: Theme.of(context).textTheme.subtitle1,
                         controller: _emailController,
@@ -191,7 +189,9 @@ class _SignupPageState extends State<SignupPage> {
                       Row(
                         children: [
                           SizedBox(
-                            width: (MediaQuery.of(context).size.width / 2) - 35,
+                            width: deviceWidth > 600
+                                ? (deviceWidth / 2) - 45
+                                : (deviceWidth / 2) - 35,
                             child: TextFormField(
                               style: Theme.of(context).textTheme.subtitle1,
                               controller: _firstNameController,
@@ -217,7 +217,9 @@ class _SignupPageState extends State<SignupPage> {
                             width: 28.0,
                           ),
                           SizedBox(
-                            width: (MediaQuery.of(context).size.width / 2) - 35,
+                            width: deviceWidth > 600
+                                ? (deviceWidth / 2) - 45
+                                : (deviceWidth / 2) - 35,
                             child: TextFormField(
                               style: Theme.of(context).textTheme.subtitle1,
                               controller: _lastNameController,
@@ -357,15 +359,14 @@ class _SignupPageState extends State<SignupPage> {
                                 },
                             ),
                           ]))),
-                      const SizedBox(
-                        height: 30.0,
+                      SizedBox(
+                        height: deviceWidth > 600 ? 80.0 : 30.0,
                       ),
                       GestureDetector(
                         onTap: () async {
                           if (_formKey.currentState!.validate()) {
                             if (mounted) {
                               setState(() {
-                                phone = _phoneNoController.text;
                                 email = _emailController.text;
                                 first_name = _firstNameController.text;
                                 last_name = _lastNameController.text;
@@ -376,11 +377,9 @@ class _SignupPageState extends State<SignupPage> {
                             List<String> list = email.split('@');
                             String username = list[0];
 
-                            print(
-                                "$phone $email $first_name $last_name $username");
+                            print("$email $first_name $last_name $username");
 
                             Map<String, dynamic> data = {
-                              "phone": phone,
                               "first_name": first_name,
                               "last_name": last_name,
                               "email": email,
@@ -402,8 +401,7 @@ class _SignupPageState extends State<SignupPage> {
                               // final response =
                               //     await ApiService.createCustomer(data);
 
-                              await ApiService.signupCustomer({
-                                //   "phone": phone,
+                              await ApiService.createCustomer({
                                 "first_name": first_name,
                                 "last_name": last_name,
                                 "email": email,
@@ -461,7 +459,7 @@ class _SignupPageState extends State<SignupPage> {
                           // print("$phoneNo $email $firstName $lastName");
                         },
                         child: Container(
-                            width: MediaQuery.of(context).size.width,
+                            width: deviceWidth,
                             height: 65.0,
                             decoration: BoxDecoration(
                                 color: const Color(0xffCC868A),
