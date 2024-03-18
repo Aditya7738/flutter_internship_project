@@ -1,16 +1,39 @@
 class LayoutModel {
     LayoutModel({
+        required this.success,
+        required this.data,
+    });
+
+    final bool? success;
+    final Data? data;
+
+    factory LayoutModel.fromJson(Map<String, dynamic> json){ 
+        return LayoutModel(
+            success: json["success"],
+            data: json["data"] == null ? null : Data.fromJson(json["data"]),
+        );
+    }
+
+    Map<String, dynamic> toJson() => {
+        "success": success,
+        "data": data?.toJson(),
+    };
+
+}
+
+class Data {
+    Data({
         required this.theme,
         required this.pages,
     });
 
-    final LayoutTheme? theme;
-    final List<LayoutPage> pages;
+    final Theme? theme;
+    final List<Page> pages;
 
-    factory LayoutModel.fromJson(Map<String, dynamic> json){ 
-        return LayoutModel(
-            theme: json["theme"] == null ? null : LayoutTheme.fromJson(json["theme"]),
-            pages: json["pages"] == null ? [] : List<LayoutPage>.from(json["pages"]!.map((x) => LayoutPage.fromJson(x))),
+    factory Data.fromJson(Map<String, dynamic> json){ 
+        return Data(
+            theme: json["theme"] == null ? null : Theme.fromJson(json["theme"]),
+            pages: json["pages"] == null ? [] : List<Page>.from(json["pages"]!.map((x) => Page.fromJson(x))),
         );
     }
 
@@ -21,8 +44,8 @@ class LayoutModel {
 
 }
 
-class LayoutPage {
-    LayoutPage({
+class Page {
+    Page({
         required this.name,
         required this.layout,
         required this.children,
@@ -30,13 +53,13 @@ class LayoutPage {
 
     final String? name;
     final String? layout;
-    final List<LayoutChild> children;
+    final List<Child> children;
 
-    factory LayoutPage.fromJson(Map<String, dynamic> json){ 
-        return LayoutPage(
+    factory Page.fromJson(Map<String, dynamic> json){ 
+        return Page(
             name: json["name"],
             layout: json["layout"],
-            children: json["children"] == null ? [] : List<LayoutChild>.from(json["children"]!.map((x) => LayoutChild.fromJson(x))),
+            children: json["children"] == null ? [] : List<Child>.from(json["children"]!.map((x) => Child.fromJson(x))),
         );
     }
 
@@ -48,8 +71,8 @@ class LayoutPage {
 
 }
 
-class LayoutChild {
-    LayoutChild({
+class Child {
+    Child({
         required this.type,
         required this.text,
         required this.style,
@@ -59,15 +82,15 @@ class LayoutChild {
 
     final String? type;
     final String? text;
-    final LayoutStyle? style;
+    final Style? style;
     final List<String> images;
     final String? products;
 
-    factory LayoutChild.fromJson(Map<String, dynamic> json){ 
-        return LayoutChild(
+    factory Child.fromJson(Map<String, dynamic> json){ 
+        return Child(
             type: json["type"],
             text: json["text"],
-            style: json["style"] == null ? null : LayoutStyle.fromJson(json["style"]),
+            style: json["style"] == null ? null : Style.fromJson(json["style"]),
             images: json["images"] == null ? [] : List<String>.from(json["images"]!.map((x) => x)),
             products: json["products"],
         );
@@ -83,8 +106,8 @@ class LayoutChild {
 
 }
 
-class LayoutStyle {
-    LayoutStyle({
+class Style {
+    Style({
         required this.color,
         required this.fontSize,
     });
@@ -92,8 +115,8 @@ class LayoutStyle {
     final String? color;
     final int? fontSize;
 
-    factory LayoutStyle.fromJson(Map<String, dynamic> json){ 
-        return LayoutStyle(
+    factory Style.fromJson(Map<String, dynamic> json){ 
+        return Style(
             color: json["color"],
             fontSize: json["fontSize"],
         );
@@ -106,18 +129,18 @@ class LayoutStyle {
 
 }
 
-class LayoutTheme {
-    LayoutTheme({
+class Theme {
+    Theme({
         required this.colors,
         required this.fontFamily,
     });
 
-    final LayoutColors? colors;
+    final Colors? colors;
     final String? fontFamily;
 
-    factory LayoutTheme.fromJson(Map<String, dynamic> json){ 
-        return LayoutTheme(
-            colors: json["colors"] == null ? null : LayoutColors.fromJson(json["colors"]),
+    factory Theme.fromJson(Map<String, dynamic> json){ 
+        return Theme(
+            colors: json["colors"] == null ? null : Colors.fromJson(json["colors"]),
             fontFamily: json["fontFamily"],
         );
     }
@@ -129,8 +152,8 @@ class LayoutTheme {
 
 }
 
-class LayoutColors {
-    LayoutColors({
+class Colors {
+    Colors({
         required this.primary,
         required this.secondary,
         required this.background,
@@ -140,8 +163,8 @@ class LayoutColors {
     final String? secondary;
     final String? background;
 
-    factory LayoutColors.fromJson(Map<String, dynamic> json){ 
-        return LayoutColors(
+    factory Colors.fromJson(Map<String, dynamic> json){ 
+        return Colors(
             primary: json["primary"],
             secondary: json["secondary"],
             background: json["background"],

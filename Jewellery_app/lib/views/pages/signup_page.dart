@@ -60,6 +60,8 @@ class _SignupPageState extends State<SignupPage> {
   Widget build(BuildContext context) {
     _passwordController.text = "Sldi4e@#45";
     _confirmPasswordController.text = "Sldi4e@#45";
+    CustomerProvider customerProvider =
+        Provider.of<CustomerProvider>(context, listen: false);
 
     final deviceWidth = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -91,14 +93,15 @@ class _SignupPageState extends State<SignupPage> {
                         fit: BoxFit.fill,
                       ),
                       const SizedBox(
-                        height: 30.0,
+                        height: 40.0,
                       ),
                       Text("Signup with Tiara By TJ",
                           style: Theme.of(context).textTheme.headline1),
                       const SizedBox(
-                        height: 20.0,
+                        height: 40.0,
                       ),
                       isRegisterUnSuccessful
+                     // false
                           ? Container(
                               padding: const EdgeInsets.symmetric(
                                   vertical: 15.0, horizontal: 25.0),
@@ -113,16 +116,19 @@ class _SignupPageState extends State<SignupPage> {
                                       style: BorderStyle.solid)),
                               child: Expanded(
                                 child: Text(
-                                  errorMsg,
+                                  //  errorMsg,
+                                  "An account is already registered with that username. Please choose another.",
                                   maxLines: 3,
                                   style: TextStyle(
-                                      color: Colors.red, fontSize: 17.0),
+                                      color: Colors.red,
+                                      fontSize:
+                                          deviceWidth > 600 ? 27.0 : 17.0),
                                 ),
                               ),
                             )
                           : const SizedBox(),
                       const SizedBox(
-                        height: 30.0,
+                        height: 60.0,
                       ),
                       // SizedBox(
                       //   height: 75.0,
@@ -398,16 +404,16 @@ class _SignupPageState extends State<SignupPage> {
                                 });
                               }
 
-                              // final response =
-                              //     await ApiService.createCustomer(data);
+                              final response =
+                                  await ApiService.createCustomer(data);
 
-                              await ApiService.createCustomer({
-                                "first_name": first_name,
-                                "last_name": last_name,
-                                "email": email,
-                                "username": username,
-                                "password": password
-                              });
+                              // await ApiService.createCustomer({
+                              //   "first_name": first_name,
+                              //   "last_name": last_name,
+                              //   "email": email,
+                              //   "username": username,
+                              //   "password": password
+                              // });
 
                               if (mounted) {
                                 setState(() {
@@ -415,48 +421,48 @@ class _SignupPageState extends State<SignupPage> {
                                 });
                               }
 
-                              // if (response.statusCode == 201) {
-                              //   String body = response.body;
-                              //   // List<Map<String, dynamic>> data =
-                              //   //     <Map<String, dynamic>>[];
-                              //   Map<String, dynamic> data = <String, dynamic>{};
-                              //   try {
-                              //     data = jsonDecode(body);
-                              //     print("JSON DECODE DATA $data");
-                              //   } catch (e) {
-                              //     print('Error decoding: $e');
-                              //   }
+                              if (response.statusCode == 201) {
+                                String body = response.body;
+                                // List<Map<String, dynamic>> data =
+                                //     <Map<String, dynamic>>[];
+                                Map<String, dynamic> data = <String, dynamic>{};
+                                try {
+                                  data = jsonDecode(body);
+                                  print("JSON DECODE DATA $data");
+                                } catch (e) {
+                                  print('Error decoding: $e');
+                                }
 
-                              // customerProvider.addCustomerData(data);
+                                customerProvider.addCustomerData(data);
 
-                              //   Navigator.pushReplacement(
-                              //       context,
-                              //       MaterialPageRoute(
-                              //         builder: (context) => LoginPage(
-                              //           isComeFromCart: false,
-                              //         ),
-                              //       ));
-                              // } else {
-                              //   String body = response.body;
-                              //   Map<String, dynamic> data = <String, dynamic>{};
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => LoginPage(
+                                        isComeFromCart: false,
+                                      ),
+                                    ));
+                              } else {
+                                String body = response.body;
+                                Map<String, dynamic> data = <String, dynamic>{};
 
-                              //   try {
-                              //     data = jsonDecode(body);
+                                try {
+                                  data = jsonDecode(body);
 
-                              //     if (mounted) {
-                              //       setState(() {
-                              //         isRegisterUnSuccessful = true;
-                              //         errorMsg = data["message"];
-                              //       });
-                              //     }
-                              //     print("JSON DECODE DATA $data");
-                              //   } catch (e) {
-                              //     print('Error decoding: $e');
-                              //   }
-                              // }
+                                  if (mounted) {
+                                    setState(() {
+                                      isRegisterUnSuccessful = true;
+                                      errorMsg = data["message"];
+                                    });
+                                  }
+                                  print("JSON DECODE DATA $data");
+                                } catch (e) {
+                                  print('Error decoding: $e');
+                                }
+                              }
                             }
                           }
-                          // print("$phoneNo $email $firstName $lastName");
+                        
                         },
                         child: Container(
                             width: deviceWidth,

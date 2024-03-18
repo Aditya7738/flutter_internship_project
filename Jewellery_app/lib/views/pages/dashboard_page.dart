@@ -5,6 +5,7 @@ import 'package:Tiara_by_TJ/providers/customize_options_provider.dart';
 import 'package:Tiara_by_TJ/providers/digigold_provider.dart';
 import 'package:Tiara_by_TJ/providers/filteroptions_provider.dart';
 import 'package:Tiara_by_TJ/views/pages/digi_gold_page.dart';
+import 'package:Tiara_by_TJ/views/pages/fetch_home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:Tiara_by_TJ/providers/cart_provider.dart';
 import 'package:Tiara_by_TJ/providers/customer_provider.dart';
@@ -213,14 +214,18 @@ class _DashboardPageState extends State<DashboardPage> {
 
   @override
   Widget build(BuildContext context) {
-    final tabs = <Widget>[DigiGoldPage(), const HomeScreen(), AccountPage()];
-double deviceWidth = MediaQuery.of(context).size.width;
+    final tabs = <Widget>[
+      DigiGoldPage(),
+      FetchHomeScreen(),
+      //const HomeScreen(),
+      AccountPage()
+    ];
+    double deviceWidth = MediaQuery.of(context).size.width;
     print("deviceWidth ${deviceWidth / 40}");
-    
+
     return Scaffold(
       body: tabs[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
-        
           type: BottomNavigationBarType.fixed,
           onTap: (index) {
             print("TAB O: $index");
@@ -230,13 +235,11 @@ double deviceWidth = MediaQuery.of(context).size.width;
               });
             }
           },
-          selectedLabelStyle: TextStyle(
-           fontWeight: FontWeight.bold
-          ),
+          selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
           selectedItemColor: Theme.of(context).primaryColor,
           currentIndex: _currentIndex,
-          selectedFontSize: deviceWidth / 40,
-          unselectedFontSize: deviceWidth / 40,
+          selectedFontSize: deviceWidth > 600 ? deviceWidth / 40 : deviceWidth /30,
+          unselectedFontSize: deviceWidth > 600 ? deviceWidth / 40 : deviceWidth /31,
           iconSize: deviceWidth / 25,
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(

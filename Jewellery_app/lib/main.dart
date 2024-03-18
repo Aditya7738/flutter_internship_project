@@ -3,6 +3,7 @@ import 'package:Tiara_by_TJ/providers/category_provider.dart';
 import 'package:Tiara_by_TJ/providers/customize_options_provider.dart';
 import 'package:Tiara_by_TJ/providers/digigold_provider.dart';
 import 'package:Tiara_by_TJ/providers/filteroptions_provider.dart';
+import 'package:Tiara_by_TJ/providers/layoutdesign_provider.dart';
 import 'package:Tiara_by_TJ/providers/order_provider.dart';
 import 'package:Tiara_by_TJ/views/pages/digi_gold_page.dart';
 import 'package:Tiara_by_TJ/views/pages/payment_failed.dart';
@@ -217,6 +218,7 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(create: (context) => OrderProvider()),
         ChangeNotifierProvider(create: (context) => CategoryProvider()),
         ChangeNotifierProvider(create: (context) => CacheProvider()),
+        ChangeNotifierProvider(create: (context) => LayoutDesignProvider())
       ],
       child: MaterialApp(
         navigatorKey: navigatorKey,
@@ -267,9 +269,8 @@ class _MyAppState extends State<MyApp> {
                 fontSize: deviceWidth / 25,
               ),
               bodyText2: TextStyle(
-             
                 fontWeight: FontWeight.bold,
-                 fontSize: (deviceWidth / 33) + 1.5,
+                fontSize: (deviceWidth / 33) + 1.5,
               ),
               button: TextStyle(
                   color: Colors.white,

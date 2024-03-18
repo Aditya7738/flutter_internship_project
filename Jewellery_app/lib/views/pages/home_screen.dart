@@ -77,7 +77,8 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     //getDataFromProvider();
-    CacheProvider cacheProvider = Provider.of(context, listen: false);
+    CacheProvider cacheProvider =
+        Provider.of<CacheProvider>(context, listen: false);
     if (categoryFileStream == null) {
       //getRequest();
       _downloadFile(cacheProvider);
@@ -122,6 +123,7 @@ class _HomeScreenState extends State<HomeScreen> {
           isBannerLoading = true;
         });
       }
+      ApiService.listOfBanners.clear();
       await ApiService.getBanners();
 
       if (mounted) {
@@ -438,7 +440,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   ),
-          
 
             isBannerLoading
                 ? SizedBox(
@@ -454,78 +455,33 @@ class _HomeScreenState extends State<HomeScreen> {
                     bool bgImageTabletIsNotEmpty = false;
                     bool bgImageMobileIsNotEmpty = false;
 
-ApiService.listOfBanners.forEach((banner) { 
- if (banner.metadata != null) {
+                    ApiService.listOfBanners.forEach((banner) {
+                      if (banner.metadata != null) {
                         if (deviceWidth > 600) {
-                          if (banner.metadata!
-                              .bgImageTablet.isNotEmpty) {
+                          if (banner.metadata!.bgImageTablet.isNotEmpty) {
                             for (var i = 0;
-                                i <
-                                    banner.metadata!
-                                        .bgImageTablet.length;
+                                i < banner.metadata!.bgImageTablet.length;
                                 i++) {
-                              if (banner.metadata!
-                                  .bgImageTablet[i].isNotEmpty) {
+                              if (banner
+                                  .metadata!.bgImageTablet[i].isNotEmpty) {
                                 bgImageTabletIsNotEmpty = true;
                               }
                             }
                           }
                         } else {
-                          if (banner.metadata!
-                              .bgImageMobile.isNotEmpty) {
+                          if (banner.metadata!.bgImageMobile.isNotEmpty) {
                             for (var i = 0;
-                                i <
-                                    banner.metadata!
-                                        .bgImageMobile.length;
+                                i < banner.metadata!.bgImageMobile.length;
                                 i++) {
-                              if (banner.metadata!
-                                  .bgImageMobile[i].isNotEmpty) {
+                              if (banner
+                                  .metadata!.bgImageMobile[i].isNotEmpty) {
                                 bgImageMobileIsNotEmpty = true;
                               }
                             }
                           }
                         }
-                      } 
-});
-
-
-                    // for (var i = 0; i < ApiService.listOfBanners.length; i++) {
-                    //   if (ApiService.listOfBanners[i].metadata != null) {
-                    //     if (deviceWidth > 600) {
-                    //       if (ApiService.listOfBanners[i].metadata!
-                    //           .bgImageTablet.isNotEmpty) {
-                    //         for (var i = 0;
-                    //             i <
-                    //                 ApiService.listOfBanners[i].metadata!
-                    //                     .bgImageTablet.length;
-                    //             i++) {
-                    //           if (ApiService.listOfBanners[i].metadata!
-                    //               .bgImageTablet[i].isNotEmpty) {
-                    //             bgImageTabletIsNotEmpty = true;
-                    //           }
-                    //         }
-                    //       }
-                    //     } else {
-                    //       if (ApiService.listOfBanners[i].metadata!
-                    //           .bgImageMobile.isNotEmpty) {
-                    //         for (var i = 0;
-                    //             i <
-                    //                 ApiService.listOfBanners[i].metadata!
-                    //                     .bgImageMobile.length;
-                    //             i++) {
-                    //           if (ApiService.listOfBanners[i].metadata!
-                    //               .bgImageMobile[i].isNotEmpty) {
-                    //             bgImageMobileIsNotEmpty = true;
-                    //           }
-                    //         }
-                    //       }
-                    //     }
-                    //   } 
-                    //   // else {
-                    //   //   return SizedBox();
-                    //   // }
-                    // }
-
+                      }
+                    });
                     if (bgImageTabletIsNotEmpty) {
                       return Column(
                         children: [

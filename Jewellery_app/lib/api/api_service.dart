@@ -4,9 +4,11 @@ import 'dart:io';
 import 'package:Tiara_by_TJ/constants/constants.dart';
 import 'package:Tiara_by_TJ/model/banner_model.dart';
 import 'package:Tiara_by_TJ/model/category_model.dart';
+import 'package:Tiara_by_TJ/model/collections_model.dart' as CollectionsModel;
 import 'package:Tiara_by_TJ/model/coupons_model.dart' as Coupons;
 import 'package:Tiara_by_TJ/model/digi_gold_plan_model.dart' as DigiGoldPlans;
 import 'package:Tiara_by_TJ/model/filter_options_model.dart' as FilterOptions;
+import 'package:Tiara_by_TJ/model/layout_model.dart';
 import 'package:Tiara_by_TJ/model/product_customization_option_model.dart'
     as CustomizationOption;
 import 'package:Tiara_by_TJ/model/reviews_model.dart';
@@ -1205,7 +1207,8 @@ class ApiService {
     }
   }
 
-  static Future<void> createCustomer(Map<String, dynamic> customerData) async {
+  static Future<http.Response> createCustomer(
+      Map<String, dynamic> customerData) async {
     // checkInternetConnection(context);
     const endpoint =
         "${Constants.baseUrl}/wp-json/wc/v3/customers?consumer_key=${Constants.consumerKey}&consumer_secret=${Constants.consumerSecret}";
@@ -1221,10 +1224,10 @@ class ApiService {
       final json = jsonDecode(response.body);
       print("JSON $json");
 
-      // return response;
+      return response;
     } else {
-      // return response;
       print("ERROR SIGNUP BODY ${response.body}");
+      return response;
     }
   }
 
@@ -2282,6 +2285,175 @@ class ApiService {
               ? null
               : Metadata.fromJson(json[i]["metadata"]),
           // links: json[i]["_links"] == null ? null : Links.fromJson(json[i]["_links"]),
+        ));
+      }
+    }
+  }
+
+  static Future<LayoutModel?> getHomeLayout() async {
+    final endpoint = "http://192.168.1.7:8082/frontend/mobile";
+    String basicAuth = "Basic " +
+        base64Encode(
+            utf8.encode('${Constants.userName}:${Constants.password}'));
+
+    print("getHomeLayout basicAuth $basicAuth");
+
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': basicAuth
+    };
+
+    final uri = Uri.parse(endpoint);
+
+    final response = await http.post(uri,
+        headers: headers,
+        body: json.encode({"website": "https://tiarabytj.com"}));
+
+    print("layout body ${response.body}");
+
+    print("layout statusCode ${response.statusCode}");
+
+    if (response.statusCode == 200) {
+      final json = jsonDecode(response.body);
+
+      return LayoutModel(
+        success: json["success"],
+        data: json["data"] == null ? null : Data.fromJson(json["data"]),
+      );
+    } else {
+      return null;
+    }
+  }
+
+  static List<CollectionsModel.CollectionsModel> collectionList =
+      <CollectionsModel.CollectionsModel>[];
+  static Future<void> getCollections() async {
+    final endPoint =
+        "https://tiarabytj.com/wp-json/wc/v3/products?consumer_key=ck_33882e17eeaff38b20ac7c781156024bc2d6af4a&cosumer_secret=cs_df67b056d05606c05275b571ab39fa508fcdd7b9&per_page=50&collections=12";
+
+    Uri uri = Uri.parse(endPoint);
+
+    final response = await http.get(uri);
+
+    print("Collection body ${response.body}");
+
+    print("Collection statusCode ${response.statusCode}");
+
+    if (response.statusCode == 200) {
+      final json = jsonDecode(response.body);
+
+      for (var i = 0; i < json.length; i++) {
+        collectionList.add(CollectionsModel.CollectionsModel(
+          id: json["id"],
+          name: json["name"],
+          slug: json["slug"],
+          permalink: json["permalink"],
+          dateCreated: DateTime.tryParse(json["date_created"] ?? ""),
+          dateCreatedGmt: DateTime.tryParse(json["date_created_gmt"] ?? ""),
+          dateModified: DateTime.tryParse(json["date_modified"] ?? ""),
+          dateModifiedGmt: DateTime.tryParse(json["date_modified_gmt"] ?? ""),
+          type: json["type"],
+          status: json["status"],
+          featured: json["featured"],
+          catalogVisibility: json["catalog_visibility"],
+          description: json["description"],
+          shortDescription: json["short_description"],
+          sku: json["sku"],
+          price: json["price"],
+          regularPrice: json["regular_price"],
+          salePrice: json["sale_price"],
+          dateOnSaleFrom: json["date_on_sale_from"],
+          dateOnSaleFromGmt: json["date_on_sale_from_gmt"],
+          dateOnSaleTo: json["date_on_sale_to"],
+          dateOnSaleToGmt: json["date_on_sale_to_gmt"],
+          onSale: json["on_sale"],
+          purchasable: json["purchasable"],
+          totalSales: json["total_sales"],
+          virtual: json["virtual"],
+          downloadable: json["downloadable"],
+          downloads: json["downloads"] == null
+              ? []
+              : List<dynamic>.from(json["downloads"]!.map((x) => x)),
+          downloadLimit: json["download_limit"],
+          downloadExpiry: json["download_expiry"],
+          externalUrl: json["external_url"],
+          buttonText: json["button_text"],
+          taxStatus: json["tax_status"],
+          taxClass: json["tax_class"],
+          manageStock: json["manage_stock"],
+          stockQuantity: json["stock_quantity"],
+          backorders: json["backorders"],
+          backordersAllowed: json["backorders_allowed"],
+          backordered: json["backordered"],
+          lowStockAmount: json["low_stock_amount"],
+          soldIndividually: json["sold_individually"],
+          weight: json["weight"],
+          dimensions: json["dimensions"] == null
+              ? null
+              : CollectionsModel.Dimensions.fromJson(json["dimensions"]),
+          shippingRequired: json["shipping_required"],
+          shippingTaxable: json["shipping_taxable"],
+          shippingClass: json["shipping_class"],
+          shippingClassId: json["shipping_class_id"],
+          reviewsAllowed: json["reviews_allowed"],
+          averageRating: json["average_rating"],
+          ratingCount: json["rating_count"],
+          upsellIds: json["upsell_ids"] == null
+              ? []
+              : List<dynamic>.from(json["upsell_ids"]!.map((x) => x)),
+          crossSellIds: json["cross_sell_ids"] == null
+              ? []
+              : List<dynamic>.from(json["cross_sell_ids"]!.map((x) => x)),
+          parentId: json["parent_id"],
+          purchaseNote: json["purchase_note"],
+          categories: json["categories"] == null
+              ? []
+              : List<CollectionsModel.Category>.from(json["categories"]!
+                  .map((x) => CollectionsModel.Category.fromJson(x))),
+          tags: json["tags"] == null
+              ? []
+              : List<CollectionsModel.Category>.from(json["tags"]!
+                  .map((x) => CollectionsModel.Category.fromJson(x))),
+          images: json["images"] == null
+              ? []
+              : List<CollectionsModel.Image>.from(json["images"]!
+                  .map((x) => CollectionsModel.Image.fromJson(x))),
+          attributes: json["attributes"] == null
+              ? []
+              : List<CollectionsModel.Attribute>.from(
+                  json["attributes"]!.map((x) => Attribute.fromJson(x))),
+          defaultAttributes: json["default_attributes"] == null
+              ? []
+              : List<dynamic>.from(json["default_attributes"]!.map((x) => x)),
+          variations: json["variations"] == null
+              ? []
+              : List<dynamic>.from(json["variations"]!.map((x) => x)),
+          groupedProducts: json["grouped_products"] == null
+              ? []
+              : List<dynamic>.from(json["grouped_products"]!.map((x) => x)),
+          menuOrder: json["menu_order"],
+          priceHtml: json["price_html"],
+          relatedIds: json["related_ids"] == null
+              ? []
+              : List<int>.from(json["related_ids"]!.map((x) => x)),
+          metaData: json["meta_data"] == null
+              ? []
+              : List<CollectionsModel.MetaDatum>.from(json["meta_data"]!
+                  .map((x) => CollectionsModel.MetaDatum.fromJson(x))),
+          stockStatus: json["stock_status"],
+          hasOptions: json["has_options"],
+          postPassword: json["post_password"],
+          subcategory: json["subcategory"] == null
+              ? []
+              : List<dynamic>.from(json["subcategory"]!.map((x) => x)),
+          collections: json["collections"] == null
+              ? []
+              : List<CollectionsModel.CollectionsModelCollection>.from(
+                  json["collections"]!.map((x) =>
+                      CollectionsModel.CollectionsModelCollection.fromJson(x))),
+          links: json["_links"] == null
+              ? null
+              : CollectionsModel.Links.fromJson(json["_links"]),
         ));
       }
     }
