@@ -269,7 +269,7 @@ class _HomeScreen2State extends State<HomeScreen2> {
                                 ),
                               )
                             : ProductItem(
-                                productsModel: ApiService.onSaleProducts[index],
+                                productsModel: ApiService.onSaleProducts[index], fromFetchHome: false,
                               )),
                     Container(
                         color: Colors.red,
@@ -284,7 +284,7 @@ class _HomeScreen2State extends State<HomeScreen2> {
                                 ),
                               )
                             : ProductItem(
-                                productsModel: ApiService.onSaleProducts[index],
+                                productsModel: ApiService.onSaleProducts[index], fromFetchHome: false,
                               )),
                   ],
                 );
@@ -336,12 +336,12 @@ class _HomeScreen2State extends State<HomeScreen2> {
                     Container(
                         color: Colors.yellow,
                         child: ProductItem(
-                          productsModel: ApiService.onSaleProducts[index],
+                          productsModel: ApiService.onSaleProducts[index], fromFetchHome: false,
                         )),
                     Container(
                         color: Colors.red,
                         child: ProductItem(
-                          productsModel: ApiService.onSaleProducts[index],
+                          productsModel: ApiService.onSaleProducts[index], fromFetchHome: false,
                         )),
                   ],
                 );

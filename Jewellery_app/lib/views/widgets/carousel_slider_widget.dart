@@ -3,6 +3,7 @@ import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class CarouselSliderWidget extends StatefulWidget {
   const CarouselSliderWidget({super.key});
@@ -23,6 +24,18 @@ class _CarouselSliderWidgetState extends State<CarouselSliderWidget> {
     getBanners();
   }
 
+  Future<void> onLinkClicked(String url, BuildContext context) async {
+    Uri uri = Uri.parse(url);
+    bool isThereInternet = await ApiService.checkInternetConnection(context);
+    if (isThereInternet) {
+      if (await canLaunchUrl(uri)) {
+        await launchUrl(uri);
+      } else {
+        print("Could not launch Banner's URL");
+      }
+    }
+  }
+
   Future<void> getBanners() async {
     bool isThereInternet = await ApiService.checkInternetConnection(context);
     if (isThereInternet) {
@@ -31,6 +44,7 @@ class _CarouselSliderWidgetState extends State<CarouselSliderWidget> {
           isBannerLoading = true;
         });
       }
+      ApiService.listOfBanners.clear();
       await ApiService.getBanners();
 
       if (mounted) {
@@ -92,28 +106,43 @@ class _CarouselSliderWidgetState extends State<CarouselSliderWidget> {
                       CarouselSlider(
                         carouselController: carouselController,
                         items: ApiService.listOfBanners
-                            .map((banner) => Container(
-                                  margin: const EdgeInsets.all(5.0),
-                                  child: Image.network(
-                                    banner.metadata != null
-                                        ? banner.metadata!.bgImageTablet[0]
-                                        : "https://rotationalmoulding.com/wp-content/uploads/2017/02/NoImageAvailable.jpg",
-                                    loadingBuilder:
-                                        (context, child, loadingProgress) {
-                                      if (loadingProgress == null) {
-                                        return child;
+                            .map((banner) => GestureDetector(
+                                  onTap: () async {
+                                    if (banner.metadata != null) {
+                                      if (banner.metadata!.link.isNotEmpty) {
+                                        if (banner.metadata!.link[0]
+                                            .contains("https://")) {
+                                          await onLinkClicked(
+                                              banner.metadata!.link[0],
+                                              context);
+                                        }
                                       }
-                                      return Container(
-                                        alignment: Alignment.center,
-                                        width:
-                                            MediaQuery.of(context).size.width,
-                                        height: 92.0,
-                                        child: const CircularProgressIndicator(
-                                          color: Colors.black,
-                                        ),
-                                      );
-                                    },
-                                    fit: BoxFit.fill,
+                                    }
+                                  },
+                                  child: Container(
+                                    margin: const EdgeInsets.all(5.0),
+                                    child: Image.network(
+                                      banner.metadata != null
+                                          ? banner.metadata!.bgImageTablet[0]
+                                          : "https://rotationalmoulding.com/wp-content/uploads/2017/02/NoImageAvailable.jpg",
+                                      loadingBuilder:
+                                          (context, child, loadingProgress) {
+                                        if (loadingProgress == null) {
+                                          return child;
+                                        }
+                                        return Container(
+                                          alignment: Alignment.center,
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          height: 92.0,
+                                          child:
+                                              const CircularProgressIndicator(
+                                            color: Colors.black,
+                                          ),
+                                        );
+                                      },
+                                      fit: BoxFit.fill,
+                                    ),
                                   ),
                                 ))
                             .toList(),
@@ -157,28 +186,43 @@ class _CarouselSliderWidgetState extends State<CarouselSliderWidget> {
                       CarouselSlider(
                         carouselController: carouselController,
                         items: ApiService.listOfBanners
-                            .map((banner) => Container(
-                                  margin: const EdgeInsets.all(5.0),
-                                  child: Image.network(
-                                    banner.metadata != null
-                                        ? banner.metadata!.bgImageMobile[0]
-                                        : "https://rotationalmoulding.com/wp-content/uploads/2017/02/NoImageAvailable.jpg",
-                                    loadingBuilder:
-                                        (context, child, loadingProgress) {
-                                      if (loadingProgress == null) {
-                                        return child;
+                            .map((banner) => GestureDetector(
+                                  onTap: () async {
+                                    if (banner.metadata != null) {
+                                      if (banner.metadata!.link.isNotEmpty) {
+                                        if (banner.metadata!.link[0]
+                                            .contains("https://")) {
+                                          await onLinkClicked(
+                                              banner.metadata!.link[0],
+                                              context);
+                                        }
                                       }
-                                      return Container(
-                                        alignment: Alignment.center,
-                                        width:
-                                            MediaQuery.of(context).size.width,
-                                        height: 92.0,
-                                        child: const CircularProgressIndicator(
-                                          color: Colors.black,
-                                        ),
-                                      );
-                                    },
-                                    fit: BoxFit.fill,
+                                    }
+                                  },
+                                  child: Container(
+                                    margin: const EdgeInsets.all(5.0),
+                                    child: Image.network(
+                                      banner.metadata != null
+                                          ? banner.metadata!.bgImageMobile[0]
+                                          : "https://rotationalmoulding.com/wp-content/uploads/2017/02/NoImageAvailable.jpg",
+                                      loadingBuilder:
+                                          (context, child, loadingProgress) {
+                                        if (loadingProgress == null) {
+                                          return child;
+                                        }
+                                        return Container(
+                                          alignment: Alignment.center,
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          height: 92.0,
+                                          child:
+                                              const CircularProgressIndicator(
+                                            color: Colors.black,
+                                          ),
+                                        );
+                                      },
+                                      fit: BoxFit.fill,
+                                    ),
                                   ),
                                 ))
                             .toList(),

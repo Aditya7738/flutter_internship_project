@@ -1,3 +1,4 @@
+import 'package:Tiara_by_TJ/api/api_service.dart';
 import 'package:Tiara_by_TJ/providers/cache_provider.dart';
 import 'package:Tiara_by_TJ/providers/category_provider.dart';
 import 'package:Tiara_by_TJ/providers/customize_options_provider.dart';
@@ -5,17 +6,7 @@ import 'package:Tiara_by_TJ/providers/digigold_provider.dart';
 import 'package:Tiara_by_TJ/providers/filteroptions_provider.dart';
 import 'package:Tiara_by_TJ/providers/layoutdesign_provider.dart';
 import 'package:Tiara_by_TJ/providers/order_provider.dart';
-import 'package:Tiara_by_TJ/views/pages/digi_gold_page.dart';
-import 'package:Tiara_by_TJ/views/pages/payment_failed.dart';
-import 'package:Tiara_by_TJ/views/pages/payment_successful.dart';
-import 'package:Tiara_by_TJ/views/widgets/filter_modal.dart';
-import 'package:Tiara_by_TJ/views/pages/home_screen.dart';
-import 'package:Tiara_by_TJ/views/pages/home_screen2.dart';
-import 'package:Tiara_by_TJ/views/pages/home_screen3.dart';
-import 'package:Tiara_by_TJ/views/pages/search_page.dart';
-import 'package:Tiara_by_TJ/views/widgets/try.dart';
 import 'package:flutter/material.dart';
-import 'package:Tiara_by_TJ/api/api_service.dart';
 import 'package:Tiara_by_TJ/providers/cart_provider.dart';
 import 'package:Tiara_by_TJ/providers/customer_provider.dart';
 import 'package:Tiara_by_TJ/providers/profile_provider.dart';
@@ -31,7 +22,8 @@ import 'dart:async';
 //import OneSignal
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 
-void main() {
+void main() async {
+  await ApiService.getHomeLayout();
   runApp(const MyApp());
 }
 

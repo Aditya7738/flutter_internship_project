@@ -217,7 +217,8 @@ class CollectionsModel {
             postPassword: json["post_password"],
             subcategory: json["subcategory"] == null ? [] : List<dynamic>.from(json["subcategory"]!.map((x) => x)),
             collections: json["collections"] == null ? [] : List<CollectionsModelCollection>.from(json["collections"]!.map((x) => CollectionsModelCollection.fromJson(x))),
-            links: json["_links"] == null ? null : Links.fromJson(json["_links"]),
+            links: json["_links"] == null ? null : Links.fromJson(json["_links"]
+            ),
         );
     }
 

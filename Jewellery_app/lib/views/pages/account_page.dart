@@ -171,7 +171,7 @@ class AccountPage extends StatelessWidget {
           children: [
             Container(
                 padding:
-                    const EdgeInsets.only(left: 15.0, top: 30.0, bottom: 10.0),
+                    const EdgeInsets.only(left: 15.0, top: 20.0, bottom: 10.0),
                 width: MediaQuery.of(context).size.width,
                 color: const Color.fromARGB(255, 237, 237, 237),
                 child: Text("Hello, there!",
@@ -254,7 +254,7 @@ class AccountPage extends StatelessWidget {
             // ),
             Container(
                 padding:
-                    const EdgeInsets.only(left: 15.0, top: 30.0, bottom: 10.0),
+                    const EdgeInsets.only(left: 15.0, top: 20.0, bottom: 10.0),
                 alignment: Alignment.bottomLeft,
                 width: MediaQuery.of(context).size.width,
                 color: const Color.fromARGB(255, 237, 237, 237),
@@ -358,7 +358,7 @@ class AccountPage extends StatelessWidget {
             ),
             Container(
                 padding:
-                    const EdgeInsets.only(left: 15.0, top: 30.0, bottom: 10.0),
+                    const EdgeInsets.only(left: 15.0, top: 20.0, bottom: 10.0),
                 alignment: Alignment.bottomLeft,
                 width: MediaQuery.of(context).size.width,
                 color: const Color.fromARGB(255, 237, 237, 237),
@@ -368,8 +368,9 @@ class AccountPage extends StatelessWidget {
                 )),
             SizedBox(
               width: MediaQuery.of(context).size.width,
-              height: deviceWidth > 600 ? 286 : 230.0,
+              height: deviceWidth > 600 ? 286 : 238.0,
               child: ListView.separated(
+                 physics: NeverScrollableScrollPhysics(),
                 itemCount: icons2.length,
                 itemBuilder: (context, index) {
                   return GestureDetector(
@@ -418,7 +419,7 @@ class AccountPage extends StatelessWidget {
             ),
             Container(
                 padding:
-                    const EdgeInsets.only(left: 15.0, top: 30.0, bottom: 10.0),
+                    const EdgeInsets.only(left: 15.0, top: 20.0, bottom: 10.0),
                 alignment: Alignment.bottomLeft,
                 width: MediaQuery.of(context).size.width,
                 color: const Color.fromARGB(255, 237, 237, 237),
@@ -431,6 +432,7 @@ class AccountPage extends StatelessWidget {
               height:  deviceWidth > 600 ? 201.0 :100.0,
               child: GridView.builder(
                 itemCount: title3.length,
+                 physics: NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
                   return GestureDetector(
                     onTap: () {

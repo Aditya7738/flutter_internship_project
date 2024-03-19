@@ -15,7 +15,7 @@ class BannerModel {
         required this.featuredMedia,
         required this.menuOrder,
         required this.template,
-        required this.meta,
+        this.meta,
         required this.metadata,
        
     });
@@ -35,7 +35,7 @@ class BannerModel {
     final int? featuredMedia;
     final int? menuOrder;
     final String? template;
-    final Meta? meta;
+    Meta? meta;
     final Metadata? metadata;
  
 

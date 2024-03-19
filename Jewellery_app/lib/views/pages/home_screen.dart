@@ -1,31 +1,23 @@
-import 'dart:convert';
 import 'package:Tiara_by_TJ/views/widgets/custom_searchbar.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:Tiara_by_TJ/constants/constants.dart';
-import 'package:Tiara_by_TJ/model/category_model.dart';
 import 'package:Tiara_by_TJ/model/choice_model.dart';
 import 'package:Tiara_by_TJ/providers/cache_provider.dart';
 import 'package:Tiara_by_TJ/providers/cart_provider.dart';
 import 'package:Tiara_by_TJ/providers/category_provider.dart';
 import 'package:Tiara_by_TJ/providers/wishlist_provider.dart';
 import 'package:Tiara_by_TJ/views/pages/cart_page.dart';
-import 'package:Tiara_by_TJ/views/pages/search_page.dart';
 import 'package:Tiara_by_TJ/views/pages/wishlist_page.dart';
 import 'package:Tiara_by_TJ/views/widgets/choice_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:Tiara_by_TJ/api/api_service.dart';
 import 'package:Tiara_by_TJ/api/cache_memory.dart';
-import 'package:Tiara_by_TJ/model/navigation_model.dart';
-import 'package:Tiara_by_TJ/views/widgets/app_bar.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
-import 'package:Tiara_by_TJ/views/widgets/button_widget.dart';
 import 'package:Tiara_by_TJ/views/widgets/feature_widget.dart';
-import 'package:Tiara_by_TJ/views/widgets/pincode_widget.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
-import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
-import '../widgets/nav_drawer.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -148,6 +140,18 @@ class _HomeScreenState extends State<HomeScreen> {
         setState(() {
           isLoading = false;
         });
+      }
+    }
+  }
+
+  Future<void> onLinkClicked(String url, BuildContext context) async {
+    Uri uri = Uri.parse(url);
+    bool isThereInternet = await ApiService.checkInternetConnection(context);
+    if (isThereInternet) {
+      if (await canLaunchUrl(uri)) {
+        await launchUrl(uri);
+      } else {
+        print("Could not launch Banner's URL");
       }
     }
   }
@@ -555,30 +559,46 @@ class _HomeScreenState extends State<HomeScreen> {
                           CarouselSlider(
                             carouselController: carouselController,
                             items: ApiService.listOfBanners
-                                .map((banner) => Container(
-                                      margin: const EdgeInsets.all(5.0),
-                                      child: Image.network(
-                                        banner.metadata != null
-                                            ? banner.metadata!.bgImageMobile[0]
-                                            : "https://rotationalmoulding.com/wp-content/uploads/2017/02/NoImageAvailable.jpg",
-                                        loadingBuilder:
-                                            (context, child, loadingProgress) {
-                                          if (loadingProgress == null) {
-                                            return child;
+                                .map((banner) => GestureDetector(
+                                      onTap: () async {
+                                        if (banner.metadata != null) {
+                                          if (banner
+                                              .metadata!.link.isNotEmpty) {
+                                            if (banner.metadata!.link[0]
+                                                .contains("https://")) {
+                                              await onLinkClicked(
+                                                  banner.metadata!.link[0],
+                                                  context);
+                                            }
                                           }
-                                          return Container(
-                                            alignment: Alignment.center,
-                                            width: MediaQuery.of(context)
-                                                .size
-                                                .width,
-                                            height: 92.0,
-                                            child:
-                                                const CircularProgressIndicator(
-                                              color: Colors.black,
-                                            ),
-                                          );
-                                        },
-                                        fit: BoxFit.fill,
+                                        }
+                                      },
+                                      child: Container(
+                                        margin: const EdgeInsets.all(5.0),
+                                        child: Image.network(
+                                          banner.metadata != null
+                                              ? banner
+                                                  .metadata!.bgImageMobile[0]
+                                              : "https://rotationalmoulding.com/wp-content/uploads/2017/02/NoImageAvailable.jpg",
+                                          loadingBuilder: (context, child,
+                                              loadingProgress) {
+                                            if (loadingProgress == null) {
+                                              return child;
+                                            }
+                                            return Container(
+                                              alignment: Alignment.center,
+                                              width: MediaQuery.of(context)
+                                                  .size
+                                                  .width,
+                                              height: 92.0,
+                                              child:
+                                                  const CircularProgressIndicator(
+                                                color: Colors.black,
+                                              ),
+                                            );
+                                          },
+                                          fit: BoxFit.fill,
+                                        ),
                                       ),
                                     ))
                                 .toList(),

@@ -6,6 +6,7 @@ import 'package:Tiara_by_TJ/api/api_service.dart';
 import 'package:Tiara_by_TJ/model/digi_gold_plan_model.dart' as DigiGoldPlans;
 import 'package:Tiara_by_TJ/model/gold_rate_model.dart';
 import 'package:Tiara_by_TJ/model/order_model.dart';
+import 'package:Tiara_by_TJ/providers/cache_provider.dart';
 import 'package:Tiara_by_TJ/providers/customer_provider.dart';
 import 'package:Tiara_by_TJ/providers/digigold_provider.dart';
 import 'package:Tiara_by_TJ/views/pages/digigold_plan_bill.dart';
@@ -13,6 +14,7 @@ import 'package:Tiara_by_TJ/views/pages/login_page.dart';
 
 import 'package:Tiara_by_TJ/views/widgets/digi_gold_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -41,11 +43,32 @@ class _DigiGoldPageState extends State<DigiGoldPage> {
 
   bool isFlexiPlanAlreadyPurchased = false;
 
+  Stream<FileResponse>? digiGoldPlanFileStream;
+
+  void _downloadFile(CacheProvider cacheProvider) {
+    if (mounted) {
+      setState(() {
+        // cacheProvider.setCategoryFileStream(DefaultCacheManager()
+        //     .getFileStream(ApiService.categoryUri, withProgress: true));
+        digiGoldPlanFileStream = DefaultCacheManager()
+            .getFileStream(ApiService.digiGoldUrl, withProgress: true);
+      });
+      print("digiGoldPlanFileStream == null ${digiGoldPlanFileStream == null}");
+    }
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    getDigiGoldPlanList();
+    CacheProvider cacheProvider =
+        Provider.of<CacheProvider>(context, listen: false);
+    if (digiGoldPlanFileStream == null) {
+      //getRequest();
+      _downloadFile(cacheProvider);
+    }
+
+   // getDigiGoldPlanList();
 
     checkFlexiPlanPurchased();
 
@@ -523,10 +546,8 @@ class _DigiGoldPageState extends State<DigiGoldPage> {
                                                                   (constraints.maxWidth /
                                                                           38) +
                                                                       10,
-                                                              color:
-                                                                  Colors.white)
-                                                  
-                                                          ),
+                                                              color: Colors
+                                                                  .white)),
                                                       SizedBox(
                                                         height: 20.0,
                                                       ),
@@ -600,13 +621,11 @@ class _DigiGoldPageState extends State<DigiGoldPage> {
                                                             fontWeight:
                                                                 FontWeight
                                                                     .bold),
-                                                      
                                                       ),
                                                       Row(
                                                         children: [
                                                           Image.asset(
                                                               "assets/images/rupee.png",
-                                                         
                                                               scale: 14.5,
                                                               color:
                                                                   Colors.white),

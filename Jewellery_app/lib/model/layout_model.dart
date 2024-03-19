@@ -74,34 +74,80 @@ class Page {
 class Child {
     Child({
         required this.type,
+        required this.layout,
         required this.text,
         required this.style,
-        required this.images,
-        required this.products,
+        required this.meta,
     });
 
     final String? type;
+    final Layout? layout;
     final String? text;
     final Style? style;
-    final List<String> images;
-    final String? products;
+    final Meta? meta;
 
     factory Child.fromJson(Map<String, dynamic> json){ 
         return Child(
             type: json["type"],
+            layout: json["layout"] == null ? null : Layout.fromJson(json["layout"]),
             text: json["text"],
             style: json["style"] == null ? null : Style.fromJson(json["style"]),
-            images: json["images"] == null ? [] : List<String>.from(json["images"]!.map((x) => x)),
-            products: json["products"],
+            meta: json["meta"] == null ? null : Meta.fromJson(json["meta"]),
         );
     }
 
     Map<String, dynamic> toJson() => {
         "type": type,
+        "layout": layout?.toJson(),
         "text": text,
         "style": style?.toJson(),
-        "images": images.map((x) => x).toList(),
-        "products": products,
+        "meta": meta?.toJson(),
+    };
+
+}
+
+class Layout {
+    Layout({
+        required this.itemPerRow,
+        required this.direction,
+    });
+
+    final int? itemPerRow;
+    final String? direction;
+
+    factory Layout.fromJson(Map<String, dynamic> json){ 
+        return Layout(
+            itemPerRow: json["item_per_row"],
+            direction: json["direction"],
+        );
+    }
+
+    Map<String, dynamic> toJson() => {
+        "item_per_row": itemPerRow,
+        "direction": direction,
+    };
+
+}
+
+class Meta {
+    Meta({
+        required this.label,
+        required this.id,
+    });
+
+    final String? label;
+    final int? id;
+
+    factory Meta.fromJson(Map<String, dynamic> json){ 
+        return Meta(
+            label: json["label"],
+            id: json["id"],
+        );
+    }
+
+    Map<String, dynamic> toJson() => {
+        "label": label,
+        "id": id,
     };
 
 }

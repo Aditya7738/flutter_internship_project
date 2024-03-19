@@ -17,7 +17,8 @@ import 'package:badges/badges.dart' as badges;
 
 class ProductPage extends StatefulWidget {
   final int id;
-  const ProductPage({super.key, required this.id});
+  final bool fromFetchHome;
+  const ProductPage({super.key, required this.id, required this.fromFetchHome});
 
   @override
   State<ProductPage> createState() => _ProductPageState();
@@ -36,6 +37,8 @@ class _ProductPageState extends State<ProductPage> {
   late CategoryProvider categoryProvider;
   late FilterOptionsProvider filterOptionsProvider;
 
+  bool isCollectionLoading = false;
+
   @override
   void initState() {
     super.initState();
@@ -44,7 +47,9 @@ class _ProductPageState extends State<ProductPage> {
     filterOptionsProvider =
         Provider.of<FilterOptionsProvider>(context, listen: false);
 
-    getProducts();
+    if (widget.fromFetchHome == false) {
+      getProducts();
+    }
 
     _scrollController.addListener(() async {
       print(
@@ -64,9 +69,12 @@ class _ProductPageState extends State<ProductPage> {
         isLoading = true;
       });
     }
-
+    if (widget.fromFetchHome == false) {
+      isThereMoreProducts = await ApiService.showNextPagesCategoryProduct();
+    } else {
+      isThereMoreProducts = await ApiService.showNextPagesCollectionProduct();
+    }
     // Fetch more data (e.g., using ApiService)
-    isThereMoreProducts = await ApiService.showNextPagesCategoryProduct();
 
     if (mounted) {
       setState(() {
@@ -75,23 +83,25 @@ class _ProductPageState extends State<ProductPage> {
     }
   }
 
+  getCollections() async {
+    setState(() {
+      isCollectionLoading = true;
+    });
+    ApiService.collectionList.clear();
+    await ApiService.getCollections(collectionId: widget.id, pageNo: 1);
+
+    setState(() {
+      isCollectionLoading = false;
+    });
+  }
+
   Future<void> getProducts() async {
     bool isThereInternet = await ApiService.checkInternetConnection(context);
     if (isThereInternet) {
-      // if (mounted) {
-      // setState(() {
-      //   newListLoading = true;
-      // });
-      // }
       categoryProvider.setIsCategoryProductFetching(true);
       ApiService.listOfProductsCategoryWise.clear();
       await ApiService.fetchProductsCategoryWise(id: widget.id, pageNo: 1);
 
-      // if (mounted) {
-      // setState(() {
-      //   newListLoading = false;
-      // });
-      // }
       categoryProvider.setIsCategoryProductFetching(false);
     }
   }
@@ -193,7 +203,7 @@ class _ProductPageState extends State<ProductPage> {
             //   );
             // } else {
             print("product page ${MediaQuery.of(context).size.width}");
-
+print("widget.fromFetchHome ${widget.fromFetchHome}");
             return Column(
               children: [
                 Consumer<FilterOptionsProvider>(
@@ -222,8 +232,9 @@ class _ProductPageState extends State<ProductPage> {
                                             ? "₹ ${value.list[index]["price_range"]["min_price"]} - ₹ ${value.list[index]["price_range"]["max_price"]}"
                                             : value.list[index]["label"],
                                         style: TextStyle(
-                                          color: Colors.black,
-                                            fontSize: deviceWidth > 600 ? 26.0 : 16.0,
+                                            color: Colors.black,
+                                            fontSize:
+                                                deviceWidth > 600 ? 26.0 : 16.0,
                                             fontWeight: FontWeight.bold),
                                       ),
                                       deleteIcon: Container(
@@ -294,19 +305,85 @@ class _ProductPageState extends State<ProductPage> {
                           ),
                         ),
                       )
-                    : SizedBox(
+                    : 
+                    
+                    widget.fromFetchHome == false ? 
+                        SizedBox(
                         width: MediaQuery.of(context).size.width,
                         height: MediaQuery.of(context).size.height - 136,
                         child: Scrollbar(
                           child: GridView.builder(
                               controller: _scrollController,
-                              itemCount: ApiService
-                                      .listOfProductsCategoryWise.length +
-                                  (isLoading || !isThereMoreProducts ? 1 : 0),
+                              itemCount: ApiService.listOfProductsCategoryWise.length +
+                                      (isLoading || !isThereMoreProducts
+                                          ? 1
+                                          : 0),
                               gridDelegate:
                                   SliverGridDelegateWithFixedCrossAxisCount(
                                 childAspectRatio: 0.64,
-                                //0.64,
+                                
+                                crossAxisCount:
+                                    MediaQuery.of(context).size.width > 600
+                                        ? 3
+                                        : 2,
+                              ),
+                              itemBuilder: (BuildContext context, int index) {
+                                print("index <ApiService.listOfProductsCategoryWise.length ${index <
+                                    ApiService
+                                        .listOfProductsCategoryWise.length}");
+                                if (index <
+                                    ApiService
+                                        .listOfProductsCategoryWise.length) {
+                                  print(" productIndex: $index");
+                                  return ProductItem(
+                                    productIndex: index,
+                                    productsModel: ApiService
+                                        .listOfProductsCategoryWise[index], fromFetchHome: widget.fromFetchHome,
+                                  );
+                                } else if (!isThereMoreProducts ||
+                                    categoryProviderValue.isProductListEmpty) {
+                                  return Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 15.0, horizontal: 10.0),
+                                    child: Center(
+                                        child: Text(
+                                      "There are no more products",
+                                      style: TextStyle(
+                                          fontSize: deviceWidth / 33,
+                                          fontWeight: FontWeight.bold),
+                                    )),
+                                  );
+                                } else {
+                                  return const Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 15.0, horizontal: 10.0),
+                                    child: Center(
+                                        child: CircularProgressIndicator(
+                                      color: Color(0xffCC868A),
+                                    )),
+                                  );
+                                }
+                              }),
+                        ),
+                      )
+                        
+                        :
+
+                    SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height - 136,
+                        child: Scrollbar(
+                          child: GridView.builder(
+                              controller: _scrollController,
+                              itemCount:ApiService
+                                          .collectionList.length +
+                                      (isLoading || !isThereMoreProducts
+                                          ? 1
+                                          : 0),
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                childAspectRatio: 0.64,
+                                
                                 crossAxisCount:
                                     MediaQuery.of(context).size.width > 600
                                         ? 3
@@ -315,12 +392,12 @@ class _ProductPageState extends State<ProductPage> {
                               itemBuilder: (BuildContext context, int index) {
                                 if (index <
                                     ApiService
-                                        .listOfProductsCategoryWise.length) {
+                                        .collectionList.length) {
                                   print(" productIndex: $index");
                                   return ProductItem(
                                     productIndex: index,
                                     productsModel: ApiService
-                                        .listOfProductsCategoryWise[index],
+                                        .collectionList[index], fromFetchHome: widget.fromFetchHome,
                                   );
                                 } else if (!isThereMoreProducts ||
                                     categoryProviderValue.isProductListEmpty) {
@@ -353,8 +430,6 @@ class _ProductPageState extends State<ProductPage> {
           }),
         ));
 
-    // newListLoading
-    //     ?
-    //     :     );
+
   }
 }

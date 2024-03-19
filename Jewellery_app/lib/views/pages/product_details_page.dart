@@ -503,6 +503,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                             child: Scrollbar(
                               child: GridView.builder(
                                   itemCount: listOfChoiceModel.length,
+                                   physics: NeverScrollableScrollPhysics(),
                                   gridDelegate:
                                       SliverGridDelegateWithFixedCrossAxisCount(
                                           childAspectRatio: 1.9,

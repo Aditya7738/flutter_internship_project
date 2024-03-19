@@ -1,3 +1,5 @@
+import 'package:Tiara_by_TJ/model/layout_model.dart' as LayoutModel;
+
 import 'package:flutter/material.dart';
 
 class LayoutDesignProvider with ChangeNotifier {
@@ -10,6 +12,15 @@ class LayoutDesignProvider with ChangeNotifier {
 
   String _background = "";
   String get background => _background;
+
+  LayoutModel.LayoutModel? _layoutModel;
+
+  LayoutModel.LayoutModel? get layoutModel => _layoutModel;
+
+  void setLayoutModel(LayoutModel.LayoutModel layoutModel) {
+    _layoutModel = layoutModel;
+    notifyListeners();
+  }
 
   void setPrimary(String primary) {
     _primary = primary;

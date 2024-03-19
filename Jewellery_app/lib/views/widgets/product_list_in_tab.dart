@@ -31,11 +31,12 @@ class _ProductListInTabState extends State<ProductListInTab> {
       }
     });
   }
-    void loadMoreData() async {
+
+  void loadMoreData() async {
     if (mounted) {
       setState(() {
-      isLoading = true;
-    });
+        isLoading = true;
+      });
     }
 
     // Fetch more data (e.g., using ApiService)
@@ -43,8 +44,8 @@ class _ProductListInTabState extends State<ProductListInTab> {
 
     if (mounted) {
       setState(() {
-      isLoading = false;
-    });
+        isLoading = false;
+      });
     }
   }
 
@@ -54,8 +55,8 @@ class _ProductListInTabState extends State<ProductListInTab> {
 
     if (mounted) {
       setState(() {
-      newListLoading = false;
-    });
+        newListLoading = false;
+      });
     }
   }
 
@@ -86,6 +87,7 @@ class _ProductListInTabState extends State<ProductListInTab> {
                       return ProductItem(
                         productsModel:
                             ApiService.listOfProductsCategoryWise[index],
+                        fromFetchHome: false,
                       );
                     } else if (!isThereMoreProducts) {
                       return const Padding(

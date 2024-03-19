@@ -216,7 +216,7 @@ class _DashboardPageState extends State<DashboardPage> {
   Widget build(BuildContext context) {
     final tabs = <Widget>[
       DigiGoldPage(),
-      FetchHomeScreen(),
+     FetchHomeScreen(),
       //const HomeScreen(),
       AccountPage()
     ];

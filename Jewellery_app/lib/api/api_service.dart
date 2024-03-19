@@ -1961,14 +1961,15 @@ class ApiService {
 
   // static late DigiGoldPlans.DigiGoldPlanModel flexiPlanModel;
 
+  static String digiGoldUrl =
+      "${Constants.baseUrl}/wp-json/wc/v3/products?custom_filter[0][key]=_visibility&custom_filter[0][value]=hidden&per_page=100&consumer_key=${Constants.consumerKey}&consumer_secret=${Constants.consumerSecret}";
+
   static Future<List<DigiGoldPlans.DigiGoldPlanModel>>
       getListOfDigiGoldPlan() async {
     List<DigiGoldPlans.DigiGoldPlanModel> listOfAllDigiGoldPlan =
         <DigiGoldPlans.DigiGoldPlanModel>[];
-    String url =
-        "${Constants.baseUrl}/wp-json/wc/v3/products?custom_filter[0][key]=_visibility&custom_filter[0][value]=hidden&per_page=100&consumer_key=${Constants.consumerKey}&consumer_secret=${Constants.consumerSecret}";
 
-    Uri uri = Uri.parse(url);
+    Uri uri = Uri.parse(digiGoldUrl);
     final response = await http.get(uri);
 
     if (response.statusCode == 200) {
@@ -2280,7 +2281,7 @@ class ApiService {
           featuredMedia: json[i]["featured_media"],
           menuOrder: json[i]["menu_order"],
           template: json[i]["template"],
-          meta: json[i]["meta"] == null ? null : Meta.fromJson(json[i]["meta"]),
+          //  meta: json[i]["meta"] == null ? null : Meta.fromJson(json[i]["meta"]),
           metadata: json[i]["metadata"] == null
               ? null
               : Metadata.fromJson(json[i]["metadata"]),
@@ -2291,7 +2292,9 @@ class ApiService {
   }
 
   static Future<LayoutModel?> getHomeLayout() async {
-    final endpoint = "http://192.168.1.7:8082/frontend/mobile";
+    //final endpoint = "https://websockets.tanika.tech/frontend/mobile";
+
+    final endpoint = "http://192.168.1.5:8082/frontend/mobile";
     String basicAuth = "Basic " +
         base64Encode(
             utf8.encode('${Constants.userName}:${Constants.password}'));
@@ -2325,15 +2328,45 @@ class ApiService {
     }
   }
 
-  static List<CollectionsModel.CollectionsModel> collectionList =
-      <CollectionsModel.CollectionsModel>[];
-  static Future<void> getCollections() async {
+  static List<AllProducts.ProductsModel> collectionList =
+      <AllProducts.ProductsModel>[];
+
+  static int collectionPageNo = 1;
+  static int collectionId = 0;
+
+  static int responseofCollectionPages = 1;
+  static Future<bool> showNextPagesCollectionProduct() async {
+    collectionPageNo++;
+    if (collectionPageNo <= responseofCollectionPages) {
+      await getCollections(
+          collectionId: collectionId, pageNo: collectionPageNo);
+      return true;
+    }
+
+    return false;
+  }
+
+  static Future<void> getCollections(
+      {required int collectionId, required int pageNo}) async {
     final endPoint =
-        "https://tiarabytj.com/wp-json/wc/v3/products?consumer_key=ck_33882e17eeaff38b20ac7c781156024bc2d6af4a&cosumer_secret=cs_df67b056d05606c05275b571ab39fa508fcdd7b9&per_page=50&collections=12";
+        "https://tiarabytj.com/wp-json/wc/v3/products?consumer_key=ck_33882e17eeaff38b20ac7c781156024bc2d6af4a&cosumer_secret=cs_df67b056d05606c05275b571ab39fa508fcdd7b9&per_page=100&page=$pageNo&collections=$collectionId";
 
     Uri uri = Uri.parse(endPoint);
 
-    final response = await http.get(uri);
+    String basicAuth = "Basic " +
+        base64Encode(
+            utf8.encode('${Constants.userName}:${Constants.password}'));
+
+    print("getHomeLayout basicAuth $basicAuth");
+
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': basicAuth
+    };
+
+    final response = await http.get(uri, headers: headers);
+
+    responseofCollectionPages = int.parse(response.headers['x-wp-totalpages']!);
 
     print("Collection body ${response.body}");
 
@@ -2343,117 +2376,113 @@ class ApiService {
       final json = jsonDecode(response.body);
 
       for (var i = 0; i < json.length; i++) {
-        collectionList.add(CollectionsModel.CollectionsModel(
-          id: json["id"],
-          name: json["name"],
-          slug: json["slug"],
-          permalink: json["permalink"],
-          dateCreated: DateTime.tryParse(json["date_created"] ?? ""),
-          dateCreatedGmt: DateTime.tryParse(json["date_created_gmt"] ?? ""),
-          dateModified: DateTime.tryParse(json["date_modified"] ?? ""),
-          dateModifiedGmt: DateTime.tryParse(json["date_modified_gmt"] ?? ""),
-          type: json["type"],
-          status: json["status"],
-          featured: json["featured"],
-          catalogVisibility: json["catalog_visibility"],
-          description: json["description"],
-          shortDescription: json["short_description"],
-          sku: json["sku"],
-          price: json["price"],
-          regularPrice: json["regular_price"],
-          salePrice: json["sale_price"],
-          dateOnSaleFrom: json["date_on_sale_from"],
-          dateOnSaleFromGmt: json["date_on_sale_from_gmt"],
-          dateOnSaleTo: json["date_on_sale_to"],
-          dateOnSaleToGmt: json["date_on_sale_to_gmt"],
-          onSale: json["on_sale"],
-          purchasable: json["purchasable"],
-          totalSales: json["total_sales"],
-          virtual: json["virtual"],
-          downloadable: json["downloadable"],
-          downloads: json["downloads"] == null
+        collectionList.add(AllProducts.ProductsModel(
+          id: json[i]["id"],
+          name: json[i]["name"],
+          slug: json[i]["slug"],
+          permalink: json[i]["permalink"],
+          dateCreated: DateTime.tryParse(json[i]["date_created"] ?? ""),
+          dateCreatedGmt: DateTime.tryParse(json[i]["date_created_gmt"] ?? ""),
+          dateModified: DateTime.tryParse(json[i]["date_modified"] ?? ""),
+          dateModifiedGmt:
+              DateTime.tryParse(json[i]["date_modified_gmt"] ?? ""),
+          type: json[i]["type"],
+          status: json[i]["status"],
+          featured: json[i]["featured"],
+          catalogVisibility: json[i]["catalog_visibility"],
+          description: json[i]["description"],
+          shortDescription: json[i]["short_description"],
+          sku: json[i]["sku"],
+          price: json[i]["price"],
+          regularPrice: json[i]["regular_price"],
+          salePrice: json[i]["sale_price"],
+          dateOnSaleFrom: json[i]["date_on_sale_from"],
+          dateOnSaleFromGmt: json[i]["date_on_sale_from_gmt"],
+          dateOnSaleTo: json[i]["date_on_sale_to"],
+          dateOnSaleToGmt: json[i]["date_on_sale_to_gmt"],
+          onSale: json[i]["on_sale"],
+          purchasable: json[i]["purchasable"],
+          totalSales: json[i]["total_sales"],
+          virtual: json[i]["virtual"],
+          downloadable: json[i]["downloadable"],
+          downloads: json[i]["downloads"] == null
               ? []
-              : List<dynamic>.from(json["downloads"]!.map((x) => x)),
-          downloadLimit: json["download_limit"],
-          downloadExpiry: json["download_expiry"],
-          externalUrl: json["external_url"],
-          buttonText: json["button_text"],
-          taxStatus: json["tax_status"],
-          taxClass: json["tax_class"],
-          manageStock: json["manage_stock"],
-          stockQuantity: json["stock_quantity"],
-          backorders: json["backorders"],
-          backordersAllowed: json["backorders_allowed"],
-          backordered: json["backordered"],
-          lowStockAmount: json["low_stock_amount"],
-          soldIndividually: json["sold_individually"],
-          weight: json["weight"],
-          dimensions: json["dimensions"] == null
+              : List<dynamic>.from(json[i]["downloads"]!.map((x) => x)),
+          downloadLimit: json[i]["download_limit"],
+          downloadExpiry: json[i]["download_expiry"],
+          externalUrl: json[i]["external_url"],
+          buttonText: json[i]["button_text"],
+          taxStatus: json[i]["tax_status"],
+          taxClass: json[i]["tax_class"],
+          manageStock: json[i]["manage_stock"],
+          stockQuantity: json[i]["stock_quantity"],
+          backorders: json[i]["backorders"],
+          backordersAllowed: json[i]["backorders_allowed"],
+          backordered: json[i]["backordered"],
+          lowStockAmount: json[i]["low_stock_amount"],
+          soldIndividually: json[i]["sold_individually"],
+          weight: json[i]["weight"],
+          dimensions: json[i]["dimensions"] == null
               ? null
-              : CollectionsModel.Dimensions.fromJson(json["dimensions"]),
-          shippingRequired: json["shipping_required"],
-          shippingTaxable: json["shipping_taxable"],
-          shippingClass: json["shipping_class"],
-          shippingClassId: json["shipping_class_id"],
-          reviewsAllowed: json["reviews_allowed"],
-          averageRating: json["average_rating"],
-          ratingCount: json["rating_count"],
-          upsellIds: json["upsell_ids"] == null
+              : AllProducts.Dimensions.fromJson(json[i]["dimensions"]),
+          shippingRequired: json[i]["shipping_required"],
+          shippingTaxable: json[i]["shipping_taxable"],
+          shippingClass: json[i]["shipping_class"],
+          shippingClassId: json[i]["shipping_class_id"],
+          reviewsAllowed: json[i]["reviews_allowed"],
+          averageRating: json[i]["average_rating"],
+          ratingCount: json[i]["rating_count"],
+          upsellIds: json[i]["upsell_ids"] == null
               ? []
-              : List<dynamic>.from(json["upsell_ids"]!.map((x) => x)),
-          crossSellIds: json["cross_sell_ids"] == null
+              : List<dynamic>.from(json[i]["upsell_ids"]!.map((x) => x)),
+          crossSellIds: json[i]["cross_sell_ids"] == null
               ? []
-              : List<dynamic>.from(json["cross_sell_ids"]!.map((x) => x)),
-          parentId: json["parent_id"],
-          purchaseNote: json["purchase_note"],
-          categories: json["categories"] == null
+              : List<dynamic>.from(json[i]["cross_sell_ids"]!.map((x) => x)),
+          parentId: json[i]["parent_id"],
+          purchaseNote: json[i]["purchase_note"],
+          categories: json[i]["categories"] == null
               ? []
-              : List<CollectionsModel.Category>.from(json["categories"]!
-                  .map((x) => CollectionsModel.Category.fromJson(x))),
-          tags: json["tags"] == null
+              : List<AllProducts.Category>.from(json[i]["categories"]!
+                  .map((x) => AllProducts.Category.fromJson(x))),
+          tags: json[i]["tags"] == null
               ? []
-              : List<CollectionsModel.Category>.from(json["tags"]!
-                  .map((x) => CollectionsModel.Category.fromJson(x))),
-          images: json["images"] == null
+              : List<AllProducts.Category>.from(json[i]["tags"]!
+                  .map((x) => AllProducts.Category.fromJson(x))),
+          images: json[i]["images"] == null
               ? []
-              : List<CollectionsModel.Image>.from(json["images"]!
-                  .map((x) => CollectionsModel.Image.fromJson(x))),
-          attributes: json["attributes"] == null
+              : List<AllProducts.ProductImage>.from(json[i]["images"]!
+                  .map((x) => AllProducts.ProductImage.fromJson(x))),
+          attributes: json[i]["attributes"] == null
               ? []
-              : List<CollectionsModel.Attribute>.from(
-                  json["attributes"]!.map((x) => Attribute.fromJson(x))),
-          defaultAttributes: json["default_attributes"] == null
+              : List<AllProducts.Attribute>.from(json[i]["attributes"]!
+                  .map((x) => AllProducts.Attribute.fromJson(x))),
+          defaultAttributes: json[i]["default_attributes"] == null
               ? []
-              : List<dynamic>.from(json["default_attributes"]!.map((x) => x)),
-          variations: json["variations"] == null
+              : List<dynamic>.from(
+                  json[i]["default_attributes"]!.map((x) => x)),
+          variations: json[i]["variations"] == null
               ? []
-              : List<dynamic>.from(json["variations"]!.map((x) => x)),
-          groupedProducts: json["grouped_products"] == null
+              : List<dynamic>.from(json[i]["variations"]!.map((x) => x)),
+          groupedProducts: json[i]["grouped_products"] == null
               ? []
-              : List<dynamic>.from(json["grouped_products"]!.map((x) => x)),
-          menuOrder: json["menu_order"],
-          priceHtml: json["price_html"],
-          relatedIds: json["related_ids"] == null
+              : List<dynamic>.from(json[i]["grouped_products"]!.map((x) => x)),
+          menuOrder: json[i]["menu_order"],
+          priceHtml: json[i]["price_html"],
+          relatedIds: json[i]["related_ids"] == null
               ? []
-              : List<int>.from(json["related_ids"]!.map((x) => x)),
-          metaData: json["meta_data"] == null
+              : List<int>.from(json[i]["related_ids"]!.map((x) => x)),
+          metaData: json[i]["meta_data"] == null
               ? []
-              : List<CollectionsModel.MetaDatum>.from(json["meta_data"]!
-                  .map((x) => CollectionsModel.MetaDatum.fromJson(x))),
-          stockStatus: json["stock_status"],
-          hasOptions: json["has_options"],
-          postPassword: json["post_password"],
-          subcategory: json["subcategory"] == null
+              : List<AllProducts.MetaDatum>.from(json[i]["meta_data"]!
+                  .map((x) => AllProducts.MetaDatum.fromJson(x))),
+          stockStatus: json[i]["stock_status"],
+          hasOptions: json[i]["has_options"],
+          postPassword: json[i]["post_password"],
+          subcategory: json[i]["subcategory"] == null
               ? []
-              : List<dynamic>.from(json["subcategory"]!.map((x) => x)),
-          collections: json["collections"] == null
-              ? []
-              : List<CollectionsModel.CollectionsModelCollection>.from(
-                  json["collections"]!.map((x) =>
-                      CollectionsModel.CollectionsModelCollection.fromJson(x))),
-          links: json["_links"] == null
-              ? null
-              : CollectionsModel.Links.fromJson(json["_links"]),
+              : List<dynamic>.from(json[i]["subcategory"]!.map((x) => x)),
+          // collections: json["collections"] == null ? [] : List<ProductsModelCollection>.from(json["collections"]!.map((x) => ProductsModelCollection.fromJson(x))),
+          // links: json["_links"] == null ? null : AllProducts.Links.fromJson(json["_links"])
         ));
       }
     }

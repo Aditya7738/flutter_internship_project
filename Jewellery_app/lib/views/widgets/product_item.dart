@@ -13,8 +13,12 @@ import 'package:Tiara_by_TJ/views/pages/product_details_page.dart';
 class ProductItem extends StatefulWidget {
   final ProductsModel productsModel;
   final int? productIndex;
+  final bool fromFetchHome;
   const ProductItem(
-      {super.key, required this.productsModel, this.productIndex});
+      {super.key,
+      required this.productsModel,
+      this.productIndex,
+      required this.fromFetchHome});
 
   @override
   State<ProductItem> createState() => _ProductItemState();
@@ -48,9 +52,10 @@ class _ProductItemState extends State<ProductItem> {
 
         // if (widget.productIndex != null) {
         //   print("in widget.productIndex != null");
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) =>
-                  DetailsView(productIndex: widget.productIndex!)));
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => DetailsView(
+                productIndex: widget.productIndex!,
+                fromFetchHome: widget.fromFetchHome)));
         // } else {
         //   Navigator.of(context).push(MaterialPageRoute(
         //       builder: (context) =>
@@ -73,7 +78,9 @@ class _ProductItemState extends State<ProductItem> {
                       child: Image.asset(
                         "assets/images/image_placeholder.jpg",
                         width: (deviceWidth / 2) + 16.0,
-                        height: (deviceWidth / 2) + 10.0,
+                        height: deviceWidth > 600
+                            ? (deviceWidth / 2) - 111
+                            : (deviceWidth / 2) - 10,
                       ),
                     )
                   : CachedNetworkImage(
@@ -118,47 +125,74 @@ class _ProductItemState extends State<ProductItem> {
                               Text(
                                 productsModel.name ?? "Jewellery",
                                 style: TextStyle(
-                                  fontSize: constraints.maxWidth / 10,
+                                  fontSize: deviceWidth > 600 ? 20 : 17,
                                 ),
                                 softWrap: true,
                                 overflow: TextOverflow.ellipsis,
                               ),
-                              productsModel.salePrice == ""
+                              // productsModel.salePrice == ""
+                              false
                                   ? Text(
                                       productsModel.regularPrice != ""
                                           ? "₹ ${productsModel.regularPrice ?? 20000}"
                                           : "₹ 0.0",
                                       style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: constraints.maxWidth / 10,
+                                        fontWeight: FontWeight.normal,
+                                        fontSize: constraints.maxWidth / 9,
                                       ),
                                     )
-                                  : Row(
-                                      children: [
-                                        Text(
-                                          productsModel.salePrice == ""
-                                              ? "₹ 10,000"
-                                              : "₹ ${productsModel.salePrice ?? 10000}",
+                                  :
+                                  // Row(
+                                  //     children: [
+                                  //       Text(
+                                  //         productsModel.salePrice == ""
+                                  //             ? "₹ 10,000"
+                                  //             : "₹ ${productsModel.salePrice ?? 10000}",
+                                  //         style: TextStyle(
+                                  //           fontWeight: FontWeight.bold,
+                                  //           fontSize: constraints.maxWidth / 10,
+                                  //         ),
+                                  //       ),
+                                  //       const SizedBox(
+                                  //         width: 5.0,
+                                  //       ),
+                                  //       Text(
+                                  //         productsModel.regularPrice != ""
+                                  //             ? "₹ ${productsModel.regularPrice ?? 20000}"
+                                  //             : "₹ 0.0",
+                                  //         style: TextStyle(
+                                  //           decoration: TextDecoration.lineThrough,
+                                  //           fontSize: constraints.maxWidth / 10,
+                                  //         ),
+                                  //       ),
+                                  //     ],
+                                  //   ),
+                                  RichText(
+                                      maxLines: 2,
+                                      text: TextSpan(
+                                          children: [
+                                            TextSpan(
+                                                text: productsModel.salePrice ==""
+                                                    ? "₹ 10,000 \n"
+                                                    : "₹ ${productsModel.salePrice ?? 10000}  ",
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                )),
+                                            TextSpan(
+                                                text: productsModel.regularPrice !=""
+                                                    ? "₹ ${productsModel.regularPrice ?? 20000}"
+                                                    : "₹ 0.0",
+                                                style: TextStyle(
+                                                  decoration: TextDecoration
+                                                      .lineThrough,
+                                                  fontWeight: FontWeight.normal,
+                                                ))
+                                          ],
                                           style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: constraints.maxWidth / 10,
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          width: 5.0,
-                                        ),
-                                        Text(
-                                          productsModel.regularPrice != ""
-                                              ? "₹ ${productsModel.regularPrice ?? 20000}"
-                                              : "₹ 0.0",
-                                          style: TextStyle(
-                                            decoration:
-                                                TextDecoration.lineThrough,
-                                            fontSize: constraints.maxWidth / 10,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
+                                            fontSize: constraints.maxWidth / 9,
+                                            color: Colors.black
+                                          )
+                                          )),
                               SizedBox(
                                 height: 10.0,
                               ),
@@ -166,7 +200,7 @@ class _ProductItemState extends State<ProductItem> {
                                   ? Container(
                                       width: deviceWidth > 600
                                           ? constraints.maxWidth / 2.1
-                                          : constraints.maxWidth / 1.5,
+                                          : constraints.maxWidth / 1.4,
                                       alignment: Alignment.center,
                                       padding: const EdgeInsets.symmetric(
                                           vertical: 5.0, horizontal: 10.0),

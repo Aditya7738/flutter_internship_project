@@ -1,10 +1,18 @@
 import 'dart:core';
+import 'package:Tiara_by_TJ/constants/constants.dart';
 import 'package:Tiara_by_TJ/model/layout_model.dart' as LayoutModel;
+import 'package:Tiara_by_TJ/providers/cart_provider.dart';
 import 'package:Tiara_by_TJ/providers/layoutdesign_provider.dart';
+import 'package:Tiara_by_TJ/providers/wishlist_provider.dart';
+import 'package:Tiara_by_TJ/views/pages/cart_page.dart';
+import 'package:Tiara_by_TJ/views/pages/product_page.dart';
+import 'package:Tiara_by_TJ/views/pages/wishlist_page.dart';
 import 'package:Tiara_by_TJ/views/widgets/carousel_slider_widget.dart';
 import 'package:Tiara_by_TJ/views/widgets/category_list.dart';
-import 'package:Tiara_by_TJ/views/widgets/collection_slider_widget.dart';
+import 'package:Tiara_by_TJ/views/widgets/collection_grid_list.dart';
+import 'package:Tiara_by_TJ/views/widgets/custom_searchbar.dart';
 import 'package:flutter/material.dart';
+import 'package:badges/badges.dart' as badges;
 import 'package:Tiara_by_TJ/api/api_service.dart';
 
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
@@ -71,24 +79,28 @@ class _FetchHomeScreenState extends State<FetchHomeScreen> {
                       if (children[i].text != null) {
                         widgets.add(Column(
                           children: [
-                            Text(
-                              children[i].text!,
-                              style: children[i].style != null
-                                  ? TextStyle(
-                                      color: children[i].style!.color != null
-                                          ? Color(int.parse(
-                                              "0xff${children[i].style!.color!.substring(1)}"))
-                                          : Color(0xff000000),
-                                      fontSize:
-                                          children[i].style!.fontSize != null
-                                              ? children[i]
-                                                  .style!
-                                                  .fontSize!
-                                                  .toDouble()
-                                              : 20,
-                                      fontFamily:
-                                          layoutDesignProvider.fontFamily)
-                                  : TextStyle(),
+                            Container(
+                              alignment: Alignment.center,
+                              width: MediaQuery.of(context).size.width,
+                              child: Text(
+                                children[i].text!,
+                                style: children[i].style != null
+                                    ? TextStyle(
+                                        color: children[i].style!.color != null
+                                            ? Color(int.parse(
+                                                "0xff${children[i].style!.color!.substring(1)}"))
+                                            : Color(0xff000000),
+                                        fontSize:
+                                            children[i].style!.fontSize != null
+                                                ? children[i]
+                                                    .style!
+                                                    .fontSize!
+                                                    .toDouble()
+                                                : 20,
+                                        fontFamily:
+                                            layoutDesignProvider.fontFamily)
+                                    : TextStyle(),
+                              ),
                             ),
                             SizedBox(
                               height: 10.0,
@@ -131,37 +143,74 @@ class _FetchHomeScreenState extends State<FetchHomeScreen> {
                       ));
                     }
 
-                       if (children[i].type == "collections") {
-                      widgets.add(Padding(
-                        padding: const EdgeInsets.only(left: 10.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(
-                              height: 10.0,
-                            ),
-                            Text(
-                              "Collections",
-                              style: TextStyle(
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: layoutDesignProvider.fontFamily),
-                            ),
-                            SizedBox(
-                              height: 10.0,
-                            ),
-                            CollectionSliderWidget(),
-                          ],
-                        ),
-                      ));
+                    if (children[i].type == "collections") {
+                      if (children[i].meta != null) {
+                        if (children[i].meta!.id != null &&
+                            children[i].meta!.label != null) {
+                          String label = children[i].meta!.label!;
+
+                          widgets.add(Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                height: 10.0,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 10.0),
+                                child: Text(
+                                  label,
+                                  style: TextStyle(
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily:
+                                          layoutDesignProvider.fontFamily),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 10.0,
+                              ),
+                              CollectionGridList(
+                                  collectionId: children[i].meta!.id!),
+                              SizedBox(
+                                height: 10.0,
+                              ),
+                              Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  alignment: Alignment.centerRight,
+                                  margin: EdgeInsets.only(right: 10.0),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => ProductPage(
+                                                    id: children[i].meta!.id!,
+                                                    fromFetchHome: true,
+                                                  )));
+                                    },
+                                    child: Text(
+                                      "Show more",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.normal,
+                                          decoration: TextDecoration.underline),
+                                    ),
+                                  )),
+                              SizedBox(
+                                height: 10.0,
+                              ),
+                            ],
+                          ));
+                        }
+                      }
                     }
                   }
 
                   widgets.forEach((element) {
-                    print("home layoouts ${element}");
+                    print("home layouts ${element}");
                   });
 
                   layoutDesignProvider.setParentWidget(Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: widgets,
                   ));
                 }
@@ -185,13 +234,78 @@ class _FetchHomeScreenState extends State<FetchHomeScreen> {
     print("deviceWidth / 20 ${deviceWidth / 31}");
     return Scaffold(
         appBar: AppBar(
-          title: Text("Home"),
+          toolbarHeight: (kToolbarHeight + kToolbarHeight) - 26,
+          automaticallyImplyLeading: false,
+          title: Image.network(
+            Constants.app_logo,
+            width: 239,
+            height: kToolbarHeight,
+            fit: BoxFit.fitWidth,
+          ),
+          backgroundColor: Colors.white,
+          actions: <Widget>[
+            Container(
+              width: (deviceWidth / 16) + 4,
+              child: badges.Badge(
+                badgeStyle: const badges.BadgeStyle(badgeColor: Colors.purple),
+                badgeContent: Consumer<WishlistProvider>(
+                    builder: (context, value, child) {
+                  print("LENGTH OF FAV: ${value.favProductIds}");
+                  return Text(
+                    value.favProductIds.length.toString(),
+                    style: TextStyle(
+                        color: Colors.white, fontSize: (deviceWidth / 31) - 1),
+                  );
+                }),
+                child: IconButton(
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const WishListPage()));
+                  },
+                  icon: const Icon(Icons.favorite_sharp, color: Colors.black),
+                ),
+              ),
+            ),
+            const SizedBox(
+              width: 24,
+            ),
+            Container(
+              width: (deviceWidth / 16) + 4,
+              child: badges.Badge(
+                badgeStyle: const badges.BadgeStyle(badgeColor: Colors.purple),
+                badgeContent: Consumer<CartProvider>(
+                    builder: (context, value, child) => Text(
+                          value.cart.length.toString(),
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: (deviceWidth / 31) - 1),
+                        )),
+                child: IconButton(
+                  onPressed: () {
+                    print("CART CLICKED");
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => CartPage()));
+                  },
+                  icon: const Icon(Icons.shopping_cart),
+                  color: Colors.black,
+                ),
+              ),
+            ),
+            const SizedBox(
+              width: 34,
+            ),
+          ],
+          bottom: const CustomSearchBar(),
         ),
         body: SingleChildScrollView(
           child: isLayoutLoading
-              ? Center(
-                  child: CircularProgressIndicator(
-                    color: Colors.black,
+              ? SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height - 200,
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      color: Colors.black,
+                    ),
                   ),
                 )
               : layoutDesignProvider.parentWidget,
