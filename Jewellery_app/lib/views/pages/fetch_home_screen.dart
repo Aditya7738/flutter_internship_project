@@ -37,187 +37,193 @@ class _FetchHomeScreenState extends State<FetchHomeScreen> {
 
     LayoutDesignProvider layoutDesignProvider =
         Provider.of<LayoutDesignProvider>(context, listen: false);
-
-    getLayoutDesign(layoutDesignProvider);
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      getLayoutDesign(layoutDesignProvider);
+    });
   }
 
   getLayoutDesign(LayoutDesignProvider layoutDesignProvider) async {
     setState(() {
       isLayoutLoading = true;
     });
-
     DBHelper dbHelper = DBHelper();
-    
+    LayoutModel.LayoutModel layoutModel;
+    if (layoutDesignProvider.layoutModel != null) {
+      layoutModel = layoutDesignProvider.layoutModel!;
+    } else {
+      await dbHelper.readData();
+      layoutModel = dbHelper.layoutModel;
+      layoutDesignProvider.setLayoutModel(layoutModel);
+    }
 
-    LayoutModel.LayoutModel? layoutModel = await ApiService.getHomeLayout();
+    print("layoutModel.toJson() ${layoutModel.toJson()}");
+    // LayoutModel.LayoutModel? layoutModel = await ApiService.getHomeLayout();
 
-    if (layoutModel != null) {
-      if (layoutModel.data != null) {
-        LayoutModel.Theme? theme = layoutModel.data!.theme;
-        final pages = layoutModel.data!.pages;
+    if (layoutModel.data != null) {
+      LayoutModel.Theme? theme = layoutModel.data!.theme;
+      final pages = layoutModel.data!.pages;
 
-        print("pages.runtimeType ${pages.runtimeType}");
+      print("pages.runtimeType ${pages.runtimeType}");
 
-        if (theme != null) {
-          if (theme.colors != null) {
-            layoutDesignProvider.setPrimary(theme.colors!.primary ?? "#CC868A");
-            layoutDesignProvider
-                .setSecondary(theme.colors!.secondary ?? "#FFFFFF");
-            layoutDesignProvider
-                .setBackground(theme.colors!.background ?? "#FFFFFF");
-          } else if (theme.fontFamily != null) {
-            layoutDesignProvider.setfontFamily(theme.fontFamily!);
-          }
+      if (theme != null) {
+        if (theme.colors != null) {
+          layoutDesignProvider.setPrimary(theme.colors!.primary ?? "#CC868A");
+          layoutDesignProvider
+              .setSecondary(theme.colors!.secondary ?? "#FFFFFF");
+          layoutDesignProvider
+              .setBackground(theme.colors!.background ?? "#FFFFFF");
+        } else if (theme.fontFamily != null) {
+          layoutDesignProvider.setfontFamily(theme.fontFamily!);
         }
+      }
 
-        if (pages.isNotEmpty) {
-          for (var i = 0; i < 1; i++) {
-            if (pages[i].name != null) {
-              if (pages[i].name == "HomePage") {
-                if (pages[i].layout == "column") {
-                  List<Widget> widgets = <Widget>[];
+      if (pages.isNotEmpty) {
+        for (var i = 0; i < 1; i++) {
+          if (pages[i].name != null) {
+            if (pages[i].name == "HomePage") {
+              if (pages[i].layout == "column") {
+                List<Widget> widgets = <Widget>[];
 
-                  List<LayoutModel.Child> children = pages[i].children;
-                  for (var i = 0; i < children.length; i++) {
-                    if (children[i].type == "header") {
-                      if (children[i].text != null) {
-                        widgets.add(Column(
-                          children: [
-                            Container(
-                              alignment: Alignment.center,
-                              width: MediaQuery.of(context).size.width,
-                              child: Text(
-                                children[i].text!,
-                                style: children[i].style != null
-                                    ? TextStyle(
-                                        color: children[i].style!.color != null
-                                            ? Color(int.parse(
-                                                "0xff${children[i].style!.color!.substring(1)}"))
-                                            : Color(0xff000000),
-                                        fontSize:
-                                            children[i].style!.fontSize != null
-                                                ? children[i]
-                                                    .style!
-                                                    .fontSize!
-                                                    .toDouble()
-                                                : 20,
-                                        fontFamily:
-                                            layoutDesignProvider.fontFamily)
-                                    : TextStyle(),
-                              ),
+                List<LayoutModel.Child> children = pages[i].children;
+                for (var i = 0; i < children.length; i++) {
+                  if (children[i].type == "header") {
+                    if (children[i].text != null) {
+                      widgets.add(Column(
+                        children: [
+                          Container(
+                            alignment: Alignment.center,
+                            width: MediaQuery.of(context).size.width,
+                            child: Text(
+                              children[i].text!,
+                              style: children[i].style != null
+                                  ? TextStyle(
+                                      color: children[i].style!.color != null
+                                          ? Color(int.parse(
+                                              "0xff${children[i].style!.color!.substring(1)}"))
+                                          : Color(0xff000000),
+                                      fontSize:
+                                          children[i].style!.fontSize != null
+                                              ? children[i]
+                                                  .style!
+                                                  .fontSize!
+                                                  .toDouble()
+                                              : 20,
+                                      fontFamily:
+                                          layoutDesignProvider.fontFamily)
+                                  : TextStyle(),
                             ),
-                            SizedBox(
-                              height: 10.0,
-                            )
-                          ],
-                        ));
-                      } else {
-                        widgets.add(SizedBox());
-                      }
+                          ),
+                          SizedBox(
+                            height: 10.0,
+                          )
+                        ],
+                      ));
+                    } else {
+                      widgets.add(SizedBox());
                     }
+                  }
 
-                    if (children[i].type == "image_slider") {
-                      widgets.add(SizedBox(
-                          height: (MediaQuery.of(context).size.height / 2) + 30,
-                          child: CarouselSliderWidget()));
-                    }
+                  if (children[i].type == "image_slider") {
+                    widgets.add(SizedBox(
+                        height: (MediaQuery.of(context).size.height / 2) + 30,
+                        child: CarouselSliderWidget()));
+                  }
 
-                    if (children[i].type == "categories") {
-                      widgets.add(Padding(
-                        padding: const EdgeInsets.only(left: 10.0),
-                        child: Column(
+                  if (children[i].type == "categories") {
+                    widgets.add(Padding(
+                      padding: const EdgeInsets.only(left: 10.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            height: 10.0,
+                          ),
+                          Text(
+                            "Categories",
+                            style: TextStyle(
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: layoutDesignProvider.fontFamily),
+                          ),
+                          SizedBox(
+                            height: 10.0,
+                          ),
+                          CategoryList(),
+                        ],
+                      ),
+                    ));
+                  }
+
+                  if (children[i].type == "collections") {
+                    if (children[i].meta != null) {
+                      if (children[i].meta!.id != null &&
+                          children[i].meta!.label != null) {
+                        String label = children[i].meta!.label!;
+
+                        widgets.add(Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             SizedBox(
                               height: 10.0,
                             ),
-                            Text(
-                              "Categories",
-                              style: TextStyle(
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: layoutDesignProvider.fontFamily),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 10.0),
+                              child: Text(
+                                label,
+                                style: TextStyle(
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily:
+                                        layoutDesignProvider.fontFamily),
+                              ),
                             ),
                             SizedBox(
                               height: 10.0,
                             ),
-                            CategoryList(),
+                            CollectionGridList(
+                                collectionId: children[i].meta!.id!),
+                            SizedBox(
+                              height: 10.0,
+                            ),
+                            Container(
+                                width: MediaQuery.of(context).size.width,
+                                alignment: Alignment.centerRight,
+                                margin: EdgeInsets.only(right: 10.0),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => ProductPage(
+                                                  id: children[i].meta!.id!,
+                                                  fromFetchHome: true,
+                                                )));
+                                  },
+                                  child: Text(
+                                    "Show more",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.normal,
+                                        decoration: TextDecoration.underline),
+                                  ),
+                                )),
+                            SizedBox(
+                              height: 10.0,
+                            ),
                           ],
-                        ),
-                      ));
-                    }
-
-                    if (children[i].type == "collections") {
-                      if (children[i].meta != null) {
-                        if (children[i].meta!.id != null &&
-                            children[i].meta!.label != null) {
-                          String label = children[i].meta!.label!;
-
-                          widgets.add(Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                height: 10.0,
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 10.0),
-                                child: Text(
-                                  label,
-                                  style: TextStyle(
-                                      fontSize: 18.0,
-                                      fontWeight: FontWeight.bold,
-                                      fontFamily:
-                                          layoutDesignProvider.fontFamily),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 10.0,
-                              ),
-                              CollectionGridList(
-                                  collectionId: children[i].meta!.id!),
-                              SizedBox(
-                                height: 10.0,
-                              ),
-                              Container(
-                                  width: MediaQuery.of(context).size.width,
-                                  alignment: Alignment.centerRight,
-                                  margin: EdgeInsets.only(right: 10.0),
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) => ProductPage(
-                                                    id: children[i].meta!.id!,
-                                                    fromFetchHome: true,
-                                                  )));
-                                    },
-                                    child: Text(
-                                      "Show more",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.normal,
-                                          decoration: TextDecoration.underline),
-                                    ),
-                                  )),
-                              SizedBox(
-                                height: 10.0,
-                              ),
-                            ],
-                          ));
-                        }
+                        ));
                       }
                     }
                   }
-
-                  widgets.forEach((element) {
-                    print("home layouts ${element}");
-                  });
-
-                  layoutDesignProvider.setParentWidget(Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: widgets,
-                  ));
                 }
+
+                widgets.forEach((element) {
+                  print("home layouts ${element}");
+                });
+
+                layoutDesignProvider.setParentWidget(Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: widgets,
+                ));
               }
             }
           }

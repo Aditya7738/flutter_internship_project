@@ -32,11 +32,13 @@ class _CollectionGridListState extends State<CollectionGridList> {
       isCollectionLoading = true;
     });
     ApiService.collectionList.clear();
-    await ApiService.getCollections(collectionId: widget.collectionId, pageNo: 1);
-
-    setState(() {
-      isCollectionLoading = false;
-    });
+    await ApiService.getCollections(
+        collectionId: widget.collectionId, pageNo: 1);
+    if (mounted) {
+      setState(() {
+        isCollectionLoading = false;
+      });
+    }
   }
 
   @override
@@ -70,7 +72,8 @@ class _CollectionGridListState extends State<CollectionGridList> {
                   print(" productIndex: $index");
                   return ProductItem(
                     productIndex: index,
-                    productsModel: collectionsModel, fromFetchHome: true,
+                    productsModel: collectionsModel,
+                    fromFetchHome: true,
                   );
                 } else {
                   return const Padding(

@@ -33,7 +33,7 @@ class _CategoryListState extends State<CategoryList> {
       CategoryProvider categoryProvider) async {
     categoryProvider.setFileInfoFetching(true);
     //  CacheMemory.listOfCategory.clear();
-    await CacheMemory.getFile(snapshot);
+    await CacheMemory.getCategoryFile(snapshot);
     categoryProvider.setFileInfoFetching(false);
   }
 

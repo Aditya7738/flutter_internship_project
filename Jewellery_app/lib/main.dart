@@ -30,7 +30,19 @@ void main() async {
   DBHelper dbHelper = DBHelper();
   dbHelper.initDatabase();
   if (layoutModel != null) {
-    await dbHelper.insert(layoutModel);
+    if (layoutModel.data != null) {
+      await dbHelper.checkDataExist();
+
+      print("dbHelper.isDataExist ${dbHelper.isDataExist}");
+      // if (isDataExist == false) {
+      //   await dbHelper.insert(layoutModel);
+      // }
+      if (dbHelper.isDataExist) {
+        await dbHelper.updateTable(layoutModel);
+      } else {
+        await dbHelper.insert(layoutModel);
+      }
+    }
   }
   runApp(const MyApp());
 }

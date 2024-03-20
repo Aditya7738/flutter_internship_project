@@ -28,6 +28,16 @@ class DigiGoldProvider with ChangeNotifier {
 
   DigiGoldPlanModel? get digiGoldPlanModel => _digiGoldPlanModel;
 
+  bool? _fileInfoFetching = false;
+  bool? get fileInfoFetching => _fileInfoFetching;
+
+  void setFileInfoFetching(bool? fileInfoFetching) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _fileInfoFetching = fileInfoFetching;
+      notifyListeners();
+    });
+  }
+
   void setGoldRateLoading(bool isGoldRateLoading) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _isGoldRateLoading = isGoldRateLoading;

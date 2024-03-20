@@ -3,6 +3,7 @@
 import 'dart:convert';
 
 import 'package:Tiara_by_TJ/api/api_service.dart';
+import 'package:Tiara_by_TJ/api/cache_memory.dart';
 import 'package:Tiara_by_TJ/model/digi_gold_plan_model.dart' as DigiGoldPlans;
 import 'package:Tiara_by_TJ/model/gold_rate_model.dart';
 import 'package:Tiara_by_TJ/model/order_model.dart';
@@ -63,12 +64,14 @@ class _DigiGoldPageState extends State<DigiGoldPage> {
     super.initState();
     CacheProvider cacheProvider =
         Provider.of<CacheProvider>(context, listen: false);
+    print(
+        "initState digiGoldPlanFileStream == null ${digiGoldPlanFileStream == null}");
     if (digiGoldPlanFileStream == null) {
       //getRequest();
       _downloadFile(cacheProvider);
     }
 
-   // getDigiGoldPlanList();
+    // getDigiGoldPlanList();
 
     checkFlexiPlanPurchased();
 
@@ -439,6 +442,9 @@ class _DigiGoldPageState extends State<DigiGoldPage> {
     final customerProvider =
         Provider.of<CustomerProvider>(context, listen: true);
 
+    final digiGoldProvider =
+        Provider.of<DigiGoldProvider>(context, listen: true);
+
     bool isCustomerDataEmpty = customerProvider.customerData.isEmpty;
     return Scaffold(
       appBar: AppBar(
@@ -452,662 +458,802 @@ class _DigiGoldPageState extends State<DigiGoldPage> {
             child: Column(
               children: [
                 isFlexiPlanEnabled
-                    ? Column(
-                        children: [
-                          Consumer<DigiGoldProvider>(
-                            builder: (context, value, child) {
-                              if (value.isGoldRateLoading) {
-                                return Container(
-                                  color: Colors.white,
-                                  height: MediaQuery.of(context).size.height -
-                                      (kToolbarHeight + 110),
-                                  child: Center(
-                                      child: CircularProgressIndicator(
-                                    color: Theme.of(context).primaryColor,
-                                  )),
-                                );
-                              } else {
-                                // Padding(
-                                //         padding: EdgeInsets.symmetric(
-                                //       vertical: 30.0, horizontal: 20.0),
-                                //         child: Column(
-                                //           children: [
-
-                                //           ],
-                                //         ),
-                                //       ),
-                                return Card(
-                                  color: isFlexiPlanAlreadyPurchased
-                                      ? Color.fromARGB(255, 213, 167, 170)
-                                      : Theme.of(context).primaryColor,
-                                  child: SizedBox(
-                                    width: MediaQuery.of(context).size.width,
-                                    child: LayoutBuilder(
-                                        builder: (context, constraints) {
-                                      print(
-                                          "flexi constraints.maxWidth / 33 ${(constraints.maxWidth / 32)}");
-                                      return Column(
-                                        children: [
-                                          isFlexiPlanAlreadyPurchased
-                                              ? Column(
-                                                  children: [
-                                                    SizedBox(
-                                                      height: 10.0,
+                    ? Column(children: [
+                        Consumer<DigiGoldProvider>(
+                          builder: (context, value, child) {
+                            if (value.isGoldRateLoading) {
+                              return Container(
+                                color: Colors.white,
+                                height: MediaQuery.of(context).size.height -
+                                    (kToolbarHeight + 110),
+                                child: Center(
+                                    child: CircularProgressIndicator(
+                                  color: Theme.of(context).primaryColor,
+                                )),
+                              );
+                            } else {
+                              return Card(
+                                color: isFlexiPlanAlreadyPurchased
+                                    ? Color.fromARGB(255, 213, 167, 170)
+                                    : Theme.of(context).primaryColor,
+                                child: SizedBox(
+                                  width: MediaQuery.of(context).size.width,
+                                  child: LayoutBuilder(
+                                      builder: (context, constraints) {
+                                    print(
+                                        "flexi constraints.maxWidth / 33 ${(constraints.maxWidth / 32)}");
+                                    return Column(
+                                      children: [
+                                        isFlexiPlanAlreadyPurchased
+                                            ? Column(
+                                                children: [
+                                                  SizedBox(
+                                                    height: 10.0,
+                                                  ),
+                                                  Container(
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                            .size
+                                                            .width,
+                                                    color: Colors.yellow,
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            vertical: 5.0),
+                                                    child: Text(
+                                                      "You have already purchased Flexi plan",
+                                                      style: TextStyle(
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .primaryColor,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 16.0),
+                                                      textAlign:
+                                                          TextAlign.center,
                                                     ),
-                                                    Container(
-                                                      width:
-                                                          MediaQuery.of(context)
-                                                              .size
-                                                              .width,
-                                                      color: Colors.yellow,
-                                                      padding:
-                                                          EdgeInsets.symmetric(
-                                                              vertical: 5.0),
-                                                      child: Text(
-                                                        "You have already purchased Flexi plan",
+                                                  ),
+                                                ],
+                                              )
+                                            : SizedBox(),
+                                        IgnorePointer(
+                                            ignoring:
+                                                isFlexiPlanAlreadyPurchased,
+                                            child: Padding(
+                                                // width: MediaQuery.of(context)
+                                                //     .size
+                                                //     .width,
+                                                padding: const EdgeInsets.only(
+                                                    right: 20.0,
+                                                    left: 20.0,
+                                                    bottom: 30.0,
+                                                    top: 20.0),
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text("Flexi Plan",
                                                         style: TextStyle(
-                                                            color: Theme.of(
-                                                                    context)
-                                                                .primaryColor,
                                                             fontWeight:
                                                                 FontWeight.bold,
-                                                            fontSize: 16.0),
-                                                        textAlign:
-                                                            TextAlign.center,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                )
-                                              : SizedBox(),
-                                          IgnorePointer(
-                                              ignoring:
-                                                  isFlexiPlanAlreadyPurchased,
-                                              child: Padding(
-                                                  // width: MediaQuery.of(context)
-                                                  //     .size
-                                                  //     .width,
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          right: 20.0,
-                                                          left: 20.0,
-                                                          bottom: 30.0,
-                                                          top: 20.0),
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Text("Flexi Plan",
-                                                          style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              fontSize:
-                                                                  (constraints.maxWidth /
-                                                                          38) +
-                                                                      10,
-                                                              color: Colors
-                                                                  .white)),
-                                                      SizedBox(
-                                                        height: 20.0,
-                                                      ),
-                                                      Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          Image.asset(
-                                                            "assets/images/saved_money.png",
-                                                            width: 35.0,
-                                                            height: 35.0,
+                                                            fontSize: (constraints
+                                                                        .maxWidth /
+                                                                    38) +
+                                                                10,
                                                             color:
-                                                                Colors.yellow,
+                                                                Colors.white)),
+                                                    SizedBox(
+                                                      height: 20.0,
+                                                    ),
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Image.asset(
+                                                          "assets/images/saved_money.png",
+                                                          width: 35.0,
+                                                          height: 35.0,
+                                                          color: Colors.yellow,
+                                                        ),
+                                                        // Text(""),
+                                                        SizedBox(
+                                                          width: 10.0,
+                                                        ),
+                                                        SizedBox(
+                                                          width: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .width -
+                                                              125,
+                                                          child: LayoutBuilder(
+                                                            builder: (context,
+                                                                constraints) {
+                                                              print(
+                                                                  "Gold Rate ${constraints.maxWidth / 20}");
+                                                              double fontSize =
+                                                                  constraints
+                                                                          .maxWidth /
+                                                                      20;
+                                                              if (fontSize >
+                                                                  17) {
+                                                                fontSize -= 15;
+                                                              }
+                                                              return Text(
+                                                                "Today's Gold Rate: ₹ $goldRate per gram of $goldPurity purity",
+                                                                maxLines: 2,
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontSize:
+                                                                      fontSize,
+                                                                  color: Colors
+                                                                      .yellow,
+                                                                ),
+                                                              );
+                                                            },
+
+                                                            //  child:
                                                           ),
-                                                          // Text(""),
-                                                          SizedBox(
-                                                            width: 10.0,
-                                                          ),
-                                                          SizedBox(
+                                                        )
+                                                      ],
+                                                    ),
+                                                    SizedBox(
+                                                      height: 20.0,
+                                                    ),
+                                                    Text(
+                                                      "Buy Gold Worth",
+                                                      style: TextStyle(
+                                                          fontSize: (constraints
+                                                                      .maxWidth /
+                                                                  30) +
+                                                              0.99,
+                                                          color: Colors.white,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                    Row(
+                                                      children: [
+                                                        Image.asset(
+                                                            "assets/images/rupee.png",
+                                                            scale: 14.5,
+                                                            color:
+                                                                Colors.white),
+                                                        SizedBox(
                                                             width: MediaQuery.of(
                                                                         context)
                                                                     .size
                                                                     .width -
-                                                                125,
-                                                            child:
-                                                                LayoutBuilder(
-                                                              builder: (context,
-                                                                  constraints) {
-                                                                print(
-                                                                    "Gold Rate ${constraints.maxWidth / 20}");
-                                                                double
-                                                                    fontSize =
-                                                                    constraints
-                                                                            .maxWidth /
-                                                                        20;
-                                                                if (fontSize >
-                                                                    17) {
-                                                                  fontSize -=
-                                                                      15;
-                                                                }
-                                                                return Text(
-                                                                  "Today's Gold Rate: ₹ $goldRate per gram of $goldPurity purity",
-                                                                  maxLines: 2,
-                                                                  style:
-                                                                      TextStyle(
-                                                                    fontSize:
-                                                                        fontSize,
-                                                                    color: Colors
-                                                                        .yellow,
-                                                                  ),
-                                                                );
+                                                                120,
+                                                            child: TextField(
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontSize:
+                                                                      constraints.maxWidth /
+                                                                              40 +
+                                                                          5),
+                                                              onChanged:
+                                                                  (value) {
+                                                                calculateGoldGrams(
+                                                                    value);
                                                               },
-
-                                                              //  child:
-                                                            ),
-                                                          )
-                                                        ],
-                                                      ),
-                                                      SizedBox(
-                                                        height: 20.0,
-                                                      ),
-                                                      Text(
-                                                        "Buy Gold Worth",
-                                                        style: TextStyle(
-                                                            fontSize: (constraints
-                                                                        .maxWidth /
-                                                                    30) +
-                                                                0.99,
-                                                            color: Colors.white,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold),
-                                                      ),
-                                                      Row(
-                                                        children: [
-                                                          Image.asset(
-                                                              "assets/images/rupee.png",
-                                                              scale: 14.5,
-                                                              color:
-                                                                  Colors.white),
-                                                          SizedBox(
-                                                              width: MediaQuery.of(
-                                                                          context)
-                                                                      .size
-                                                                      .width -
-                                                                  120,
-                                                              child: TextField(
-                                                                style: TextStyle(
-                                                                    color: Colors
-                                                                        .white,
-                                                                    fontSize:
-                                                                        constraints.maxWidth /
-                                                                                40 +
-                                                                            5),
-                                                                onChanged:
-                                                                    (value) {
-                                                                  calculateGoldGrams(
-                                                                      value);
-                                                                },
-                                                                controller:
-                                                                    flexiPayController,
-                                                              )),
-                                                        ],
-                                                      ),
-                                                      SizedBox(
-                                                        height: 5.0,
-                                                      ),
-                                                      Text(
-                                                        "Min : ₹ 30 / Max : ₹ 199999",
-                                                        style: TextStyle(
+                                                              controller:
+                                                                  flexiPayController,
+                                                            )),
+                                                      ],
+                                                    ),
+                                                    SizedBox(
+                                                      height: 5.0,
+                                                    ),
+                                                    Text(
+                                                      "Min : ₹ 30 / Max : ₹ 199999",
+                                                      style: TextStyle(
+                                                          fontSize: constraints
+                                                                  .maxWidth /
+                                                              37,
+                                                          color: Colors.white),
+                                                    ),
+                                                    SizedBox(
+                                                      height: 40.0,
+                                                    ),
+                                                    Text(
+                                                      "Buy Gold By Grams",
+                                                      style: TextStyle(
+                                                          fontSize: (constraints
+                                                                      .maxWidth /
+                                                                  30) +
+                                                              0.99,
+                                                          color: Colors.white,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                    Row(
+                                                      children: [
+                                                        SizedBox(
+                                                            width: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width -
+                                                                140,
+                                                            child: TextField(
+                                                              onChanged:
+                                                                  (value) {
+                                                                calculatePriceForGoldGrams(
+                                                                    value);
+                                                              },
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontSize:
+                                                                      constraints.maxWidth /
+                                                                              40 +
+                                                                          5),
+                                                              controller:
+                                                                  flexiGoldController,
+                                                            )),
+                                                        Text(
+                                                          "gms",
+                                                          style: TextStyle(
                                                             fontSize: constraints
-                                                                    .maxWidth /
-                                                                37,
-                                                            color:
-                                                                Colors.white),
-                                                      ),
-                                                      SizedBox(
-                                                        height: 40.0,
-                                                      ),
-                                                      Text(
-                                                        "Buy Gold By Grams",
-                                                        style: TextStyle(
-                                                            fontSize: (constraints
                                                                         .maxWidth /
-                                                                    30) +
-                                                                0.99,
+                                                                    40 +
+                                                                5,
                                                             color: Colors.white,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold),
-                                                      ),
-                                                      Row(
-                                                        children: [
-                                                          SizedBox(
-                                                              width: MediaQuery.of(
-                                                                          context)
-                                                                      .size
-                                                                      .width -
-                                                                  140,
-                                                              child: TextField(
-                                                                onChanged:
-                                                                    (value) {
-                                                                  calculatePriceForGoldGrams(
-                                                                      value);
-                                                                },
-                                                                style: TextStyle(
-                                                                    color: Colors
-                                                                        .white,
-                                                                    fontSize:
-                                                                        constraints.maxWidth /
-                                                                                40 +
-                                                                            5),
-                                                                controller:
-                                                                    flexiGoldController,
-                                                              )),
-                                                          Text(
-                                                            "gms",
-                                                            style: TextStyle(
+                                                          ),
+                                                        )
+                                                      ],
+                                                    ),
+                                                    SizedBox(
+                                                      height: 40.0,
+                                                    ),
+                                                    Text(
+                                                      "Enter plan duration",
+                                                      style: TextStyle(
+                                                          fontSize: (constraints
+                                                                      .maxWidth /
+                                                                  30) +
+                                                              0.99,
+                                                          color: Colors.white,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                    Row(
+                                                      children: [
+                                                        SizedBox(
+                                                            width: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width -
+                                                                174,
+                                                            child: TextField(
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontSize:
+                                                                      constraints.maxWidth /
+                                                                              40 +
+                                                                          5),
+                                                              controller:
+                                                                  flexiPlanDurationController,
+                                                            )),
+                                                        Text(
+                                                          "months",
+                                                          style: TextStyle(
                                                               fontSize:
                                                                   constraints.maxWidth /
                                                                           40 +
                                                                       5,
                                                               color:
-                                                                  Colors.white,
-                                                            ),
-                                                          )
-                                                        ],
-                                                      ),
-                                                      SizedBox(
-                                                        height: 40.0,
-                                                      ),
-                                                      Text(
-                                                        "Enter plan duration",
-                                                        style: TextStyle(
-                                                            fontSize: (constraints
-                                                                        .maxWidth /
-                                                                    30) +
-                                                                0.99,
-                                                            color: Colors.white,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold),
-                                                      ),
-                                                      Row(
-                                                        children: [
-                                                          SizedBox(
+                                                                  Colors.white),
+                                                        )
+                                                      ],
+                                                    ),
+                                                    SizedBox(
+                                                      height: 5.0,
+                                                    ),
+                                                    Text(
+                                                      "Max duration: ${getMaxFlexiPlanDuration()} months",
+                                                      style: TextStyle(
+                                                          fontSize: constraints
+                                                                  .maxWidth /
+                                                              37,
+                                                          color: Colors.white),
+                                                    ),
+                                                    SizedBox(
+                                                      height: 40.0,
+                                                    ),
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        Transform.scale(
+                                                          scale: 1.199,
+                                                          child: Checkbox(
+                                                            activeColor:
+                                                                Colors.white,
+                                                            checkColor:
+                                                                Colors.black,
+                                                            value:
+                                                                checkBoxChecked,
+                                                            onChanged: (value) {
+                                                              print(
+                                                                  "termsSeen2 ${termsSeen}");
+                                                              if (termsSeen) {
+                                                                if (mounted) {
+                                                                  setState(() {
+                                                                    checkBoxChecked =
+                                                                        value ??
+                                                                            false;
+                                                                  });
+                                                                }
+                                                                print(
+                                                                    "checkBoxChecked ${checkBoxChecked}");
+                                                              }
+                                                            },
+                                                          ),
+                                                        ),
+                                                        InkWell(
+                                                          onTap: () {
+                                                            if (mounted) {
+                                                              setState(() {
+                                                                termsSeen =
+                                                                    true;
+                                                              });
+                                                            }
+
+                                                            onLinkClicked(
+                                                                "https://tiarabytj.com/terms-conditions/");
+                                                          },
+                                                          child: Text(
+                                                            "Terms & Conditions",
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontSize:
+                                                                    (constraints.maxWidth /
+                                                                            30) +
+                                                                        2,
+                                                                decoration:
+                                                                    TextDecoration
+                                                                        .underline),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    SizedBox(
+                                                      height: 80.0,
+                                                    ),
+                                                    isCustomerDataEmpty
+                                                        ? GestureDetector(
+                                                            onTap: () {
+                                                              Navigator.push(
+                                                                  context,
+                                                                  MaterialPageRoute(
+                                                                    builder:
+                                                                        (context) =>
+                                                                            LoginPage(
+                                                                      isComeFromCart:
+                                                                          false,
+                                                                    ),
+                                                                  ));
+                                                            },
+                                                            child: Container(
+                                                              margin: EdgeInsets
+                                                                  .symmetric(
+                                                                      horizontal:
+                                                                          20.0),
+                                                              alignment:
+                                                                  Alignment
+                                                                      .center,
+                                                              padding: EdgeInsets
+                                                                  .symmetric(
+                                                                      vertical:
+                                                                          10.0,
+                                                                      horizontal:
+                                                                          20.0),
                                                               width: MediaQuery.of(
                                                                           context)
                                                                       .size
                                                                       .width -
-                                                                  174,
-                                                              child: TextField(
-                                                                style: TextStyle(
-                                                                    color: Colors
-                                                                        .white,
-                                                                    fontSize:
-                                                                        constraints.maxWidth /
-                                                                                40 +
-                                                                            5),
-                                                                controller:
-                                                                    flexiPlanDurationController,
-                                                              )),
-                                                          Text(
-                                                            "months",
-                                                            style: TextStyle(
-                                                                fontSize:
-                                                                    constraints.maxWidth /
-                                                                            40 +
-                                                                        5,
-                                                                color: Colors
-                                                                    .white),
+                                                                  100,
+                                                              child: Text(
+                                                                "LOGIN",
+                                                                style: checkBoxChecked
+                                                                    ? Theme.of(
+                                                                            context)
+                                                                        .textTheme
+                                                                        .headline5
+                                                                    : Theme.of(
+                                                                            context)
+                                                                        .textTheme
+                                                                        .button
+                                                                // : TextStyle(
+                                                                //     color: checkBoxChecked
+                                                                //         ? Colors
+                                                                //             .black
+                                                                //         : Colors
+                                                                //             .white,
+                                                                //     fontSize:
+                                                                //         16.0,
+                                                                //     fontWeight:
+                                                                //         FontWeight.bold)
+                                                                ,
+                                                              ),
+                                                              decoration:
+                                                                  checkBoxChecked
+                                                                      ? BoxDecoration(
+                                                                          color:
+                                                                              Colors.white,
+                                                                          // borderRadius:
+                                                                          //     BorderRadius.circular(5.0)
+                                                                        )
+                                                                      : BoxDecoration(
+                                                                          border: Border.all(
+                                                                              width: 2.0,
+                                                                              color: Colors.white,
+                                                                              style: BorderStyle.solid),
+                                                                          shape: BoxShape.rectangle),
+                                                            ),
                                                           )
-                                                        ],
-                                                      ),
-                                                      SizedBox(
-                                                        height: 5.0,
-                                                      ),
-                                                      Text(
-                                                        "Max duration: ${getMaxFlexiPlanDuration()} months",
-                                                        style: TextStyle(
-                                                            fontSize: constraints
-                                                                    .maxWidth /
-                                                                37,
-                                                            color:
-                                                                Colors.white),
-                                                      ),
-                                                      SizedBox(
-                                                        height: 40.0,
-                                                      ),
-
-                                                      Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        children: [
-                                                          Transform.scale(
-                                                            scale: 1.199,
-                                                            child: Checkbox(
-                                                              activeColor:
-                                                                  Colors.white,
-                                                              checkColor:
-                                                                  Colors.black,
-                                                              value:
-                                                                  checkBoxChecked,
-                                                              onChanged:
-                                                                  (value) {
-                                                                print(
-                                                                    "termsSeen2 ${termsSeen}");
-                                                                if (termsSeen) {
-                                                                  if (mounted) {
-                                                                    setState(
-                                                                        () {
-                                                                      checkBoxChecked =
-                                                                          value ??
-                                                                              false;
-                                                                    });
-                                                                  }
-                                                                  print(
-                                                                      "checkBoxChecked ${checkBoxChecked}");
-                                                                }
-                                                              },
-                                                            ),
-                                                          ),
-                                                          InkWell(
+                                                        : GestureDetector(
                                                             onTap: () {
-                                                              if (mounted) {
-                                                                setState(() {
-                                                                  termsSeen =
-                                                                      true;
-                                                                });
-                                                              }
+                                                              Map<String,
+                                                                      String>
+                                                                  flexiPlanData =
+                                                                  <String,
+                                                                      String>{
+                                                                "plan_price":
+                                                                    flexiPayController
+                                                                        .text,
+                                                                "plan_gold_weight":
+                                                                    flexiGoldController
+                                                                        .text,
+                                                                "plan_duration":
+                                                                    flexiPlanDurationController
+                                                                        .text,
+                                                                "digi_plan_type":
+                                                                    getDigiPlanType(),
+                                                                "description":
+                                                                    flexiPlanModel!
+                                                                            .description ??
+                                                                        "Description"
+                                                              };
 
-                                                              onLinkClicked(
-                                                                  "https://tiarabytj.com/terms-conditions/");
+                                                              Navigator.push(
+                                                                  context,
+                                                                  MaterialPageRoute(
+                                                                    builder:
+                                                                        (context) =>
+                                                                            DigiGoldPlanOrderPage(
+                                                                      digiGoldPlanModel:
+                                                                          flexiPlanModel!,
+                                                                      flexiPlanData:
+                                                                          flexiPlanData,
+                                                                    ),
+                                                                  ));
                                                             },
-                                                            child: Text(
-                                                              "Terms & Conditions",
-                                                              style: TextStyle(
-                                                                  color: Colors
-                                                                      .white,
-                                                                  fontSize:
-                                                                      (constraints.maxWidth /
-                                                                              30) +
-                                                                          2,
-                                                                  decoration:
-                                                                      TextDecoration
-                                                                          .underline),
+                                                            child: Container(
+                                                              margin: EdgeInsets
+                                                                  .symmetric(
+                                                                      horizontal:
+                                                                          20.0),
+                                                              alignment:
+                                                                  Alignment
+                                                                      .center,
+                                                              padding: EdgeInsets
+                                                                  .symmetric(
+                                                                      vertical:
+                                                                          10.0,
+                                                                      horizontal:
+                                                                          20.0),
+                                                              width: MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .width -
+                                                                  100,
+                                                              child: Text(
+                                                                "PROCEED TO PAY",
+                                                                style: TextStyle(
+                                                                    color: checkBoxChecked
+                                                                        ? Colors
+                                                                            .black
+                                                                        : Colors
+                                                                            .white,
+                                                                    fontSize:
+                                                                        16.0,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold),
+                                                              ),
+                                                              decoration:
+                                                                  checkBoxChecked
+                                                                      ? BoxDecoration(
+                                                                          color:
+                                                                              Colors.white,
+                                                                          //
+                                                                          //                                  borderRadius:
+                                                                          //     BorderRadius.circular(5.0)
+                                                                        )
+                                                                      : BoxDecoration(
+                                                                          border: Border.all(
+                                                                              width: 2.0,
+                                                                              color: Colors.white,
+                                                                              style: BorderStyle.solid),
+                                                                          shape: BoxShape.rectangle),
                                                             ),
                                                           ),
-                                                        ],
-                                                      ),
-                                                      SizedBox(
-                                                        height: 80.0,
-                                                      ),
-                                                      isCustomerDataEmpty
-                                                          ? GestureDetector(
-                                                              onTap: () {
-                                                                Navigator.push(
-                                                                    context,
-                                                                    MaterialPageRoute(
-                                                                      builder:
-                                                                          (context) =>
-                                                                              LoginPage(
-                                                                        isComeFromCart:
-                                                                            false,
-                                                                      ),
-                                                                    ));
-                                                              },
-                                                              child: Container(
-                                                                margin: EdgeInsets
-                                                                    .symmetric(
-                                                                        horizontal:
-                                                                            20.0),
-                                                                alignment:
-                                                                    Alignment
-                                                                        .center,
-                                                                padding: EdgeInsets
-                                                                    .symmetric(
-                                                                        vertical:
-                                                                            10.0,
-                                                                        horizontal:
-                                                                            20.0),
-                                                                width: MediaQuery.of(
-                                                                            context)
-                                                                        .size
-                                                                        .width -
-                                                                    100,
-                                                                child: Text(
-                                                                  "LOGIN",
-                                                                  style: checkBoxChecked
-                                                                      ? Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .headline5
-                                                                      : Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .button
-                                                                  // : TextStyle(
-                                                                  //     color: checkBoxChecked
-                                                                  //         ? Colors
-                                                                  //             .black
-                                                                  //         : Colors
-                                                                  //             .white,
-                                                                  //     fontSize:
-                                                                  //         16.0,
-                                                                  //     fontWeight:
-                                                                  //         FontWeight.bold)
-                                                                  ,
-                                                                ),
-                                                                decoration:
-                                                                    checkBoxChecked
-                                                                        ? BoxDecoration(
-                                                                            color:
-                                                                                Colors.white,
-                                                                            // borderRadius:
-                                                                            //     BorderRadius.circular(5.0)
-                                                                          )
-                                                                        : BoxDecoration(
-                                                                            border: Border.all(
-                                                                                width: 2.0,
-                                                                                color: Colors.white,
-                                                                                style: BorderStyle.solid),
-                                                                            shape: BoxShape.rectangle),
-                                                              ),
-                                                            )
-                                                          : GestureDetector(
-                                                              onTap: () {
-                                                                Map<String,
-                                                                        String>
-                                                                    flexiPlanData =
-                                                                    <String,
-                                                                        String>{
-                                                                  "plan_price":
-                                                                      flexiPayController
-                                                                          .text,
-                                                                  "plan_gold_weight":
-                                                                      flexiGoldController
-                                                                          .text,
-                                                                  "plan_duration":
-                                                                      flexiPlanDurationController
-                                                                          .text,
-                                                                  "digi_plan_type":
-                                                                      getDigiPlanType(),
-                                                                  "description":
-                                                                      flexiPlanModel!
-                                                                              .description ??
-                                                                          "Description"
-                                                                };
+                                                    SizedBox(
+                                                      height: 15.0,
+                                                    ),
+                                                  ],
+                                                )))
+                                      ],
+                                    );
+                                  }),
+                                ),
+                              );
+                            }
+                          },
+                          //child:
+                        ),
+                        SizedBox(
+                          height: 20.0,
+                        ),
+                        digiGoldPlanFileStream != null
+                            ? StreamBuilder(
+                                stream: digiGoldPlanFileStream!,
+                                builder: (context, snapshot) {
+                                  if (snapshot.hasData) {
+                                    getFile(snapshot, digiGoldProvider);
+                                  }
 
-                                                                Navigator.push(
-                                                                    context,
-                                                                    MaterialPageRoute(
-                                                                      builder:
-                                                                          (context) =>
-                                                                              DigiGoldPlanOrderPage(
-                                                                        digiGoldPlanModel:
-                                                                            flexiPlanModel!,
-                                                                        flexiPlanData:
-                                                                            flexiPlanData,
-                                                                      ),
-                                                                    ));
-                                                              },
-                                                              child: Container(
-                                                                margin: EdgeInsets
-                                                                    .symmetric(
-                                                                        horizontal:
-                                                                            20.0),
-                                                                alignment:
-                                                                    Alignment
-                                                                        .center,
-                                                                padding: EdgeInsets
-                                                                    .symmetric(
-                                                                        vertical:
-                                                                            10.0,
-                                                                        horizontal:
-                                                                            20.0),
-                                                                width: MediaQuery.of(
-                                                                            context)
-                                                                        .size
-                                                                        .width -
-                                                                    100,
-                                                                child: Text(
-                                                                  "PROCEED TO PAY",
-                                                                  style: TextStyle(
-                                                                      color: checkBoxChecked
-                                                                          ? Colors
-                                                                              .black
-                                                                          : Colors
-                                                                              .white,
-                                                                      fontSize:
-                                                                          16.0,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .bold),
-                                                                ),
-                                                                decoration:
-                                                                    checkBoxChecked
-                                                                        ? BoxDecoration(
-                                                                            color:
-                                                                                Colors.white,
-                                                                            //
-                                                                            //                                  borderRadius:
-                                                                            //     BorderRadius.circular(5.0)
-                                                                          )
-                                                                        : BoxDecoration(
-                                                                            border: Border.all(
-                                                                                width: 2.0,
-                                                                                color: Colors.white,
-                                                                                style: BorderStyle.solid),
-                                                                            shape: BoxShape.rectangle),
-                                                              ),
-                                                            ),
-                                                      //
-                                                      // GestureDetector(
-                                                      //         onTap: () {
-                                                      //           // Navigator.push(context, MaterialPageRoute(builder: (context) => DigiGoldPlanOrderPage(),));
-                                                      //         },
-                                                      //         child: Container(
-                                                      //           margin: EdgeInsets.symmetric(`
+                                  Widget body;
+                                  print(
+                                      "!snapshot.hasData ${!snapshot.hasData}");
+                                  print(
+                                      "snapshot.data is DownloadProgress ${snapshot.data is DownloadProgress}");
+                                  final loading = !snapshot.hasData ||
+                                      snapshot.data is DownloadProgress;
+                                  // DownloadProgress? progress =
+                                  //     snapshot.data as DownloadProgress?;
+                                  print("loading $loading");
+                                  if (snapshot.hasError) {
+                                    print(
+                                        "snapshot error ${snapshot.error.toString()}");
+                                    body = SizedBox();
+                                  } else if (loading) {
+                                    body = SizedBox(
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        height:
+                                            MediaQuery.of(context).size.height /
+                                                2,
+                                        child: Center(
+                                          child: CircularProgressIndicator(
+                                            color:
+                                                // Colors.red,
+                                                Theme.of(context).primaryColor,
+                                          ),
+                                        ));
+                                    print("snapshot.loading");
+                                  } else {
+                                    print(
+                                        "digiGoldProvider.fileInfoFetching ${digiGoldProvider.fileInfoFetching}");
 
-                                                      //               horizontal: 20.0),
-                                                      //           alignment: Alignment.center,
-                                                      //           padding: EdgeInsets.symmetric(
-                                                      //               vertical: 10.0, horizontal: 20.0),
-                                                      //           width: MediaQuery.of(context)
-                                                      //                   .size
-                                                      //                   .width -
-                                                      //               100,
-                                                      //           child: Text(
-                                                      //             "LOGIN",
-                                                      //             style: TextStyle(
-                                                      //                 color: Colors.white,
-                                                      //                 fontSize: 16.0,
-                                                      //                 fontWeight: FontWeight.bold),
-                                                      //           ),
-                                                      //           decoration: BoxDecoration(
-                                                      //               color: Colors.black,
-                                                      //               shape: BoxShape.rectangle),
-                                                      //         ),
-                                                      //       )
-                                                      //     :
-
-                                                      // Container(
-                                                      //     margin: EdgeInsets.symmetric(
-                                                      //         horizontal: 20.0),
-                                                      //     alignment: Alignment.center,
-                                                      //     padding: EdgeInsets.symmetric(
-                                                      //         vertical: 10.0, horizontal: 20.0),
-                                                      //     width: MediaQuery.of(context)
-                                                      //             .size
-                                                      //             .width -
-                                                      //         100,
-
-                                                      //     child: Text(
-                                                      //       "PROCEED TO PAY",
-                                                      //       style: TextStyle(
-                                                      //           color: Colors.white,
-                                                      //           fontSize: 16.0,
-                                                      //           fontWeight: FontWeight.bold),
-                                                      //     ),
-                                                      //     decoration: BoxDecoration(
-                                                      //         color: Colors.black,
-                                                      //         shape: BoxShape.rectangle),
-                                                      //   ),
-                                                      SizedBox(
-                                                        height: 15.0,
-                                                      ),
-                                                    ],
-                                                  )
-                                                  //   },
-                                                  //   //child:                                           ),
-                                                  // ),
-                                                  ))
+                                    if (digiGoldProvider.fileInfoFetching !=
+                                        null) {
+                                      if (digiGoldProvider.fileInfoFetching!) {
+                                        body = SizedBox(
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width,
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height -
+                                                200,
+                                            child: Center(
+                                              child: CircularProgressIndicator(
+                                                color: Theme.of(context)
+                                                    .primaryColor,
+                                                // Colors.yellow,
+                                              ),
+                                            ));
+                                      } else {
+                                        body = SizedBox();
+                                      }
+                                    } else {
+                                      body = Column(
+                                        children: [
+                                          ...getGoldPlanList(),
                                         ],
                                       );
-                                    }),
-                                  ),
-                                );
-                              }
-                            },
-                            //child:
-                          ),
-                          SizedBox(
-                            height: 20.0,
-                          ),
-                          Column(
-                            children: [
-                              ...getGoldPlanList(),
-                            ],
-                          )
-                        ],
-                      )
-                    : isDigiGoldPlanLoading
-                        ? Container(
-                            color: Colors.white,
-                            height: MediaQuery.of(context).size.height -
-                                (kToolbarHeight + 110),
-                            child: Center(
-                                child: CircularProgressIndicator(
-                              color: Theme.of(context).primaryColor,
-                            )),
-                          )
-                        :
+                                    }
+                                    print("snapshot.data ${snapshot.data}");
+                                  }
+                                  return body;
+                                },
+                              )
+                            : SizedBox(
+                                height: MediaQuery.of(context).size.height,
+                                child: Text(
+                                    "stream is null ${digiGoldPlanFileStream != null}"),
+                              )
+                      ])
+                    : Consumer<DigiGoldProvider>(
+                        builder: (context, value, child) {
+                          if (digiGoldPlanFileStream != null) {
+                            return StreamBuilder(
+                              stream: digiGoldPlanFileStream!,
+                              builder: (context, snapshot) {
+                                Widget? body;
 
-                        // isDigiGoldPlanLoading
-                        //     ? Padding(
-                        //         padding: const EdgeInsets.only(top: 20.0),
-                        //         child: Center(
-                        //             child: CircularProgressIndicator(
-                        //                 color: Theme.of(context).primaryColor)),
-                        //       )
-                        //     : Column(
-                        //children:
-                        Column(
-                            children: [
-                              ...getGoldPlanList(),
-                            ],
-                          )
+                                if (value.fileInfoFetching != true) {
+                                  if (snapshot.hasData) {
+                                    getFile(snapshot, value);
+                                  }
+                                }
+
+                                // if (snapshot.hasData) {
+                                //     getFile(snapshot, value);
+                                //   }
+
+                                print("!snapshot.hasData ${!snapshot.hasData}");
+                                print(
+                                    "snapshot.data is DownloadProgress ${snapshot.data is DownloadProgress}");
+                                final loading = !snapshot.hasData ||
+                                    snapshot.data is DownloadProgress;
+                                // DownloadProgress? progress =
+                                //     snapshot.data as DownloadProgress?;
+                                print("loading $loading");
+                                if (snapshot.hasError) {
+                                  print(
+                                      "snapshot error ${snapshot.error.toString()}");
+                                  body = SizedBox();
+                                } else if (loading) {
+                                  body = SizedBox(
+                                      width: MediaQuery.of(context).size.width,
+                                      height:
+                                          MediaQuery.of(context).size.height /
+                                              2,
+                                      child: Center(
+                                        child: CircularProgressIndicator(
+                                          color:
+                                              // Colors.red,
+                                              Theme.of(context).primaryColor,
+                                        ),
+                                      ));
+                                  print("snapshot.loading");
+                                } else {
+                                  print(
+                                      "digiGoldProvider.fileInfoFetching ${value.fileInfoFetching}");
+                                  if (value.fileInfoFetching != null) {
+                                    if (value.fileInfoFetching!) {
+                                      body = SizedBox(
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height -
+                                              200,
+                                          child: Center(
+                                            child: CircularProgressIndicator(
+                                              color: Theme.of(context)
+                                                  .primaryColor,
+                                              // Colors.yellow,
+                                            ),
+                                          ));
+                                    } else {
+                                      body = SizedBox();
+                                    }
+                                  } else {
+                                    body = Column(
+                                      children: [
+                                        ...getGoldPlanList(),
+                                      ],
+                                    );
+                                  }
+                                  // value.fileInfoFetching
+                                  //     ?
+                                  //     :
+                                  print("snapshot.data ${snapshot.data}");
+                                }
+                                return body;
+                              },
+                            );
+                          } else {
+                            return SizedBox(
+                              height: MediaQuery.of(context).size.height / 6,
+                              child: Center(
+                                child: CircularProgressIndicator(
+                                  color: Theme.of(context).primaryColor,
+                                ),
+                              ),
+                            );
+                          }
+                        },
+                      )
+
+                // digiGoldPlanFileStream != null
+                //     ? StreamBuilder(
+                //         stream: digiGoldPlanFileStream!,
+                //         builder: (context, snapshot) {
+                //           if (snapshot.hasData) {
+                //             getFile(snapshot, digiGoldProvider);
+                //           }
+
+                //           Widget body;
+                //           print("!snapshot.hasData ${!snapshot.hasData}");
+                //           print(
+                //               "snapshot.data is DownloadProgress ${snapshot.data is DownloadProgress}");
+                //           final loading = !snapshot.hasData ||
+                //               snapshot.data is DownloadProgress;
+                //           // DownloadProgress? progress =
+                //           //     snapshot.data as DownloadProgress?;
+                //           print("loading $loading");
+                //           if (snapshot.hasError) {
+                //             print(
+                //                 "snapshot error ${snapshot.error.toString()}");
+                //             body = SizedBox();
+                //           } else if (loading) {
+                //             body = SizedBox(
+                //                 width: MediaQuery.of(context).size.width,
+                //                 height:
+                //                     MediaQuery.of(context).size.height / 2,
+                //                 child: Center(
+                //                   child: CircularProgressIndicator(
+                //                     color:
+                //                         // Colors.red,
+                //                         Theme.of(context).primaryColor,
+                //                   ),
+                //                 ));
+                //             print("snapshot.loading");
+                //           } else {
+                //             print(
+                //                 "digiGoldProvider.fileInfoFetching ${digiGoldProvider.fileInfoFetching}");
+
+                //             digiGoldProvider.fileInfoFetching
+                //                 ? body = SizedBox(
+                //                     width:
+                //                         MediaQuery.of(context).size.width,
+                //                     height:
+                //                         MediaQuery.of(context).size.height - 200,
+                //                     child: Center(
+                //                       child: CircularProgressIndicator(
+                //                         color:
+                //                             Theme.of(context).primaryColor,
+                //                         // Colors.yellow,
+                //                       ),
+                //                     ))
+                //                 : body = Column(
+                //                     children: [
+                //                       ...getGoldPlanList(),
+                //                     ],
+                //                   );
+                //             print("snapshot.data ${snapshot.data}");
+                //           }
+                //           return body;
+                //         },
+                //       )
+                //     : SizedBox(
+                //         height: MediaQuery.of(context).size.height / 6,
+                //         child: Center(
+                //           child: CircularProgressIndicator(
+                //             color: Theme.of(context).primaryColor,
+                //           ),
+                //         ),
+                //       ),
+
+                // : isDigiGoldPlanLoading
+                //     ? Container(
+                //         color: Colors.white,
+                //         height: MediaQuery.of(context).size.height -
+                //             (kToolbarHeight + 110),
+                //         child: Center(
+                //             child: CircularProgressIndicator(
+                //           color: Theme.of(context).primaryColor,
+                //         )),
+                //       )
+                //     :
 
                 // )
               ],
@@ -1116,10 +1262,26 @@ class _DigiGoldPageState extends State<DigiGoldPage> {
     );
   }
 
+  // List<Widget> getGoldPlanList() {
+  //   return listOfFilteredDigiGoldPlan
+  //       .map((e) => DigiGoldCard(digiGoldPlan: e))
+  //       .toList();
+  // }
+
   List<Widget> getGoldPlanList() {
-    return listOfFilteredDigiGoldPlan
+    return CacheMemory.listOfDigiGoldPlans
         .map((e) => DigiGoldCard(digiGoldPlan: e))
         .toList();
+  }
+
+  void getFile(AsyncSnapshot<Object?> snapshot,
+      DigiGoldProvider digiGoldProvider) async {
+    if (digiGoldProvider.fileInfoFetching != null) {
+      digiGoldProvider.setFileInfoFetching(true);
+      //  CacheMemory.listOfCategory.clear();
+      await CacheMemory.getDigiGoldFile(snapshot);
+      digiGoldProvider.setFileInfoFetching(null);
+    }
   }
 }
 // SizedBox(

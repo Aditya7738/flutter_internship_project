@@ -23,18 +23,24 @@ class LayoutDesignProvider with ChangeNotifier {
   }
 
   void setPrimary(String primary) {
-    _primary = primary;
-    notifyListeners();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _primary = primary;
+      notifyListeners();
+    });
   }
 
   void setSecondary(String secondary) {
-    _secondary = secondary;
-    notifyListeners();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _secondary = secondary;
+      notifyListeners();
+    });
   }
 
   void setBackground(String background) {
-    _background = background;
-    notifyListeners();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _background = background;
+      notifyListeners();
+    });
   }
 
   String _fontFamily = "";
