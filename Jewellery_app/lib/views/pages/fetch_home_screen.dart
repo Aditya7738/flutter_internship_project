@@ -1,5 +1,6 @@
 import 'dart:core';
 import 'package:Tiara_by_TJ/constants/constants.dart';
+import 'package:Tiara_by_TJ/helpers/db_helper.dart';
 import 'package:Tiara_by_TJ/model/layout_model.dart' as LayoutModel;
 import 'package:Tiara_by_TJ/providers/cart_provider.dart';
 import 'package:Tiara_by_TJ/providers/layoutdesign_provider.dart';
@@ -44,6 +45,9 @@ class _FetchHomeScreenState extends State<FetchHomeScreen> {
     setState(() {
       isLayoutLoading = true;
     });
+
+    DBHelper dbHelper = DBHelper();
+    
 
     LayoutModel.LayoutModel? layoutModel = await ApiService.getHomeLayout();
 

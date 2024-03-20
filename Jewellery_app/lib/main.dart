@@ -1,4 +1,6 @@
 import 'package:Tiara_by_TJ/api/api_service.dart';
+import 'package:Tiara_by_TJ/helpers/db_helper.dart';
+import 'package:Tiara_by_TJ/model/layout_model.dart' as LayoutModel;
 import 'package:Tiara_by_TJ/providers/cache_provider.dart';
 import 'package:Tiara_by_TJ/providers/category_provider.dart';
 import 'package:Tiara_by_TJ/providers/customize_options_provider.dart';
@@ -23,7 +25,13 @@ import 'dart:async';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 void main() async {
-  await ApiService.getHomeLayout();
+  WidgetsFlutterBinding.ensureInitialized();
+  LayoutModel.LayoutModel? layoutModel = await ApiService.getHomeLayout();
+  DBHelper dbHelper = DBHelper();
+  dbHelper.initDatabase();
+  if (layoutModel != null) {
+    await dbHelper.insert(layoutModel);
+  }
   runApp(const MyApp());
 }
 
