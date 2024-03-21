@@ -1,4 +1,5 @@
 import 'package:Tiara_by_TJ/api/api_service.dart';
+import 'package:Tiara_by_TJ/api/cache_memory.dart';
 import 'package:Tiara_by_TJ/views/pages/product_details_page.dart';
 
 import 'package:flutter/material.dart';
@@ -46,9 +47,9 @@ class _DetailsViewState extends State<DetailsView> {
             ProductDetailsPage(productsModel: ApiService.collectionList[i]));
       }
     } else {
-      for (int i = 0; i < ApiService.listOfProductsCategoryWise.length; i++) {
+      for (int i = 0; i < CacheMemory.listOfProducts.length; i++) {
         listOfPageView.add(ProductDetailsPage(
-            productsModel: ApiService.listOfProductsCategoryWise[i]));
+            productsModel: CacheMemory.listOfProducts[i]));
       }
     }
 

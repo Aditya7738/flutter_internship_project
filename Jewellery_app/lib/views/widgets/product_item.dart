@@ -130,8 +130,8 @@ class _ProductItemState extends State<ProductItem> {
                                 softWrap: true,
                                 overflow: TextOverflow.ellipsis,
                               ),
-                              // productsModel.salePrice == ""
-                              false
+                              productsModel.salePrice == ""
+                             
                                   ? Text(
                                       productsModel.regularPrice != ""
                                           ? "₹ ${productsModel.regularPrice ?? 20000}"
@@ -189,7 +189,7 @@ class _ProductItemState extends State<ProductItem> {
                                                 ))
                                           ],
                                           style: TextStyle(
-                                            fontSize: constraints.maxWidth / 9,
+                                            fontSize: constraints.maxWidth / 8,
                                             color: Colors.black
                                           )
                                           )),
@@ -275,31 +275,10 @@ class _ProductItemState extends State<ProductItem> {
                                     .contains(productsModel.id)) {
                                   value.removeFromCartId(productsModel.id!);
 
-                                  value.removeFromCart(
-                                      cartProductModel, productsModel.id!);
+                                  value.removeFromCart(cartProductModel, productsModel.id!);
                                 } else {
                                   value.addToCartId(productsModel.id!);
-                                  value.addToCart(cartProductModel
-                                      // CartProductModel(
-                                      //   cartProductid: productsModel.id,
-                                      //   price: productsModel.regularPrice != ""
-                                      //       ? productsModel.regularPrice ?? "20000"
-                                      //       : "0.0",
-                                      //   productName:
-                                      //       productsModel.name ?? "Jewellery",
-                                      //   quantity: "1",
-                                      //   size: 5,
-                                      //   deliveryDate:
-                                      //       deliveryDate,
-                                      //   imageUrl: productsModel.images.isEmpty
-                                      //       ? Constants.defaultImageUrl
-                                      //       : productsModel.images[0].src ??
-                                      //           Constants.defaultImageUrl,
-                                      //   sku: productsModel.sku,
-                                      //   imageId: productsModel.images.isNotEmpty
-                                      //       ? productsModel.images[0].id
-                                      //       : 0)
-                                      );
+                                  value.addToCart(cartProductModel);
                                 }
                               },
                               child: value.cartProductIds

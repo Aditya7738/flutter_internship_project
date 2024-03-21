@@ -71,6 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
     //getDataFromProvider();
     CacheProvider cacheProvider =
         Provider.of<CacheProvider>(context, listen: false);
+    print("categoryFileStream == null ${categoryFileStream == null}");
     if (categoryFileStream == null) {
       //getRequest();
       _downloadFile(cacheProvider);
@@ -346,9 +347,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             height: MediaQuery.of(context).size.height / 6,
                             child: Center(
                               child: CircularProgressIndicator(
-                                color:
-                                    // Colors.red,
-                                    Theme.of(context).primaryColor,
+                                color: Colors.red,
+                                // Theme.of(context).primaryColor,
                               ),
                             ));
                         print("snapshot.loading");
@@ -356,85 +356,92 @@ class _HomeScreenState extends State<HomeScreen> {
                         //   progress: snapshot.data as DownloadProgress?,
                         // );
                       } else {
-                        print(
-                            "categoryProvider.fileInfoFetching ${categoryProvider.fileInfoFetching}");
                         // print("categoryFileStream.length ${}");
 
-                        categoryProvider.fileInfoFetching
-                            ? body = SizedBox(
+                        if (categoryProvider.fileInfoFetching != null) {
+                          print(
+                              "categoryProvider.fileInfoFetching ${categoryProvider.fileInfoFetching!}");
+                          if (categoryProvider.fileInfoFetching!) {
+                            body = SizedBox(
                                 width: MediaQuery.of(context).size.width,
                                 height: MediaQuery.of(context).size.height / 6,
                                 child: Center(
                                   child: CircularProgressIndicator(
-                                    color: Theme.of(context).primaryColor,
-                                    // Colors.yellow,
+                                    color:
+                                        //Theme.of(context).primaryColor,
+                                        Colors.yellow,
                                   ),
-                                ))
-                            : body = SizedBox(
-                                width: MediaQuery.of(context).size.width,
-                                height: MediaQuery.of(context).size.height / 5,
-                                child: Scrollbar(
-                                  child: ListView.builder(
-                                      controller: _scrollController,
-                                      scrollDirection: Axis.horizontal,
-                                      itemCount:
-                                          CacheMemory.listOfCategory.length,
-                                      //+    (isNewCategoryLoading ? 1 : 0),
-                                      itemBuilder: (context, index) {
-                                        print(
-                                            "CacheMemory.listOfCategory.length ${CacheMemory.listOfCategory.length}");
-                                        if (index <
-                                            CacheMemory.listOfCategory.length) {
-                                          return FeatureWidget(
-                                            categoriesModel: CacheMemory
-                                                .listOfCategory[index],
-                                            isLoading: isLoading,
-                                          );
-                                        } else {
-                                          return const Center(
-                                              child: CircularProgressIndicator(
-                                            color: Color(0xffCC868A),
-                                          ));
-                                        }
-                                      }),
-                                ),
-                              );
-
-                        // body = FileInfoWidget(
-                        //   fileInfo: snapshot.requireData as FileInfo,
-                        //   clearCache: clearCache,
-                        //   removeFile: removeFile,
-                        // );
+                                ));
+                          } else {
+                            body = SizedBox();
+                          }
+                        } else {
+                          body = SizedBox(
+                            width: MediaQuery.of(context).size.width,
+                            height: MediaQuery.of(context).size.height / 5,
+                            child: Scrollbar(
+                              child: ListView.builder(
+                                  controller: _scrollController,
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: CacheMemory.listOfCategory.length,
+                                  //+    (isNewCategoryLoading ? 1 : 0),
+                                  itemBuilder: (context, index) {
+                                    print(
+                                        "CacheMemory.listOfCategory.length ${CacheMemory.listOfCategory.length}");
+                                    if (index <
+                                        CacheMemory.listOfCategory.length) {
+                                      return FeatureWidget(
+                                        categoriesModel:
+                                            CacheMemory.listOfCategory[index],
+                                        isLoading: isLoading,
+                                      );
+                                    } else {
+                                      return const Center(
+                                          child: CircularProgressIndicator(
+                                        color: Color(0xffCC868A),
+                                      ));
+                                    }
+                                  }),
+                            ),
+                          );
+                        }
                         print("snapshot.data ${snapshot.data}");
                       }
-                      return body;
-                      // return Container(
-                      //   margin: const EdgeInsets.symmetric(
-                      //       horizontal: 10.0, vertical: 10.0),
-                      //   height: MediaQuery.of(context).size.height / 6,
-                      //   child: Scrollbar(
-                      //     child: ListView.builder(
-                      //         controller: _scrollController,
-                      //         scrollDirection: Axis.horizontal,
-                      //         itemCount: ApiService.listOfCategory.length +
-                      //             (isNewCategoryLoading ? 1 : 0),
-                      //         itemBuilder: (context, index) {
-                      //           if (index < ApiService.listOfCategory.length) {
-                      //             return FeatureWidget(
-                      //               categoriesModel:
-                      //                   ApiService.listOfCategory[index],
-                      //               isLoading: isLoading,
-                      //             );
-                      //           } else {
-                      //             return const Center(
-                      //                 child: CircularProgressIndicator(
-                      //               color: Color(0xffCC868A),
-                      //             ));
-                      //           }
-                      //         }),
-                      //   ),
+
+                      // body = FileInfoWidget(
+                      //   fileInfo: snapshot.requireData as FileInfo,
+                      //   clearCache: clearCache,
+                      //   removeFile: removeFile,
                       // );
+                      return body;
                     },
+
+                    // return Container(
+                    //   margin: const EdgeInsets.symmetric(
+                    //       horizontal: 10.0, vertical: 10.0),
+                    //   height: MediaQuery.of(context).size.height / 6,
+                    //   child: Scrollbar(
+                    //     child: ListView.builder(
+                    //         controller: _scrollController,
+                    //         scrollDirection: Axis.horizontal,
+                    //         itemCount: ApiService.listOfCategory.length +
+                    //             (isNewCategoryLoading ? 1 : 0),
+                    //         itemBuilder: (context, index) {
+                    //           if (index < ApiService.listOfCategory.length) {
+                    //             return FeatureWidget(
+                    //               categoriesModel:
+                    //                   ApiService.listOfCategory[index],
+                    //               isLoading: isLoading,
+                    //             );
+                    //           } else {
+                    //             return const Center(
+                    //                 child: CircularProgressIndicator(
+                    //               color: Color(0xffCC868A),
+                    //             ));
+                    //           }
+                    //         }),
+                    //   ),
+                    // );
                   )
                 : SizedBox(
                     height: MediaQuery.of(context).size.height / 6,
@@ -741,9 +748,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void getFile(AsyncSnapshot<Object?> snapshot,
       CategoryProvider categoryProvider) async {
-    categoryProvider.setFileInfoFetching(true);
-    //  CacheMemory.listOfCategory.clear();
-    await CacheMemory.getCategoryFile(snapshot);
-    categoryProvider.setFileInfoFetching(false);
+    if (categoryProvider.fileInfoFetching != null) {
+      categoryProvider.setFileInfoFetching(true);
+      //  CacheMemory.listOfCategory.clear();
+      await CacheMemory.getCategoryFile(snapshot);
+      categoryProvider.setFileInfoFetching(null);
+    }
   }
 }

@@ -1,4 +1,7 @@
+import 'package:Tiara_by_TJ/api/cache_memory.dart';
+import 'package:Tiara_by_TJ/constants/constants.dart';
 import 'package:Tiara_by_TJ/model/products_model.dart';
+import 'package:Tiara_by_TJ/providers/cache_provider.dart';
 import 'package:Tiara_by_TJ/providers/cart_provider.dart';
 import 'package:Tiara_by_TJ/providers/category_provider.dart';
 import 'package:Tiara_by_TJ/providers/filteroptions_provider.dart';
@@ -12,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:Tiara_by_TJ/api/api_service.dart';
 
 import 'package:Tiara_by_TJ/views/widgets/product_item.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:provider/provider.dart';
 import 'package:badges/badges.dart' as badges;
 
@@ -39,6 +43,8 @@ class _ProductPageState extends State<ProductPage> {
 
   bool isCollectionLoading = false;
 
+  Stream<FileResponse>? productFileStream;
+
   @override
   void initState() {
     super.initState();
@@ -47,8 +53,13 @@ class _ProductPageState extends State<ProductPage> {
     filterOptionsProvider =
         Provider.of<FilterOptionsProvider>(context, listen: false);
 
-    if (widget.fromFetchHome == false) {
-      getProducts();
+    // if (widget.fromFetchHome == false) {
+    //   getProducts();
+    // }
+
+    print("productFileStream == null ${productFileStream == null}");
+    if (productFileStream == null) {
+      _downloadFile();
     }
 
     _scrollController.addListener(() async {
@@ -61,6 +72,18 @@ class _ProductPageState extends State<ProductPage> {
         loadMoreData();
       }
     });
+  }
+
+  void _downloadFile() {
+    String productsUri =
+        "${Constants.baseUrl}/wp-json/wc/v3/products?consumer_key=${Constants.consumerKey}&consumer_secret=${Constants.consumerSecret}&category=${widget.id}&per_page=100&page=1";
+    if (mounted) {
+      setState(() {
+        productFileStream = DefaultCacheManager()
+            .getFileStream(productsUri, withProgress: true);
+      });
+      print("productFileStream == null ${productFileStream == null}");
+    }
   }
 
   void loadMoreData() async {
@@ -83,18 +106,6 @@ class _ProductPageState extends State<ProductPage> {
     }
   }
 
-  getCollections() async {
-    setState(() {
-      isCollectionLoading = true;
-    });
-    ApiService.collectionList.clear();
-    await ApiService.getCollections(collectionId: widget.id, pageNo: 1);
-
-    setState(() {
-      isCollectionLoading = false;
-    });
-  }
-
   Future<void> getProducts() async {
     bool isThereInternet = await ApiService.checkInternetConnection(context);
     if (isThereInternet) {
@@ -115,15 +126,20 @@ class _ProductPageState extends State<ProductPage> {
     super.dispose();
   }
 
-  // bool isSearchBarUsed = false;
-
-  // bool isSearchFieldEmpty = false;
-  // String searchText = "";
-
-  // bool isProductListEmpty = false;
+  void getFile(
+      AsyncSnapshot<Object?> snapshot, CacheProvider cacheProvider) async {
+    if (cacheProvider.fileInfoFetching != null) {
+      cacheProvider.setFileInfoFetching(true);
+      //  CacheMemory.cacheProviderValue.clear();
+      await CacheMemory.getProductsFile(snapshot);
+      cacheProvider.setFileInfoFetching(null);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    CacheProvider cacheProvider =
+        Provider.of<CacheProvider>(context, listen: false);
     double deviceWidth = MediaQuery.of(context).size.width;
     print("deviceWidth / 20 ${deviceWidth / 31}");
     return Scaffold(
@@ -189,21 +205,8 @@ class _ProductPageState extends State<ProductPage> {
         body: SingleChildScrollView(
           child: Consumer<CategoryProvider>(
               builder: (context, categoryProviderValue, child) {
-            // if (categoryProviderValue.isCategoryProductFetching
-            //     //|| filterOptionsProvider.isFilteredListLoading
-            //     ) {
-            //   return SizedBox(
-            //     height: MediaQuery.of(context).size.height - 150,
-            //     child: const Center(
-            //       child: CircularProgressIndicator(
-            //         backgroundColor: Colors.black,
-            //         color: Colors.white,
-            //       ),
-            //     ),
-            //   );
-            // } else {
             print("product page ${MediaQuery.of(context).size.width}");
-print("widget.fromFetchHome ${widget.fromFetchHome}");
+            print("widget.fromFetchHome ${widget.fromFetchHome}");
             return Column(
               children: [
                 Consumer<FilterOptionsProvider>(
@@ -218,9 +221,6 @@ print("widget.fromFetchHome ${widget.fromFetchHome}");
                               scrollDirection: Axis.horizontal,
                               itemCount: value.list.length,
                               itemBuilder: (context, index) {
-                                // print("value.list[index][parent] == price_range ${value.list[index]["parent"] == "price_range"}");
-
-                                // print( "₹${value.list[index]["price_range"]["min_price"]}");
                                 return Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 8.0),
@@ -281,123 +281,200 @@ print("widget.fromFetchHome ${widget.fromFetchHome}");
                           );
                   },
                 ),
-                //  if (categoryProviderValue.isCategoryProductFetching
-                //       //|| filterOptionsProvider.isFilteredListLoading
-                //       ) {
-                //     return SizedBox(
-                //       height: MediaQuery.of(context).size.height - 150,
-                //       child: const Center(
-                //         child: CircularProgressIndicator(
-                //           backgroundColor: Colors.black,
-                //           color: Colors.white,
+                // categoryProviderValue.isCategoryProductFetching
+                //     ? SizedBox(
+                //         width: MediaQuery.of(context).size.width,
+                //         height: MediaQuery.of(context).size.height - 136,
+                //         child: const Center(
+                //           child: CircularProgressIndicator(
+                //             backgroundColor: Colors.black,
+                //             color: Colors.white,
+                //           ),
                 //         ),
-                //       ),
-                //     );
-                //   } else {
-                categoryProviderValue.isCategoryProductFetching
-                    ? SizedBox(
-                        width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.height - 136,
-                        child: const Center(
-                          child: CircularProgressIndicator(
-                            backgroundColor: Colors.black,
-                            color: Colors.white,
-                          ),
-                        ),
-                      )
-                    : 
-                    
-                    widget.fromFetchHome == false ? 
-                        SizedBox(
-                        width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.height - 136,
-                        child: Scrollbar(
-                          child: GridView.builder(
-                              controller: _scrollController,
-                              itemCount: ApiService.listOfProductsCategoryWise.length +
-                                      (isLoading || !isThereMoreProducts
-                                          ? 1
-                                          : 0),
-                              gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                childAspectRatio: 0.64,
-                                
-                                crossAxisCount:
-                                    MediaQuery.of(context).size.width > 600
-                                        ? 3
-                                        : 2,
-                              ),
-                              itemBuilder: (BuildContext context, int index) {
-                                print("index <ApiService.listOfProductsCategoryWise.length ${index <
-                                    ApiService
-                                        .listOfProductsCategoryWise.length}");
-                                if (index <
-                                    ApiService
-                                        .listOfProductsCategoryWise.length) {
-                                  print(" productIndex: $index");
-                                  return ProductItem(
-                                    productIndex: index,
-                                    productsModel: ApiService
-                                        .listOfProductsCategoryWise[index], fromFetchHome: widget.fromFetchHome,
-                                  );
-                                } else if (!isThereMoreProducts ||
-                                    categoryProviderValue.isProductListEmpty) {
-                                  return Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        vertical: 15.0, horizontal: 10.0),
-                                    child: Center(
-                                        child: Text(
-                                      "There are no more products",
-                                      style: TextStyle(
-                                          fontSize: deviceWidth / 33,
-                                          fontWeight: FontWeight.bold),
-                                    )),
-                                  );
+                //       )
+                //     :
+
+                widget.fromFetchHome == false
+                    ? productFileStream != null
+                        ? StreamBuilder(
+                            stream: productFileStream!,
+                            builder: (context, snapshot) {
+                              print(
+                                  "cacheProvider.fileInfoFetching != true ${cacheProvider.fileInfoFetching != true}");
+                              if (cacheProvider.fileInfoFetching != true) {
+                                print("!snapshot.hasData ${!snapshot.hasData}");
+                                if (snapshot.hasData) {
+                                  getFile(snapshot, cacheProvider);
                                 } else {
-                                  return const Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        vertical: 15.0, horizontal: 10.0),
+                                  cacheProvider.setIsProductListEmpty(true);
+                                }
+                              }
+
+                              Widget body;
+
+                              print(
+                                  "snapshot.data is DownloadProgress ${snapshot.data is DownloadProgress}");
+                              final loading = !snapshot.hasData ||
+                                  snapshot.data is DownloadProgress;
+                              // DownloadProgress? progress =
+                              //     snapshot.data as DownloadProgress?;
+                              print("loading $loading");
+                              if (snapshot.hasError) {
+                                body = SizedBox();
+                                print(
+                                    "snapshot error ${snapshot.error.toString()}");
+                              }
+                              //   uncomment below code
+                              else if (loading) {
+                                body = SizedBox(
+                                    width: MediaQuery.of(context).size.width,
+                                    height: MediaQuery.of(context).size.height -
+                                        136,
                                     child: Center(
-                                        child: CircularProgressIndicator(
-                                      color: Color(0xffCC868A),
-                                    )),
+                                      child: CircularProgressIndicator(
+                                        color:
+                                            // Colors.red,
+                                            Theme.of(context).primaryColor,
+                                      ),
+                                    ));
+                                print("snapshot.loading");
+                                //  p_i.ProgressIndicator(
+                                //   progress: snapshot.data as DownloadProgress?,
+                                // );
+                              } else {
+                                // print("productFileStream.length ${}");
+
+                                if (cacheProvider.fileInfoFetching != null) {
+                                  print(
+                                      "cacheProvider.fileInfoFetching ${cacheProvider.fileInfoFetching!}");
+                                  if (cacheProvider.fileInfoFetching!) {
+                                    body = SizedBox(
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        height:
+                                            MediaQuery.of(context).size.height -
+                                                136,
+                                        child: Center(
+                                          child: CircularProgressIndicator(
+                                            color:
+                                                //Theme.of(context).primaryColor,
+                                                Colors.yellow,
+                                          ),
+                                        ));
+                                  } else {
+                                    body = SizedBox();
+                                  }
+                                } else {
+                                  print(
+                                      "CacheMemory.listOfProducts.length ${CacheMemory.listOfProducts.length}");
+                                  body = SizedBox(
+                                    width: MediaQuery.of(context).size.width,
+                                    height: MediaQuery.of(context).size.height -
+                                        136,
+                                    child: Scrollbar(
+                                      child: GridView.builder(
+                                          controller: _scrollController,
+                                          itemCount: CacheMemory
+                                                  .listOfProducts.length +
+                                              (isLoading || !isThereMoreProducts
+                                                  ? 1
+                                                  : 0),
+                                          gridDelegate:
+                                              SliverGridDelegateWithFixedCrossAxisCount(
+                                            childAspectRatio: 0.64,
+                                            crossAxisCount:
+                                                MediaQuery.of(context)
+                                                            .size
+                                                            .width >
+                                                        600
+                                                    ? 3
+                                                    : 2,
+                                          ),
+                                          itemBuilder: (BuildContext context,
+                                              int index) {
+                                            print(
+                                                "index < CacheMemory.listOfProducts.length ${index < CacheMemory.listOfProducts.length}");
+                                            if (index <
+                                                CacheMemory
+                                                    .listOfProducts.length) {
+                                              print(" productIndex: $index");
+                                              return ProductItem(
+                                                productIndex: index,
+                                                productsModel: CacheMemory
+                                                    .listOfProducts[index],
+                                                fromFetchHome:
+                                                    widget.fromFetchHome,
+                                              );
+                                            } else if (!isThereMoreProducts ||
+                                                cacheProvider
+                                                    .isProductListEmpty) {
+                                              return Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                    vertical: 15.0,
+                                                    horizontal: 10.0),
+                                                child: Center(
+                                                    child: Text(
+                                                  "There are no more products",
+                                                  style: TextStyle(
+                                                      fontSize:
+                                                          deviceWidth / 33,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                )),
+                                              );
+                                            } else {
+                                              return const Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                    vertical: 15.0,
+                                                    horizontal: 10.0),
+                                                child: Center(
+                                                    child:
+                                                        CircularProgressIndicator(
+                                                  color: Color(0xffCC868A),
+                                                )),
+                                              );
+                                            }
+                                          }),
+                                    ),
                                   );
                                 }
-                              }),
-                        ),
-                      )
-                        
-                        :
-
-                    SizedBox(
+                                print("snapshot.data ${snapshot.data}");
+                              }
+                              return body;
+                            },
+                          )
+                        : SizedBox(
+                            height: MediaQuery.of(context).size.height / 6,
+                            child: Center(
+                              child: CircularProgressIndicator(
+                                color: Theme.of(context).primaryColor,
+                              ),
+                            ),
+                          )
+                    : SizedBox(
                         width: MediaQuery.of(context).size.width,
                         height: MediaQuery.of(context).size.height - 136,
                         child: Scrollbar(
                           child: GridView.builder(
                               controller: _scrollController,
-                              itemCount:ApiService
-                                          .collectionList.length +
-                                      (isLoading || !isThereMoreProducts
-                                          ? 1
-                                          : 0),
+                              itemCount: ApiService.collectionList.length +
+                                  (isLoading || !isThereMoreProducts ? 1 : 0),
                               gridDelegate:
                                   SliverGridDelegateWithFixedCrossAxisCount(
                                 childAspectRatio: 0.64,
-                                
                                 crossAxisCount:
                                     MediaQuery.of(context).size.width > 600
                                         ? 3
                                         : 2,
                               ),
                               itemBuilder: (BuildContext context, int index) {
-                                if (index <
-                                    ApiService
-                                        .collectionList.length) {
+                                if (index < ApiService.collectionList.length) {
                                   print(" productIndex: $index");
                                   return ProductItem(
                                     productIndex: index,
-                                    productsModel: ApiService
-                                        .collectionList[index], fromFetchHome: widget.fromFetchHome,
+                                    productsModel:
+                                        ApiService.collectionList[index],
+                                    fromFetchHome: widget.fromFetchHome,
                                   );
                                 } else if (!isThereMoreProducts ||
                                     categoryProviderValue.isProductListEmpty) {
@@ -429,7 +506,5 @@ print("widget.fromFetchHome ${widget.fromFetchHome}");
             );
           }),
         ));
-
-
   }
 }

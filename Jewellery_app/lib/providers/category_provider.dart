@@ -31,10 +31,10 @@ class CategoryProvider with ChangeNotifier {
     });
   }
 
-  bool _fileInfoFetching = false;
-  bool get fileInfoFetching => _fileInfoFetching;
+  bool? _fileInfoFetching = false;
+  bool? get fileInfoFetching => _fileInfoFetching;
 
-  void setFileInfoFetching(bool fileInfoFetching) {
+  void setFileInfoFetching(bool? fileInfoFetching) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _fileInfoFetching = fileInfoFetching;
       notifyListeners();

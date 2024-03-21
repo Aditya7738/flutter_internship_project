@@ -216,8 +216,8 @@ class _DashboardPageState extends State<DashboardPage> {
   Widget build(BuildContext context) {
     final tabs = <Widget>[
       DigiGoldPage(),
-     FetchHomeScreen(),
-      //const HomeScreen(),
+    FetchHomeScreen(),
+     //const HomeScreen(),
       AccountPage()
     ];
     double deviceWidth = MediaQuery.of(context).size.width;

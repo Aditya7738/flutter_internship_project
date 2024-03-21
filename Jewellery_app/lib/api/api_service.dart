@@ -34,11 +34,11 @@ class ApiService {
   static Future<bool> checkInternetConnection(BuildContext context) async {
     final connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.none) {
-      return await Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => NoInternetConnectionPage(),
-          ));
+      // return await Navigator.push(
+      //     context,
+      //     MaterialPageRoute(
+      //       builder: (context) => NoInternetConnectionPage(),
+      //     ));
       return true;
     } else {
       return true;
@@ -113,14 +113,16 @@ class ApiService {
     return false;
   }
 
+  static String productsUri = "";
+
   static Future<List<ProductsModel>> fetchProductsCategoryWise(
       {required int id, required int pageNo}) async {
     print("categoryId $id");
     //checkInternetConnection(context);
     //${Constants.baseUrl}/wp-json/wc/v3/products?consumer_key=ck_33882e17eeaff38b20ac7c781156024bc2d6af4a&consumer_secret=cs_df67b056d05606c05275b571ab39fa508fcdd7b9&category=230
-    String categoryUri =
-        "${Constants.baseUrl}/wp-json/wc/v3/products?consumer_key=${Constants.consumerKey}&consumer_secret=${Constants.consumerSecret}&category=$id&per_page=30&page=$pageNo";
-    Uri uri = Uri.parse(categoryUri);
+    productsUri =
+        "${Constants.baseUrl}/wp-json/wc/v3/products?consumer_key=${Constants.consumerKey}&consumer_secret=${Constants.consumerSecret}&category=$id&per_page=100&page=$pageNo";
+    Uri uri = Uri.parse(productsUri);
     final response = await http.get(uri);
 
     responseofCategoryPages = int.parse(response.headers['x-wp-totalpages']!);
@@ -2292,9 +2294,9 @@ class ApiService {
   }
 
   static Future<LayoutModel?> getHomeLayout() async {
-    //final endpoint = "https://websockets.tanika.tech/frontend/mobile";
+    final endpoint = "https://websockets.tanika.tech/frontend/mobile";
 
-    final endpoint = "http://192.168.1.6:8082/frontend/mobile";
+    // final endpoint = "http://192.168.1.6:8082/frontend/mobile";
     String basicAuth = "Basic " +
         base64Encode(
             utf8.encode('${Constants.userName}:${Constants.password}'));
@@ -2349,7 +2351,7 @@ class ApiService {
   static Future<void> getCollections(
       {required int collectionId, required int pageNo}) async {
     final endPoint =
-        "https://tiarabytj.com/wp-json/wc/v3/products?consumer_key=ck_33882e17eeaff38b20ac7c781156024bc2d6af4a&cosumer_secret=cs_df67b056d05606c05275b571ab39fa508fcdd7b9&per_page=100&page=$pageNo&collections=$collectionId";
+        "${Constants.baseUrl}/wp-json/wc/v3/products?consumer_key=${Constants.consumerKey}&cosumer_secret=${Constants.consumerSecret}&per_page=100&page=$pageNo&collections=$collectionId";
 
     Uri uri = Uri.parse(endPoint);
 

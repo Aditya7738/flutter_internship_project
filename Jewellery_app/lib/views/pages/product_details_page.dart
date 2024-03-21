@@ -477,7 +477,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                 fontSize: (deviceWidth / 36) + 4,
                               )),
                     const SizedBox(
-                      height: 10.0,
+                      height: 20.0,
                     ),
                     customizationOptionsProvider
                                 .customizeOptionsdata["enable_everything"] ==
@@ -498,7 +498,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                         "0"
                                 ? MediaQuery.of(context).size.width > 600
                                     ? 300
-                                    : MediaQuery.of(context).size.height / 2.5
+                                    : MediaQuery.of(context).size.height / 4.2
                                 : 0.0,
                             child: Scrollbar(
                               child: GridView.builder(

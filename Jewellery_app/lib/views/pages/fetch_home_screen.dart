@@ -37,7 +37,7 @@ class _FetchHomeScreenState extends State<FetchHomeScreen> {
 
     LayoutDesignProvider layoutDesignProvider =
         Provider.of<LayoutDesignProvider>(context, listen: false);
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       getLayoutDesign(layoutDesignProvider);
     });
   }

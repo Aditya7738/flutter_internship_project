@@ -1086,8 +1086,10 @@ class _DigiGoldPageState extends State<DigiGoldPage> {
                               stream: digiGoldPlanFileStream!,
                               builder: (context, snapshot) {
                                 Widget? body;
-
+                                print(
+                                    "value.fileInfoFetching != true ${value.fileInfoFetching != true}");
                                 if (value.fileInfoFetching != true) {
+                                  print("snapshot.hasData ${snapshot.hasData}");
                                   if (snapshot.hasData) {
                                     getFile(snapshot, value);
                                   }
@@ -1276,6 +1278,8 @@ class _DigiGoldPageState extends State<DigiGoldPage> {
 
   void getFile(AsyncSnapshot<Object?> snapshot,
       DigiGoldProvider digiGoldProvider) async {
+    print(
+        "digiGoldProvider.fileInfoFetching != null ${digiGoldProvider.fileInfoFetching != null}");
     if (digiGoldProvider.fileInfoFetching != null) {
       digiGoldProvider.setFileInfoFetching(true);
       //  CacheMemory.listOfCategory.clear();
