@@ -196,7 +196,7 @@ class _FetchHomeScreenState extends State<FetchHomeScreen> {
                                         MaterialPageRoute(
                                             builder: (context) => ProductPage(
                                                   id: children[i].meta!.id!,
-                                                  fromFetchHome: true,
+                                                  forCollections: true,
                                                 )));
                                   },
                                   child: Text(

@@ -1,6 +1,10 @@
+import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:Tiara_by_TJ/api/cache_memory.dart';
 import 'package:Tiara_by_TJ/constants/constants.dart';
-import 'package:Tiara_by_TJ/model/products_model.dart';
+import 'package:Tiara_by_TJ/model/products_model.dart' as AllProducts;
 import 'package:Tiara_by_TJ/providers/cache_provider.dart';
 import 'package:Tiara_by_TJ/providers/cart_provider.dart';
 import 'package:Tiara_by_TJ/providers/category_provider.dart';
@@ -13,7 +17,7 @@ import 'package:Tiara_by_TJ/views/widgets/custom_searchbar.dart';
 import 'package:Tiara_by_TJ/views/widgets/search_products_category.dart';
 import 'package:flutter/material.dart';
 import 'package:Tiara_by_TJ/api/api_service.dart';
-
+import 'package:http/http.dart' as http;
 import 'package:Tiara_by_TJ/views/widgets/product_item.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:provider/provider.dart';
@@ -21,8 +25,9 @@ import 'package:badges/badges.dart' as badges;
 
 class ProductPage extends StatefulWidget {
   final int id;
-  final bool fromFetchHome;
-  const ProductPage({super.key, required this.id, required this.fromFetchHome});
+  final bool forCollections;
+  const ProductPage(
+      {super.key, required this.id, required this.forCollections});
 
   @override
   State<ProductPage> createState() => _ProductPageState();
@@ -31,7 +36,7 @@ class ProductPage extends StatefulWidget {
 class _ProductPageState extends State<ProductPage> {
   //List<ProductOfCategoryModel> listOfProductsCategoryWise = [];
   final ScrollController _scrollController = ScrollController();
-
+  File? collectionFile;
   bool isLoading = true;
 
   bool isThereMoreProducts = false;
@@ -44,7 +49,9 @@ class _ProductPageState extends State<ProductPage> {
   bool isCollectionLoading = false;
 
   Stream<FileResponse>? productFileStream;
-
+  Stream<FileResponse>? collectionFileStream;
+  List<AllProducts.ProductsModel> listOfCollections =
+      <AllProducts.ProductsModel>[];
   @override
   void initState() {
     super.initState();
@@ -53,13 +60,18 @@ class _ProductPageState extends State<ProductPage> {
     filterOptionsProvider =
         Provider.of<FilterOptionsProvider>(context, listen: false);
 
-    // if (widget.fromFetchHome == false) {
+    // if (widget.forCollections == false) {
     //   getProducts();
     // }
-
-    print("productFileStream == null ${productFileStream == null}");
-    if (productFileStream == null) {
-      _downloadFile();
+    if (widget.forCollections == false) {
+      print("productFileStream == null ${productFileStream == null}");
+      if (productFileStream == null) {
+        _downloadFile();
+      }
+    } else {
+      if (collectionFile == null) {
+        _downloadCollectionFile(1);
+      }
     }
 
     _scrollController.addListener(() async {
@@ -68,10 +80,244 @@ class _ProductPageState extends State<ProductPage> {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
         print("REACHED END OF LIST");
-
-        loadMoreData();
+        _downloadNextCollectionsFile();
+        //loadMoreData();
       }
     });
+  }
+
+  int responseofCollectionPages = 1;
+  int increasingCollectionPageNo = 1;
+
+  _downloadCollectionFile(int pageNo) async {
+    CacheProvider cacheProvider =
+        Provider.of<CacheProvider>(context, listen: false);
+
+    String collectionsUri =
+        "${Constants.baseUrl}/wp-json/wc/v3/products?consumer_key=${Constants.consumerKey}&cosumer_secret=${Constants.consumerSecret}&per_page=100&collections=${widget.id}&page=$pageNo";
+
+    String basicAuth = "Basic " +
+        base64Encode(
+            utf8.encode('${Constants.userName}:${Constants.password}'));
+
+    print("collections basicAuth $basicAuth");
+
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': basicAuth
+    };
+
+    if (pageNo > 1) {
+      print("pageNo $pageNo");
+      // RandomAccessFile randomAccessFile = await collectionFile!.open(mode: FileMode.append);
+      print("collectionFile != null ${collectionFile != null}");
+      if (collectionFile != null) {
+        bool isPathExist = false;
+        try {
+          File file = File(collectionFile!.path);
+          isPathExist = await file.exists();
+        } catch (e) {
+          print("doFileExist error ${e.toString()}");
+          isPathExist = false;
+        }
+
+        print("isPathExist $isPathExist");
+
+        if (isPathExist) {
+          print(
+              "jsonDecode(collectionFile!.readAsStringSync()) ${jsonDecode(collectionFile!.readAsStringSync())}");
+
+          List<dynamic> oldList =
+              jsonDecode(collectionFile!.readAsStringSync());
+
+          cacheProvider.setIsMoreProductLoading(true);
+
+          File file = await DefaultCacheManager()
+              .getSingleFile(collectionsUri, headers: headers);
+
+          List<dynamic> newList = jsonDecode(file.readAsStringSync());
+
+          oldList.addAll(newList);
+
+          print("oldList length ${oldList.length}");
+
+          String json = jsonEncode(oldList);
+
+          print("new josn $json");
+
+          for (var i = 0; i < oldList.length; i++) {
+            collectionFile!.writeAsStringSync(json, mode: FileMode.write);
+          }
+          cacheProvider.setIsMoreProductLoading(false);
+        }
+      }
+    } else {
+      cacheProvider.setCollectionsProductFileInfoFetching(true);
+
+      collectionFile = await DefaultCacheManager()
+          .getSingleFile(collectionsUri, headers: headers);
+
+      cacheProvider.setCollectionsProductFileInfoFetching(false);
+    }
+
+    print("collectionFile != null ${collectionFile != null}");
+    if (collectionFile != null) {
+      if (await collectionFile!.exists()) {
+        String result = await collectionFile!.readAsString();
+        print("collectionFile result $result");
+        final json =
+            jsonDecode(http.Response(result, 200, headers: headers).body);
+        print("getCollectionsFile json $json");
+
+        listOfCollections.clear();
+        for (int i = 0; i < json.length; i++) {
+          listOfCollections.add(AllProducts.ProductsModel(
+            id: json[i]["id"],
+            name: json[i]["name"],
+            slug: json[i]["slug"],
+            permalink: json[i]["permalink"],
+            dateCreated: DateTime.tryParse(json[i]["date_created"] ?? ""),
+            dateCreatedGmt:
+                DateTime.tryParse(json[i]["date_created_gmt"] ?? ""),
+            dateModified: DateTime.tryParse(json[i]["date_modified"] ?? ""),
+            dateModifiedGmt:
+                DateTime.tryParse(json[i]["date_modified_gmt"] ?? ""),
+            type: json[i]["type"],
+            status: json[i]["status"],
+            featured: json[i]["featured"],
+            catalogVisibility: json[i]["catalog_visibility"],
+            description: json[i]["description"],
+            shortDescription: json[i]["short_description"],
+            sku: json[i]["sku"],
+            price: json[i]["price"],
+            regularPrice: json[i]["regular_price"],
+            salePrice: json[i]["sale_price"],
+            dateOnSaleFrom: json[i]["date_on_sale_from"],
+            dateOnSaleFromGmt: json[i]["date_on_sale_from_gmt"],
+            dateOnSaleTo: json[i]["date_on_sale_to"],
+            dateOnSaleToGmt: json[i]["date_on_sale_to_gmt"],
+            onSale: json[i]["on_sale"],
+            purchasable: json[i]["purchasable"],
+            totalSales: json[i]["total_sales"],
+            virtual: json[i]["virtual"],
+            downloadable: json[i]["downloadable"],
+            downloads: json[i]["downloads"] == null
+                ? []
+                : List<dynamic>.from(json[i]["downloads"]!.map((x) => x)),
+            downloadLimit: json[i]["download_limit"],
+            downloadExpiry: json[i]["download_expiry"],
+            externalUrl: json[i]["external_url"],
+            buttonText: json[i]["button_text"],
+            taxStatus: json[i]["tax_status"],
+            taxClass: json[i]["tax_class"],
+            manageStock: json[i]["manage_stock"],
+            stockQuantity: json[i]["stock_quantity"],
+            backorders: json[i]["backorders"],
+            backordersAllowed: json[i]["backorders_allowed"],
+            backordered: json[i]["backordered"],
+            lowStockAmount: json[i]["low_stock_amount"],
+            soldIndividually: json[i]["sold_individually"],
+            weight: json[i]["weight"],
+            dimensions: json[i]["dimensions"] == null
+                ? null
+                : AllProducts.Dimensions.fromJson(json[i]["dimensions"]),
+            shippingRequired: json[i]["shipping_required"],
+            shippingTaxable: json[i]["shipping_taxable"],
+            shippingClass: json[i]["shipping_class"],
+            shippingClassId: json[i]["shipping_class_id"],
+            reviewsAllowed: json[i]["reviews_allowed"],
+            averageRating: json[i]["average_rating"],
+            ratingCount: json[i]["rating_count"],
+            upsellIds: json[i]["upsell_ids"] == null
+                ? []
+                : List<dynamic>.from(json[i]["upsell_ids"]!.map((x) => x)),
+            crossSellIds: json[i]["cross_sell_ids"] == null
+                ? []
+                : List<dynamic>.from(json[i]["cross_sell_ids"]!.map((x) => x)),
+            parentId: json[i]["parent_id"],
+            purchaseNote: json[i]["purchase_note"],
+            categories: json[i]["categories"] == null
+                ? []
+                : List<AllProducts.Category>.from(json[i]["categories"]!
+                    .map((x) => AllProducts.Category.fromJson(x))),
+            tags: json[i]["tags"] == null
+                ? []
+                : List<AllProducts.Category>.from(json[i]["tags"]!
+                    .map((x) => AllProducts.Category.fromJson(x))),
+            images: json[i]["images"] == null
+                ? []
+                : List<AllProducts.ProductImage>.from(json[i]["images"]!
+                    .map((x) => AllProducts.ProductImage.fromJson(x))),
+            attributes: json[i]["attributes"] == null
+                ? []
+                : List<AllProducts.Attribute>.from(json[i]["attributes"]!
+                    .map((x) => AllProducts.Attribute.fromJson(x))),
+            defaultAttributes: json[i]["default_attributes"] == null
+                ? []
+                : List<dynamic>.from(
+                    json[i]["default_attributes"]!.map((x) => x)),
+            variations: json[i]["variations"] == null
+                ? []
+                : List<dynamic>.from(json[i]["variations"]!.map((x) => x)),
+            groupedProducts: json[i]["grouped_products"] == null
+                ? []
+                : List<dynamic>.from(
+                    json[i]["grouped_products"]!.map((x) => x)),
+            menuOrder: json[i]["menu_order"],
+            priceHtml: json[i]["price_html"],
+            relatedIds: json[i]["related_ids"] == null
+                ? []
+                : List<int>.from(json[i]["related_ids"]!.map((x) => x)),
+            metaData: json[i]["meta_data"] == null
+                ? []
+                : List<AllProducts.MetaDatum>.from(json[i]["meta_data"]!
+                    .map((x) => AllProducts.MetaDatum.fromJson(x))),
+            stockStatus: json[i]["stock_status"],
+            hasOptions: json[i]["has_options"],
+            postPassword: json[i]["post_password"],
+            subcategory: json[i]["subcategory"] == null
+                ? []
+                : List<dynamic>.from(json[i]["subcategory"]!.map((x) => x)),
+            // collections: json["collections"] == null ? [] : List<ProductsModelCollection>.from(json["collections"]!.map((x) => ProductsModelCollection.fromJson(x))),
+            // links: json["_links"] == null ? null : AllProducts.Links.fromJson(json["_links"])
+          ));
+        }
+
+        if (responseofCollectionPages == 1) {
+          Uri uri = Uri.parse(collectionsUri);
+
+          final response = await http.get(uri, headers: headers);
+
+          print("response.statusCode == 200 ${response.statusCode == 200}");
+
+          if (response.statusCode == 200) {
+            responseofCollectionPages =
+                int.parse(response.headers['x-wp-totalpages']!);
+
+            print("responseofCollectionPages $responseofCollectionPages");
+          }
+        }
+      } else {
+        print("error 404, 401");
+      }
+    }
+  }
+
+  _downloadNextCollectionsFile() async {
+    CacheProvider cacheProvider =
+        Provider.of<CacheProvider>(context, listen: false);
+    increasingCollectionPageNo++;
+    print("increasingCollectionPageNo ${increasingCollectionPageNo}");
+    print("responseofCollectionPages $responseofCollectionPages");
+    print(
+        "increasingCollectionPageNo <= responseofCollectionPages ${increasingCollectionPageNo <= responseofCollectionPages}");
+    if (increasingCollectionPageNo <= responseofCollectionPages) {
+      //  cacheProvider.setIsMoreProductLoading(true);
+      await _downloadCollectionFile(increasingCollectionPageNo);
+      //  cacheProvider.setIsMoreProductLoading(false);
+    } else {
+      cacheProvider.setIsProductListEmpty(false);
+    }
   }
 
   void _downloadFile() {
@@ -87,22 +333,10 @@ class _ProductPageState extends State<ProductPage> {
   }
 
   void loadMoreData() async {
-    if (mounted) {
-      setState(() {
-        isLoading = true;
-      });
-    }
-    if (widget.fromFetchHome == false) {
+    if (widget.forCollections == false) {
       isThereMoreProducts = await ApiService.showNextPagesCategoryProduct();
     } else {
       isThereMoreProducts = await ApiService.showNextPagesCollectionProduct();
-    }
-    // Fetch more data (e.g., using ApiService)
-
-    if (mounted) {
-      setState(() {
-        isLoading = false;
-      });
     }
   }
 
@@ -140,6 +374,9 @@ class _ProductPageState extends State<ProductPage> {
   Widget build(BuildContext context) {
     CacheProvider cacheProvider =
         Provider.of<CacheProvider>(context, listen: false);
+
+    CategoryProvider categoryProvider = Provider.of(context, listen: false);
+
     double deviceWidth = MediaQuery.of(context).size.width;
     print("deviceWidth / 20 ${deviceWidth / 31}");
     return Scaffold(
@@ -201,283 +438,264 @@ class _ProductPageState extends State<ProductPage> {
                 width: 34,
               ),
             ],
-            bottom: SearchProductsOfCategory(categoryId: widget.id)),
+            bottom: SearchProductsOfCategory(
+                categoryId: widget.id, forCollections: true)),
         body: SingleChildScrollView(
-          child: Consumer<CategoryProvider>(
-              builder: (context, categoryProviderValue, child) {
-            print("product page ${MediaQuery.of(context).size.width}");
-            print("widget.fromFetchHome ${widget.fromFetchHome}");
-            return Column(
-              children: [
-                Consumer<FilterOptionsProvider>(
-                  builder: (context, value, child) {
-                    return value.list.isEmpty
-                        ? SizedBox()
-                        : SizedBox(
-                            height: 70.0,
-                            width: MediaQuery.of(context).size.width,
-                            child: ListView.builder(
-                              padding: const EdgeInsets.all(5.0),
-                              scrollDirection: Axis.horizontal,
-                              itemCount: value.list.length,
-                              itemBuilder: (context, index) {
-                                return Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 8.0),
-                                  child: Chip(
-                                      padding: EdgeInsets.all(7.0),
-                                      label: Text(
-                                        value.list[index]["parent"] ==
-                                                "price_range"
-                                            ? "₹ ${value.list[index]["price_range"]["min_price"]} - ₹ ${value.list[index]["price_range"]["max_price"]}"
-                                            : value.list[index]["label"],
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize:
-                                                deviceWidth > 600 ? 26.0 : 16.0,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      deleteIcon: Container(
-                                        decoration: const BoxDecoration(
+          child: Column(
+            children: [
+              Consumer<FilterOptionsProvider>(
+                builder: (context, value, child) {
+                  return value.list.isEmpty
+                      ? SizedBox()
+                      : SizedBox(
+                          height: 70.0,
+                          width: MediaQuery.of(context).size.width,
+                          child: ListView.builder(
+                            padding: const EdgeInsets.all(5.0),
+                            scrollDirection: Axis.horizontal,
+                            itemCount: value.list.length,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8.0),
+                                child: Chip(
+                                    padding: EdgeInsets.all(7.0),
+                                    label: Text(
+                                      value.list[index]["parent"] ==
+                                              "price_range"
+                                          ? "₹ ${value.list[index]["price_range"]["min_price"]} - ₹ ${value.list[index]["price_range"]["max_price"]}"
+                                          : value.list[index]["label"],
+                                      style: TextStyle(
                                           color: Colors.black,
-                                          shape: BoxShape.circle,
-                                        ),
-                                        child: Icon(
-                                          Icons.close_rounded,
-                                          color: Colors.white,
-                                          size: deviceWidth > 600 ? 25.0 : 19.0,
-                                        ),
-                                      ),
-                                      onDeleted: () async {
-                                        print("ONDELETED CALLED");
-
-                                        print("index to remove $index");
-
-                                        value.removeFromList(index);
-
-                                        print("_list ${value.list}");
-
-                                        bool isThereInternet = await ApiService
-                                            .checkInternetConnection(context);
-                                        if (isThereInternet) {
-                                          categoryProviderValue
-                                              .setIsCategoryProductFetching(
-                                                  true);
-
-                                          ApiService.listOfProductsModel
-                                              .clear();
-                                          await ApiService.fetchProducts(
-                                              categoryProviderValue.searchText,
-                                              1,
-                                              filterList: value.list);
-                                          categoryProviderValue
-                                              .setIsCategoryProductFetching(
-                                                  false);
-                                        }
-                                      }),
-                                );
-                              },
-                            ),
-                          );
-                  },
-                ),
-                // categoryProviderValue.isCategoryProductFetching
-                //     ? SizedBox(
-                //         width: MediaQuery.of(context).size.width,
-                //         height: MediaQuery.of(context).size.height - 136,
-                //         child: const Center(
-                //           child: CircularProgressIndicator(
-                //             backgroundColor: Colors.black,
-                //             color: Colors.white,
-                //           ),
-                //         ),
-                //       )
-                //     :
-
-                widget.fromFetchHome == false
-                    ? productFileStream != null
-                        ? StreamBuilder(
-                            stream: productFileStream!,
-                            builder: (context, snapshot) {
-                              print(
-                                  "cacheProvider.fileInfoFetching != true ${cacheProvider.fileInfoFetching != true}");
-                              if (cacheProvider.fileInfoFetching != true) {
-                                print("!snapshot.hasData ${!snapshot.hasData}");
-                                if (snapshot.hasData) {
-                                  getFile(snapshot, cacheProvider);
-                                } else {
-                                  cacheProvider.setIsProductListEmpty(true);
-                                }
-                              }
-
-                              Widget body;
-
-                              print(
-                                  "snapshot.data is DownloadProgress ${snapshot.data is DownloadProgress}");
-                              final loading = !snapshot.hasData ||
-                                  snapshot.data is DownloadProgress;
-                              // DownloadProgress? progress =
-                              //     snapshot.data as DownloadProgress?;
-                              print("loading $loading");
-                              if (snapshot.hasError) {
-                                body = SizedBox();
-                                print(
-                                    "snapshot error ${snapshot.error.toString()}");
-                              }
-                              //   uncomment below code
-                              else if (loading) {
-                                body = SizedBox(
-                                    width: MediaQuery.of(context).size.width,
-                                    height: MediaQuery.of(context).size.height -
-                                        136,
-                                    child: Center(
-                                      child: CircularProgressIndicator(
-                                        color:
-                                            // Colors.red,
-                                            Theme.of(context).primaryColor,
-                                      ),
-                                    ));
-                                print("snapshot.loading");
-                                //  p_i.ProgressIndicator(
-                                //   progress: snapshot.data as DownloadProgress?,
-                                // );
-                              } else {
-                                // print("productFileStream.length ${}");
-
-                                if (cacheProvider.fileInfoFetching != null) {
-                                  print(
-                                      "cacheProvider.fileInfoFetching ${cacheProvider.fileInfoFetching!}");
-                                  if (cacheProvider.fileInfoFetching!) {
-                                    body = SizedBox(
-                                        width:
-                                            MediaQuery.of(context).size.width,
-                                        height:
-                                            MediaQuery.of(context).size.height -
-                                                136,
-                                        child: Center(
-                                          child: CircularProgressIndicator(
-                                            color:
-                                                //Theme.of(context).primaryColor,
-                                                Colors.yellow,
-                                          ),
-                                        ));
-                                  } else {
-                                    body = SizedBox();
-                                  }
-                                } else {
-                                  print(
-                                      "CacheMemory.listOfProducts.length ${CacheMemory.listOfProducts.length}");
-                                  body = SizedBox(
-                                    width: MediaQuery.of(context).size.width,
-                                    height: MediaQuery.of(context).size.height -
-                                        136,
-                                    child: Scrollbar(
-                                      child: GridView.builder(
-                                          controller: _scrollController,
-                                          itemCount: CacheMemory
-                                                  .listOfProducts.length +
-                                              (isLoading || !isThereMoreProducts
-                                                  ? 1
-                                                  : 0),
-                                          gridDelegate:
-                                              SliverGridDelegateWithFixedCrossAxisCount(
-                                            childAspectRatio: 0.64,
-                                            crossAxisCount:
-                                                MediaQuery.of(context)
-                                                            .size
-                                                            .width >
-                                                        600
-                                                    ? 3
-                                                    : 2,
-                                          ),
-                                          itemBuilder: (BuildContext context,
-                                              int index) {
-                                            print(
-                                                "index < CacheMemory.listOfProducts.length ${index < CacheMemory.listOfProducts.length}");
-                                            if (index <
-                                                CacheMemory
-                                                    .listOfProducts.length) {
-                                              print(" productIndex: $index");
-                                              return ProductItem(
-                                                productIndex: index,
-                                                productsModel: CacheMemory
-                                                    .listOfProducts[index],
-                                                fromFetchHome:
-                                                    widget.fromFetchHome,
-                                              );
-                                            } else if (!isThereMoreProducts ||
-                                                cacheProvider
-                                                    .isProductListEmpty) {
-                                              return Padding(
-                                                padding: EdgeInsets.symmetric(
-                                                    vertical: 15.0,
-                                                    horizontal: 10.0),
-                                                child: Center(
-                                                    child: Text(
-                                                  "There are no more products",
-                                                  style: TextStyle(
-                                                      fontSize:
-                                                          deviceWidth / 33,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                )),
-                                              );
-                                            } else {
-                                              return const Padding(
-                                                padding: EdgeInsets.symmetric(
-                                                    vertical: 15.0,
-                                                    horizontal: 10.0),
-                                                child: Center(
-                                                    child:
-                                                        CircularProgressIndicator(
-                                                  color: Color(0xffCC868A),
-                                                )),
-                                              );
-                                            }
-                                          }),
+                                          fontSize:
+                                              deviceWidth > 600 ? 26.0 : 16.0,
+                                          fontWeight: FontWeight.bold),
                                     ),
-                                  );
-                                }
-                                print("snapshot.data ${snapshot.data}");
-                              }
-                              return body;
+                                    deleteIcon: Container(
+                                      decoration: const BoxDecoration(
+                                        color: Colors.black,
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: Icon(
+                                        Icons.close_rounded,
+                                        color: Colors.white,
+                                        size: deviceWidth > 600 ? 25.0 : 19.0,
+                                      ),
+                                    ),
+                                    onDeleted: () async {
+                                      print("ONDELETED CALLED");
+
+                                      print("index to remove $index");
+
+                                      value.removeFromList(index);
+
+                                      print("_list ${value.list}");
+
+                                      bool isThereInternet = await ApiService
+                                          .checkInternetConnection(context);
+                                      if (isThereInternet) {
+                                        categoryProvider
+                                            .setIsCategoryProductFetching(true);
+
+                                        ApiService.listOfProductsModel.clear();
+                                        await ApiService.fetchProducts(
+                                            categoryProvider.searchText, 1,
+                                            filterList: value.list);
+                                        categoryProvider
+                                            .setIsCategoryProductFetching(
+                                                false);
+                                      }
+                                    }),
+                              );
                             },
-                          )
-                        : SizedBox(
-                            height: MediaQuery.of(context).size.height / 6,
-                            child: Center(
-                              child: CircularProgressIndicator(
-                                color: Theme.of(context).primaryColor,
-                              ),
+                          ),
+                        );
+                },
+              ),
+              widget.forCollections == false
+                  ? productFileStream != null
+                      ? StreamBuilder(
+                          stream: productFileStream!,
+                          builder: (context, snapshot) {
+                            print(
+                                "cacheProvider.fileInfoFetching != true ${cacheProvider.fileInfoFetching != true}");
+                            if (cacheProvider.fileInfoFetching != true) {
+                              print("!snapshot.hasData ${!snapshot.hasData}");
+                              if (snapshot.hasData) {
+                                getFile(snapshot, cacheProvider);
+                              } else {
+                                cacheProvider.setIsProductListEmpty(true);
+                              }
+                            }
+
+                            Widget body;
+
+                            print(
+                                "snapshot.data is DownloadProgress ${snapshot.data is DownloadProgress}");
+                            final loading = !snapshot.hasData ||
+                                snapshot.data is DownloadProgress;
+                            // DownloadProgress? progress =
+                            //     snapshot.data as DownloadProgress?;
+                            print("loading $loading");
+                            if (snapshot.hasError) {
+                              body = SizedBox();
+                              print(
+                                  "snapshot error ${snapshot.error.toString()}");
+                            }
+                            //   uncomment below code
+                            else if (loading) {
+                              body = SizedBox(
+                                  width: MediaQuery.of(context).size.width,
+                                  height:
+                                      MediaQuery.of(context).size.height - 176,
+                                  child: Center(
+                                    child: CircularProgressIndicator(
+                                      color:
+                                          // Colors.red,
+                                          Theme.of(context).primaryColor,
+                                    ),
+                                  ));
+                              print("snapshot.loading");
+                              //  p_i.ProgressIndicator(
+                              //   progress: snapshot.data as DownloadProgress?,
+                              // );
+                            } else {
+                              // print("productFileStream.length ${}");
+
+                              if (cacheProvider.fileInfoFetching != null) {
+                                print(
+                                    "cacheProvider.fileInfoFetching ${cacheProvider.fileInfoFetching!}");
+                                if (cacheProvider.fileInfoFetching!) {
+                                  body = SizedBox(
+                                      width: MediaQuery.of(context).size.width,
+                                      height:
+                                          MediaQuery.of(context).size.height -
+                                              176,
+                                      child: Center(
+                                        child: CircularProgressIndicator(
+                                          color:
+                                              //Theme.of(context).primaryColor,
+                                              Colors.yellow,
+                                        ),
+                                      ));
+                                } else {
+                                  body = SizedBox();
+                                }
+                              } else {
+                                print(
+                                    "CacheMemory.listOfProducts.length ${CacheMemory.listOfProducts.length}");
+                                body = SizedBox(
+                                  width: MediaQuery.of(context).size.width,
+                                  height:
+                                      MediaQuery.of(context).size.height - 176,
+                                  child: Scrollbar(
+                                    child: GridView.builder(
+                                        controller: _scrollController,
+                                        itemCount: CacheMemory
+                                                .listOfProducts.length +
+                                            (isLoading || !isThereMoreProducts
+                                                ? 1
+                                                : 0),
+                                        gridDelegate:
+                                            SliverGridDelegateWithFixedCrossAxisCount(
+                                          childAspectRatio: 0.64,
+                                          crossAxisCount: MediaQuery.of(context)
+                                                      .size
+                                                      .width >
+                                                  600
+                                              ? 3
+                                              : 2,
+                                        ),
+                                        itemBuilder:
+                                            (BuildContext context, int index) {
+                                          print(
+                                              "index < CacheMemory.listOfProducts.length ${index < CacheMemory.listOfProducts.length}");
+                                          if (index <
+                                              CacheMemory
+                                                  .listOfProducts.length) {
+                                            print(" productIndex: $index");
+                                            return ProductItem(
+                                              productIndex: index,
+                                              productsModel: CacheMemory
+                                                  .listOfProducts[index],
+                                              fromFetchHome:
+                                                  widget.forCollections,
+                                            );
+                                          } else if (!isThereMoreProducts ||
+                                              cacheProvider
+                                                  .isProductListEmpty) {
+                                            return Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  vertical: 15.0,
+                                                  horizontal: 10.0),
+                                              child: Center(
+                                                  child: Text(
+                                                "There are no more products",
+                                                style: TextStyle(
+                                                    fontSize: deviceWidth / 33,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              )),
+                                            );
+                                          } else {
+                                            return const Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  vertical: 15.0,
+                                                  horizontal: 10.0),
+                                              child: Center(
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                color: Color(0xffCC868A),
+                                              )),
+                                            );
+                                          }
+                                        }),
+                                  ),
+                                );
+                              }
+                              print("snapshot.data ${snapshot.data}");
+                            }
+                            return body;
+                          },
+                        )
+                      : SizedBox(
+                          width: deviceWidth,
+                          height: MediaQuery.of(context).size.height - 176,
+                          child: Center(
+                            child: CircularProgressIndicator(
+                              color: Theme.of(context).primaryColor,
                             ),
-                          )
-                    : SizedBox(
-                        width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.height - 136,
-                        child: Scrollbar(
-                          child: GridView.builder(
+                          ),
+                        )
+                  : collectionFile != null
+                      ? Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.height - 176,
+                          child: Scrollbar(
+                            child: GridView.builder(
                               controller: _scrollController,
-                              itemCount: ApiService.collectionList.length +
-                                  (isLoading || !isThereMoreProducts ? 1 : 0),
+                              itemCount: listOfCollections.length,
+                              // listOfCollections.length +
+                              // (isLoading || !isThereMoreProducts ? 1 : 0),
                               gridDelegate:
                                   SliverGridDelegateWithFixedCrossAxisCount(
-                                childAspectRatio: 0.64,
-                                crossAxisCount:
-                                    MediaQuery.of(context).size.width > 600
-                                        ? 3
-                                        : 2,
-                              ),
-                              itemBuilder: (BuildContext context, int index) {
-                                if (index < ApiService.collectionList.length) {
+                                      childAspectRatio: 0.64,
+                                      crossAxisCount:
+                                          deviceWidth > 600 ? 3 : 2),
+                              itemBuilder: (context, index) {
+                                print(
+                                    "listOfCollections.length ${listOfCollections.length}");
+                                if (index < listOfCollections.length) {
+                                  AllProducts.ProductsModel collectionsModel =
+                                      listOfCollections[index];
                                   print(" productIndex: $index");
                                   return ProductItem(
                                     productIndex: index,
-                                    productsModel:
-                                        ApiService.collectionList[index],
-                                    fromFetchHome: widget.fromFetchHome,
+                                    productsModel: collectionsModel,
+                                    fromFetchHome: true,
                                   );
                                 } else if (!isThereMoreProducts ||
-                                    categoryProviderValue.isProductListEmpty) {
+                                    cacheProvider.isProductListEmpty) {
                                   return Padding(
                                     padding: EdgeInsets.symmetric(
                                         vertical: 15.0, horizontal: 10.0),
@@ -499,12 +717,88 @@ class _ProductPageState extends State<ProductPage> {
                                     )),
                                   );
                                 }
-                              }),
-                        ),
-                      ),
-              ],
-            );
-          }),
+                              },
+                            ),
+                          ),
+                        )
+                      : Consumer<CacheProvider>(
+                          builder: (context, value, child) {
+                          return value.collectionsProductFileInfoFetching
+                              ? Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  height:
+                                      MediaQuery.of(context).size.height - 176,
+                                  child: Center(
+                                    child: CircularProgressIndicator(
+                                      color: Theme.of(context).primaryColor,
+                                    ),
+                                  ))
+                              : Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  height:
+                                      MediaQuery.of(context).size.height - 176,
+                                  child: Scrollbar(
+                                    child: GridView.builder(
+                                      controller: _scrollController,
+                                      itemCount:
+                                          // listOfCollections.length,
+                                          listOfCollections.length +
+                                              //(isLoading ||!isThereMoreProducts? 1: 0),
+                                              (value.isMoreProductLoading ||
+                                                      value.isProductListEmpty
+                                                  ? 1
+                                                  : 0),
+                                      gridDelegate:
+                                          SliverGridDelegateWithFixedCrossAxisCount(
+                                              childAspectRatio: 0.64,
+                                              crossAxisCount:
+                                                  deviceWidth > 600 ? 3 : 2),
+                                      itemBuilder: (context, index) {
+                                        if (index < listOfCollections.length) {
+                                          AllProducts.ProductsModel
+                                              collectionsModel =
+                                              listOfCollections[index];
+                                          print(" productIndex: $index");
+                                          return ProductItem(
+                                            productIndex: index,
+                                            productsModel: collectionsModel,
+                                            fromFetchHome: true,
+                                          );
+                                        } else if (value.isProductListEmpty) {
+                                          return Padding(
+                                            padding: EdgeInsets.symmetric(
+                                                vertical: 15.0,
+                                                horizontal: 10.0),
+                                            child: Center(
+                                                child: Text(
+                                              "There are no more products",
+                                              style: TextStyle(
+                                                  fontSize: deviceWidth / 33,
+                                                  fontWeight: FontWeight.bold),
+                                            )),
+                                          );
+                                        } else if (value.isMoreProductLoading) {
+                                          return const Padding(
+                                            padding: EdgeInsets.symmetric(
+                                                vertical: 15.0,
+                                                horizontal: 10.0),
+                                            child: Center(
+                                                child:
+                                                    CircularProgressIndicator(
+                                              color: Color(0xffCC868A),
+                                            )),
+                                          );
+                                        }
+                                      },
+                                    ),
+                                  ),
+                                );
+                        }
+
+                          //child:
+                          )
+            ],
+          ),
         ));
   }
 }

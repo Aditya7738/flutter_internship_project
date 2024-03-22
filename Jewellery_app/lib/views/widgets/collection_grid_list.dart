@@ -48,8 +48,7 @@ class _CollectionGridListState extends State<CollectionGridList> {
     //https: //tiarabytj.com/wp-json/wc/v3/products?consumer_key=ck_33882e17eeaff38b20ac7c781156024bc2d6af4a&cosumer_secret=cs_df67b056d05606c05275b571ab39fa508fcdd7b9&per_page=100&collections=12
     // String collectionsUri =
     //     "${Constants.baseUrl}/wp-json/wc/v3/products?consumer_key=${Constants.consumerKey}&cosumer_secret=${Constants.consumerSecret}&per_page=100&collections=${widget.collectionId}&page=1";
-    String collectionsUri =
-        "https://tiarabytj.com/wp-json/wc/v3/products?consumer_key=ck_33882e17eeaff38b20ac7c781156024bc2d6af4a&cosumer_secret=cs_df67b056d05606c05275b571ab39fa508fcdd7b9&per_page=100&collections=12&page=1";
+    String collectionsUri = "${Constants.baseUrl}/wp-json/wc/v3/products?consumer_key=${Constants.consumerKey}&cosumer_secret=${Constants.consumerSecret}&per_page=100&collections=${widget.collectionId}&page=1";
 
     String basicAuth = "Basic " +
         base64Encode(
@@ -186,6 +185,10 @@ class _CollectionGridListState extends State<CollectionGridList> {
             // links: json["_links"] == null ? null : AllProducts.Links.fromJson(json["_links"])
           ));
         }
+
+        listOfCollections.forEach((element) {
+          print("listOfCollections element ${jsonEncode(element)}");
+        });
       } else {
         print("error 404, 401");
       }
@@ -235,181 +238,179 @@ class _CollectionGridListState extends State<CollectionGridList> {
     // CacheProvider cacheProvider = Provider.of(context, listen: false);
 
     return FutureBuilder(
-            future: _downloadFile(),
-            builder: (context, snapshot) {
-              Widget body;
-              print("!snapshot.hasData ${!snapshot.hasData}");
-              print(
-                  "snapshot.data is DownloadProgress ${snapshot.data is DownloadProgress}");
-              final loading =
-                  !snapshot.hasData || snapshot.data is DownloadProgress;
-              print("loading $loading");
-              if (snapshot.hasError) {
-                body = SizedBox();
-                print("snapshot error ${snapshot.error.toString()}");
-              }
-              //   uncomment below code
-              else if (loading) {
-                body = SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                   height: (MediaQuery.of(context).size.height / 2) + 220,
+      future: _downloadFile(),
+      builder: (context, snapshot) {
+        Widget body;
+        print("!snapshot.hasData ${!snapshot.hasData}");
+        print(
+            "snapshot.data is DownloadProgress ${snapshot.data is DownloadProgress}");
+        final loading = snapshot.hasData || snapshot.data is DownloadProgress;
+        print("loading $loading");
+        if (snapshot.hasError) {
+          body = SizedBox();
+          print("snapshot error ${snapshot.error.toString()}");
+        }
+        //   uncomment below code
+        else if (loading) {
+          body = SizedBox(
+              width: MediaQuery.of(context).size.width,
+              height: (MediaQuery.of(context).size.height / 2) + 220,
+              child: Center(
+                child: CircularProgressIndicator(
+                  color: Colors.red,
+                  // Theme.of(context).primaryColor,
+                ),
+              ));
+          print("snapshot.loading");
+        } else {
+          body = Container(
+            width: deviceWidth,
+            height: (MediaQuery.of(context).size.height / 2) + 220,
+            child: GridView.builder(
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: 4,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  childAspectRatio: 0.64,
+                  crossAxisCount: deviceWidth > 600 ? 3 : 2),
+              itemBuilder: (context, index) {
+                
+                
+                if (index < listOfCollections.length) {
+                  AllProducts.ProductsModel collectionsModel =
+                    listOfCollections[index];
+                  print(" productIndex: $index");
+                  return ProductItem(
+                    productIndex: index,
+                    productsModel: collectionsModel,
+                    fromFetchHome: true,
+                  );
+                } else {
+                  return const Padding(
+                    padding:
+                        EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
                     child: Center(
-                      child: CircularProgressIndicator(
-                        color:
-                            Colors.red,
-                            // Theme.of(context).primaryColor,
-                      ),
-                    ));
-                print("snapshot.loading");
-              } else {
-                body = Container(
-                  width: deviceWidth,
-                  height: (MediaQuery.of(context).size.height / 2) + 220,
-                  child: GridView.builder(
-                    physics: NeverScrollableScrollPhysics(),
-                    itemCount: 4,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        childAspectRatio: 0.64,
-                        crossAxisCount: deviceWidth > 600 ? 3 : 2),
-                    itemBuilder: (context, index) {
-                      AllProducts.ProductsModel collectionsModel =
-                          listOfCollections[index];
-                      print(
-                          "index < listOfCollections.length ${index < listOfCollections.length}");
-                      if (index < listOfCollections.length) {
-                        print(" productIndex: $index");
-                        return ProductItem(
-                          productIndex: index,
-                          productsModel: collectionsModel,
-                          fromFetchHome: true,
-                        );
-                      } else {
-                        return const Padding(
-                          padding: EdgeInsets.symmetric(
-                              vertical: 15.0, horizontal: 10.0),
-                          child: Center(
-                              child: CircularProgressIndicator(
-                            color: Color(0xffCC868A),
-                          )),
-                        );
-                      }
-                    },
-                  ),
-                );
-              }
-              return body;
-            },
+                        child: CircularProgressIndicator(
+                      color: Color(0xffCC868A),
+                    )),
+                  );
+                }
+              },
+            ),
           );
-        //  StreamBuilder(
-        //     stream: collectionFile!,
-        //     builder: (context, snapshot) {
-        //       print(
-        //           "cacheProvider.collectionsfileInfoFetching != true ${cacheProvider.collectionsfileInfoFetching != true}");
-        //       if (cacheProvider.collectionsfileInfoFetching != true) {
-        //         print("!snapshot.hasData ${!snapshot.hasData}");
-        //         if (snapshot.hasData) {
-        //           getFile(snapshot, cacheProvider);
-        //         }
-        //         //  else {
-        //         //   cacheProvider.setIsProductListEmpty(true);
-        //         // }
-        //       }
+        }
+        return body;
+      },
+    );
+    //  StreamBuilder(
+    //     stream: collectionFile!,
+    //     builder: (context, snapshot) {
+    //       print(
+    //           "cacheProvider.collectionsfileInfoFetching != true ${cacheProvider.collectionsfileInfoFetching != true}");
+    //       if (cacheProvider.collectionsfileInfoFetching != true) {
+    //         print("!snapshot.hasData ${!snapshot.hasData}");
+    //         if (snapshot.hasData) {
+    //           getFile(snapshot, cacheProvider);
+    //         }
+    //         //  else {
+    //         //   cacheProvider.setIsProductListEmpty(true);
+    //         // }
+    //       }
 
-        //       Widget body;
-        //       print("!snapshot.hasData ${!snapshot.hasData}");
-        //       print(
-        //           "snapshot.data is DownloadProgress ${snapshot.data is DownloadProgress}");
-        //       final loading =
-        //           !snapshot.hasData || snapshot.data is DownloadProgress;
-        //       // DownloadProgress? progress =
-        //       //     snapshot.data as DownloadProgress?;
-        //       print("loading $loading");
-        //       if (snapshot.hasError) {
-        //         body = SizedBox();
-        //         print("snapshot error ${snapshot.error.toString()}");
-        //       }
-        //       //   uncomment below code
-        //       else if (loading) {
-        //         body = SizedBox(
-        //             width: MediaQuery.of(context).size.width,
-        //             height: MediaQuery.of(context).size.height - 200,
-        //             child: Center(
-        //               child: CircularProgressIndicator(
-        //                 color:
-        //                     // Colors.red,
-        //                     Theme.of(context).primaryColor,
-        //               ),
-        //             ));
-        //         print("snapshot.loading");
-        //       } else {
-        //         if (cacheProvider.collectionsfileInfoFetching != null) {
-        //           print(
-        //               "cacheProvider.collectionsfileInfoFetching ${cacheProvider.collectionsfileInfoFetching!}");
-        //           if (cacheProvider.collectionsfileInfoFetching!) {
-        //             body = SizedBox(
-        //                 width: MediaQuery.of(context).size.width,
-        //                 height: MediaQuery.of(context).size.height - 200,
-        //                 child: Center(
-        //                   child: CircularProgressIndicator(
-        //                     color:
-        //                         //Theme.of(context).primaryColor,
-        //                         Colors.yellow,
-        //                   ),
-        //                 ));
-        //           } else {
-        //             body = SizedBox();
-        //           }
-        //         } else {
-        //           print(
-        //               "listOfCollections.length ${CacheMemory.listOfCollections.length}");
-        // body = Container(
-        //   width: deviceWidth,
-        //   height: (MediaQuery.of(context).size.height / 2) + 220,
-        //   child: GridView.builder(
-        //     physics: NeverScrollableScrollPhysics(),
-        //     itemCount: 4,
-        //     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        //         childAspectRatio: 0.64,
-        //         crossAxisCount: deviceWidth > 600 ? 3 : 2),
-        //     itemBuilder: (context, index) {
-        //       AllProducts.ProductsModel collectionsModel =
-        //           CacheMemory.listOfCollections[index];
-        //       print(
-        //           "index < CacheMemory.listOfCollections.length ${index < CacheMemory.listOfCollections.length}");
-        //       if (index < CacheMemory.listOfCollections.length) {
-        //         print(" productIndex: $index");
-        //         return ProductItem(
-        //           productIndex: index,
-        //           productsModel: collectionsModel,
-        //           fromFetchHome: true,
-        //         );
-        //       } else {
-        //         return const Padding(
-        //           padding: EdgeInsets.symmetric(
-        //               vertical: 15.0, horizontal: 10.0),
-        //           child: Center(
-        //               child: CircularProgressIndicator(
-        //             color: Color(0xffCC868A),
-        //           )),
-        //         );
-        //       }
-        //     },
-        //   ),
-        // );
-        // }
-        //         print("snapshot.data ${snapshot.data}");
-        //       }
-        //       return body;
-        //     },
-        //   )
+    //       Widget body;
+    //       print("!snapshot.hasData ${!snapshot.hasData}");
+    //       print(
+    //           "snapshot.data is DownloadProgress ${snapshot.data is DownloadProgress}");
+    //       final loading =
+    //           !snapshot.hasData || snapshot.data is DownloadProgress;
+    //       // DownloadProgress? progress =
+    //       //     snapshot.data as DownloadProgress?;
+    //       print("loading $loading");
+    //       if (snapshot.hasError) {
+    //         body = SizedBox();
+    //         print("snapshot error ${snapshot.error.toString()}");
+    //       }
+    //       //   uncomment below code
+    //       else if (loading) {
+    //         body = SizedBox(
+    //             width: MediaQuery.of(context).size.width,
+    //             height: MediaQuery.of(context).size.height - 200,
+    //             child: Center(
+    //               child: CircularProgressIndicator(
+    //                 color:
+    //                     // Colors.red,
+    //                     Theme.of(context).primaryColor,
+    //               ),
+    //             ));
+    //         print("snapshot.loading");
+    //       } else {
+    //         if (cacheProvider.collectionsfileInfoFetching != null) {
+    //           print(
+    //               "cacheProvider.collectionsfileInfoFetching ${cacheProvider.collectionsfileInfoFetching!}");
+    //           if (cacheProvider.collectionsfileInfoFetching!) {
+    //             body = SizedBox(
+    //                 width: MediaQuery.of(context).size.width,
+    //                 height: MediaQuery.of(context).size.height - 200,
+    //                 child: Center(
+    //                   child: CircularProgressIndicator(
+    //                     color:
+    //                         //Theme.of(context).primaryColor,
+    //                         Colors.yellow,
+    //                   ),
+    //                 ));
+    //           } else {
+    //             body = SizedBox();
+    //           }
+    //         } else {
+    //           print(
+    //               "listOfCollections.length ${CacheMemory.listOfCollections.length}");
+    // body = Container(
+    //   width: deviceWidth,
+    //   height: (MediaQuery.of(context).size.height / 2) + 220,
+    //   child: GridView.builder(
+    //     physics: NeverScrollableScrollPhysics(),
+    //     itemCount: 4,
+    //     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+    //         childAspectRatio: 0.64,
+    //         crossAxisCount: deviceWidth > 600 ? 3 : 2),
+    //     itemBuilder: (context, index) {
+    //       AllProducts.ProductsModel collectionsModel =
+    //           CacheMemory.listOfCollections[index];
+    //       print(
+    //           "index < CacheMemory.listOfCollections.length ${index < CacheMemory.listOfCollections.length}");
+    //       if (index < CacheMemory.listOfCollections.length) {
+    //         print(" productIndex: $index");
+    //         return ProductItem(
+    //           productIndex: index,
+    //           productsModel: collectionsModel,
+    //           fromFetchHome: true,
+    //         );
+    //       } else {
+    //         return const Padding(
+    //           padding: EdgeInsets.symmetric(
+    //               vertical: 15.0, horizontal: 10.0),
+    //           child: Center(
+    //               child: CircularProgressIndicator(
+    //             color: Color(0xffCC868A),
+    //           )),
+    //         );
+    //       }
+    //     },
+    //   ),
+    // );
+    // }
+    //         print("snapshot.data ${snapshot.data}");
+    //       }
+    //       return body;
+    //     },
+    //   )
 
-        // : SizedBox(
-        //     height: (MediaQuery.of(context).size.height / 2) + 220,
-        //     child: Center(
-        //       child: CircularProgressIndicator(
-        //         color: Colors.yellow,
-        //       ),
-        //     ),
-        //   );
+    // : SizedBox(
+    //     height: (MediaQuery.of(context).size.height / 2) + 220,
+    //     child: Center(
+    //       child: CircularProgressIndicator(
+    //         color: Colors.yellow,
+    //       ),
+    //     ),
+    //   );
   }
 }

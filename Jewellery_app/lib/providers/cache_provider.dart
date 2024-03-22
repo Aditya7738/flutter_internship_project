@@ -22,12 +22,32 @@ class CacheProvider with ChangeNotifier {
     });
   }
 
+  bool _collectionsProductFileInfoFetching = false;
+  bool get collectionsProductFileInfoFetching => _collectionsProductFileInfoFetching;
+
+  void setCollectionsProductFileInfoFetching(bool collectionsProductFileInfoFetching) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _collectionsProductFileInfoFetching = collectionsProductFileInfoFetching;
+      notifyListeners();
+    });
+  }
+
   bool _isProductListEmpty = false;
   bool get isProductListEmpty => _isProductListEmpty;
 
   void setIsProductListEmpty(bool isProductListEmpty) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _isProductListEmpty = isProductListEmpty;
+      notifyListeners();
+    });
+  }
+
+   bool _isMoreProductLoading = false;
+  bool get isMoreProductLoading => _isMoreProductLoading;
+
+  void setIsMoreProductLoading(bool isMoreProductLoading) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _isMoreProductLoading = isMoreProductLoading;
       notifyListeners();
     });
   }

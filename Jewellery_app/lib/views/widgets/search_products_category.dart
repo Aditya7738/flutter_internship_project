@@ -9,7 +9,9 @@ import 'package:provider/provider.dart';
 class SearchProductsOfCategory extends StatefulWidget
     implements PreferredSizeWidget {
   final int categoryId;
-  const SearchProductsOfCategory({super.key, required this.categoryId});
+  final bool forCollections;
+  const SearchProductsOfCategory(
+      {super.key, required this.categoryId, required this.forCollections});
 
   @override
   State<SearchProductsOfCategory> createState() =>
@@ -49,170 +51,174 @@ class _SearchProductsOfCategoryState extends State<SearchProductsOfCategory> {
     double deviceWidth = MediaQuery.of(context).size.width;
 
     print("kToolbarHeight ${(kToolbarHeight / 2.6)}");
-    return Container(
-      padding: const EdgeInsets.only(bottom: 15.0, left: 15.0, right: 10.0),
-      color: Colors.white,
-      width: deviceWidth,
-      child: Row(
-        children: [
-          SizedBox(
-            height: (kToolbarHeight),
-            width: deviceWidth - 140,
-            child: TextField(
-              controller: searchTextController,
-              style: TextStyle(
-                  fontSize: deviceWidth > 600
-                      ? (kToolbarHeight - 37) + 8
-                      : (kToolbarHeight - 40),
-                  color: Colors.black,
-                  fontWeight: FontWeight.normal),
-              onSubmitted: (value) async {
-                print("cat search sub");
-                // if (value == "") {
+    return widget.forCollections == false
+        ? Container(
+            padding:
+                const EdgeInsets.only(bottom: 15.0, left: 15.0, right: 10.0),
+            color: Colors.white,
+            width: deviceWidth,
+            child: Row(
+              children: [
+                SizedBox(
+                  height: (kToolbarHeight),
+                  width: deviceWidth - 140,
+                  child: TextField(
+                    controller: searchTextController,
+                    style: TextStyle(
+                        fontSize: deviceWidth > 600
+                            ? (kToolbarHeight - 37) + 8
+                            : (kToolbarHeight - 40),
+                        color: Colors.black,
+                        fontWeight: FontWeight.normal),
+                    onSubmitted: (value) async {
+                      print("cat search sub");
+                      // if (value == "") {
 
-                //   // if (mounted) {
-                //   // setState(() {
-                //   //   isSearchFieldEmpty = true;
-                //   // });
-                // }
+                      //   // if (mounted) {
+                      //   // setState(() {
+                      //   //   isSearchFieldEmpty = true;
+                      //   // });
+                      // }
 
-                // if (mounted) {
-                //   setState(() {
-                //     isSearchFieldEmpty = false;
-                //   });
-                // }
-                filterOptionsProvider.setHaveSubmitClicked(true);
+                      // if (mounted) {
+                      //   setState(() {
+                      //     isSearchFieldEmpty = false;
+                      //   });
+                      // }
+                      filterOptionsProvider.setHaveSubmitClicked(true);
 
-                if (value.length >= 3) {
-                  bool isThereInternet =
-                      await ApiService.checkInternetConnection(context);
-                  if (isThereInternet) {
-                    ApiService.listOfProductsCategoryWise.clear();
+                      if (value.length >= 3) {
+                        bool isThereInternet =
+                            await ApiService.checkInternetConnection(context);
+                        if (isThereInternet) {
+                          ApiService.listOfProductsCategoryWise.clear();
 
-                    categoryProvider.setIsCategoryProductFetching(true);
+                          categoryProvider.setIsCategoryProductFetching(true);
 
-                    List<ProductsModel> listOfProducts =
-                        await ApiService.fetchSearchedProductCategoryWise(
-                            id: widget.categoryId,
-                            pageNo: 1,
-                            searchText: value);
+                          List<ProductsModel> listOfProducts =
+                              await ApiService.fetchSearchedProductCategoryWise(
+                                  id: widget.categoryId,
+                                  pageNo: 1,
+                                  searchText: value);
 
-                    categoryProvider.setIsCategoryProductFetching(false);
+                          categoryProvider.setIsCategoryProductFetching(false);
 
-                    categoryProvider
-                        .setIsProductListEmpty(listOfProducts.length == 0);
+                          categoryProvider.setIsProductListEmpty(
+                              listOfProducts.length == 0);
 
-                    categoryProvider.setSearchText(value);
+                          categoryProvider.setSearchText(value);
 
-                    // if (mounted) {
-                    //   setState(() {
-                    //     // newListLoading = false;
-                    //     // isProductListEmpty = listOfProducts.length == 0;
+                          // if (mounted) {
+                          //   setState(() {
+                          //     // newListLoading = false;
+                          //     // isProductListEmpty = listOfProducts.length == 0;
 
-                    //   });
-                    // }
-                    //ApiService.searchProduct(value);
-                    // print("ONCHANGED CALLED");
-                    // if (mounted) {
-                    //   setState(() {
-                    //     // isSearchBarUsed = true;
-                    //     searchText = value;
-                    //   });
-                    // }
-                  }
-                }
-              },
-              showCursor: true,
-              maxLines: 1,
-              cursorColor: Colors.grey,
-              decoration: InputDecoration(
-                  focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey)),
-                  prefixIcon: Icon(
-                    Icons.search_rounded,
-                    color: Colors.black,
-                    size: deviceWidth > 600 ? 33.0 : 25.0,
+                          //   });
+                          // }
+                          //ApiService.searchProduct(value);
+                          // print("ONCHANGED CALLED");
+                          // if (mounted) {
+                          //   setState(() {
+                          //     // isSearchBarUsed = true;
+                          //     searchText = value;
+                          //   });
+                          // }
+                        }
+                      }
+                    },
+                    showCursor: true,
+                    maxLines: 1,
+                    cursorColor: Colors.grey,
+                    decoration: InputDecoration(
+                        focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.grey)),
+                        prefixIcon: Icon(
+                          Icons.search_rounded,
+                          color: Colors.black,
+                          size: deviceWidth > 600 ? 33.0 : 25.0,
+                        ),
+                        fillColor: Colors.grey,
+                        hintText: "Search for jewelleries",
+                        hintStyle: TextStyle(
+                          color: Colors.grey,
+                          fontSize: deviceWidth > 600
+                              ? (kToolbarHeight - 37) + 8
+                              : (kToolbarHeight - 40),
+                        )),
                   ),
-                  fillColor: Colors.grey,
-                  hintText: "Search for jewelleries",
-                  hintStyle: TextStyle(
-                    color: Colors.grey,
-                    fontSize: deviceWidth > 600
-                        ? (kToolbarHeight - 37) + 8
-                        : (kToolbarHeight - 40),
-                  )),
-            ),
-          ),
-          SizedBox(width: 30.0),
-          GestureDetector(
-            onTap: () async {
-              searchTextController.text = "";
-              print(
-                  "haveSubmitClicked ${filterOptionsProvider.haveSubmitClicked}");
-              if (filterOptionsProvider.haveSubmitClicked) {
-                bool isThereInternet =
-                    await ApiService.checkInternetConnection(context);
-                if (isThereInternet) {
-                  categoryProvider.setIsCategoryProductFetching(true);
+                ),
+                SizedBox(width: 30.0),
+                GestureDetector(
+                  onTap: () async {
+                    searchTextController.text = "";
+                    print(
+                        "haveSubmitClicked ${filterOptionsProvider.haveSubmitClicked}");
+                    if (filterOptionsProvider.haveSubmitClicked) {
+                      bool isThereInternet =
+                          await ApiService.checkInternetConnection(context);
+                      if (isThereInternet) {
+                        categoryProvider.setIsCategoryProductFetching(true);
 
-                  ApiService.listOfProductsCategoryWise.clear();
-                  await ApiService.fetchProductsCategoryWise(
-                      id: widget.categoryId, pageNo: 1);
+                        ApiService.listOfProductsCategoryWise.clear();
+                        await ApiService.fetchProductsCategoryWise(
+                            id: widget.categoryId, pageNo: 1);
 
-                  categoryProvider.setIsCategoryProductFetching(false);
-                }
-              }
-            },
-            child: Container(
-              decoration: const BoxDecoration(
-                color: Colors.black,
-                shape: BoxShape.circle,
-              ),
-              child: const Icon(
-                Icons.close_rounded,
-                color: Colors.white,
-                size: (kToolbarHeight - 34),
-              ),
+                        categoryProvider.setIsCategoryProductFetching(false);
+                      }
+                    }
+                  },
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      color: Colors.black,
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(
+                      Icons.close_rounded,
+                      color: Colors.white,
+                      size: (kToolbarHeight - 34),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: 11.0,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    showModalBottomSheet(
+                      constraints: BoxConstraints.expand(
+                          width: deviceWidth,
+                          height: (MediaQuery.of(context).size.height / 1.78) +
+                              40.0),
+                      isDismissible:
+                          filterOptionsProvider.list.isEmpty ? true : false,
+                      enableDrag: true,
+                      context: context,
+                      isScrollControlled: true,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(20.0),
+                              topRight: Radius.circular(20.0))),
+                      builder: (context) {
+                        return FilterModal(
+                          searchText: categoryProvider.searchText,
+                          fromProductsPage: true,
+                          categoryId: widget.categoryId,
+                        );
+                      },
+                    );
+                  },
+                  child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                      child: Icon(
+                        Icons.filter_list,
+                        color: Colors.black,
+                        size: (kToolbarHeight - 27),
+                      )),
+                ),
+              ],
             ),
-          ),
-          SizedBox(
-            width: 11.0,
-          ),
-          GestureDetector(
-            onTap: () {
-              showModalBottomSheet(
-                constraints: BoxConstraints.expand(
-                    width: deviceWidth,
-                    height: (MediaQuery.of(context).size.height / 1.78) + 40.0),
-                isDismissible:
-                    filterOptionsProvider.list.isEmpty ? true : false,
-                enableDrag: true,
-                context: context,
-                isScrollControlled: true,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(20.0),
-                        topRight: Radius.circular(20.0))),
-                builder: (context) {
-                  return FilterModal(
-                    searchText: categoryProvider.searchText,
-                    fromProductsPage: true,
-                    categoryId: widget.categoryId,
-                  );
-                },
-              );
-            },
-            child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                child: Icon(
-                  Icons.filter_list,
-                  color: Colors.black,
-                  size: (kToolbarHeight - 27),
-                )),
-          ),
-        ],
-      ),
-    );
+          )
+        : SizedBox();
   }
 
   @override

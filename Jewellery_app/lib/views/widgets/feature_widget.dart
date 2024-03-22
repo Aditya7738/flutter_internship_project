@@ -75,8 +75,6 @@ class _FeatureWidgetState extends State<FeatureWidget> {
 
   bool isPathExist = false;
 
-  bool isPathChecking = false;
-
   // doFileExist(String path
   //     //, CategoryProvider categoryProvider
   //     ) async {
@@ -135,7 +133,10 @@ class _FeatureWidgetState extends State<FeatureWidget> {
     if (categoryImageFileStream != null) {
       return GestureDetector(onTap: () {
         Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => ProductPage(id: categoriesModel.id, fromFetchHome: false,)));
+            builder: (context) => ProductPage(
+                  id: categoriesModel.id,
+                  forCollections: false,
+                )));
       }, child: LayoutBuilder(
         builder: (context, constraints) {
           print("fontsize constraints.maxHeight ${constraints.maxHeight / 12}");
