@@ -24,6 +24,7 @@ import 'package:Tiara_by_TJ/views/widgets/whole_carousel_slider.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:provider/provider.dart';
 import 'package:badges/badges.dart' as badges;
+import 'package:flutter_swipe_tutorial/flutter_swipe_tutorial.dart';
 
 class ProductDetailsPage extends StatefulWidget {
   final ProductsModel productsModel;
@@ -319,6 +320,8 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
     }
   }
 
+ 
+
   @override
   Widget build(BuildContext context) {
     final cartProvider = Provider.of<CartProvider>(context, listen: false);
@@ -383,451 +386,461 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
           width: 24,
         ),
       ]),
-      body: Scrollbar(
-        child: SingleChildScrollView(
-            child: Column(children: [
-          WholeCarouselSlider(listOfProductImage: productsModel.images),
-          const SizedBox(
-            height: 10.0,
-          ),
-          Padding(
-              padding: const EdgeInsets.only(
-                  left: 20.0, right: 20.0, top: 5.0, bottom: 110.0),
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          productsModel.salePrice == ""
-                              ? Text(
-                                  productsModel.regularPrice != ""
-                                      ? "₹ ${productsModel.regularPrice ?? 20000}"
-                                      : "₹ 0.0",
-                                  // productsModel.regularPrice ??
-                                  //     "20,000",
-                                  style: TextStyle(
-                                      fontSize: (deviceWidth / 36) + 4,
-                                      fontWeight: FontWeight.bold))
-                              : Row(
-                                  children: [
-                                    Text(
-                                        productsModel.salePrice == ""
-                                            ? "₹ 10,000"
-                                            : "₹ ${productsModel.salePrice ?? 10000}",
-                                        style: TextStyle(
-                                            fontSize: (deviceWidth / 36) + 4,
-                                            fontWeight: FontWeight.bold)),
-                                    const SizedBox(
-                                      width: 5.0,
-                                    ),
-                                    Text(
+      body: GestureDetector(
+        onTap: () {
+          customizationOptionsProvider.setShowTutorial(false);
+        },
+        child: SwipeTutorial(
+          text: "Swipe under carousel slider right or left to see details of more products",
+          showTutorial: customizationOptionsProvider.showTutorial,
+          swipeDirection: SwipeDirection.rightToLeft,
+          child: Scrollbar(
+            child: SingleChildScrollView(
+                child: Column(children: [
+              WholeCarouselSlider(listOfProductImage: productsModel.images),
+              const SizedBox(
+                height: 10.0,
+              ),
+              Padding(
+                  padding: const EdgeInsets.only(
+                      left: 20.0, right: 20.0, top: 5.0, bottom: 110.0),
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              productsModel.salePrice == ""
+                                  ? Text(
                                       productsModel.regularPrice != ""
                                           ? "₹ ${productsModel.regularPrice ?? 20000}"
                                           : "₹ 0.0",
-                                      style: const TextStyle(
-                                        decoration: TextDecoration.lineThrough,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                          Consumer<WishlistProvider>(
-                              builder: (context, value, child) {
-                            print("LENGTH OF FAV: ${value.favProductIds}");
-                            print("deviceWidth / 23 ${deviceWidth / 16}");
-                            return IconButton(
-                                icon: Icon(
-                                  value.favProductIds.contains(productsModel.id)
-                                      ? Icons.favorite
-                                      : Icons.favorite_border_outlined,
-                                  color: Colors.red,
-                                  size: deviceWidth > 600
-                                      ? deviceWidth / 23
-                                      : deviceWidth / 16,
-                                ),
-                                onPressed: () {
-                                  print("PRESSED");
-                                  if (value.favProductIds
-                                      .contains(productsModel.id)) {
-                                    value.removeFromWishlist(productsModel.id!);
-                                    print("Product is removed from wishlist");
-                                  } else {
-                                    value.addToWishlist(productsModel.id!);
-                                    print("Product is added to wishlist");
-                                  }
-                                });
-                          })
-                        ]),
-                    const SizedBox(
-                      height: 10.0,
-                    ),
-                    Container(
-                        color: const Color(0xfff1f7eb),
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10.0, vertical: 5.0),
-                        child: backordersAllowed
-                            ? LabelWidget(
-                                label: "Available on backorder",
-                                color: Color(0xff85BA60),
-                                fontSize: (deviceWidth / 36) + 4,
-                              )
-                            : LabelWidget(
-                                label: "Unavailable on backorder",
-                                color: Color(0xff85BA60),
-                                fontSize: (deviceWidth / 36) + 4,
-                              )),
-                    const SizedBox(
-                      height: 20.0,
-                    ),
-                    customizationOptionsProvider
-                                .customizeOptionsdata["enable_everything"] ==
-                            "1"
-                        ? SizedBox(
-                            width: MediaQuery.of(context).size.width,
-                            height: customizationOptionsProvider
-                                                .customizeOptionsdata[
-                                            "enable_color"] !=
-                                        "0" &&
-                                    customizationOptionsProvider
-                                                .customizeOptionsdata[
-                                            "enable_diamond"] !=
-                                        "0" &&
-                                    customizationOptionsProvider
-                                                .customizeOptionsdata[
-                                            "enable_kt"] !=
-                                        "0"
-                                ? MediaQuery.of(context).size.width > 600
-                                    ? 300
-                                    : MediaQuery.of(context).size.height / 4.2
-                                : 0.0,
-                            child: Scrollbar(
-                              child: GridView.builder(
-                                  itemCount: listOfChoiceModel.length,
-                                   physics: NeverScrollableScrollPhysics(),
-                                  gridDelegate:
-                                      SliverGridDelegateWithFixedCrossAxisCount(
-                                          childAspectRatio: 1.9,
-                                          crossAxisCount: MediaQuery.of(context)
-                                                      .size
-                                                      .width >
-                                                  600
-                                              ? 3
-                                              : 2,
-                                          crossAxisSpacing: 1.0,
-                                          mainAxisSpacing: 15.0),
-                                  itemBuilder: ((context, index) {
-                                    return ChoiceWidget(
-                                      choiceModel: listOfChoiceModel[index],
-                                      fromCart: false,
-                                    );
-                                  })),
-                            ),
-                          )
-                        : SizedBox(),
-                    const SizedBox(
-                      height: 10.0,
-                    ),
-                    LabelWidget(
-                      label: Constants.description_label,
-                      fontSize: (deviceWidth / 36) + 5,
-                    ),
-                    HtmlWidget(productsModel.description ??
-                        Constants.product_description, textStyle: TextStyle(fontWeight: FontWeight.normal),),
-                    const SizedBox(
-                      height: 20.0,
-                    ),
-                    Row(
-                      children: [
-                        Text(
-                          "SKU:",
-                          style: Theme.of(context).textTheme.headline2,
-                        ),
-                        const SizedBox(
-                          width: 10.0,
-                        ),
-                        Text(
-                          productsModel.sku ?? "12007AN",
-                          style: TextStyle(
-                              fontSize: (deviceWidth / 36) + 3,
-                              fontWeight: FontWeight.normal),
-                        ),
-                        const SizedBox(
-                          width: 30.0,
-                        ),
-                        Text(
-                          "Category:",
-                          style: Theme.of(context).textTheme.headline2,
-                        ),
-                        const SizedBox(
-                          width: 10.0,
-                        ),
-                        Text(
-                          productsModel.categories != null
-                              ? productsModel.categories![0].name ?? "Jewellery"
-                              : "Jewellery",
-                          style: TextStyle(
-                              fontSize: (deviceWidth / 36) + 3,
-                              fontWeight: FontWeight.normal),
-                        )
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 20.0,
-                    ),
-                    Text(
-                      "Tags:",
-                      style: Theme.of(context).textTheme.headline2,
-                    ),
-                    const SizedBox(
-                      height: 5.0,
-                    ),
-                    productsModel.tags == null
-                        ? Text(
-                            "Jewellery",
-                            style: TextStyle(
-                                fontSize: (deviceWidth / 36) + 3,
-                                fontWeight: FontWeight.normal),
-                          )
-                        : SizedBox(
-                            height: deviceWidth > 600 ? 30.0 : 20.0,
-                            width: MediaQuery.of(context).size.width,
-                            child: ListView.builder(
-                              itemCount: productsModel.tags?.length,
-                              
-                              itemBuilder: (context, index) {
-                                return Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 10.0),
-                                  child: Text(
-                                    productsModel.tags?[index].name ??
-                                        "Category ",
-                                    style: TextStyle(
-                                        fontSize: (deviceWidth / 36) + 3,
-                                        fontWeight: FontWeight.normal),
-                                  ),
-                                );
-                              },
-                              scrollDirection: Axis.horizontal,
-                            ),
-                          ),
-                    const SizedBox(
-                      height: 20.0,
-                    ),
-                    Text(
-                      "Customer Reviews",
-                      style: Theme.of(context).textTheme.headline2,
-                    ),
-                    const SizedBox(
-                      height: 5.0,
-                    ),
-                    GestureDetector(
-                      onTap: () async {
-                        print(
-                            "customerData.isNotEmpty ${customerProvider.customerData.isNotEmpty}");
-                        if (customerProvider.customerData.length != 0) {
-                          bool? isReviewUploaded = await Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => WriteReviewPage(
-                                      productsModel: productsModel)));
-
-                          if (isReviewUploaded != null && isReviewUploaded) {
-                            if (mounted) {
-                              setState(() {
-                                getReviews();
-                              });
-                            }
-                          }
-                        } else {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    LoginPage(isComeFromCart: false),
-                              ));
-                        }
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 10.0, horizontal: 20.0),
-                        // margin: const EdgeInsets.symmetric(horizontal: 10.0),
-                        decoration: BoxDecoration(
-                          border:
-                              Border.all(color: Theme.of(context).primaryColor),
-                          shape: BoxShape.rectangle,
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        child: Text(
-                          "WRITE A REVIEW",
-                          style: Theme.of(context).textTheme.subtitle2,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 30.0,
-                    ),
-                    isReviewLoading
-                        ? SizedBox(
-                            height: MediaQuery.of(context).size.height / 3.0,
-                            width: MediaQuery.of(context).size.width,
-                            child: Center(
-                              child: CircularProgressIndicator(
-                                backgroundColor: Colors.white,
-                              ),
-                            ),
-                          )
-                        : ApiService.reviewsList.isNotEmpty
-                            ? SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.height / 3.0,
-                                width: MediaQuery.of(context).size.width,
-                                child: Scrollbar(
-                                  child: ListView.separated(
-                                      itemCount:
-                                          ApiService.reviewsList.length < 3
-                                              ? ApiService.reviewsList.length
-                                              : 3,
-                                      itemBuilder: (context, index) {
-                                        ReviewsModel reviewsModel =
-                                            ApiService.reviewsList[index];
-
-                                        return Container(
-                                          color: Colors.yellow,
-                                          padding: EdgeInsets.all(10.0),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Row(
-                                                children: [
-                                                  Container(
-                                                    padding:
-                                                        EdgeInsets.all(5.0),
-                                                    decoration: BoxDecoration(
-                                                        shape: BoxShape.circle,
-                                                        border: Border.all(
-                                                            color:
-                                                                Colors.grey)),
-                                                    child: Icon(
-                                                      Icons.person,
-                                                      color: Colors.grey,
-                                                      size: deviceWidth > 600
-                                                          ? 45.0
-                                                          : 27.0,
-                                                    ),
-                                                  ),
-                                                  SizedBox(
-                                                    width: 10.0,
-                                                  ),
-                                                  Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Row(
-                                                        children: [
-                                                          Text(
-                                                              reviewsModel
-                                                                      .reviewer ??
-                                                                  "Reviewer",
-                                                              style: TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold)),
-                                                          SizedBox(
-                                                            width: 10.0,
-                                                          ),
-                                                          Text(
-                                                            reviewsModel.verified !=
-                                                                    null
-                                                                ? reviewsModel
-                                                                            .verified! ==
-                                                                        true
-                                                                    ? "(Verified Purchase)"
-                                                                    : ""
-                                                                : "",
-                                                            style: TextStyle(
-                                                                color: Theme.of(
-                                                                        context)
-                                                                    .primaryColor,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold),
-                                                          )
-                                                        ],
-                                                      ),
-                                                      Row(
-                                                        mainAxisSize:
-                                                            MainAxisSize.min,
-                                                        children: List.generate(
-                                                            5, (index) {
-                                                          return Icon(
-                                                            index <
-                                                                    (reviewsModel
-                                                                            .rating ??
-                                                                        0)
-                                                                ? Icons.star
-                                                                : Icons
-                                                                    .star_border,
-                                                            color: Colors.amber,
-                                                            size: deviceWidth >
-                                                                    600
-                                                                ? 33.0
-                                                                : 22.0,
-                                                          );
-                                                        }),
-                                                      ),
-                                                    ],
-                                                  )
-                                                ],
-                                              ),
-                                              SizedBox(
-                                                height: 10.0,
-                                              ),
-                                              HtmlWidget(
-                                                // reviewsModel.review ??
-                                                "<p>Reviewwwwwwwwwwwwwwwwwwwwwwwwwwwwwww</p>",
-                                                textStyle: TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.normal),
-                                              ),
-                                            ],
+                                      // productsModel.regularPrice ??
+                                      //     "20,000",
+                                      style: TextStyle(
+                                          fontSize: (deviceWidth / 36) + 4,
+                                          fontWeight: FontWeight.bold))
+                                  : Row(
+                                      children: [
+                                        Text(
+                                            productsModel.salePrice == ""
+                                                ? "₹ 10,000"
+                                                : "₹ ${productsModel.salePrice ?? 10000}",
+                                            style: TextStyle(
+                                                fontSize: (deviceWidth / 36) + 4,
+                                                fontWeight: FontWeight.bold)),
+                                        const SizedBox(
+                                          width: 5.0,
+                                        ),
+                                        Text(
+                                          productsModel.regularPrice != ""
+                                              ? "₹ ${productsModel.regularPrice ?? 20000}"
+                                              : "₹ 0.0",
+                                          style: const TextStyle(
+                                            decoration: TextDecoration.lineThrough,
                                           ),
+                                        ),
+                                      ],
+                                    ),
+                              Consumer<WishlistProvider>(
+                                  builder: (context, value, child) {
+                                print("LENGTH OF FAV: ${value.favProductIds}");
+                                print("deviceWidth / 23 ${deviceWidth / 16}");
+                                return IconButton(
+                                    icon: Icon(
+                                      value.favProductIds.contains(productsModel.id)
+                                          ? Icons.favorite
+                                          : Icons.favorite_border_outlined,
+                                      color: Colors.red,
+                                      size: deviceWidth > 600
+                                          ? deviceWidth / 23
+                                          : deviceWidth / 16,
+                                    ),
+                                    onPressed: () {
+                                      print("PRESSED");
+                                      if (value.favProductIds
+                                          .contains(productsModel.id)) {
+                                        value.removeFromWishlist(productsModel.id!);
+                                        print("Product is removed from wishlist");
+                                      } else {
+                                        value.addToWishlist(productsModel.id!);
+                                        print("Product is added to wishlist");
+                                      }
+                                    });
+                              })
+                            ]),
+                        const SizedBox(
+                          height: 10.0,
+                        ),
+                        Container(
+                            color: const Color(0xfff1f7eb),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10.0, vertical: 5.0),
+                            child: backordersAllowed
+                                ? LabelWidget(
+                                    label: "Available on backorder",
+                                    color: Color(0xff85BA60),
+                                    fontSize: (deviceWidth / 36) + 4,
+                                  )
+                                : LabelWidget(
+                                    label: "Unavailable on backorder",
+                                    color: Color(0xff85BA60),
+                                    fontSize: (deviceWidth / 36) + 4,
+                                  )),
+                        const SizedBox(
+                          height: 20.0,
+                        ),
+                        customizationOptionsProvider
+                                    .customizeOptionsdata["enable_everything"] ==
+                                "1"
+                            ? SizedBox(
+                                width: MediaQuery.of(context).size.width,
+                                height: customizationOptionsProvider
+                                                    .customizeOptionsdata[
+                                                "enable_color"] !=
+                                            "0" &&
+                                        customizationOptionsProvider
+                                                    .customizeOptionsdata[
+                                                "enable_diamond"] !=
+                                            "0" &&
+                                        customizationOptionsProvider
+                                                    .customizeOptionsdata[
+                                                "enable_kt"] !=
+                                            "0"
+                                    ? MediaQuery.of(context).size.width > 600
+                                        ? 300
+                                        : MediaQuery.of(context).size.height / 4.2
+                                    : 0.0,
+                                child: Scrollbar(
+                                  child: GridView.builder(
+                                      itemCount: listOfChoiceModel.length,
+                                       physics: NeverScrollableScrollPhysics(),
+                                      gridDelegate:
+                                          SliverGridDelegateWithFixedCrossAxisCount(
+                                              childAspectRatio: 1.9,
+                                              crossAxisCount: MediaQuery.of(context)
+                                                          .size
+                                                          .width >
+                                                      600
+                                                  ? 3
+                                                  : 2,
+                                              crossAxisSpacing: 1.0,
+                                              mainAxisSpacing: 15.0),
+                                      itemBuilder: ((context, index) {
+                                        return ChoiceWidget(
+                                          choiceModel: listOfChoiceModel[index],
+                                          fromCart: false,
                                         );
-                                      },
-                                      separatorBuilder: (context, index) =>
-                                          const Divider(
-                                              thickness: 1.0,
-                                              color: Colors.grey)),
+                                      })),
                                 ),
                               )
-                            : Text(
-                                "Be the first to review this product",
-                                style: Theme.of(context).textTheme.headline6,
-                              ),
-                    ApiService.reviewsList.length > 3
-                        ? InkWell(
-                            child: Text(
-                              "Read all ${ApiService.reviewsList.length} Reviews",
-                              style: TextStyle(
-                                  color: Theme.of(context).primaryColor,
-                                  fontSize: deviceWidth > 600 ? 26.0 : 16.0,
-                                  fontWeight: FontWeight.normal,
-                                  decoration: TextDecoration.underline),
+                            : SizedBox(),
+                        const SizedBox(
+                          height: 10.0,
+                        ),
+                        LabelWidget(
+                          label: Constants.description_label,
+                          fontSize: (deviceWidth / 36) + 5,
+                        ),
+                        HtmlWidget(productsModel.description ??
+                            Constants.product_description, textStyle: TextStyle(fontWeight: FontWeight.normal),),
+                        const SizedBox(
+                          height: 20.0,
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              "SKU:",
+                              style: Theme.of(context).textTheme.headline2,
                             ),
-                            onTap: () {
+                            const SizedBox(
+                              width: 10.0,
+                            ),
+                            Text(
+                              productsModel.sku ?? "12007AN",
+                              style: TextStyle(
+                                  fontSize: (deviceWidth / 36) + 3,
+                                  fontWeight: FontWeight.normal),
+                            ),
+                            const SizedBox(
+                              width: 30.0,
+                            ),
+                            Text(
+                              "Category:",
+                              style: Theme.of(context).textTheme.headline2,
+                            ),
+                            const SizedBox(
+                              width: 10.0,
+                            ),
+                            Text(
+                              productsModel.categories != null
+                                  ? productsModel.categories![0].name ?? "Jewellery"
+                                  : "Jewellery",
+                              style: TextStyle(
+                                  fontSize: (deviceWidth / 36) + 3,
+                                  fontWeight: FontWeight.normal),
+                            )
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 20.0,
+                        ),
+                        Text(
+                          "Tags:",
+                          style: Theme.of(context).textTheme.headline2,
+                        ),
+                        const SizedBox(
+                          height: 5.0,
+                        ),
+                        productsModel.tags == null
+                            ? Text(
+                                "Jewellery",
+                                style: TextStyle(
+                                    fontSize: (deviceWidth / 36) + 3,
+                                    fontWeight: FontWeight.normal),
+                              )
+                            : SizedBox(
+                                height: deviceWidth > 600 ? 30.0 : 20.0,
+                                width: MediaQuery.of(context).size.width,
+                                child: ListView.builder(
+                                  itemCount: productsModel.tags?.length,
+                                  
+                                  itemBuilder: (context, index) {
+                                    return Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10.0),
+                                      child: Text(
+                                        productsModel.tags?[index].name ??
+                                            "Category ",
+                                        style: TextStyle(
+                                            fontSize: (deviceWidth / 36) + 3,
+                                            fontWeight: FontWeight.normal),
+                                      ),
+                                    );
+                                  },
+                                  scrollDirection: Axis.horizontal,
+                                ),
+                              ),
+                        const SizedBox(
+                          height: 20.0,
+                        ),
+                        Text(
+                          "Customer Reviews",
+                          style: Theme.of(context).textTheme.headline2,
+                        ),
+                        const SizedBox(
+                          height: 5.0,
+                        ),
+                        GestureDetector(
+                          onTap: () async {
+                            print(
+                                "customerData.isNotEmpty ${customerProvider.customerData.isNotEmpty}");
+                            if (customerProvider.customerData.length != 0) {
+                              bool? isReviewUploaded = await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => WriteReviewPage(
+                                          productsModel: productsModel)));
+          
+                              if (isReviewUploaded != null && isReviewUploaded) {
+                                if (mounted) {
+                                  setState(() {
+                                    getReviews();
+                                  });
+                                }
+                              }
+                            } else {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => ReviewsPage(
-                                      productsModel: productsModel,
-                                    ),
+                                    builder: (context) =>
+                                        LoginPage(isComeFromCart: false),
                                   ));
-                            },
-                          )
-                        : SizedBox()
-                  ])),
-        ])),
+                            }
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 10.0, horizontal: 20.0),
+                            // margin: const EdgeInsets.symmetric(horizontal: 10.0),
+                            decoration: BoxDecoration(
+                              border:
+                                  Border.all(color: Theme.of(context).primaryColor),
+                              shape: BoxShape.rectangle,
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            child: Text(
+                              "WRITE A REVIEW",
+                              style: Theme.of(context).textTheme.subtitle2,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 30.0,
+                        ),
+                        isReviewLoading
+                            ? SizedBox(
+                                height: MediaQuery.of(context).size.height / 3.0,
+                                width: MediaQuery.of(context).size.width,
+                                child: Center(
+                                  child: CircularProgressIndicator(
+                                    backgroundColor: Colors.white,
+                                  ),
+                                ),
+                              )
+                            : ApiService.reviewsList.isNotEmpty
+                                ? SizedBox(
+                                    height:
+                                        MediaQuery.of(context).size.height / 3.0,
+                                    width: MediaQuery.of(context).size.width,
+                                    child: Scrollbar(
+                                      child: ListView.separated(
+                                          itemCount:
+                                              ApiService.reviewsList.length < 3
+                                                  ? ApiService.reviewsList.length
+                                                  : 3,
+                                          itemBuilder: (context, index) {
+                                            ReviewsModel reviewsModel =
+                                                ApiService.reviewsList[index];
+          
+                                            return Container(
+                                              color: Colors.yellow,
+                                              padding: EdgeInsets.all(10.0),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Row(
+                                                    children: [
+                                                      Container(
+                                                        padding:
+                                                            EdgeInsets.all(5.0),
+                                                        decoration: BoxDecoration(
+                                                            shape: BoxShape.circle,
+                                                            border: Border.all(
+                                                                color:
+                                                                    Colors.grey)),
+                                                        child: Icon(
+                                                          Icons.person,
+                                                          color: Colors.grey,
+                                                          size: deviceWidth > 600
+                                                              ? 45.0
+                                                              : 27.0,
+                                                        ),
+                                                      ),
+                                                      SizedBox(
+                                                        width: 10.0,
+                                                      ),
+                                                      Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Row(
+                                                            children: [
+                                                              Text(
+                                                                  reviewsModel
+                                                                          .reviewer ??
+                                                                      "Reviewer",
+                                                                  style: TextStyle(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold)),
+                                                              SizedBox(
+                                                                width: 10.0,
+                                                              ),
+                                                              Text(
+                                                                reviewsModel.verified !=
+                                                                        null
+                                                                    ? reviewsModel
+                                                                                .verified! ==
+                                                                            true
+                                                                        ? "(Verified Purchase)"
+                                                                        : ""
+                                                                    : "",
+                                                                style: TextStyle(
+                                                                    color: Theme.of(
+                                                                            context)
+                                                                        .primaryColor,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold),
+                                                              )
+                                                            ],
+                                                          ),
+                                                          Row(
+                                                            mainAxisSize:
+                                                                MainAxisSize.min,
+                                                            children: List.generate(
+                                                                5, (index) {
+                                                              return Icon(
+                                                                index <
+                                                                        (reviewsModel
+                                                                                .rating ??
+                                                                            0)
+                                                                    ? Icons.star
+                                                                    : Icons
+                                                                        .star_border,
+                                                                color: Colors.amber,
+                                                                size: deviceWidth >
+                                                                        600
+                                                                    ? 33.0
+                                                                    : 22.0,
+                                                              );
+                                                            }),
+                                                          ),
+                                                        ],
+                                                      )
+                                                    ],
+                                                  ),
+                                                  SizedBox(
+                                                    height: 10.0,
+                                                  ),
+                                                  HtmlWidget(
+                                                    // reviewsModel.review ??
+                                                    "<p>Reviewwwwwwwwwwwwwwwwwwwwwwwwwwwwwww</p>",
+                                                    textStyle: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.normal),
+                                                  ),
+                                                ],
+                                              ),
+                                            );
+                                          },
+                                          separatorBuilder: (context, index) =>
+                                              const Divider(
+                                                  thickness: 1.0,
+                                                  color: Colors.grey)),
+                                    ),
+                                  )
+                                : Text(
+                                    "Be the first to review this product",
+                                    style: Theme.of(context).textTheme.headline6,
+                                  ),
+                        ApiService.reviewsList.length > 3
+                            ? InkWell(
+                                child: Text(
+                                  "Read all ${ApiService.reviewsList.length} Reviews",
+                                  style: TextStyle(
+                                      color: Theme.of(context).primaryColor,
+                                      fontSize: deviceWidth > 600 ? 26.0 : 16.0,
+                                      fontWeight: FontWeight.normal,
+                                      decoration: TextDecoration.underline),
+                                ),
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => ReviewsPage(
+                                          productsModel: productsModel,
+                                        ),
+                                      ));
+                                },
+                              )
+                            : SizedBox()
+                      ])),
+            ])),
+          ),
+        ),
       ),
       bottomSheet: BottomSheet(
         constraints: BoxConstraints.expand(width: deviceWidth, height: 100),

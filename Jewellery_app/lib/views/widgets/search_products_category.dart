@@ -9,9 +9,9 @@ import 'package:provider/provider.dart';
 class SearchProductsOfCategory extends StatefulWidget
     implements PreferredSizeWidget {
   final int categoryId;
-  final bool forCollections;
+ 
   const SearchProductsOfCategory(
-      {super.key, required this.categoryId, required this.forCollections});
+      {super.key, required this.categoryId});
 
   @override
   State<SearchProductsOfCategory> createState() =>
@@ -45,14 +45,13 @@ class _SearchProductsOfCategoryState extends State<SearchProductsOfCategory> {
   @override
   Widget build(BuildContext context) {
     final categoryProvider =
-        Provider.of<CategoryProvider>(context, listen: true);
+        Provider.of<CategoryProvider>(context, listen: false);
 
     final filterOptionsProvider = Provider.of<FilterOptionsProvider>(context);
     double deviceWidth = MediaQuery.of(context).size.width;
 
     print("kToolbarHeight ${(kToolbarHeight / 2.6)}");
-    return widget.forCollections == false
-        ? Container(
+    return Container(
             padding:
                 const EdgeInsets.only(bottom: 15.0, left: 15.0, right: 10.0),
             color: Colors.white,
@@ -103,8 +102,7 @@ class _SearchProductsOfCategoryState extends State<SearchProductsOfCategory> {
 
                           categoryProvider.setIsCategoryProductFetching(false);
 
-                          categoryProvider.setIsProductListEmpty(
-                              listOfProducts.length == 0);
+                          categoryProvider.setIsProductListEmpty(listOfProducts.length == 0);
 
                           categoryProvider.setSearchText(value);
 
@@ -218,10 +216,11 @@ class _SearchProductsOfCategoryState extends State<SearchProductsOfCategory> {
               ],
             ),
           )
-        : SizedBox();
+      ;
   }
 
   @override
   // TODO: implement preferredSize
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+  Size get preferredSize =>
+      Size.fromHeight(kToolbarHeight);
 }

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:Tiara_by_TJ/api/api_service.dart';
@@ -87,11 +88,11 @@ class _SignupPageState extends State<SignupPage> {
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Image.network(
-                        Constants.app_logo,
-                        height: 60.0,
-                        fit: BoxFit.fill,
-                      ),
+                      CachedNetworkImage(
+                          imageUrl: Constants.app_logo,
+                          fit: BoxFit.fill,
+                          height: 70.0,
+                        ),
                       const SizedBox(
                         height: 40.0,
                       ),

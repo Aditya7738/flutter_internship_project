@@ -1,10 +1,8 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:Tiara_by_TJ/constants/constants.dart';
 import 'package:Tiara_by_TJ/model/banner_model.dart';
 import 'package:Tiara_by_TJ/model/category_model.dart';
-import 'package:Tiara_by_TJ/model/collections_model.dart' as CollectionsModel;
 import 'package:Tiara_by_TJ/model/coupons_model.dart' as Coupons;
 import 'package:Tiara_by_TJ/model/digi_gold_plan_model.dart' as DigiGoldPlans;
 import 'package:Tiara_by_TJ/model/filter_options_model.dart' as FilterOptions;
@@ -12,7 +10,6 @@ import 'package:Tiara_by_TJ/model/layout_model.dart';
 import 'package:Tiara_by_TJ/model/product_customization_option_model.dart'
     as CustomizationOption;
 import 'package:Tiara_by_TJ/model/reviews_model.dart';
-import 'package:Tiara_by_TJ/views/pages/no_internet_connection.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -22,7 +19,6 @@ import 'package:Tiara_by_TJ/model/products_model.dart' as AllProducts;
 import 'package:Tiara_by_TJ/model/products_model.dart';
 import 'package:Tiara_by_TJ/model/products_of_category.dart'
     as ProductsRelatedToCategory;
-import 'package:provider/provider.dart';
 
 class ApiService {
   static List<CategoriesModel> listOfCategory = [];
@@ -1230,6 +1226,34 @@ class ApiService {
     } else {
       print("ERROR SIGNUP BODY ${response.body}");
       return response;
+    }
+  }
+
+  static Future<http.StreamedResponse?> loginToken(
+      String username, String password) async {
+    final userNameEncoded = Uri.encodeComponent(username);
+    final passwordEncoded = Uri.encodeComponent(password);
+    final endpoint =
+        "${Constants.baseUrl}/wp-json/jwt-auth/v1/token?username=${userNameEncoded}&password=${passwordEncoded}";
+
+    // final encoded = Uri.encodeFull(endpoint);
+    //  final encoded = Uri.encodeComponent(endpoint);
+
+    print("encoded $endpoint");
+
+    Uri uri = Uri.parse(endpoint);
+
+    var request = http.Request('POST', uri);
+
+    http.StreamedResponse response = await request.send();
+
+    print("login STATUS ${response.statusCode}");
+
+    if (response.statusCode == 200) {
+      return response;
+    } else {
+      print("login REASON ${response.reasonPhrase}");
+      return null;
     }
   }
 

@@ -16,8 +16,10 @@ import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:provider/provider.dart';
 
 class CollectionGridList extends StatefulWidget {
+  static List<AllProducts.ProductsModel> listOfCollections =
+      <AllProducts.ProductsModel>[];
   final int collectionId;
-  const CollectionGridList({super.key, required this.collectionId});
+  CollectionGridList({super.key, required this.collectionId});
 
   @override
   State<CollectionGridList> createState() => _CollectionGridListState();
@@ -41,14 +43,12 @@ class _CollectionGridListState extends State<CollectionGridList> {
     //getCollections();
   }
 
-  List<AllProducts.ProductsModel> listOfCollections =
-      <AllProducts.ProductsModel>[];
-
   _downloadFile() async {
     //https: //tiarabytj.com/wp-json/wc/v3/products?consumer_key=ck_33882e17eeaff38b20ac7c781156024bc2d6af4a&cosumer_secret=cs_df67b056d05606c05275b571ab39fa508fcdd7b9&per_page=100&collections=12
     // String collectionsUri =
     //     "${Constants.baseUrl}/wp-json/wc/v3/products?consumer_key=${Constants.consumerKey}&cosumer_secret=${Constants.consumerSecret}&per_page=100&collections=${widget.collectionId}&page=1";
-    String collectionsUri = "${Constants.baseUrl}/wp-json/wc/v3/products?consumer_key=${Constants.consumerKey}&cosumer_secret=${Constants.consumerSecret}&per_page=100&collections=${widget.collectionId}&page=1";
+    String collectionsUri =
+        "${Constants.baseUrl}/wp-json/wc/v3/products?consumer_key=${Constants.consumerKey}&cosumer_secret=${Constants.consumerSecret}&per_page=100&collections=${widget.collectionId}&page=1";
 
     String basicAuth = "Basic " +
         base64Encode(
@@ -72,9 +72,9 @@ class _CollectionGridListState extends State<CollectionGridList> {
             jsonDecode(http.Response(result, 200, headers: headers).body);
         print("getCollectionsFile json $json");
 
-        listOfCollections.clear();
+        CollectionGridList.listOfCollections.clear();
         for (int i = 0; i < json.length; i++) {
-          listOfCollections.add(AllProducts.ProductsModel(
+          CollectionGridList.listOfCollections.add(AllProducts.ProductsModel(
             id: json[i]["id"],
             name: json[i]["name"],
             slug: json[i]["slug"],
@@ -186,8 +186,8 @@ class _CollectionGridListState extends State<CollectionGridList> {
           ));
         }
 
-        listOfCollections.forEach((element) {
-          print("listOfCollections element ${jsonEncode(element)}");
+        CollectionGridList.listOfCollections.forEach((element) {
+          print("CollectionGridList.listOfCollections element ${jsonEncode(element)}");
         });
       } else {
         print("error 404, 401");
@@ -222,7 +222,7 @@ class _CollectionGridListState extends State<CollectionGridList> {
   //   setState(() {
   //     isCollectionLoading = true;
   //   });
-  //   CacheMemory.listOfCollections.clear();
+  //   CacheMemory.CollectionGridList.listOfCollections.clear();
   //   await ApiService.getCollections(
   //       collectionId: widget.collectionId, pageNo: 1);
   //   if (mounted) {
@@ -273,16 +273,15 @@ class _CollectionGridListState extends State<CollectionGridList> {
                   childAspectRatio: 0.64,
                   crossAxisCount: deviceWidth > 600 ? 3 : 2),
               itemBuilder: (context, index) {
-                
-                
-                if (index < listOfCollections.length) {
+                if (index < CollectionGridList.listOfCollections.length) {
                   AllProducts.ProductsModel collectionsModel =
-                    listOfCollections[index];
+                      CollectionGridList.listOfCollections[index];
                   print(" productIndex: $index");
                   return ProductItem(
                     productIndex: index,
                     productsModel: collectionsModel,
-                    fromFetchHome: true,
+                    forCollections: false,
+                    fromHomeScreen: true,
                   );
                 } else {
                   return const Padding(

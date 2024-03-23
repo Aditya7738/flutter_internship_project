@@ -216,8 +216,8 @@ class _DashboardPageState extends State<DashboardPage> {
   Widget build(BuildContext context) {
     final tabs = <Widget>[
       DigiGoldPage(),
-    FetchHomeScreen(),
-     //const HomeScreen(),
+      FetchHomeScreen(),
+      //const HomeScreen(),
       AccountPage()
     ];
     double deviceWidth = MediaQuery.of(context).size.width;
@@ -238,8 +238,10 @@ class _DashboardPageState extends State<DashboardPage> {
           selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
           selectedItemColor: Theme.of(context).primaryColor,
           currentIndex: _currentIndex,
-          selectedFontSize: deviceWidth > 600 ? deviceWidth / 40 : deviceWidth /30,
-          unselectedFontSize: deviceWidth > 600 ? deviceWidth / 40 : deviceWidth /31,
+          selectedFontSize:
+              deviceWidth > 600 ? deviceWidth / 40 : deviceWidth / 30,
+          unselectedFontSize:
+              deviceWidth > 600 ? deviceWidth / 40 : deviceWidth / 31,
           iconSize: deviceWidth / 25,
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
@@ -257,20 +259,34 @@ class _DashboardPageState extends State<DashboardPage> {
                   color: Theme.of(context).primaryColor,
                 )),
             BottomNavigationBarItem(
-              icon: Icon(
-                Icons.home_outlined,
-                color: Color(0xffCC868A),
+              icon: Image.asset(
+                "assets/images/home_outlined.png",
+                width: 45.0,
+                height: 25.0,
+                color: Theme.of(context).primaryColor,
               ),
               label: "Home",
-              activeIcon: Icon(Icons.home_filled,
-                  color: Theme.of(context).primaryColor),
+              activeIcon: Image.asset(
+                "assets/images/home_filled.png",
+                width: 45.0,
+                height: 25.0,
+                color: Theme.of(context).primaryColor,
+              ),
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.person_outline_outlined,
-                  color: Theme.of(context).primaryColor),
+              icon: Image.asset(
+                "assets/images/user_outlined.png",
+                width: 45.0,
+                height: 25.0,
+                color: Theme.of(context).primaryColor,
+              ),
               label: "Account",
-              activeIcon: Icon(Icons.person_sharp,
-                  color: Theme.of(context).primaryColor),
+              activeIcon: Image.asset(
+                "assets/images/user_filled.png",
+                width: 45.0,
+                height: 25.0,
+                color: Theme.of(context).primaryColor,
+              ),
             ),
           ]),
     );

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:Tiara_by_TJ/views/pages/cart_page.dart';
 import 'package:Tiara_by_TJ/views/pages/dashboard_page.dart';
 import 'package:Tiara_by_TJ/views/pages/shipping_page.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:Tiara_by_TJ/api/api_service.dart';
@@ -42,8 +43,6 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-
-
     final customerProvider = Provider.of<CustomerProvider>(context);
     final deviceWidth = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -86,11 +85,16 @@ class _LoginPageState extends State<LoginPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Image.network(
-                          Constants.app_logo,
-                          // width: 150.0,
-                          height: 70.0,
+                        // Image.network(
+                        //   Constants.app_logo,
+                        //   // width: 150.0,
+                        //   height: 70.0,
+                        //   fit: BoxFit.fill,
+                        // ),
+                        CachedNetworkImage(
+                          imageUrl: Constants.app_logo,
                           fit: BoxFit.fill,
+                          height: 70.0,
                         ),
                         const SizedBox(
                           height: 40.0,
@@ -159,16 +163,15 @@ class _LoginPageState extends State<LoginPage> {
                           },
                           decoration: InputDecoration(
                             errorStyle: TextStyle(
-                              fontSize: (deviceWidth / 33) + 1.5,
-                              color: Colors.red
-                            ),
+                                fontSize: (deviceWidth / 33) + 1.5,
+                                color: Colors.red),
                             labelStyle: Theme.of(context).textTheme.subtitle1,
                             // errorText: ,
                             labelText: "Enter your email*",
-                            border: 
-                            OutlineInputBorder(
-                              borderSide: BorderSide(color: Theme.of(context).primaryColor,
-                              ),
+                            border: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Theme.of(context).primaryColor,
+                                ),
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(20.0))),
                           ),
@@ -187,9 +190,8 @@ class _LoginPageState extends State<LoginPage> {
                           },
                           decoration: InputDecoration(
                             errorStyle: TextStyle(
-                              fontSize: (deviceWidth / 33) + 1.5,
-                              color: Colors.red
-                            ),
+                                fontSize: (deviceWidth / 33) + 1.5,
+                                color: Colors.red),
                             labelStyle: Theme.of(context).textTheme.subtitle1,
                             suffixIcon: IconButton(
                               onPressed: () {
@@ -199,9 +201,12 @@ class _LoginPageState extends State<LoginPage> {
                                   });
                                 }
                               },
-                              icon: Icon(isObscured
-                                  ? Icons.visibility
-                                  : Icons.visibility_off,  size: 35.0,),
+                              icon: Icon(
+                                isObscured
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                                size: 35.0,
+                              ),
                             ),
                             // errorText: ,
                             labelText: "Enter your password*",
@@ -245,8 +250,10 @@ class _LoginPageState extends State<LoginPage> {
                                   });
                                 }
 
-                                final response = await ApiService.loginCustomer(
-                                    email, password, username);
+                                // final response = await ApiService.loginCustomer(
+                                //     email, password, username);
+                                final response = await ApiService.loginToken(
+                                    email, password);
 
                                 if (response != null) {
                                   if (response.statusCode == 200) {
@@ -255,23 +262,25 @@ class _LoginPageState extends State<LoginPage> {
 
                                     print("BODY LOGIN $body");
 
-                                    List<Map<String, dynamic>> data =
-                                        <Map<String, dynamic>>[];
+                                    Map<String, dynamic> data =
+                                        <String, dynamic>{};
                                     try {
-                                      data = List<Map<String, dynamic>>.from(
+                                      data = Map<String, dynamic>.from(
                                           jsonDecode(body));
 
-                                          if (data.isEmpty) {
-                                            errorMsg = "User with this email id not exist";
-                                          }
-
+                                      if (data.isEmpty) {
+                                        errorMsg =
+                                            "User with this email id not exist";
+                                      }
 
                                       print("LOGIN JSON DECODE DATA $data");
                                     } catch (e) {
                                       print('Error decoding: $e');
+                                      //: Error decoding: type '_Map<String, dynamic>' is not a subtype of type 'Iterable<dynamic>'
                                     }
 
-                                    customerProvider.setCustomerData(data);
+                                    // customerProvider.setCustomerData(data);
+                                    customerProvider.addCustomerData(data);
 
                                     if (mounted) {
                                       setState(() {
@@ -332,10 +341,11 @@ class _LoginPageState extends State<LoginPage> {
                                   vertical: 10.0, horizontal: 20.0),
                               child: Center(
                                 child: isLoading
-                                    ?  Container(
-                                     padding: EdgeInsets.symmetric(vertical: 5.0),
+                                    ? Container(
+                                        padding:
+                                            EdgeInsets.symmetric(vertical: 5.0),
                                         width: (deviceWidth / 28),
-                                        height:(deviceWidth / 28) + 5 ,
+                                        height: (deviceWidth / 28) + 5,
                                         child: CircularProgressIndicator(
                                           color: Colors.white,
                                           strokeWidth: 2.0,

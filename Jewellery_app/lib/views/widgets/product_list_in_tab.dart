@@ -87,7 +87,7 @@ class _ProductListInTabState extends State<ProductListInTab> {
                       return ProductItem(
                         productsModel:
                             ApiService.listOfProductsCategoryWise[index],
-                        fromFetchHome: false,
+                        forCollections: false,
                       );
                     } else if (!isThereMoreProducts) {
                       return const Padding(
