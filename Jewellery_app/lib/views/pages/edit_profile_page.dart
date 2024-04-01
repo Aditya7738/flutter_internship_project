@@ -64,44 +64,47 @@ class _EditProfilePageState extends State<EditProfilePage> {
     super.initState();
     final customerProvider =
         Provider.of<CustomerProvider>(context, listen: false);
+    customerProvider.customerData.forEach((element) {
+      print("profile customerData $element");
+    });
 
-    // if (customerProvider.customerData[0].containsKey("first_name")) {
-    //   _firstNameController.text =
-    //       customerProvider.customerData[0]["first_name"];
-    // }
+    if (customerProvider.customerData[0].containsKey("first_name")) {
+      _firstNameController.text =
+          customerProvider.customerData[0]["first_name"];
+    }
 
-    // if (customerProvider.customerData[0].containsKey("last_name")) {
-    //   _lastNameController.text = customerProvider.customerData[0]["last_name"];
-    // }
+    if (customerProvider.customerData[0].containsKey("last_name")) {
+      _lastNameController.text = customerProvider.customerData[0]["last_name"];
+    }
 
-    // if (customerProvider.customerData[0].containsKey("email")) {
-    //   _emailController.text = customerProvider.customerData[0]["email"];
-    // }
+    if (customerProvider.customerData[0].containsKey("email")) {
+      _emailController.text = customerProvider.customerData[0]["email"];
+    }
 
-    // if (customerProvider.customerData[0].containsKey("mobile_no")) {
-    //   _phoneNoController.text = customerProvider.customerData[0]["mobile_no"];
-    // }
+    if (customerProvider.customerData[0].containsKey("mobile_no")) {
+      _phoneNoController.text = customerProvider.customerData[0]["mobile_no"];
+    }
 
-    // if (customerProvider.customerData[0].containsKey("fulladdress")) {
-    //   _addressController.text = customerProvider.customerData[0]["fulladdress"];
-    // }
-    // if (customerProvider.customerData[0].containsKey("pincode")) {
-    //   _pinNoController.text = customerProvider.customerData[0]["pincode"];
-    // }
+    if (customerProvider.customerData[0].containsKey("fulladdress")) {
+      _addressController.text = customerProvider.customerData[0]["fulladdress"];
+    }
+    if (customerProvider.customerData[0].containsKey("pincode")) {
+      _pinNoController.text = customerProvider.customerData[0]["pincode"];
+    }
 
-    // if (customerProvider.customerData[0].containsKey("birthday")) {
-    //   _birthdateController.text = customerProvider.customerData[0]["birthday"];
-    // }
+    if (customerProvider.customerData[0].containsKey("birthday")) {
+      _birthdateController.text = customerProvider.customerData[0]["birthday"];
+    }
 
-    // if (customerProvider.customerData[0].containsKey("anniversary")) {
-    //   _anniversarydateController.text =
-    //       customerProvider.customerData[0]["anniversary"];
-    // }
+    if (customerProvider.customerData[0].containsKey("anniversary")) {
+      _anniversarydateController.text =
+          customerProvider.customerData[0]["anniversary"];
+    }
 
-    // if (customerProvider.customerData[0].containsKey("spouse_birthday")) {
-    //   _spousebirthdateController.text =
-    //       customerProvider.customerData[0]["spouse_birthday"];
-    // }
+    if (customerProvider.customerData[0].containsKey("spouse_birthday")) {
+      _spousebirthdateController.text =
+          customerProvider.customerData[0]["spouse_birthday"];
+    }
   }
 
   bool isPhoneValid = true;
@@ -110,7 +113,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   Widget build(BuildContext context) {
     final customerProvider =
         Provider.of<CustomerProvider>(context, listen: false);
-    //int customerId = customerProvider.customerData[0]["id"];
+    int customerId = customerProvider.customerData[0]["id"];
     double deviceWidth = MediaQuery.of(context).size.width;
     return Scaffold(
         appBar: AppBar(
@@ -173,17 +176,15 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     height: 30.0,
                   ),
                   Container(
-                    
-                    height: isPhoneValid ?
-                    80.0 : 
-                    130.0,
+                    height: isPhoneValid ? 80.0 : 100.0,
                     child: TextFormField(
                       style: Theme.of(context).textTheme.subtitle1,
                       keyboardType: TextInputType.phone,
                       controller: _phoneNoController,
                       validator: (value) {
                         setState(() {
-                          isPhoneValid = ValidationHelper.isPhoneNoValidbool(value);
+                          isPhoneValid =
+                              ValidationHelper.isPhoneNoValidbool(value);
                         });
                         return ValidationHelper.isPhoneNoValid(value);
                       },
@@ -228,7 +229,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                   BorderRadius.all(Radius.circular(20.0))),
                           prefix: DropdownButton(
                               value: selectedOption,
-                              icon: const Icon(Icons.keyboard_arrow_down_rounded),
+                              icon:
+                                  const Icon(Icons.keyboard_arrow_down_rounded),
                               items: options.map((String option) {
                                 return DropdownMenuItem(
                                   value: option,
@@ -448,7 +450,19 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           "email": _emailController.text,
                           "first_name": _firstNameController.text,
                           "last_name": _lastNameController.text,
+                          "mobile_no": _phoneNoController.text,
+                          "fulladdress": _addressController.text,
+                          "pincode": _pinNoController.text,
+                          "birthday": _birthdateController.text,
+                          "anniversary": _anniversarydateController.text,
+                          "spouse_birthday": _spousebirthdateController.text,
                         };
+
+                        // if (_phoneNoController.text != "") {
+                        // } else if (_phoneNoController.text != "") {
+                        // } else if (_addressController.text != "") {
+                        // } else if (_pinNoController.text != "") {
+                        // } else if (_birthdateController.text!) {}
 
                         bool isThereInternet =
                             await ApiService.checkInternetConnection(context);
@@ -459,46 +473,72 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             });
                           }
 
-                          // final response =
-                          //     await ApiService.updateCustomerProfile(
-                          //         customerId, updatedData);
+                          final response =
+                              await ApiService.updateCustomerProfile(
+                                  customerId, updatedData);
 
-                          // if (response != null) {
-                          //   if (response.statusCode == 200) {
-                          //     List<Map<String, dynamic>> data =
-                          //         <Map<String, dynamic>>[];
+                          if (response != null) {
+                            if (response.statusCode == 200) {
+                              List<Map<String, dynamic>> data =
+                                  <Map<String, dynamic>>[];
 
-                          //     String body =
-                          //         await response.stream.bytesToString();
-                          //     print(body);
+                              String body =
+                                  await response.stream.bytesToString();
+                              print("update customer $body");
 
-                          //     try {
-                          //       data.add(jsonDecode(body));
-                          //       print("${body.runtimeType}");
-                          //       print("JSON DECODE DATA $data");
-                          //     } catch (e) {
-                          //       print('Error decoding: $e');
-                          //     }
+                              try {
+                                data.add(jsonDecode(body));
+                                print("${body.runtimeType}");
+                                print("JSON DECODE DATA $data");
 
-                          //   //  customerProvider.setCustomerData(data);
+                                // customerProvider.addToFirst(data);
+                                customerProvider.addMapToFirst(updatedData);
 
-                          //     Map<String, String> updatedData2 = {
-                          //       "mobile_no": _phoneNoController.text,
-                          //       "fulladdress": _addressController.text,
-                          //       "pincode": _pinNoController.text,
-                          //       "birthday": _birthdateController.text,
-                          //       "anniversary": _anniversarydateController.text,
-                          //       "spouse_birthday":
-                          //           _spousebirthdateController.text,
-                          //     };
+                                customerProvider.customerData
+                                    .forEach((element) {
+                                  print("after get customerData $element");
+                                });
 
-                          //    // customerProvider.addCustomerData(updatedData2);
+                                // if (customerProvider.customerData[0]
+                                //     .containsKey("mobile_no")) {
+                                //   print(
+                                //       "mobile_no ${customerProvider.customerData[0]["mobile_no"]}");
+                                // }
 
-                          //     // print(
-                          //     //     "updated customerData list ${customerProvider.customerData[0]}");
-                          //     Navigator.pop(context);
-                          //   }
-                          // }
+                                // if (customerProvider.customerData[0]
+                                //     .containsKey("fulladdress")) {
+                                //   print(
+                                //       "fulladdress ${customerProvider.customerData[0]["fulladdress"]}");
+                                // }
+                                // if (customerProvider.customerData[0]
+                                //     .containsKey("pincode")) {
+                                //   print(
+                                //       "pincode ${customerProvider.customerData[0]["pincode"]}");
+                                // }
+                              } catch (e) {
+                                print('Error decoding: $e');
+                              }
+
+                              //  customerProvider.setCustomerData(data);
+
+                              // Map<String, String> updatedData2 = {
+                              //   "mobile_no": _phoneNoController.text,
+                              //   "fulladdress": _addressController.text,
+                              //   "pincode": _pinNoController.text,
+                              //   "birthday": _birthdateController.text,
+                              //   "anniversary": _anniversarydateController.text,
+                              //   "spouse_birthday":
+                              //       _spousebirthdateController.text,
+                              // };
+
+                              // customerProvider.addCustomerData(updatedData2);
+
+                              // print(
+                              //     "updated customerData list ${customerProvider.customerData[0]}");
+
+                              Navigator.pop(context);
+                            }
+                          }
                           if (mounted) {
                             setState(() {
                               isUpdating = false;
@@ -509,7 +549,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     },
                     child: Container(
                         width: MediaQuery.of(context).size.width,
-                      
                         decoration: BoxDecoration(
                             color: const Color(0xffCC868A),
                             borderRadius: BorderRadius.circular(5.0)),
@@ -529,7 +568,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
                               : Text(
                                   "SAVE CHANGES",
                                   style: Theme.of(context).textTheme.button,
-
                                 ),
                         )),
                   ),

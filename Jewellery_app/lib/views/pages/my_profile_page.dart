@@ -120,6 +120,10 @@ class MyProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final customerProvider =
         Provider.of<CustomerProvider>(context, listen: false);
+
+    customerProvider.customerData.forEach((element) {
+      print("profile customerData $element");
+    });
     String name = customerProvider.customerData[0]["first_name"];
     print(name);
 
@@ -296,7 +300,7 @@ class MyProfilePage extends StatelessWidget {
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) => const OrderPage()));
                                 break;
-                    
+
                               case 1:
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) =>

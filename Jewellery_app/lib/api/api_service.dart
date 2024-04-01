@@ -1290,35 +1290,46 @@ class ApiService {
   //   }
   // }
 
-  static Future<http.StreamedResponse?> loginCustomer(
-      String email, String password, String username) async {
+  static Future<http.StreamedResponse?> getCustomerData(
+      String email) async {
     // checkInternetConnection(context);
-    const endpoint =
-        "${Constants.baseUrl}/wp-json/wc/v3/customers?consumer_key=${Constants.consumerKey}&consumer_secret=${Constants.consumerSecret}";
+    final endpoint =
+        "${Constants.baseUrl}/wp-json/wc/v3/customers?consumer_key=${Constants.consumerKey}&consumer_secret=${Constants.consumerSecret}&search=$email";
 
-    var headers = {
-      'Content-Type': 'application/json',
-      'Authorization':
-          'Basic cmFodWxtLnRhbmlrYXRlY2hAZ21haWwuY29tOnJhaHVsMTIjJA=='
+    String basicAuth = "Basic " +
+        base64Encode(
+            utf8.encode('${Constants.userName}:${Constants.password}'));
+
+    print("basicAuth $basicAuth");
+
+    final headers = {
+      'content-type': 'application/json',
+      'Authorization': basicAuth
     };
+
+    // var headers = {
+    //   'Content-Type': 'application/json',
+    //   'Authorization':
+    //       'Basic cmFodWxtLnRhbmlrYXRlY2hAZ21haWwuY29tOnJhaHVsMTIjJA=='
+    // };
 
     Uri uri = Uri.parse(endpoint);
 
     var request = http.Request('GET', uri);
 
-    request.body = json
-        .encode({"email": email, "password": password, "username": username});
+    // request.body = json
+    //     .encode({"email": email, "password": password, "username": username});
 
     request.headers.addAll(headers);
 
     http.StreamedResponse response = await request.send();
 
-    print("STATUS ${response.statusCode}");
+    print("get customer STATUS ${response.statusCode}");
 
     if (response.statusCode == 200) {
       return response;
     } else {
-      print("REASON ${response.reasonPhrase}");
+      print("get customer REASON ${response.reasonPhrase}");
       return null;
     }
   }
@@ -1408,12 +1419,12 @@ class ApiService {
 
     http.StreamedResponse response = await request.send();
 
-    print("STATUS ${response.statusCode}");
+    print("updateCustomer STATUS ${response.statusCode}");
 
     if (response.statusCode == 200) {
       return response;
     } else {
-      print("REASON ${response.reasonPhrase}");
+      print("updateCustomer REASON ${response.reasonPhrase}");
       return null;
     }
   }

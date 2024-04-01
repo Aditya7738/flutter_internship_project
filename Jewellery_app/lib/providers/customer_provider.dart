@@ -16,23 +16,81 @@ class CustomerProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void setCustomerData(List<Map<String, dynamic>> customerData) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _customerData = customerData;
-      notifyListeners();
-      _setCustomerSharedPrefs();
-    });
-  }
+  // void setCustomerData(List<Map<String, dynamic>> customerData) {
+  //   WidgetsBinding.instance.addPostFrameCallback((_) {
+  //     _customerData = customerData;
+  //     notifyListeners();
+  //     _setCustomerSharedPrefs();
+  //   });
+  // }
 
   void addCustomerData(Map<String, dynamic> customerData) {
     // WidgetsBinding.instance.addPostFrameCallback((_) {
     // customerData.forEach((key, value) {
     //   _customerData[0][key] = value;
     // });
+
     _customerData.add(customerData);
+
     notifyListeners();
-    _setCustomerSharedPrefs();
+      _setCustomerSharedPrefs();
     //});
+  }
+
+  void addToFirst(List<Map<String, dynamic>> customerData) {
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    // customerData.forEach((key, value) {
+    //   _customerData[0][key] = value;
+    // });
+
+    print(
+        "customerData[0].containsKey mobile_no ${customerData[0].containsKey("mobile_no")}");
+
+    print(
+        "customerProvider.customerData[0].containsKey fulladdress ${customerData[0].containsKey("fulladdress")}");
+
+    print(
+        "customerProvider.customerData[0].containsKey pincode ${customerData[0].containsKey("pincode")}");
+
+    customerData.forEach((element) {
+      _customerData[0].addAll(element);
+    });
+
+    // _customerData.add(customerData);
+
+    notifyListeners();
+      _setCustomerSharedPrefs();
+    //});
+  }
+
+  void addMapToFirst(Map<String, dynamic> updatedData) {
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    // customerData.forEach((key, value) {
+    //   _customerData[0][key] = value;
+    // });
+
+    print(
+        "customerData[0].containsKey mobile_no ${customerData[0].containsKey("mobile_no")}");
+
+    print(
+        "customerProvider.customerData[0].containsKey fulladdress ${customerData[0].containsKey("fulladdress")}");
+
+    print(
+        "customerProvider.customerData[0].containsKey pincode ${customerData[0].containsKey("pincode")}");
+
+    _customerData[0].addAll(updatedData);
+
+    // _customerData.add(customerData);
+
+    notifyListeners();
+      _setCustomerSharedPrefs();
+    //});
+  }
+
+  void addMapToBilling(Map<String, String> billingData) {
+    _customerData[0]["billing"] = billingData;
+    notifyListeners();
+      _setCustomerSharedPrefs();
   }
 
   void _setCustomerSharedPrefs() async {

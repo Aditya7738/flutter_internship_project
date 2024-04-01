@@ -207,9 +207,9 @@ class _DashboardPageState extends State<DashboardPage> {
         .getWishListSharedPrefs();
     print("call wishlist shared prefs");
     Provider.of<ProfileProvider>(context, listen: false)
-        .getProfileSharedPrefs();
-    Provider.of<CustomerProvider>(context, listen: false)
-        .getCustomerSharedPrefs();
+        .getProfileSharedPrefs(); //empty
+    // Provider.of<CustomerProvider>(context, listen: false)
+    //     .getCustomerSharedPrefs();
   }
 
   @override

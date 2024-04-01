@@ -150,84 +150,45 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
     super.initState();
     final customerProvider =
         Provider.of<CustomerProvider>(context, listen: false);
-    // if (customerProvider.customerData[0].containsKey("first_name")) {
-    //   _firstNameController.text =
-    //       customerProvider.customerData[0]["first_name"];
-    // }
 
-    // if (customerProvider.customerData[0].containsKey("last_name")) {
-    //   _lastNameController.text = customerProvider.customerData[0]["last_name"];
-    // }
+    final customerData = customerProvider.customerData[0];
 
-    // if (customerProvider.customerData[0].containsKey("email")) {
-    //   _emailController.text = customerProvider.customerData[0]["email"];
-    // }
+    if (customerData.containsKey("first_name")) {
+      _firstNameController.text = customerData["first_name"];
+    }
 
-    // if (customerProvider.customerData[0]
-    //     .containsKey("digi_gold_billing_email")) {
-    //   _emailController.text =
-    //       customerProvider.customerData[0]["digi_gold_billing_email"];
-    // }
+    if (customerData.containsKey("last_name")) {
+      _lastNameController.text = customerData["last_name"];
+    }
 
-    // if (customerProvider.customerData[0].containsKey("mobile_no")) {
-    //   _phoneNoController.text = customerProvider.customerData[0]["mobile_no"];
-    // }
+    if (customerData.containsKey("email")) {
+      _emailController.text = customerData["email"];
+    }
 
-    // if (customerProvider.customerData[0]
-    //     .containsKey("digi_gold_billing_phone")) {
-    //   _phoneNoController.text =
-    //       customerProvider.customerData[0]["digi_gold_billing_phone"];
-    // }
+    if (customerData.containsKey("mobile_no")) {
+      _phoneNoController.text = customerData["mobile_no"];
+    }
 
-    // if (customerProvider.customerData[0].containsKey("address_1")) {
-    //   _addressController1.text = customerProvider.customerData[0]["address_1"];
-    // }
+    if (customerData.containsKey("pincode")) {
+      _pinNoController.text = customerData["pincode"];
+    }
 
-    // if (customerProvider.customerData[0].containsKey("address_2")) {
-    //   _addressController2.text = customerProvider.customerData[0]["address_2"];
-    // }
+    if (customerData.containsKey("billing")) {
+      _companyNameController.text = customerData["billing"]["company"];
 
-    // if (customerProvider.customerData[0].containsKey("pincode")) {
-    //   _pinNoController.text = customerProvider.customerData[0]["pincode"];
-    // }
+      _addressController1.text = customerData["billing"]["address_1"];
+      _addressController2.text = customerData["billing"]["address_2"];
 
-    // if (customerProvider.customerData[0].containsKey("company")) {
-    //   _companyNameController.text = customerProvider.customerData[0]["company"];
-    // }
+      _cityController.text = customerData["billing"]["city"];
+    }
 
-    // if (customerProvider.customerData[0].containsKey("city")) {
-    //   _cityController.text = customerProvider.customerData[0]["city"];
-    //   print("CITY ${_cityController.text}");
-    // }
+    if (customerData.containsKey("nominee_name")) {
+      _nomineeNameController.text = customerData["nominee_name"];
+    }
 
-    // if (customerProvider.customerData[0].containsKey("aadhar_card_no")) {
-    //   _aadharCardController.text =
-    //       customerProvider.customerData[0]["aadhar_card_no"];
-    // }
-
-    // if (customerProvider.customerData[0].containsKey("pan_card_no")) {
-    //   _panCardController.text = customerProvider.customerData[0]["pan_card_no"];
-    // }
-
-    // if (customerProvider.customerData[0].containsKey("passport_no")) {
-    //   _passportController.text =
-    //       customerProvider.customerData[0]["passport_no"];
-    // }
-
-    // if (customerProvider.customerData[0].containsKey("driving_license_no")) {
-    //   _licenseNoController.text =
-    //       customerProvider.customerData[0]["driving_license_no"];
-    // }
-
-    // if (customerProvider.customerData[0].containsKey("nominee_name")) {
-    //   _nomineeNameController.text =
-    //       customerProvider.customerData[0]["nominee_name"];
-    // }
-
-    // if (customerProvider.customerData[0].containsKey("nominee_relation")) {
-    //   _nomineeRelationController.text =
-    //       customerProvider.customerData[0]["nominee_relation"];
-    // }
+    if (customerData.containsKey("nominee_relation")) {
+      _nomineeRelationController.text = customerData["nominee_relation"];
+    }
 
     for (var i = 0; i < widget.digiGoldPlanModel.metaData.length; i++) {
       if (widget.digiGoldPlanModel.metaData[i].key == "digi_plan_duration") {
@@ -889,7 +850,7 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
           "nominee_name": _nomineeNameController.text,
           "nominee_relation": _nomineeRelationController.text
         };
-        //  customerProvider.addCustomerData(nomineeData);
+        customerProvider.addMapToFirst(nomineeData);
       }
 
       // customerProvider.addCustomerData(personalData);

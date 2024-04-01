@@ -322,60 +322,65 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                     SizedBox(
                       height: 40.0,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Transform.scale(
-                          scale: 1.3,
-                          child: Checkbox(
-                            activeColor: Theme.of(context).primaryColor,
-                            checkColor: Colors.white,
-                            value: checkBoxChecked,
-                            onChanged: (value) {
-                              print("termsSeen2 ${termsSeen}");
-                              if (termsSeen) {
-                                if (mounted) {
-                                  setState(() {
-                                    checkBoxChecked = value ?? false;
-                                  });
-                                }
-                                print("checkBoxChecked ${checkBoxChecked}");
-                              }
-                            },
-                          ),
-                        ),
-                        GestureDetector(
-                            onTap: () {
-                              if (mounted) {
-                                setState(() {
-                                  termsSeen = true;
-                                });
-                              }
-                              print("termsSeen1 ${termsSeen}");
+                    customerProvider.customerData.isEmpty
+                        ? SizedBox()
+                        : Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Transform.scale(
+                                scale: 1.3,
+                                child: Checkbox(
+                                  activeColor: Theme.of(context).primaryColor,
+                                  checkColor: Colors.white,
+                                  value: checkBoxChecked,
+                                  onChanged: (value) {
+                                    print("termsSeen2 ${termsSeen}");
+                                    if (termsSeen) {
+                                      if (mounted) {
+                                        setState(() {
+                                          checkBoxChecked = value ?? false;
+                                        });
+                                      }
+                                      print(
+                                          "checkBoxChecked ${checkBoxChecked}");
+                                    }
+                                  },
+                                ),
+                              ),
+                              GestureDetector(
+                                  onTap: () {
+                                    if (mounted) {
+                                      setState(() {
+                                        termsSeen = true;
+                                      });
+                                    }
+                                    print("termsSeen1 ${termsSeen}");
 
-                              showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return AlertDialog(
-                                      alignment: Alignment.center,
-                                      title: const Text(
-                                        "Terms & Conditions",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      content: HtmlWidget(
-                                        termsConditions,
-                                        textStyle: TextStyle(fontSize: 17.0),
-                                      ));
-                                },
-                              );
-                            },
-                            child: Text(
-                              "Terms & Conditions",
-                              style: Theme.of(context).textTheme.headline6,
-                            ))
-                      ],
-                    ),
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                            alignment: Alignment.center,
+                                            title: const Text(
+                                              "Terms & Conditions",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            content: HtmlWidget(
+                                              termsConditions,
+                                              textStyle:
+                                                  TextStyle(fontSize: 17.0),
+                                            ));
+                                      },
+                                    );
+                                  },
+                                  child: Text(
+                                    "Terms & Conditions",
+                                    style:
+                                        Theme.of(context).textTheme.headline6,
+                                  ))
+                            ],
+                          ),
                     SizedBox(
                       height: 50.0,
                     ),
@@ -416,9 +421,7 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                                   "LOGIN",
                                   style: checkBoxChecked
                                       ? Theme.of(context).textTheme.button
-                                      : Theme.of(context).textTheme.headline5
-                              
-                                  ,
+                                      : Theme.of(context).textTheme.headline5,
                                 )),
                           )
                         : GestureDetector(

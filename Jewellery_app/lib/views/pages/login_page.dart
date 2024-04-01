@@ -42,6 +42,13 @@ class _LoginPageState extends State<LoginPage> {
   String errorMsg = "";
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _passwordController.text = "Sldi4e@#45";
+  }
+
+  @override
   Widget build(BuildContext context) {
     final customerProvider = Provider.of<CustomerProvider>(context);
     final deviceWidth = MediaQuery.of(context).size.width;
@@ -271,6 +278,56 @@ class _LoginPageState extends State<LoginPage> {
                                       if (data.isEmpty) {
                                         errorMsg =
                                             "User with this email id not exist";
+                                        customerProvider
+                                            .setIsUserLoggedIn(false);
+                                      } else {
+                                        customerProvider
+                                            .setIsUserLoggedIn(true);
+                                        customerProvider.addCustomerData(data);
+
+                                        customerProvider.customerData
+                                            .forEach((element) {
+                                          print("customerData $element");
+                                        });
+
+                                        final response =
+                                            await ApiService.getCustomerData(
+                                                email);
+
+                                        if (response != null) {
+                                          if (response.statusCode == 200) {
+                                            String body = await response.stream
+                                                .bytesToString();
+
+                                            print("get customer body $body");
+
+                                            List<Map<String, dynamic>>
+                                                customerData =
+                                                <Map<String, dynamic>>[];
+                                            try {
+                                              customerData = List<Map<String, dynamic>>.from(
+                                                  jsonDecode(body));
+
+                                              if (customerData.isEmpty) {
+                                                print("customer data empty");
+                                              } else {
+                                                print(
+                                                    "List<Map<String, dynamic>> customerData $customerData");
+                                                customerProvider
+                                                    .addToFirst(customerData);
+
+                                                customerProvider.customerData
+                                                    .forEach((element) {
+                                                  print(
+                                                      "after get customerData $element");
+                                                });
+                                              }
+                                            } catch (e) {
+                                              print(
+                                                  "get customer data error $e");
+                                            }
+                                          }
+                                        }
                                       }
 
                                       print("LOGIN JSON DECODE DATA $data");
@@ -280,15 +337,12 @@ class _LoginPageState extends State<LoginPage> {
                                     }
 
                                     // customerProvider.setCustomerData(data);
-                                    customerProvider.addCustomerData(data);
 
                                     if (mounted) {
                                       setState(() {
                                         isLoading = false;
                                       });
                                     }
-
-                                    customerProvider.setIsUserLoggedIn(true);
 
                                     //
 
@@ -303,6 +357,8 @@ class _LoginPageState extends State<LoginPage> {
                                         await response.stream.bytesToString();
                                     Map<String, dynamic> data =
                                         <String, dynamic>{};
+
+                                    customerProvider.setIsUserLoggedIn(false);
 
                                     try {
                                       data = jsonDecode(body);
@@ -327,6 +383,15 @@ class _LoginPageState extends State<LoginPage> {
                                       });
                                     }
                                   }
+                                } else {
+                                  if (mounted) {
+                                    setState(() {
+                                      isLoading = false;
+                                      isLoginUnSuccessful = true;
+                                      errorMsg =
+                                          "Email and password don't match";
+                                    });
+                                  }
                                 }
                               }
                             }
@@ -345,7 +410,7 @@ class _LoginPageState extends State<LoginPage> {
                                         padding:
                                             EdgeInsets.symmetric(vertical: 5.0),
                                         width: (deviceWidth / 28),
-                                        height: (deviceWidth / 28) + 5,
+                                        height: (deviceWidth / 28) + 9,
                                         child: CircularProgressIndicator(
                                           color: Colors.white,
                                           strokeWidth: 2.0,

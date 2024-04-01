@@ -112,7 +112,6 @@ class AccountPage extends StatelessWidget {
               width: 15,
             ),
             Container(
-            
               width: (deviceWidth / 16) + 4,
               child: badges.Badge(
                 badgeStyle: const badges.BadgeStyle(badgeColor: Colors.purple),
@@ -138,7 +137,6 @@ class AccountPage extends StatelessWidget {
               width: 24,
             ),
             Container(
-         
               width: (deviceWidth / 16) + 4,
               child: badges.Badge(
                 badgeStyle: const badges.BadgeStyle(badgeColor: Colors.purple),
@@ -163,8 +161,7 @@ class AccountPage extends StatelessWidget {
             const SizedBox(
               width: 34,
             ),
-          ]
-          ),
+          ]),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -176,36 +173,41 @@ class AccountPage extends StatelessWidget {
                 color: const Color.fromARGB(255, 237, 237, 237),
                 child: Text("Hello, there!",
                     style: TextStyle(
-                      fontSize: deviceWidth > 600 ? 26.0 : 17.0, fontWeight: FontWeight.normal
-                    ))),
-            ListTile(
-              contentPadding:
-                  EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-              onTap: () {
-
-                customerProvider.customerData.isEmpty
-// false
-                    ? Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              LoginPage(isComeFromCart: false),
-                        ))
-                    : Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => MyProfilePage(),
-                      ));
+                        fontSize: deviceWidth > 600 ? 26.0 : 17.0,
+                        fontWeight: FontWeight.normal))),
+            Consumer<CustomerProvider>(
+              builder: (BuildContext context, value, Widget? child) {
+                return ListTile(
+                  contentPadding:
+                      EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+                  onTap: () {
+                    print(
+                        "customerProvider.customerData.isEmpty ${value.customerData.isEmpty}");
+                    value.customerData.isEmpty
+                        ? Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  LoginPage(isComeFromCart: false),
+                            ))
+                        : Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => MyProfilePage(),
+                          ));
+                  },
+                  leading: Icon(
+                    Icons.account_circle_outlined,
+                    size: deviceWidth > 600 ? 40.0 : 30.0,
+                  ),
+                  title: Text(
+                      customerProvider.customerData.isEmpty
+                          // false
+                          ? "Login"
+                          : "My profile",
+                      style: TextStyle(
+                          fontSize: deviceWidth > 600 ? 32.0 : 18.0,
+                          fontWeight: FontWeight.normal)),
+                );
               },
-              leading: Icon(
-                Icons.account_circle_outlined,
-                size: deviceWidth > 600 ? 40.0 : 30.0,
-              ),
-              title: Text(
-                customerProvider.customerData.isEmpty
-               // false
-                 ? "Login" : "My profile",
-                  style: TextStyle(
-                      fontSize: deviceWidth > 600 ? 32.0 : 18.0,
-                      fontWeight: FontWeight.normal)),
             ),
             // SizedBox(
             //   width: MediaQuery.of(context).size.width,
@@ -260,7 +262,9 @@ class AccountPage extends StatelessWidget {
                 color: const Color.fromARGB(255, 237, 237, 237),
                 child: Text(
                   "CONTACT US",
-                  style: TextStyle(fontSize: deviceWidth > 600 ? 24.0 : 15.0, fontWeight: FontWeight.normal),
+                  style: TextStyle(
+                      fontSize: deviceWidth > 600 ? 24.0 : 15.0,
+                      fontWeight: FontWeight.normal),
                 )),
             Padding(
               padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
@@ -299,7 +303,8 @@ class AccountPage extends StatelessWidget {
                       Text(
                         "Call",
                         style: TextStyle(
-                            fontSize: deviceWidth > 600 ? 27.0 : 17.0, fontWeight: FontWeight.normal),
+                            fontSize: deviceWidth > 600 ? 27.0 : 17.0,
+                            fontWeight: FontWeight.normal),
                       )
                     ],
                   ),
@@ -327,7 +332,8 @@ class AccountPage extends StatelessWidget {
                       ),
                       Text("Visit our website",
                           style: TextStyle(
-                              fontSize: deviceWidth > 600 ? 27.0 : 17.0, fontWeight: FontWeight.normal))
+                              fontSize: deviceWidth > 600 ? 27.0 : 17.0,
+                              fontWeight: FontWeight.normal))
                     ],
                   ),
                   // Padding(
@@ -364,13 +370,15 @@ class AccountPage extends StatelessWidget {
                 color: const Color.fromARGB(255, 237, 237, 237),
                 child: Text(
                   "SPREAD THE WORD",
-                  style: TextStyle(fontSize: deviceWidth > 600 ? 24.0 : 15.0, fontWeight: FontWeight.normal),
+                  style: TextStyle(
+                      fontSize: deviceWidth > 600 ? 24.0 : 15.0,
+                      fontWeight: FontWeight.normal),
                 )),
             SizedBox(
               width: MediaQuery.of(context).size.width,
               height: deviceWidth > 600 ? 286 : 238.0,
               child: ListView.separated(
-                 physics: NeverScrollableScrollPhysics(),
+                physics: NeverScrollableScrollPhysics(),
                 itemCount: icons2.length,
                 itemBuilder: (context, index) {
                   return GestureDetector(
@@ -384,7 +392,6 @@ class AccountPage extends StatelessWidget {
                               context: context);
                           break;
                         case 1:
-               
                           break;
                         case 2:
                           if (await inAppReview.isAvailable()) {
@@ -398,7 +405,6 @@ class AccountPage extends StatelessWidget {
                       }
                     },
                     child: ListTile(
-                     
                       contentPadding: EdgeInsets.symmetric(
                           vertical: deviceWidth > 600 ? 10.0 : 5.0,
                           horizontal: 20.0),
@@ -425,14 +431,16 @@ class AccountPage extends StatelessWidget {
                 color: const Color.fromARGB(255, 237, 237, 237),
                 child: Text(
                   "POLICIES",
-                  style: TextStyle(fontSize: deviceWidth > 600 ? 24.0 : 15.0, fontWeight: FontWeight.normal),
+                  style: TextStyle(
+                      fontSize: deviceWidth > 600 ? 24.0 : 15.0,
+                      fontWeight: FontWeight.normal),
                 )),
             SizedBox(
               width: MediaQuery.of(context).size.width,
-              height:  deviceWidth > 600 ? 201.0 :100.0,
+              height: deviceWidth > 600 ? 201.0 : 100.0,
               child: GridView.builder(
                 itemCount: title3.length,
-                 physics: NeverScrollableScrollPhysics(),
+                physics: NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
                   return GestureDetector(
                     onTap: () {
@@ -448,13 +456,11 @@ class AccountPage extends StatelessWidget {
                     child: Container(
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
-                        
                         border: Border.all(
                             color: Colors.grey, style: BorderStyle.solid),
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                             vertical: 10.0),
+                        padding: const EdgeInsets.symmetric(vertical: 10.0),
                         child: Text(title3[index],
                             style: TextStyle(
                                 fontSize: deviceWidth > 600 ? 32.0 : 16.0,
@@ -464,7 +470,7 @@ class AccountPage extends StatelessWidget {
                   );
                 },
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    childAspectRatio: deviceWidth > 600 ? 3.3 :2.9,
+                    childAspectRatio: deviceWidth > 600 ? 3.3 : 2.9,
                     crossAxisCount: 3,
                     mainAxisSpacing: 0.0),
               ),
@@ -476,7 +482,6 @@ class AccountPage extends StatelessWidget {
   }
 
   _callNumber() async {
- 
     String url = 'tel:9833566117';
     Uri uri = Uri.parse(url);
     if (await canLaunchUrl(uri)) {

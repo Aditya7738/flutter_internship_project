@@ -126,20 +126,53 @@ class _ShippingPageState extends State<ShippingPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _firstNameController.text = "abc";
-    _firstNameController2.text = "abc";
-    _lastNameController.text = "def";
-    _lastNameController2.text = "def";
-    _addressController1.text = "ghi";
-    _addressController2.text = "ghi";
-    _address2Controller1.text = "jkl";
-    _address2Controller2.text = "jkl";
-    _cityController.text = "mno";
-    _cityController2.text = "mno";
-    _pinNoController.text = "466432";
-    _pinNoController2.text = "466432";
-    _phoneNoController.text = "2638746434";
-    _emailController.text = "eg@gmail.com";
+    final customerProvider =
+        Provider.of<CustomerProvider>(context, listen: false);
+    final customerData = customerProvider.customerData[0];
+    if (customerData.containsKey("first_name")) {
+      _firstNameController.text = customerData["first_name"];
+      _firstNameController2.text = customerData["first_name"];
+    }
+
+    if (customerData.containsKey("last_name")) {
+      _lastNameController.text = customerData["last_name"];
+      _lastNameController2.text = customerData["last_name"];
+    }
+
+    if (customerData.containsKey("email")) {
+      _emailController.text = customerData["email"];
+    }
+
+    if (customerData.containsKey("mobile_no")) {
+      _phoneNoController.text = customerData["mobile_no"];
+      _phoneNoController2.text = customerData["mobile_no"];
+    }
+
+    if (customerData.containsKey("pincode")) {
+      _pinNoController.text = customerData["pincode"];
+      _pinNoController2.text = customerData["pincode"];
+    }
+
+    if (customerData.containsKey("billing")) {
+      _companyNameController.text = customerData["billing"]["company"];
+      _companyNameController2.text = customerData["billing"]["company"];
+
+      _addressController1.text = customerData["billing"]["address_1"];
+      _addressController2.text = customerData["billing"]["address_1"];
+
+      _address2Controller1.text = customerData["billing"]["address_2"];
+      _address2Controller2.text = customerData["billing"]["address_2"];
+
+      _cityController.text = customerData["billing"]["city"];
+      _cityController2.text = customerData["billing"]["city"];
+    }
+
+    // _addressController1.text = "ghi";
+    // _addressController2.text = "ghi";
+    // _address2Controller1.text = "jkl";
+    // _address2Controller2.text = "jkl";
+    // _cityController.text = "mno";
+    // _cityController2.text = "mno";
   }
 
   @override
@@ -148,7 +181,7 @@ class _ShippingPageState extends State<ShippingPage> {
         Provider.of<CustomerProvider>(context, listen: false);
     final cartProvider = Provider.of<CartProvider>(context, listen: false);
     final orderProvider = Provider.of<OrderProvider>(context);
-    final customerData = customerProvider.customerData[0];
+
 
     String productName = "";
     for (int i = 0; i < cartProvider.cart.length; i++) {
@@ -192,14 +225,16 @@ class _ShippingPageState extends State<ShippingPage> {
                         countryCodeOptions: countryCodeOptions,
                       ),
                       TextFormField(
+                        style: Theme.of(context).textTheme.subtitle1,
                         controller: _emailController,
                         keyboardType: TextInputType.emailAddress,
                         validator: (value) {
                           return ValidationHelper.isEmailValid(value);
                         },
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           // errorText: ,
                           labelText: "Enter your email*",
+                          labelStyle: Theme.of(context).textTheme.subtitle1,
                           border: OutlineInputBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(20.0))),
@@ -274,25 +309,24 @@ class _ShippingPageState extends State<ShippingPage> {
                                 "first_name": _firstNameController.text,
                                 "last_name": _lastNameController.text,
                                 "company": _companyNameController.text,
-                                "country": selectedCountry,
                                 "address_1": _addressController1.text,
                                 "address_2": _addressController2.text,
                                 "city": _cityController.text,
+                                "postcode": _pinNoController.text,
+                                "country": selectedCountry,
                                 "state": selectedState,
                                 "email": _emailController.text,
                                 "phone": _phoneNoController.text,
-                                "postcode": _pinNoController.text
                               };
 
-                              Map<String, dynamic> customerBillingData = {
-                                "company": _companyNameController.text,
-                                "address_1": _addressController1.text,
-                                "address_2": _addressController2.text,
-                                "city": _cityController.text,
-                              };
+                              // Map<String, dynamic> customerBillingData = {
+                              //   "company": _companyNameController.text,
+                              //   "address_1": _addressController1.text,
+                              //   "address_2": _addressController2.text,
+                              //   "city": _cityController.text,
+                              // };
 
-                              customerProvider
-                                  .addCustomerData(customerBillingData);
+                              customerProvider.addMapToBilling(billingData);
 
                               differentShippingAddress
                                   ? shippingData = {
