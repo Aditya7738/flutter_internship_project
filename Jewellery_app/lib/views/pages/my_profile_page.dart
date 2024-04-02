@@ -85,15 +85,26 @@ class MyProfilePage extends StatelessWidget {
             GestureDetector(
               onTap: () {
                 customerProvider.customerData.clear();
+
                 print(
                     "customerProvider.customerData.length ${customerProvider.customerData.length}");
-                print(
-                    "customerProvider.customerData ${customerProvider.customerData}");
+                customerProvider.removeSharePreference();
+
+                // print(
+                //     "customerProvider.customerData.length ${customerProvider.customerData.length}");
+                // print(
+                //     "customerProvider.customerData ${customerProvider.customerData}");
+
+                // Navigator.of(context).pushAndRemoveUntil(
+                //   MaterialPageRoute(
+                //       builder: (context) => const LoginPage(
+                //             isComeFromCart: false,
+                //           )),
+                //   (route) => false,
+                // );
+
                 Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(
-                      builder: (context) => const LoginPage(
-                            isComeFromCart: false,
-                          )),
+                  MaterialPageRoute(builder: (context) => DashboardPage()),
                   (route) => false,
                 );
               },
@@ -189,8 +200,8 @@ class MyProfilePage extends StatelessWidget {
                     vertical: 20.0, horizontal: 30.0),
                 child: Row(children: [
                   Container(
-                    height: deviceWidth > 600 ? 150.0 : 90.0,
-                    width: deviceWidth > 600 ? 150.0 : 90.0,
+                    height: deviceWidth > 600 ? 170.0 : 90.0,
+                    width: deviceWidth > 600 ? 170.0 : 90.0,
                     color: Colors.red,
                     alignment: Alignment.center,
                     // padding: const EdgeInsets.symmetric(
@@ -234,12 +245,29 @@ class MyProfilePage extends StatelessWidget {
                       //             fontSize: (deviceWidth / 30) + 3,
                       //           )),
 
-                      Text(customerProvider.customerData[0]["first_name"],
-                          style: Theme.of(context).textTheme.headline1),
-                      Text(customerProvider.customerData[0]["last_name"],
-                          style: Theme.of(context).textTheme.headline1),
+                      Text(
+                        customerProvider.customerData[0]["first_name"],
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: deviceWidth > 600 ? deviceWidth / 28 : deviceWidth / 26,
+                        ),
+                      ),
+                      Text(
+                        customerProvider.customerData[0]["last_name"],
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                           fontSize: deviceWidth > 600 ? deviceWidth / 28 : deviceWidth / 26,
+                        ),
+                      ),
+                      Text(
+                        customerProvider.customerData[0]["user_email"],
+                        style: TextStyle(
+                          fontWeight: FontWeight.normal,
+                          fontSize: deviceWidth > 600 ? deviceWidth / 28 : deviceWidth / 26,
+                        ),
+                      ),
                       const SizedBox(
-                        height: 15.0,
+                        height: 10.0,
                       ),
                       InkWell(
                           onTap: () => Navigator.of(context).push(
@@ -253,7 +281,11 @@ class MyProfilePage extends StatelessWidget {
                               children: [
                                 Text(
                                   "Edit Profile",
-                                  style: Theme.of(context).textTheme.headline5,
+                                  style: TextStyle(
+                                    color: Theme.of(context).primaryColor,
+                                    fontWeight: FontWeight.normal,
+                                   fontSize: deviceWidth > 600 ? deviceWidth / 36 : deviceWidth / 29,
+                                  ),
                                 ),
                                 SizedBox(
                                   width: 5.0,

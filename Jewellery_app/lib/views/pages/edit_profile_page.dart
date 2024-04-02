@@ -140,7 +140,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       },
                       decoration: InputDecoration(
                         errorStyle: TextStyle(
-                            fontSize: (deviceWidth / 33) + 1.5,
+                             fontSize: deviceWidth > 600 ? (deviceWidth / 37) + 1.5 : (deviceWidth / 33) + 1.5,
                             color: Colors.red),
                         labelStyle: Theme.of(context).textTheme.subtitle1,
                         // errorText: ,
@@ -163,7 +163,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     },
                     decoration: InputDecoration(
                       errorStyle: TextStyle(
-                          fontSize: (deviceWidth / 33) + 1.5,
+                           fontSize: deviceWidth > 600 ? (deviceWidth / 37) + 1.5 : (deviceWidth / 33) + 1.5,
                           color: Colors.red),
                       labelStyle: Theme.of(context).textTheme.subtitle1,
                       labelText: "Last Name*",
@@ -176,7 +176,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     height: 30.0,
                   ),
                   Container(
-                    height: isPhoneValid ? 80.0 : 100.0,
+                    height: isPhoneValid ?
+                    deviceWidth > 600 ? 85 : 60.0
+                     :
+                     deviceWidth > 600 ? 130 : 90.0,
                     child: TextFormField(
                       style: Theme.of(context).textTheme.subtitle1,
                       keyboardType: TextInputType.phone,
@@ -190,7 +193,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       },
                       decoration: InputDecoration(
                           errorStyle: TextStyle(
-                              fontSize: (deviceWidth / 33) + 1.5,
+                              fontSize: deviceWidth > 600 ? (deviceWidth / 37) + 1.5 : (deviceWidth / 33) + 1.5,
                               color: Colors.red),
                           labelStyle: Theme.of(context).textTheme.subtitle1,
                           // suffix: GestureDetector(
@@ -255,63 +258,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
                   TextFormField(
                     style: Theme.of(context).textTheme.subtitle1,
-                    keyboardType: TextInputType.emailAddress,
-                    controller: _emailController,
-                    validator: (value) {
-                      return ValidationHelper.isEmailValid(value);
-                    },
-                    decoration: InputDecoration(
-                      errorStyle: TextStyle(
-                          fontSize: (deviceWidth / 33) + 1.5,
-                          color: Colors.red),
-                      labelStyle: Theme.of(context).textTheme.subtitle1,
-                      //labelText: "Enter your email",
-                      labelText: "Enter your email*",
-                      border: const OutlineInputBorder(
-                          borderRadius:
-                              BorderRadius.all(Radius.circular(20.0))),
-                      // suffix: GestureDetector(
-                      //     onTap: () {
-                      //       value.setEmailVerified(true);
-                      //     },
-                      //     child: value.phoneNoVerified
-                      //         ? Container(
-                      //             width: 100.0,
-                      //             height: 40.0,
-                      //             decoration: BoxDecoration(
-                      //                 color: const Color(0xffCC868A),
-                      //                 borderRadius:
-                      //                     BorderRadius.circular(10.0)),
-                      //             padding: const EdgeInsets.symmetric(
-                      //                 vertical: 10.0, horizontal: 20.0),
-                      //             child: const Center(
-                      //               child: Text(
-                      //                 "VERIFY",
-                      //                 style: TextStyle(
-                      //                     color: Colors.white,
-                      //                     fontSize: 15.0),
-                      //               ),
-                      //             ))
-                      //         : Padding(
-                      //             padding: const EdgeInsets.only(bottom: 0.0),
-                      //             child: Image.asset(
-                      //               "assets/images/yes.png",
-                      //               width: 30.0,
-                      //               height: 25.0,
-                      //             ),
-                      //           )),
-                    ),
-                  ),
-
-                  // ElevatedButton(
-                  //   onPressed: (){}, child: Text("VERIFY")),
-
-                  const SizedBox(
-                    height: 30.0,
-                  ),
-
-                  TextFormField(
-                    style: Theme.of(context).textTheme.subtitle1,
                     minLines: 2,
                     maxLines: 3,
                     controller: _addressController,
@@ -321,7 +267,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     keyboardType: TextInputType.streetAddress,
                     decoration: InputDecoration(
                       errorStyle: TextStyle(
-                          fontSize: (deviceWidth / 33) + 1.5,
+                           fontSize: deviceWidth > 600 ? (deviceWidth / 37) + 1.5 : (deviceWidth / 33) + 1.5,
                           color: Colors.red),
                       labelStyle: Theme.of(context).textTheme.subtitle1,
                       labelText: "Address*",
@@ -343,7 +289,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                       errorStyle: TextStyle(
-                          fontSize: (deviceWidth / 33) + 1.5,
+                           fontSize: deviceWidth > 600 ? (deviceWidth / 37) + 1.5 : (deviceWidth / 33) + 1.5,
                           color: Colors.red),
                       labelStyle: Theme.of(context).textTheme.subtitle1,
                       labelText: "Pin code*",
@@ -368,7 +314,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     },
                     decoration: InputDecoration(
                       errorStyle: TextStyle(
-                          fontSize: (deviceWidth / 33) + 1.5,
+                           fontSize: deviceWidth > 600 ? (deviceWidth / 37) + 1.5 : (deviceWidth / 33) + 1.5,
                           color: Colors.red),
                       labelStyle: Theme.of(context).textTheme.subtitle1,
                       suffixIcon: SuffixIcon(icon: Icons.calendar_month),
@@ -395,7 +341,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     keyboardType: TextInputType.datetime,
                     decoration: InputDecoration(
                       errorStyle: TextStyle(
-                          fontSize: (deviceWidth / 33) + 1.5,
+                           fontSize: deviceWidth > 600 ? (deviceWidth / 37) + 1.5 : (deviceWidth / 33) + 1.5,
                           color: Colors.red),
                       labelStyle: Theme.of(context).textTheme.subtitle1,
                       suffixIcon: SuffixIcon(icon: Icons.calendar_month),
@@ -422,7 +368,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     keyboardType: TextInputType.datetime,
                     decoration: InputDecoration(
                       errorStyle: TextStyle(
-                          fontSize: (deviceWidth / 33) + 1.5,
+                           fontSize: deviceWidth > 600 ? (deviceWidth / 37) + 1.5 : (deviceWidth / 33) + 1.5,
                           color: Colors.red),
                       labelStyle: Theme.of(context).textTheme.subtitle1,
                       suffixIcon: SuffixIcon(icon: Icons.calendar_month),

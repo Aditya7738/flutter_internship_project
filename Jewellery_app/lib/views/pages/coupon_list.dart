@@ -252,7 +252,7 @@ class _CouponListPageState extends State<CouponListPage> {
       ),
       body: SingleChildScrollView(
         child: Container(
-          height: MediaQuery.of(context).size.height,
+         
           color: Color.fromARGB(255, 255, 227, 230),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

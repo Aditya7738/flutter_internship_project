@@ -264,13 +264,16 @@ class _CollectionGridListState extends State<CollectionGridList> {
           print("snapshot.loading");
         } else {
           body = Container(
+          
             width: deviceWidth,
-            height: (MediaQuery.of(context).size.height / 2) + 220,
+            height: deviceWidth > 600 ?
+             (MediaQuery.of(context).size.height / 1.2) 
+             :(MediaQuery.of(context).size.height / 2) + 220,
             child: GridView.builder(
               physics: NeverScrollableScrollPhysics(),
-              itemCount: 4,
+              itemCount: deviceWidth > 600 ? 6 : 4,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  childAspectRatio: 0.64,
+                  childAspectRatio: deviceWidth > 600 ? 0.59 : 0.64,
                   crossAxisCount: deviceWidth > 600 ? 3 : 2),
               itemBuilder: (context, index) {
                 if (index < CollectionGridList.listOfCollections.length) {

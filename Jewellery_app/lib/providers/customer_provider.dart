@@ -33,7 +33,7 @@ class CustomerProvider with ChangeNotifier {
     _customerData.add(customerData);
 
     notifyListeners();
-      _setCustomerSharedPrefs();
+    _setCustomerSharedPrefs();
     //});
   }
 
@@ -59,7 +59,7 @@ class CustomerProvider with ChangeNotifier {
     // _customerData.add(customerData);
 
     notifyListeners();
-      _setCustomerSharedPrefs();
+    _setCustomerSharedPrefs();
     //});
   }
 
@@ -83,14 +83,14 @@ class CustomerProvider with ChangeNotifier {
     // _customerData.add(customerData);
 
     notifyListeners();
-      _setCustomerSharedPrefs();
+    _setCustomerSharedPrefs();
     //});
   }
 
   void addMapToBilling(Map<String, String> billingData) {
     _customerData[0]["billing"] = billingData;
     notifyListeners();
-      _setCustomerSharedPrefs();
+    _setCustomerSharedPrefs();
   }
 
   void _setCustomerSharedPrefs() async {
@@ -104,8 +104,9 @@ class CustomerProvider with ChangeNotifier {
 
   //String? customerDataString;
 
-  Future<void> getCustomerSharedPrefs() async {
+  Future<bool> getCustomerSharedPrefs() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    bool isThereCustomerData = false;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       String? customerDataString = sharedPreferences.getString("customer_data");
 
@@ -117,6 +118,7 @@ class CustomerProvider with ChangeNotifier {
           // _customerData = list as List<Map<String, dynamic>>;
           print("CUSTOMERDATA ${_customerData[0]}");
           print("CUSTOMERDATA ${_customerData.length}");
+          isThereCustomerData = true;
         } catch (e) {
           print("Error customer decoding ${e.toString()}");
         }
@@ -127,6 +129,17 @@ class CustomerProvider with ChangeNotifier {
       print("customerDataString $customerDataString");
 
       notifyListeners();
+    });
+    return false;
+  }
+
+  Future<void> removeSharePreference() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      bool removed = await sharedPreferences.remove("customer_data");
+
+      print("isCustomerSharedpreference removed $removed");
     });
   }
 }

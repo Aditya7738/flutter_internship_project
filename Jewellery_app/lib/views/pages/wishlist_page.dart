@@ -149,14 +149,14 @@ class _WishListPageState extends State<WishListPage> {
                           child: Card(
                               elevation: 5.0,
                               child: Container(
-                              
+                             
                                 padding: const EdgeInsets.all(15.0),
-                                width: deviceWidth > 600
-                                    ? (deviceWidth / 3) - 60
-                                    : 130.0,
+                                // width: deviceWidth > 600
+                                //     ? (deviceWidth / 3) - 60
+                                //     : deviceWidth/2,
                                 height: deviceWidth > 600
                                     ? (deviceWidth / 3) - 90
-                                    : 130.0,
+                                    : (deviceWidth / 2) - 60,
                                 child: Row(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -215,12 +215,9 @@ class _WishListPageState extends State<WishListPage> {
                                                           ? (deviceWidth /
                                                                   1.46) -
                                                               10
-                                                          : (MediaQuery.of(
-                                                                          context)
-                                                                      .size
-                                                                      .width /
-                                                                  2) +
-                                                              16.0,
+                                                          : (deviceWidth /
+                                                                  2) - 
+                                                            10.0,
                                                       child: Text(
                                                         wishListItem.name ??
                                                             "Jewellery",

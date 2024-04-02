@@ -318,7 +318,14 @@ class _FeatureWidgetState extends State<FeatureWidget> {
                   padding: const EdgeInsets.all(2.0),
                   child: Text(
                     categoriesModel.name ?? "Jewellery",
-                    style: Theme.of(context).textTheme.subtitle1,
+                    style:
+                    TextStyle(
+                fontWeight: FontWeight.normal,
+                fontSize: MediaQuery.of(context).size.width > 600 ?
+                (MediaQuery.of(context).size.width / 37) + 1.5
+                :  (MediaQuery.of(context).size.width / 32) + 1.5,
+              ),
+                    // Theme.of(context).textTheme.subtitle1,
                   ),
                 ),
               ],

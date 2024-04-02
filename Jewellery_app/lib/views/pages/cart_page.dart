@@ -125,8 +125,15 @@ class _CartPageState extends State<CartPage> {
                       ),
                       Padding(
                         padding: const EdgeInsets.only(left: 8.0),
-                        child: Text("Offers & Benefits",
-                            style: Theme.of(context).textTheme.headline2),
+                        child: Text(
+                          "Offers & Benefits",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: deviceWidth > 600
+                                ? deviceWidth / 30
+                                : (deviceWidth / 24) - 2,
+                          ),
+                        ),
                       ),
                       const SizedBox(
                         height: 10.0,
@@ -364,13 +371,18 @@ class _CartPageState extends State<CartPage> {
                                   ),
                                   title: Text(
                                     "Apply Coupon",
-                                    style:
-                                        Theme.of(context).textTheme.subtitle2,
+                                    style: TextStyle(
+                                      color: Color(0xffCC868A),
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: deviceWidth > 600
+                                          ? (deviceWidth / 33)
+                                          : (deviceWidth / 23),
+                                    ),
                                   ),
                                   trailing: Icon(Icons.east_outlined,
                                       size: deviceWidth > 600
                                           ? deviceWidth / 25
-                                          : 30,
+                                          : 25,
                                       color: Theme.of(context).primaryColor),
                                 ),
                               ),
@@ -383,8 +395,15 @@ class _CartPageState extends State<CartPage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text("Cart totals",
-                                style: Theme.of(context).textTheme.headline2),
+                            Text(
+                              "Cart totals",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: deviceWidth > 600
+                                    ? deviceWidth / 30
+                                    : (deviceWidth / 24) - 2,
+                              ),
+                            ),
                             const SizedBox(
                               height: 10.0,
                             ),
@@ -400,9 +419,12 @@ class _CartPageState extends State<CartPage> {
                                             children: [
                                               Text(
                                                 'No. of Items',
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .headline3,
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: deviceWidth > 600
+                                                      ? deviceWidth / 35
+                                                      : deviceWidth / 28,
+                                                ),
                                               ),
                                               Text(value.cart.length.toString(),
                                                   style: Theme.of(context)
@@ -540,14 +562,22 @@ class _CartPageState extends State<CartPage> {
                                             children: [
                                               Text(
                                                 'No. of Items',
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .headline3,
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: deviceWidth > 600
+                                                      ? deviceWidth / 30
+                                                      : (deviceWidth / 27) - 1,
+                                                ),
                                               ),
-                                              Text(value.cart.length.toString(),
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .headline3)
+                                              Text(
+                                                value.cart.length.toString(),
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: deviceWidth > 600
+                                                      ? deviceWidth / 30
+                                                      : (deviceWidth / 27) - 1,
+                                                ),
+                                              )
                                             ],
                                           ),
                                           SizedBox(
@@ -856,7 +886,6 @@ class _CartPageState extends State<CartPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Container(
-                             
                                 width: deviceWidth > 600
                                     ? (deviceWidth / 1.8) + 12.0
                                     : (deviceWidth / 2) - 25,
@@ -864,9 +893,11 @@ class _CartPageState extends State<CartPage> {
                                   cartData.productName ?? "Jewellery",
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
-                                    fontSize: deviceWidth > 600 ? deviceWidth / 28 : deviceWidth / 25,
+                                    fontSize: deviceWidth > 600
+                                        ? deviceWidth / 28
+                                        : (deviceWidth / 25) - 1,
                                   ),
-                                  maxLines: 2,
+                                  // maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
                                   softWrap: true,
                                 ),
@@ -875,23 +906,30 @@ class _CartPageState extends State<CartPage> {
                               Text(
                                 "₹ ${cartData.price ?? 20000}",
                                 style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                                    fontSize: deviceWidth > 600 ? (deviceWidth / 33) + 3 : (deviceWidth / 33) + 3,
-                                  ),
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: deviceWidth > 600
+                                      ? (deviceWidth / 33) + 3
+                                      : (deviceWidth / 28) + 1,
+                                ),
                               ),
-                              SizedBox(height: deviceWidth > 600 ? 10 : 5),
+                              SizedBox(height: deviceWidth > 600 ? 10 : 0),
                               Container(
                                 height: deviceWidth > 600
                                     ? (constraints.maxHeight / 6)
-                                    : 35,
+                                    : 28,
                                 child: Row(
                                   children: [
                                     Row(
                                       children: [
-                                        Text("Qty: ",
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .headline2),
+                                        Text(
+                                          "Qty: ",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: deviceWidth > 600
+                                                ? deviceWidth / 30
+                                                : (deviceWidth / 25) - 2,
+                                          ),
+                                        ),
                                         const SizedBox(
                                           width: 5.0,
                                         ),
@@ -903,7 +941,16 @@ class _CartPageState extends State<CartPage> {
                                                 .map((String option) {
                                               return DropdownMenuItem(
                                                 value: option,
-                                                child: Text(option),
+                                                child: Text(
+                                                  option,
+                                                  style: TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                    fontSize: deviceWidth > 600
+                                                        ? deviceWidth / 30
+                                                          : (deviceWidth / 25) - 2,
+                                                  ),
+                                                ),
                                               );
                                             }).toList(),
                                             onChanged: (String? newValue) {
@@ -918,14 +965,19 @@ class _CartPageState extends State<CartPage> {
                                       ],
                                     ),
                                     SizedBox(
-                                      width: deviceWidth > 600 ? 51 : 11,
+                                      width: deviceWidth > 600 ? 51 : 6,
                                     ),
                                     Row(
                                       children: [
-                                        Text("Size: ",
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .headline2),
+                                        Text(
+                                          "Size: ",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: deviceWidth > 600
+                                                ? deviceWidth / 30
+                                                 : (deviceWidth / 25) - 2,
+                                          ),
+                                        ),
                                         const SizedBox(
                                           width: 5.0,
                                         ),
@@ -937,7 +989,16 @@ class _CartPageState extends State<CartPage> {
                                                 sizeList.map((String option) {
                                               return DropdownMenuItem(
                                                 value: option,
-                                                child: Text(option),
+                                                child: Text(
+                                                  option,
+                                                  style: TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                    fontSize: deviceWidth > 600
+                                                        ? deviceWidth / 30
+                                                         : (deviceWidth / 25) - 2,
+                                                  ),
+                                                ),
                                               );
                                             }).toList(),
                                             onChanged: (String? newValue) {
@@ -952,15 +1013,31 @@ class _CartPageState extends State<CartPage> {
                                   ],
                                 ),
                               ),
-                              SizedBox(height: deviceWidth > 600 ? 10 : 5),
-                              Text("Expected Delivery : ",
-                                  style: Theme.of(context).textTheme.headline2),
+                              SizedBox(height: deviceWidth > 600 ? 10 : 2),
+                              Text(
+                                "Expected Delivery : ",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: deviceWidth > 600
+                                      ? deviceWidth / 30
+                                      : (deviceWidth / 25) - 2,
+                                ),
+                              ),
                               SizedBox(
                                   height: deviceWidth > 600
                                       ? (constraints.maxHeight / 33)
                                       : 1),
-                              Text(cartData.deliveryDate ?? "After 5 days",
-                                  style: Theme.of(context).textTheme.headline6)
+                              Text(
+                                cartData.deliveryDate ?? "After 5 days",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 
+                                  
+                                  deviceWidth > 600
+                                      ? deviceWidth / 30
+                                      : (deviceWidth / 25) - 2,
+                                ),
+                              )
                             ],
                           ),
                         );
@@ -969,7 +1046,7 @@ class _CartPageState extends State<CartPage> {
                     ),
                   ],
                 ),
-                SizedBox(width: 8.0,),
+                // SizedBox(width: 8.0,),
                 LayoutBuilder(
                   builder: (context, constraints) {
                     return Column(
@@ -997,7 +1074,7 @@ class _CartPageState extends State<CartPage> {
                               color: Colors.white,
                               size: deviceWidth > 600
                                   ? constraints.maxHeight / 8
-                                  : 18.0,
+                                  : constraints.maxHeight / 9,
                             ),
                           ),
                         ),

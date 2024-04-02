@@ -208,8 +208,12 @@ class _DashboardPageState extends State<DashboardPage> {
     print("call wishlist shared prefs");
     Provider.of<ProfileProvider>(context, listen: false)
         .getProfileSharedPrefs(); //empty
-    // Provider.of<CustomerProvider>(context, listen: false)
-    //     .getCustomerSharedPrefs();
+
+    bool isThereCustomerData =
+        await Provider.of<CustomerProvider>(context, listen: false)
+            .getCustomerSharedPrefs();
+
+    print("isThereCustomerData $isThereCustomerData");
   }
 
   @override

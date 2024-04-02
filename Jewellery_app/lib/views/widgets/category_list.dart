@@ -54,7 +54,7 @@ class _CategoryListState extends State<CategoryList> {
   Widget build(BuildContext context) {
     CategoryProvider categoryProvider =
         Provider.of<CategoryProvider>(context, listen: false);
-
+    double deviceWidth = MediaQuery.of(context).size.width;
     return categoryFileStream != null
         ? StreamBuilder(
             stream: categoryFileStream!,
@@ -79,7 +79,7 @@ class _CategoryListState extends State<CategoryList> {
               //   uncomment below code
               else if (loading) {
                 body = SizedBox(
-                    width: MediaQuery.of(context).size.width,
+                    width: deviceWidth,
                     height: MediaQuery.of(context).size.height / 6,
                     child: Center(
                       child: CircularProgressIndicator(
@@ -100,7 +100,7 @@ class _CategoryListState extends State<CategoryList> {
                       "categoryProvider.fileInfoFetching ${categoryProvider.fileInfoFetching!}");
                   if (categoryProvider.fileInfoFetching!) {
                     body = SizedBox(
-                        width: MediaQuery.of(context).size.width,
+                        width: deviceWidth,
                         height: MediaQuery.of(context).size.height / 6,
                         child: Center(
                           child: CircularProgressIndicator(
@@ -114,7 +114,7 @@ class _CategoryListState extends State<CategoryList> {
                   }
                 } else {
                   body = SizedBox(
-                    width: MediaQuery.of(context).size.width,
+                    width: deviceWidth,
                     height: MediaQuery.of(context).size.height / 5,
                     child: Scrollbar(
                       child: ListView.builder(

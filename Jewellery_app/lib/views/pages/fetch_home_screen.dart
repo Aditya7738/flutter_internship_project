@@ -37,12 +37,15 @@ class _FetchHomeScreenState extends State<FetchHomeScreen> {
 
     LayoutDesignProvider layoutDesignProvider =
         Provider.of<LayoutDesignProvider>(context, listen: false);
+
+    
     WidgetsBinding.instance.addPostFrameCallback((_) {
       getLayoutDesign(layoutDesignProvider);
     });
   }
 
   getLayoutDesign(LayoutDesignProvider layoutDesignProvider) async {
+    double deviceWidth = MediaQuery.of(context).size.width;
     setState(() {
       isLayoutLoading = true;
     });
@@ -107,7 +110,7 @@ class _FetchHomeScreenState extends State<FetchHomeScreen> {
                                                   .style!
                                                   .fontSize!
                                                   .toDouble()
-                                              : 20,
+                                              : deviceWidth > 600 ? 30.0 : 20,
                                       fontFamily:
                                           layoutDesignProvider.fontFamily)
                                   : TextStyle(),
@@ -141,7 +144,7 @@ class _FetchHomeScreenState extends State<FetchHomeScreen> {
                           Text(
                             "Categories",
                             style: TextStyle(
-                                fontSize: 18.0,
+                                fontSize: deviceWidth > 600 ? 30.0 : 18.0,
                                 fontWeight: FontWeight.bold,
                                 fontFamily: layoutDesignProvider.fontFamily),
                           ),
@@ -171,7 +174,7 @@ class _FetchHomeScreenState extends State<FetchHomeScreen> {
                               child: Text(
                                 label,
                                 style: TextStyle(
-                                    fontSize: 18.0,
+                                     fontSize: deviceWidth > 600 ? 30.0 : 18.0,
                                     fontWeight: FontWeight.bold,
                                     fontFamily:
                                         layoutDesignProvider.fontFamily),
