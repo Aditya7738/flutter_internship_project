@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:Tiara_by_TJ/constants/fontsizes.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:Tiara_by_TJ/api/api_service.dart';
 import 'package:Tiara_by_TJ/helpers/date_helper.dart';
@@ -258,7 +260,7 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
                   "Plan details",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: deviceWidth / 27,
+                    fontSize: Fontsizes.headingSize,
                   ),
                 ),
                 const SizedBox(
@@ -362,7 +364,7 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
                   countryCodeOptions: countryCodeOptions,
                 ),
                 TextFormField(
-                  style: Theme.of(context).textTheme.subtitle1,
+                  style: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
                   controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
                   validator: (value) {
@@ -370,8 +372,8 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
                   },
                   decoration: InputDecoration(
                     errorStyle: TextStyle(
-                        fontSize: (deviceWidth / 36), color: Colors.red),
-                    labelStyle: Theme.of(context).textTheme.subtitle1,
+                        fontSize: Fontsizes.errorTextSize, color: Colors.red),
+                    labelStyle: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
                     labelText: "Enter your email*",
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(20.0))),
@@ -383,7 +385,7 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
                 Text("Personal Details",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: deviceWidth / 27,
+                      fontSize: Fontsizes.headingSize,
                     )),
                 SizedBox(
                   height: 10.0,
@@ -392,8 +394,11 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
                   padding: EdgeInsets.only(left: 10.0),
                   child: Text(
                     "Proof Type (optional)",
-                    style: TextStyle(
-                        fontSize: deviceWidth > 600 ? deviceWidth / 38 : 16.0),
+                    style:TextStyle(fontSize: 16.sp
+              
+                ),
+                    //  TextStyle(
+                    //     fontSize: deviceWidth > 600 ? deviceWidth / 38 : 16.0),
                   ),
                 ),
                 const SizedBox(
@@ -452,10 +457,16 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
                                       Text(
                                         "Uploaded file name: ${path.basename(imagePath)}",
                                         style: TextStyle(
+                                        
                                             fontWeight: FontWeight.bold,
-                                            fontSize: deviceWidth > 600
-                                                ? deviceWidth / 36
-                                                : 16.0),
+                                            fontSize: 
+                                            // deviceWidth > 600
+                                            //     ? deviceWidth / 36
+                                            //     : 16.0
+                                            16.sp
+
+
+                                                ),
                                       ),
                                       const SizedBox(
                                         height: 20.0,
@@ -473,7 +484,7 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
                                         "You have to upload document image",
                                         style: TextStyle(
                                           color: Colors.red,
-                                          fontSize: (deviceWidth / 36),
+                                          fontSize: Fontsizes.errorTextSize,
                                         ),
                                       ),
                                       SizedBox(
@@ -573,9 +584,13 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
                                           )
                                         : Text(
                                             "Upload document image",
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .subtitle2,
+                                            style: TextStyle(
+                                    color:  Theme.of(context).primaryColor,
+                                 
+                                    fontSize: 16.sp
+                                   
+
+                                    ),
                                           )),
                               ),
                             ],
@@ -590,19 +605,19 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
                 Text("Nominee Details",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: deviceWidth / 27,
+                      fontSize: Fontsizes.headingSize,
                     )),
                 SizedBox(
                   height: 10.0,
                 ),
                 TextFormField(
-                  style: Theme.of(context).textTheme.subtitle1,
+                  style: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
                   controller: _nomineeNameController,
                   keyboardType: TextInputType.name,
                   decoration: InputDecoration(
                     errorStyle: TextStyle(
-                        fontSize: (deviceWidth / 33) + 1.5, color: Colors.red),
-                    labelStyle: Theme.of(context).textTheme.subtitle1,
+                        fontSize: Fontsizes.errorTextSize, color: Colors.red),
+                    //  labelStyle:TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
                     labelText: "Nominee Name (Optional)",
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(20.0))),
@@ -612,13 +627,13 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
                   height: 20.0,
                 ),
                 TextFormField(
-                  style: Theme.of(context).textTheme.subtitle1,
+                  style: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
                   controller: _nomineeRelationController,
                   keyboardType: TextInputType.name,
                   decoration: InputDecoration(
                     errorStyle: TextStyle(
-                        fontSize: (deviceWidth / 33) + 1.5, color: Colors.red),
-                    labelStyle: Theme.of(context).textTheme.subtitle1,
+                        fontSize: Fontsizes.errorTextSize, color: Colors.red),
+                    // labelStyle: Theme.of(context).textTheme.subtitle1,
                     labelText: "Nominee Relation (Optional)",
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(20.0))),
@@ -664,7 +679,13 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
                               )
                             : Text(
                                 "Continue",
-                                style: Theme.of(context).textTheme.button,
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 17.sp
+                                   
+
+                                    ),
                               ),
                       )),
                 ),
@@ -877,16 +898,16 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
     switch (selectedProof) {
       case "Aadhar card":
         return TextFormField(
-          style: Theme.of(context).textTheme.subtitle1,
+         style: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
           controller: _aadharCardController,
           keyboardType: TextInputType.number,
           validator: (value) {
             return ValidationHelper.isAadharCardNoValid(value);
           },
           decoration: InputDecoration(
-            errorStyle: TextStyle(
-                fontSize: (deviceWidth / 33) + 1.5, color: Colors.red),
-            labelStyle: Theme.of(context).textTheme.subtitle1,
+            errorStyle:
+                TextStyle(fontSize: Fontsizes.errorTextSize, color: Colors.red),
+            labelStyle: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
             // errorText: ,
             labelText: "Aadhar card* ",
             border: OutlineInputBorder(
@@ -896,16 +917,16 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
 
       case "Pan card":
         return TextFormField(
-          style: Theme.of(context).textTheme.subtitle1,
+          style: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
           controller: _panCardController,
           keyboardType: TextInputType.text,
           validator: (value) {
             return ValidationHelper.isPanCardValid(value);
           },
           decoration: InputDecoration(
-            errorStyle: TextStyle(
-                fontSize: (deviceWidth / 33) + 1.5, color: Colors.red),
-            labelStyle: Theme.of(context).textTheme.subtitle1,
+            errorStyle:
+                TextStyle(fontSize: Fontsizes.errorTextSize, color: Colors.red),
+            labelStyle: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
             // errorText: ,
             labelText: "Pan card* ",
             border: OutlineInputBorder(
@@ -915,16 +936,16 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
 
       case "Passport":
         return TextFormField(
-          style: Theme.of(context).textTheme.subtitle1,
+          style: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
           controller: _passportController,
           keyboardType: TextInputType.text,
           validator: (value) {
             return ValidationHelper.isPassportValid(value);
           },
           decoration: InputDecoration(
-            errorStyle: TextStyle(
-                fontSize: (deviceWidth / 33) + 1.5, color: Colors.red),
-            labelStyle: Theme.of(context).textTheme.subtitle1,
+            errorStyle:
+                TextStyle(fontSize: Fontsizes.errorTextSize, color: Colors.red),
+            labelStyle: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
             // errorText: ,
             labelText: "Passport* ",
             border: OutlineInputBorder(
@@ -934,16 +955,16 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
 
       case "Driving License":
         return TextFormField(
-          style: Theme.of(context).textTheme.subtitle1,
+          style: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
           controller: _licenseNoController,
           keyboardType: TextInputType.text,
           validator: (value) {
             return ValidationHelper.isDrivingLicenseValid(value);
           },
           decoration: InputDecoration(
-            errorStyle: TextStyle(
-                fontSize: (deviceWidth / 33) + 1.5, color: Colors.red),
-            labelStyle: Theme.of(context).textTheme.subtitle1,
+            errorStyle:
+                TextStyle(fontSize: Fontsizes.errorTextSize, color: Colors.red),
+            labelStyle: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
             // errorText: ,
             labelText: "Driving License* ",
             border: OutlineInputBorder(

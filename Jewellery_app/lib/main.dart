@@ -8,12 +8,14 @@ import 'package:Tiara_by_TJ/providers/digigold_provider.dart';
 import 'package:Tiara_by_TJ/providers/filteroptions_provider.dart';
 import 'package:Tiara_by_TJ/providers/layoutdesign_provider.dart';
 import 'package:Tiara_by_TJ/providers/order_provider.dart';
+import 'package:Tiara_by_TJ/views/widgets/try.dart';
 import 'package:flutter/material.dart';
 import 'package:Tiara_by_TJ/providers/cart_provider.dart';
 import 'package:Tiara_by_TJ/providers/customer_provider.dart';
 import 'package:Tiara_by_TJ/providers/profile_provider.dart';
 import 'package:Tiara_by_TJ/providers/wishlist_provider.dart';
 import 'package:Tiara_by_TJ/views/pages/dashboard_page.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'constants/constants.dart';
@@ -59,11 +61,11 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
   String _debugLabelString = "";
-  String? _emailAddress;
-  String? _smsNumber;
-  String? _externalUserId;
-  String? _language;
-  bool _enableConsentButton = false;
+  // String? _emailAddress;
+  // String? _smsNumber;
+  // String? _externalUserId;
+  // String? _language;
+  // bool _enableConsentButton = false;
 
   // CHANGE THIS parameter to true if you want to test GDPR privacy consent
   bool _requireConsent = false;
@@ -197,19 +199,19 @@ class _MyAppState extends State<MyApp> {
 
   /////////////////////////////////////////
 
-  oneSignalOutcomeExamples() async {
-    OneSignal.Session.addOutcome("normal_1");
-    OneSignal.Session.addOutcome("normal_2");
+  // oneSignalOutcomeExamples() async {
+  //   OneSignal.Session.addOutcome("normal_1");
+  //   OneSignal.Session.addOutcome("normal_2");
 
-    OneSignal.Session.addUniqueOutcome("unique_1");
-    OneSignal.Session.addUniqueOutcome("unique_2");
+  //   OneSignal.Session.addUniqueOutcome("unique_1");
+  //   OneSignal.Session.addUniqueOutcome("unique_2");
 
-    OneSignal.Session.addOutcomeWithValue("value_1", 3.2);
-    OneSignal.Session.addOutcomeWithValue("value_2", 3.9);
-  }
+  //   OneSignal.Session.addOutcomeWithValue("value_1", 3.2);
+  //   OneSignal.Session.addOutcomeWithValue("value_2", 3.9);
+  // }
 
 ////////////////////////////////////////////////////////
-  final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+  // final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations(
@@ -218,79 +220,173 @@ class _MyAppState extends State<MyApp> {
     double deviceWidth = MediaQuery.of(context).size.width;
     print("deviceWidth / 30 ${(deviceWidth / 21) + 6}");
 
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) => CartProvider()),
-        ChangeNotifierProvider(create: (context) => WishlistProvider()),
-        ChangeNotifierProvider(create: (context) => ProfileProvider()),
-        ChangeNotifierProvider(create: (context) => CustomerProvider()),
-        ChangeNotifierProvider(create: (context) => CustomizeOptionsProvider()),
-        ChangeNotifierProvider(create: (context) => FilterOptionsProvider()),
-        ChangeNotifierProvider(create: (context) => DigiGoldProvider()),
-        ChangeNotifierProvider(create: (context) => OrderProvider()),
-        ChangeNotifierProvider(create: (context) => CategoryProvider()),
-        ChangeNotifierProvider(create: (context) => CacheProvider()),
-        ChangeNotifierProvider(create: (context) => LayoutDesignProvider())
-      ],
-      child: MaterialApp(
-        navigatorKey: navigatorKey,
-        title: Constants.app_name,
-        theme: ThemeData(
-            appBarTheme: AppBarTheme(
-              actionsIconTheme: IconThemeData(size: (deviceWidth / 21) + 6),
-              titleTextStyle: TextStyle(
-                  fontSize: deviceWidth / 25, color: Colors.black), //product
-            ),
-            primaryColor: Color(0xffCC868A),
-            textTheme: TextTheme(
-              headline1: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: deviceWidth / 25,
+    return ScreenUtilInit(
+      designSize: Size(MediaQuery.of(context).size.width,
+          MediaQuery.of(context).size.height),
+      minTextAdapt: true,
+      splitScreenMode: true,
+      child: MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (context) => CartProvider()),
+          ChangeNotifierProvider(create: (context) => WishlistProvider()),
+          ChangeNotifierProvider(create: (context) => ProfileProvider()),
+          ChangeNotifierProvider(create: (context) => CustomerProvider()),
+          ChangeNotifierProvider(
+              create: (context) => CustomizeOptionsProvider()),
+          ChangeNotifierProvider(create: (context) => FilterOptionsProvider()),
+          ChangeNotifierProvider(create: (context) => DigiGoldProvider()),
+          ChangeNotifierProvider(create: (context) => OrderProvider()),
+          ChangeNotifierProvider(create: (context) => CategoryProvider()),
+          ChangeNotifierProvider(create: (context) => CacheProvider()),
+          ChangeNotifierProvider(create: (context) => LayoutDesignProvider())
+        ],
+        child: MaterialApp(
+          //  navigatorKey: navigatorKey,
+          title: Constants.app_name,
+          theme: ThemeData(
+              appBarTheme: AppBarTheme(
+                actionsIconTheme: IconThemeData(size: (deviceWidth / 21) + 6),
+                titleTextStyle: TextStyle(
+                    fontSize: deviceWidth / 25, color: Colors.black), //product
               ),
-              headline2: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: deviceWidth / 30,
-              ), //product details heading
-              headline3: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: deviceWidth / 35,
-              ), //price text style
-              headline4: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: deviceWidth / 37,
+              primaryColor: Color(0xffCC868A),
+              textTheme:
+              // Typography.englishLike2021.apply(fontSizeFactor: 1.sp),
+             TextTheme(
+                // headline1: TextStyle(
+                //   fontWeight: FontWeight.bold,
+                //   fontSize: deviceWidth / 25,
+                // ),
+                // headline2: TextStyle(
+                //   fontWeight: FontWeight.bold,
+                //   fontSize: 15.5.sp,
+                // ), //product details heading
+                // headline3: TextStyle(
+                //   fontWeight: FontWeight.bold,
+                //   fontSize: 13.5.sp,
+                // ), //price text style
+                // headline4: TextStyle(
+                //   fontWeight: FontWeight.bold,
+                //   fontSize: deviceWidth / 37,
+                // ),
+                // headline5: TextStyle(
+                //     fontWeight: FontWeight.bold,
+                //     fontSize: 13.5.sp,
+                //     color: Color(0xffCC868A)),
+                // headline6: TextStyle(
+                //     // fontSize: deviceWidth / 30,
+                //     fontSize: 13.5.sp,
+                //     fontWeight: FontWeight.normal),
+                // subtitle1: TextStyle(
+                //   fontWeight: FontWeight.normal,
+                //   // fontSize: (deviceWidth / 33) + 1.5,
+                //   fontSize: 16.sp
+                // ),
+                // subtitle2: TextStyle(
+                //   color: Color(0xffCC868A),
+                //   fontWeight: FontWeight.normal,
+                //   fontSize: (deviceWidth / 33),
+                // ),
+                // bodyText1: TextStyle(
+                //   color: Color(0xffCC868A),
+                //   fontWeight: FontWeight.bold,
+                //   fontSize: deviceWidth / 25,
+                // ),
+                // bodyText2: TextStyle(
+                //   fontWeight: FontWeight.bold,
+                //   fontSize: (deviceWidth / 33) + 1.5,
+                // ),
+                // button: TextStyle(
+                //     color: Colors.white,
+                //     fontSize: (deviceWidth / 30) - 1,
+                //     fontWeight: FontWeight.bold),
+              )
+
               ),
-              headline5: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: deviceWidth / 33,
-                  color: Color(0xffCC868A)),
-              headline6: TextStyle(
-                fontSize: deviceWidth / 30,
-              ),
-              subtitle1: TextStyle(
-                fontWeight: FontWeight.normal,
-                fontSize: (deviceWidth / 33) + 1.5,
-              ),
-              subtitle2: TextStyle(
-                color: Color(0xffCC868A),
-                fontWeight: FontWeight.normal,
-                fontSize: (deviceWidth / 33),
-              ),
-              bodyText1: TextStyle(
-                color: Color(0xffCC868A),
-                fontWeight: FontWeight.bold,
-                fontSize: deviceWidth / 25,
-              ),
-              bodyText2: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: (deviceWidth / 33) + 1.5,
-              ),
-              button: TextStyle(
-                  color: Colors.white,
-                  fontSize: (deviceWidth / 30) - 1,
-                  fontWeight: FontWeight.bold),
-            )),
-        home: DashboardPage(),
-        debugShowCheckedModeBanner: false,
+          // builder: (context, child) {
+          //   //check below
+          //   // ScreenUtil.init(context);
+          //   // ScreenUtil.ensureScreenSizeAndInit(context);
+          //   // ScreenUtil.registerToBuild(context);
+          //   return MediaQuery(
+          //       data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+          //       child: DashboardPage());
+          // },
+          // home:
+          // //  MediaQuery(
+          // //     data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+          // //     child:
+          //      Try()
+          //     // )
+          //      ,
+
+      //     builder: (context, child) {
+      // //      ScreenUtil.init(context);
+      //       return 
+      //       Theme(
+      //           child: Try(),
+      //           data: ThemeData(
+      //             appBarTheme: AppBarTheme(
+      //               actionsIconTheme:
+      //                   IconThemeData(size: (deviceWidth / 21) + 6),
+      //               titleTextStyle: TextStyle(
+      //                   fontSize: 15.sp,
+      //                   color: Colors.black), //product
+      //             ),
+      //             primaryColor: Color(0xffCC868A),
+      //             textTheme: TextTheme(
+      //               headline1: TextStyle(
+      //                 fontWeight: FontWeight.bold,
+      //                 fontSize: 16.5.sp,
+      //               ),
+      //               headline2: TextStyle(
+      //                 fontWeight: FontWeight.bold,
+      //                 fontSize: 15.5.sp,
+      //               ), //product details heading
+      //               headline3: TextStyle(
+      //                 fontWeight: FontWeight.bold,
+      //                 fontSize: 13.5.sp,
+      //               ), //price text style
+      //               headline4: TextStyle(
+      //                 fontWeight: FontWeight.bold,
+      //                 fontSize: deviceWidth / 37,
+      //               ),
+      //               headline5: TextStyle(
+      //                   fontWeight: FontWeight.bold,
+      //                   fontSize: 13.5.sp,
+      //                   color: Color(0xffCC868A)),
+      //               headline6: TextStyle(
+      //                   // fontSize: deviceWidth / 30,
+      //                   fontSize: 13.5.sp,
+      //                   fontWeight: FontWeight.normal),
+      //               subtitle1: TextStyle(
+      //                   fontWeight: FontWeight.normal,
+      //                   // fontSize: (deviceWidth / 33) + 1.5,
+      //                   fontSize: 16.sp),
+      //               subtitle2: TextStyle(
+      //                 color: Color(0xffCC868A),
+      //                 fontWeight: FontWeight.normal,
+      //                 fontSize: (deviceWidth / 33),
+      //               ),
+      //               bodyText1: TextStyle(
+      //                 color: Color(0xffCC868A),
+      //                 fontWeight: FontWeight.bold,
+      //                 fontSize: deviceWidth / 25,
+      //               ),
+      //               bodyText2: TextStyle(
+      //                 fontWeight: FontWeight.bold,
+      //                 fontSize: (deviceWidth / 33) + 1.5,
+      //               ),
+      //               button: TextStyle(
+      //                   color: Colors.white,
+      //                   fontSize: (deviceWidth / 30) - 1,
+      //                   fontWeight: FontWeight.bold),
+      //             ),
+      //           ));
+      //     },
+      home: DashboardPage(),
+          debugShowCheckedModeBanner: false,
+        ),
       ),
     );
   }

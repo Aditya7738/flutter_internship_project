@@ -13,6 +13,7 @@ import 'package:Tiara_by_TJ/views/widgets/button_widget.dart';
 
 import 'package:Tiara_by_TJ/views/widgets/cart_total_row.dart';
 import 'package:Tiara_by_TJ/views/widgets/label_widget.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 //store totalafter applied coupon in  order provider
@@ -128,11 +129,11 @@ class _CartPageState extends State<CartPage> {
                         child: Text(
                           "Offers & Benefits",
                           style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: deviceWidth > 600
-                                ? deviceWidth / 30
-                                : (deviceWidth / 24) - 2,
-                          ),
+                              fontWeight: FontWeight.bold,
+                              // fontSize: deviceWidth > 600
+                              //     ? deviceWidth / 30
+                              //     : (deviceWidth / 24) - 2,
+                              fontSize: 16.sp),
                         ),
                       ),
                       const SizedBox(
@@ -266,9 +267,11 @@ class _CartPageState extends State<CartPage> {
                                                         horizontal: 20.0),
                                                 child: Text(
                                                   "YAYY!",
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .button,
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 17.sp),
                                                 )),
                                           ),
                                         ],
@@ -300,9 +303,10 @@ class _CartPageState extends State<CartPage> {
                                     "'${value.selectedCouponData!["couponcode"]}' applied",
                                     style: TextStyle(
                                         // color: Theme.of(context).primaryColor,
-                                        fontSize: deviceWidth > 600
-                                            ? deviceWidth / 35
-                                            : 16.0,
+                                        // fontSize: deviceWidth > 600
+                                        //     ? deviceWidth / 35
+                                        //     : 16.0,
+                                        fontSize: 16.sp,
                                         fontWeight: FontWeight.normal),
                                   ),
                                   subtitle: Expanded(
@@ -345,7 +349,9 @@ class _CartPageState extends State<CartPage> {
                                     child: Text(
                                       "Remove",
                                       style:
-                                          Theme.of(context).textTheme.headline5,
+                                          TextStyle(
+                                            fontSize: 15.sp
+                                          ),
                                     ),
                                   ),
                                 ),
@@ -372,12 +378,12 @@ class _CartPageState extends State<CartPage> {
                                   title: Text(
                                     "Apply Coupon",
                                     style: TextStyle(
-                                      color: Color(0xffCC868A),
-                                      fontWeight: FontWeight.normal,
-                                      fontSize: deviceWidth > 600
-                                          ? (deviceWidth / 33)
-                                          : (deviceWidth / 23),
-                                    ),
+                                        color: Color(0xffCC868A),
+                                        fontWeight: FontWeight.normal,
+                                        // fontSize: deviceWidth > 600
+                                        //     ? (deviceWidth / 33)
+                                        //     : (deviceWidth / 23),
+                                        fontSize: 16.sp),
                                   ),
                                   trailing: Icon(Icons.east_outlined,
                                       size: deviceWidth > 600
@@ -398,11 +404,11 @@ class _CartPageState extends State<CartPage> {
                             Text(
                               "Cart totals",
                               style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: deviceWidth > 600
-                                    ? deviceWidth / 30
-                                    : (deviceWidth / 24) - 2,
-                              ),
+                                  fontWeight: FontWeight.bold,
+                                  // fontSize: deviceWidth > 600
+                                  //     ? deviceWidth / 30
+                                  //     : (deviceWidth / 24) - 2,
+                                  fontSize: 16.sp),
                             ),
                             const SizedBox(
                               height: 10.0,
@@ -420,16 +426,21 @@ class _CartPageState extends State<CartPage> {
                                               Text(
                                                 'No. of Items',
                                                 style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: deviceWidth > 600
-                                                      ? deviceWidth / 35
-                                                      : deviceWidth / 28,
-                                                ),
+                                                    fontWeight: FontWeight.bold,
+                                                    // fontSize: deviceWidth > 600
+                                                    //     ? deviceWidth / 30
+                                                    //     : (deviceWidth / 27) - 1,
+                                                    fontSize: 14.5.sp),
                                               ),
-                                              Text(value.cart.length.toString(),
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .headline3)
+                                              Text(
+                                                value.cart.length.toString(),
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    // fontSize: deviceWidth > 600
+                                                    //     ? deviceWidth / 30
+                                                    //     : (deviceWidth / 27) - 1,
+                                                    fontSize: 14.5.sp),
+                                              )
                                             ],
                                           ),
                                           SizedBox(
@@ -441,15 +452,22 @@ class _CartPageState extends State<CartPage> {
                                             children: [
                                               Text(
                                                 'Subtotal',
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .headline3,
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    // fontSize: deviceWidth > 600
+                                                    //     ? deviceWidth / 35
+                                                    //     : deviceWidth / 28,
+                                                    fontSize: 14.5.sp),
                                               ),
                                               Text(
-                                                  "₹ ${value.calculateTotalPrice().round().toString()}",
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .headline3)
+                                                  "₹ ${value.calculateTotalPrice()}",
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      // fontSize: deviceWidth > 600
+                                                      //     ? deviceWidth / 30
+                                                      //     : (deviceWidth / 27) - 1,
+                                                      fontSize: 14.5.sp))
                                             ],
                                           ),
                                           SizedBox(
@@ -459,18 +477,24 @@ class _CartPageState extends State<CartPage> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
-                                              Text(
-                                                'Shipping charge',
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .headline3,
-                                              ),
-                                              Text(
-                                                "Free",
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .headline5,
-                                              )
+                                              Text('Shipping charge',
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      // fontSize: deviceWidth > 600
+                                                      //     ? deviceWidth / 30
+                                                      //     : (deviceWidth / 27) - 1,
+                                                      fontSize: 14.5.sp)),
+                                              Text("Free",
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Theme.of(context)
+                                                          .primaryColor,
+                                                      // fontSize: deviceWidth > 600
+                                                      //     ? deviceWidth / 30
+                                                      //     : (deviceWidth / 27) - 1,
+                                                      fontSize: 14.5.sp))
                                             ],
                                           ),
                                           SizedBox(
@@ -480,12 +504,14 @@ class _CartPageState extends State<CartPage> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
-                                              Text(
-                                                'Discount',
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .headline3,
-                                              ),
+                                              Text('Discount',
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      // fontSize: deviceWidth > 600
+                                                      //     ? deviceWidth / 30
+                                                      //     : (deviceWidth / 27) - 1,
+                                                      fontSize: 14.5.sp)),
                                               Text(
                                                   value.selectedCouponData![
                                                               "discountString"]
@@ -496,9 +522,10 @@ class _CartPageState extends State<CartPage> {
                                                   style: TextStyle(
                                                       color: Colors.green,
                                                       fontSize:
-                                                          deviceWidth > 600
-                                                              ? deviceWidth / 33
-                                                              : 17.0,
+                                                          // deviceWidth > 600
+                                                          //     ? deviceWidth / 33
+                                                          //     : 17.0,
+                                                          14.5.sp,
                                                       fontWeight:
                                                           FontWeight.bold))
                                             ],
@@ -510,18 +537,24 @@ class _CartPageState extends State<CartPage> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
-                                              Text(
-                                                'Shipping insurance',
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .headline3,
-                                              ),
-                                              Text(
-                                                "Free",
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .headline5,
-                                              )
+                                              Text('Shipping insurance',
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      // fontSize: deviceWidth > 600
+                                                      //     ? deviceWidth / 30
+                                                      //     : (deviceWidth / 27) - 1,
+                                                      fontSize: 14.5.sp)),
+                                              Text("Free",
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Theme.of(context)
+                                                          .primaryColor,
+                                                      // fontSize: deviceWidth > 600
+                                                      //     ? deviceWidth / 30
+                                                      //     : (deviceWidth / 27) - 1,
+                                                      fontSize: 14.5.sp))
                                             ],
                                           ),
                                           SizedBox(
@@ -533,18 +566,27 @@ class _CartPageState extends State<CartPage> {
                                             children: [
                                               Text(
                                                 'Total',
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .headline2,
+                                                 style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      // fontSize: deviceWidth > 600
+                                                      //     ? deviceWidth / 30
+                                                      //     : (deviceWidth / 27) - 1,
+                                                      fontSize: 16.5.sp)
                                               ),
                                               Text(
                                                   value.selectedCouponData !=
                                                           null
                                                       ? "₹ ${(calculateTotalPriceAfterApplyCoupon(value.calculateTotalPrice(), value.selectedCouponData, value)).round()}"
                                                       : "₹ ${value.calculateTotalPrice().toString()}",
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .headline2)
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      // fontSize: deviceWidth > 600
+                                                      //     ? deviceWidth / 30
+                                                      //     : (deviceWidth / 27) - 1,
+                                                      fontSize: 16.5.sp)
+                                                      )
                                             ],
                                           ),
                                         ],
@@ -563,20 +605,20 @@ class _CartPageState extends State<CartPage> {
                                               Text(
                                                 'No. of Items',
                                                 style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: deviceWidth > 600
-                                                      ? deviceWidth / 30
-                                                      : (deviceWidth / 27) - 1,
-                                                ),
+                                                    fontWeight: FontWeight.bold,
+                                                    // fontSize: deviceWidth > 600
+                                                    //     ? deviceWidth / 30
+                                                    //     : (deviceWidth / 27) - 1,
+                                                    fontSize: 14.5.sp),
                                               ),
                                               Text(
                                                 value.cart.length.toString(),
                                                 style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: deviceWidth > 600
-                                                      ? deviceWidth / 30
-                                                      : (deviceWidth / 27) - 1,
-                                                ),
+                                                    fontWeight: FontWeight.bold,
+                                                    // fontSize: deviceWidth > 600
+                                                    //     ? deviceWidth / 30
+                                                    //     : (deviceWidth / 27) - 1,
+                                                    fontSize: 14.5.sp),
                                               )
                                             ],
                                           ),
@@ -589,15 +631,22 @@ class _CartPageState extends State<CartPage> {
                                             children: [
                                               Text(
                                                 'Subtotal',
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .headline3,
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    // fontSize: deviceWidth > 600
+                                                    //     ? deviceWidth / 35
+                                                    //     : deviceWidth / 28,
+                                                    fontSize: 14.5.sp),
                                               ),
                                               Text(
                                                   "₹ ${value.calculateTotalPrice()}",
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .headline3)
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      // fontSize: deviceWidth > 600
+                                                      //     ? deviceWidth / 30
+                                                      //     : (deviceWidth / 27) - 1,
+                                                      fontSize: 14.5.sp))
                                             ],
                                           ),
                                           SizedBox(
@@ -607,18 +656,24 @@ class _CartPageState extends State<CartPage> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
-                                              Text(
-                                                'Shipping charge',
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .headline3,
-                                              ),
-                                              Text(
-                                                "Free",
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .headline5,
-                                              )
+                                              Text('Shipping charge',
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      // fontSize: deviceWidth > 600
+                                                      //     ? deviceWidth / 30
+                                                      //     : (deviceWidth / 27) - 1,
+                                                      fontSize: 14.5.sp)),
+                                              Text("Free",
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Theme.of(context)
+                                                          .primaryColor,
+                                                      // fontSize: deviceWidth > 600
+                                                      //     ? deviceWidth / 30
+                                                      //     : (deviceWidth / 27) - 1,
+                                                      fontSize: 14.5.sp))
                                             ],
                                           ),
                                           SizedBox(
@@ -628,18 +683,24 @@ class _CartPageState extends State<CartPage> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
-                                              Text(
-                                                'Shipping insurance',
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .headline3,
-                                              ),
-                                              Text(
-                                                "Free",
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .headline5,
-                                              )
+                                              Text('Shipping insurance',
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      // fontSize: deviceWidth > 600
+                                                      //     ? deviceWidth / 30
+                                                      //     : (deviceWidth / 27) - 1,
+                                                      fontSize: 14.5.sp)),
+                                              Text("Free",
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Theme.of(context)
+                                                          .primaryColor,
+                                                      // fontSize: deviceWidth > 600
+                                                      //     ? deviceWidth / 30
+                                                      //     : (deviceWidth / 27) - 1,
+                                                      fontSize: 14.5.sp))
                                             ],
                                           ),
                                           SizedBox(
@@ -649,18 +710,23 @@ class _CartPageState extends State<CartPage> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
+                                              Text('Total',
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      // fontSize: deviceWidth > 600
+                                                      //     ? deviceWidth / 30
+                                                      //     : (deviceWidth / 27) - 1,
+                                                      fontSize: 16.5.sp)),
                                               Text(
-                                                'Total',
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .headline2,
-                                              ),
-                                              Text(
-                                                "₹ ${value.calculateTotalPrice().toString()}",
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .headline2,
-                                              )
+                                                  "₹ ${value.calculateTotalPrice().toString()}",
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      // fontSize: deviceWidth > 600
+                                                      //     ? deviceWidth / 30
+                                                      //     : (deviceWidth / 27) - 1,
+                                                      fontSize: 16.5.sp))
                                             ],
                                           ),
                                         ],
@@ -762,10 +828,14 @@ class _CartPageState extends State<CartPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                            value.selectedCouponData != null
-                                ? "₹ ${value.totalAfterCouponApplied.round().toString()}"
-                                : "₹ ${value.calculateTotalPrice().round().toString()}",
-                            style: Theme.of(context).textTheme.headline1),
+                          value.selectedCouponData != null
+                              ? "₹ ${value.totalAfterCouponApplied.round().toString()}"
+                              : "₹ ${value.calculateTotalPrice().round().toString()}",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16.5.sp,
+                          ),
+                        ),
                         GestureDetector(
                           onTap: () {
                             final customerProvider =
@@ -818,7 +888,8 @@ class _CartPageState extends State<CartPage> {
                               "PLACE ORDER",
                               style: TextStyle(
                                   color: Colors.white,
-                                  fontSize: deviceWidth > 600 ? 23 : 17.0,
+                                  // fontSize: deviceWidth > 600 ? 23 : 17.0,
+                                  fontSize: 15.5.sp,
                                   fontWeight: FontWeight.bold),
                             ),
                           ),
@@ -892,11 +963,11 @@ class _CartPageState extends State<CartPage> {
                                 child: Text(
                                   cartData.productName ?? "Jewellery",
                                   style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: deviceWidth > 600
-                                        ? deviceWidth / 28
-                                        : (deviceWidth / 25) - 1,
-                                  ),
+                                      fontWeight: FontWeight.bold,
+                                      // fontSize: deviceWidth > 600
+                                      //     ? deviceWidth / 28
+                                      //     : (deviceWidth / 25) - 1,
+                                      fontSize: 16.sp),
                                   // maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
                                   softWrap: true,
@@ -906,11 +977,11 @@ class _CartPageState extends State<CartPage> {
                               Text(
                                 "₹ ${cartData.price ?? 20000}",
                                 style: TextStyle(
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: deviceWidth > 600
-                                      ? (deviceWidth / 33) + 3
-                                      : (deviceWidth / 28) + 1,
-                                ),
+                                    fontWeight: FontWeight.normal,
+                                    // fontSize: deviceWidth > 600
+                                    //     ? (deviceWidth / 33) + 3
+                                    //     : (deviceWidth / 28) + 1,
+                                    fontSize: 15.5.sp),
                               ),
                               SizedBox(height: deviceWidth > 600 ? 10 : 0),
                               Container(
@@ -924,11 +995,11 @@ class _CartPageState extends State<CartPage> {
                                         Text(
                                           "Qty: ",
                                           style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: deviceWidth > 600
-                                                ? deviceWidth / 30
-                                                : (deviceWidth / 25) - 2,
-                                          ),
+                                              fontWeight: FontWeight.bold,
+                                              // fontSize: deviceWidth > 600
+                                              //     ? deviceWidth / 30
+                                              //     : (deviceWidth / 25) - 2,
+                                              fontSize: 14.sp),
                                         ),
                                         const SizedBox(
                                           width: 5.0,
@@ -944,12 +1015,12 @@ class _CartPageState extends State<CartPage> {
                                                 child: Text(
                                                   option,
                                                   style: TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.normal,
-                                                    fontSize: deviceWidth > 600
-                                                        ? deviceWidth / 30
-                                                          : (deviceWidth / 25) - 2,
-                                                  ),
+                                                      fontWeight:
+                                                          FontWeight.normal,
+                                                      // fontSize: deviceWidth > 600
+                                                      //     ? deviceWidth / 30
+                                                      //       : (deviceWidth / 25) - 2,
+                                                      fontSize: 14.sp),
                                                 ),
                                               );
                                             }).toList(),
@@ -972,11 +1043,11 @@ class _CartPageState extends State<CartPage> {
                                         Text(
                                           "Size: ",
                                           style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: deviceWidth > 600
-                                                ? deviceWidth / 30
-                                                 : (deviceWidth / 25) - 2,
-                                          ),
+                                              fontWeight: FontWeight.bold,
+                                              // fontSize: deviceWidth > 600
+                                              //     ? deviceWidth / 30
+                                              //      : (deviceWidth / 25) - 2,
+                                              fontSize: 14.sp),
                                         ),
                                         const SizedBox(
                                           width: 5.0,
@@ -992,12 +1063,12 @@ class _CartPageState extends State<CartPage> {
                                                 child: Text(
                                                   option,
                                                   style: TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.normal,
-                                                    fontSize: deviceWidth > 600
-                                                        ? deviceWidth / 30
-                                                         : (deviceWidth / 25) - 2,
-                                                  ),
+                                                      fontWeight:
+                                                          FontWeight.normal,
+                                                      // fontSize: deviceWidth > 600
+                                                      //     ? deviceWidth / 30
+                                                      //      : (deviceWidth / 25) - 2,
+                                                      fontSize: 14.sp),
                                                 ),
                                               );
                                             }).toList(),
@@ -1017,11 +1088,11 @@ class _CartPageState extends State<CartPage> {
                               Text(
                                 "Expected Delivery : ",
                                 style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: deviceWidth > 600
-                                      ? deviceWidth / 30
-                                      : (deviceWidth / 25) - 2,
-                                ),
+                                    fontWeight: FontWeight.bold,
+                                    // fontSize: deviceWidth > 600
+                                    //     ? deviceWidth / 30
+                                    //     : (deviceWidth / 25) - 2,
+                                    fontSize: 14.5.sp),
                               ),
                               SizedBox(
                                   height: deviceWidth > 600
@@ -1030,13 +1101,12 @@ class _CartPageState extends State<CartPage> {
                               Text(
                                 cartData.deliveryDate ?? "After 5 days",
                                 style: TextStyle(
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 
-                                  
-                                  deviceWidth > 600
-                                      ? deviceWidth / 30
-                                      : (deviceWidth / 25) - 2,
-                                ),
+                                    fontWeight: FontWeight.normal,
+                                    // fontSize:
+                                    // deviceWidth > 600
+                                    //     ? deviceWidth / 30
+                                    //     : (deviceWidth / 25) - 2,
+                                    fontSize: 14.5.sp),
                               )
                             ],
                           ),

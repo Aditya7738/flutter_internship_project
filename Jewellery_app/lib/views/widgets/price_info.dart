@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class PriceInfo extends StatelessWidget {
   final String label;
@@ -7,6 +8,13 @@ class PriceInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextStyle labelHead = TextStyle(
+      fontWeight: FontWeight.bold,
+      fontSize: 16.5.sp,
+    );
+    TextStyle sublabelHead = TextStyle(
+      fontSize: 16.5.sp,
+    );
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       child: Row(
@@ -14,11 +22,16 @@ class PriceInfo extends StatelessWidget {
         children: [
           Text(
             label,
-            style: Theme.of(context).textTheme.headline2,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 16.5.sp,
+            ),
           ),
           Text(
             "₹ $price",
-            style: Theme.of(context).textTheme.headline6,
+            style: TextStyle(
+              fontSize: 16.5.sp,
+            ),
           ),
         ],
       ),

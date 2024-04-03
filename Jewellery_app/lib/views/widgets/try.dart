@@ -1,3 +1,4 @@
+import 'package:Tiara_by_TJ/constants/fontsizes.dart';
 import 'package:flutter/material.dart';
 
 class Try extends StatelessWidget {
@@ -11,11 +12,11 @@ class Try extends StatelessWidget {
         children: [
           Text(
             "Hi@_+,",
-            style: Theme.of(context).textTheme.headline1,
+            style: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
           ),
           Text(
             "Hi@_+,",
-            style: Theme.of(context).textTheme.headline2,
+            style:TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
           ),
           Text(
             "Hi@_+,",
@@ -37,7 +38,7 @@ class Try extends StatelessWidget {
                   const EdgeInsets.symmetric(vertical: 10.0, horizontal: 40.0),
               child: Text("CONTINUE SHOPPING",
                   style: Theme.of(context).textTheme.button
-                  // TextStyle(
+                  // Text//Style(
                   //     color: Colors.white,
                   //     fontSize: 17.0,
                   //     fontWeight: FontWeight.bold),

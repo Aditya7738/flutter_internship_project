@@ -1,5 +1,7 @@
+import 'package:Tiara_by_TJ/constants/fontsizes.dart';
 import 'package:flutter/material.dart';
 import 'package:Tiara_by_TJ/helpers/validation_helper.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ShippingForm extends StatefulWidget {
   final TextEditingController firstNameController2;
@@ -103,6 +105,10 @@ class _ShippingFormState extends State<ShippingForm> {
 
   @override
   Widget build(BuildContext context) {
+    TextStyle textFormFieldStyle = TextStyle(
+        color: Theme.of(context).primaryColor,
+        fontSize: Fontsizes.textFormInputFieldSize);
+
     double deviceWidth = MediaQuery.of(context).size.width;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -111,14 +117,14 @@ class _ShippingFormState extends State<ShippingForm> {
           formHeading,
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: deviceWidth / 27,
+            fontSize: Fontsizes.headingSize,
           ),
         ),
         const SizedBox(
           height: 20.0,
         ),
         TextFormField(
-          style: Theme.of(context).textTheme.subtitle1,
+          style: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
           controller: firstNameController2,
           keyboardType: TextInputType.name,
           validator: (value) {
@@ -126,18 +132,18 @@ class _ShippingFormState extends State<ShippingForm> {
           },
           decoration: InputDecoration(
             errorStyle:
-                TextStyle(fontSize: (deviceWidth / 36), color: Colors.red),
-            labelStyle: Theme.of(context).textTheme.subtitle1,
+                TextStyle(fontSize: Fontsizes.errorTextSize, color: Colors.red),
+            labelStyle: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
             labelText: "First name*",
             border: OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(20.0))),
           ),
         ),
-          SizedBox(
+        SizedBox(
           height: deviceWidth > 600 ? deviceWidth / 30 : 20.0,
         ),
         TextFormField(
-          style: Theme.of(context).textTheme.subtitle1,
+          style: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
           controller: lastNameController2,
           keyboardType: TextInputType.name,
           validator: (value) {
@@ -145,39 +151,40 @@ class _ShippingFormState extends State<ShippingForm> {
           },
           decoration: InputDecoration(
             errorStyle:
-                TextStyle(fontSize: (deviceWidth / 36), color: Colors.red),
-            labelStyle: Theme.of(context).textTheme.subtitle1,
+                TextStyle(fontSize: Fontsizes.errorTextSize, color: Colors.red),
+            labelStyle: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
             labelText: "Last name*",
             border: OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(20.0))),
           ),
         ),
-          SizedBox(
+        SizedBox(
           height: deviceWidth > 600 ? deviceWidth / 30 : 20.0,
         ),
         TextFormField(
-          style: Theme.of(context).textTheme.subtitle1,
+          style: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
           controller: companyNameController2,
           keyboardType: TextInputType.name,
           decoration: InputDecoration(
             errorStyle:
-                TextStyle(fontSize: (deviceWidth / 36), color: Colors.red),
-            labelStyle: Theme.of(context).textTheme.subtitle1,
+                TextStyle(fontSize: Fontsizes.errorTextSize, color: Colors.red),
+            labelStyle: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
             // errorText: ,
             labelText: "Company name (optional)",
             border: OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(20.0))),
           ),
         ),
-          SizedBox(
+        SizedBox(
           height: deviceWidth > 600 ? deviceWidth / 30 : 20.0,
         ),
         Padding(
           padding: EdgeInsets.only(left: 10.0),
           child: Text(
             "Country / Region",
-            style: TextStyle(
-                fontSize: deviceWidth > 600 ? deviceWidth / 38 : 16.0),
+            style: TextStyle(fontSize: 16.sp
+                // deviceWidth > 600 ? deviceWidth / 38 : 16.0
+                ),
           ),
         ),
         const SizedBox(
@@ -216,7 +223,7 @@ class _ShippingFormState extends State<ShippingForm> {
           height: deviceWidth > 600 ? deviceWidth / 30 : 20.0,
         ),
         TextFormField(
-          style: Theme.of(context).textTheme.subtitle1,
+          style: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
           controller: address2Controller1,
           keyboardType: TextInputType.streetAddress,
           validator: (value) {
@@ -224,8 +231,8 @@ class _ShippingFormState extends State<ShippingForm> {
           },
           decoration: InputDecoration(
             errorStyle:
-                TextStyle(fontSize: (deviceWidth / 36), color: Colors.red),
-            labelStyle: Theme.of(context).textTheme.subtitle1,
+                TextStyle(fontSize: Fontsizes.errorTextSize, color: Colors.red),
+            labelStyle: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
             // errorText: ,
             labelText: "Street address*",
             hintText: "House umber and street name",
@@ -237,13 +244,13 @@ class _ShippingFormState extends State<ShippingForm> {
           height: deviceWidth > 600 ? deviceWidth / 50 : 10.0,
         ),
         TextFormField(
-          style: Theme.of(context).textTheme.subtitle1,
+          style: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
           controller: address2Controller2,
           keyboardType: TextInputType.name,
           decoration: InputDecoration(
-            errorStyle:  TextStyle(fontSize: (deviceWidth / 36), color: Colors.red),
-              
-            labelStyle: Theme.of(context).textTheme.subtitle1,
+            errorStyle:
+                TextStyle(fontSize: Fontsizes.errorTextSize, color: Colors.red),
+            labelStyle: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
             // errorText: ,
             hintText: "Apartment, suite, unit, etc. (optional)",
             border: OutlineInputBorder(
@@ -254,7 +261,7 @@ class _ShippingFormState extends State<ShippingForm> {
           height: deviceWidth > 600 ? deviceWidth / 20 : 30.0,
         ),
         TextFormField(
-          style: Theme.of(context).textTheme.subtitle1,
+          style: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
           controller: cityController2,
           keyboardType: TextInputType.name,
           validator: (value) {
@@ -262,15 +269,15 @@ class _ShippingFormState extends State<ShippingForm> {
           },
           decoration: InputDecoration(
             errorStyle:
-                TextStyle(fontSize: (deviceWidth / 36), color: Colors.red),
-            labelStyle: Theme.of(context).textTheme.subtitle1,
+                TextStyle(fontSize: Fontsizes.errorTextSize, color: Colors.red),
+            labelStyle: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
             // errorText: ,
             labelText: "Town / City *",
             border: OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(20.0))),
           ),
         ),
-          SizedBox(
+        SizedBox(
           height: deviceWidth > 600 ? deviceWidth / 30 : 20.0,
         ),
         Padding(
@@ -278,7 +285,9 @@ class _ShippingFormState extends State<ShippingForm> {
           child: Text(
             "State *",
             style: TextStyle(
-                fontSize: deviceWidth > 600 ? deviceWidth / 38 : 16.0),
+                fontSize:
+                    //  deviceWidth > 600 ? deviceWidth / 38 : 16.0
+                    16.sp),
           ),
         ),
         const SizedBox(
@@ -288,9 +297,9 @@ class _ShippingFormState extends State<ShippingForm> {
         //  SizedBox(
         //   height: deviceWidth > 600 ? deviceWidth / 7 : 75.0,
         Container(
-           alignment: Alignment.center,
+          alignment: Alignment.center,
           padding: const EdgeInsets.only(right: 10.0, left: 5.0),
-           height: deviceWidth > 600 ? deviceWidth / 11 : 75.0,
+          height: deviceWidth > 600 ? deviceWidth / 11 : 75.0,
           width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
               borderRadius: const BorderRadius.all(Radius.circular(20.0)),
@@ -318,11 +327,11 @@ class _ShippingFormState extends State<ShippingForm> {
                 }
               }),
         ),
-          SizedBox(
+        SizedBox(
           height: deviceWidth > 600 ? deviceWidth / 30 : 20.0,
         ),
         TextFormField(
-          style: Theme.of(context).textTheme.subtitle1,
+          style: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
           controller: pinNoController2,
           keyboardType: TextInputType.number,
           validator: (value) {
@@ -330,30 +339,31 @@ class _ShippingFormState extends State<ShippingForm> {
           },
           decoration: InputDecoration(
             errorStyle:
-                TextStyle(fontSize: (deviceWidth / 36), color: Colors.red),
-            labelStyle: Theme.of(context).textTheme.subtitle1,
+                TextStyle(fontSize: Fontsizes.errorTextSize, color: Colors.red),
+            labelStyle: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
             // errorText: ,
             labelText: "PIN code *",
             border: OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(20.0))),
           ),
         ),
-          SizedBox(
+        SizedBox(
           height: deviceWidth > 600 ? deviceWidth / 30 : 20.0,
         ),
         SizedBox(
           height: deviceWidth > 600 ? deviceWidth / 7 : 75.0,
           child: TextFormField(
-            style: Theme.of(context).textTheme.subtitle1,
+            style: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
             controller: phoneNoController2,
             keyboardType: TextInputType.phone,
             validator: (value) {
               return ValidationHelper.isPhoneNoValid(value);
             },
             decoration: InputDecoration(
-                errorStyle:
-                    TextStyle(fontSize: (deviceWidth / 36), color: Colors.red),
-                labelStyle: Theme.of(context).textTheme.subtitle1,
+                errorStyle: TextStyle(
+                    fontSize: Fontsizes.errorTextSize, color: Colors.red),
+                labelStyle:
+                    TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
                 border: const OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(20.0))),
                 prefix: DropdownButton(
@@ -376,7 +386,7 @@ class _ShippingFormState extends State<ShippingForm> {
             maxLines: 1,
           ),
         ),
-          SizedBox(
+        SizedBox(
           height: deviceWidth > 600 ? deviceWidth / 55 : 20.0,
         ),
       ],

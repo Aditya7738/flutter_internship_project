@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CartTotalRow extends StatelessWidget {
   final String label;
@@ -18,12 +19,21 @@ class CartTotalRow extends StatelessWidget {
       children: [
         Text(
           label,
-          style: Theme.of(context).textTheme.headline2,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 16.5.sp,
+          ),
           maxLines: 2,
         ),
         showMoney
-            ? Text("₹ $value", style: Theme.of(context).textTheme.headline2)
-            : Text(value[0].toUpperCase() + value.substring(1).toLowerCase(), style: Theme.of(context).textTheme.headline2)
+            ? Text("₹ $value",
+                style: TextStyle(
+                  fontSize: 16.5.sp,
+                ))
+            : Text(value[0].toUpperCase() + value.substring(1).toLowerCase(),
+                style: TextStyle(
+                  fontSize: 16.5.sp,
+                ))
       ],
     );
   }

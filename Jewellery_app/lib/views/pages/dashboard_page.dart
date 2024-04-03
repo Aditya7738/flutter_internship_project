@@ -13,6 +13,8 @@ import 'package:Tiara_by_TJ/providers/profile_provider.dart';
 import 'package:Tiara_by_TJ/providers/wishlist_provider.dart';
 import 'package:Tiara_by_TJ/views/pages/home_screen.dart';
 import 'package:Tiara_by_TJ/views/pages/account_page.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import 'package:provider/provider.dart';
 
 class DashboardPage extends StatefulWidget {
@@ -229,7 +231,8 @@ class _DashboardPageState extends State<DashboardPage> {
 
     return Scaffold(
       body: tabs[_currentIndex],
-      bottomNavigationBar: BottomNavigationBar(
+      bottomNavigationBar: 
+      BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
           onTap: (index) {
             print("TAB O: $index");
@@ -242,11 +245,12 @@ class _DashboardPageState extends State<DashboardPage> {
           selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
           selectedItemColor: Theme.of(context).primaryColor,
           currentIndex: _currentIndex,
-          selectedFontSize:
-              deviceWidth > 600 ? deviceWidth / 40 : deviceWidth / 30,
-          unselectedFontSize:
-              deviceWidth > 600 ? deviceWidth / 40 : deviceWidth / 31,
-          iconSize: deviceWidth / 25,
+          selectedFontSize: 12.sp,
+             // deviceWidth > 600 ? deviceWidth / 40 : deviceWidth / 30,
+          unselectedFontSize: 11.sp,
+             // deviceWidth > 600 ? deviceWidth / 40 : deviceWidth / 31,
+          iconSize: 10.sp,
+          //deviceWidth / 25,
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
                 icon: Image.asset(
@@ -293,6 +297,7 @@ class _DashboardPageState extends State<DashboardPage> {
               ),
             ),
           ]),
+    
     );
   }
 }

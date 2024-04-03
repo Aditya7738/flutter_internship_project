@@ -96,7 +96,7 @@ class ValidationHelper {
     if (nullOrEmptyString(input) != null) {
       return null;
     } else {
-      if (input!.length != 12) {
+      if (input!.length != 12 || input.length < 12) {
         return "Aadhar card number is not valid";
       }
       return null;

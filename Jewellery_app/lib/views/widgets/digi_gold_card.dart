@@ -10,6 +10,7 @@ import 'package:Tiara_by_TJ/views/pages/login_page.dart';
 import 'package:Tiara_by_TJ/views/widgets/digi_gold_plan_subcard.dart';
 import 'package:Tiara_by_TJ/views/widgets/price_info.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 
@@ -145,6 +146,14 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
         Provider.of<DigiGoldProvider>(context, listen: true);
     bool isCustomerDataEmpty = customerProvider.customerData.isEmpty;
     print("termsConditions $termsConditions");
+
+    TextStyle labelHead = TextStyle(
+      fontWeight: FontWeight.bold,
+      fontSize: 16.5.sp,
+    );
+    TextStyle sublabelHead = TextStyle(
+      fontSize: 16.5.sp,
+    );
     return IgnorePointer(
       ignoring: isPlanAlreadyPurchased,
       child: Padding(
@@ -235,7 +244,10 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                   children: [
                     Text(
                       widget.digiGoldPlan.name ?? "Jewellery",
-                      style: Theme.of(context).textTheme.headline1,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18.sp,
+                      ),
                     ),
                     SizedBox(
                       height: 10.0,
@@ -247,11 +259,11 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                         children: [
                           Text(
                             "Plan Type: ",
-                            style: Theme.of(context).textTheme.headline2,
+                            style: labelHead,
                           ),
                           Text(
                             "Amount",
-                            style: Theme.of(context).textTheme.headline6,
+                            style: sublabelHead,
                           )
                         ],
                       ),
@@ -266,11 +278,11 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                         children: [
                           Text(
                             "Plan Duration: ",
-                            style: Theme.of(context).textTheme.headline2,
+                            style: labelHead,
                           ),
                           Text(
                             "$planDuration months",
-                            style: Theme.of(context).textTheme.headline6,
+                            style: sublabelHead,
                           )
                         ],
                       ),
@@ -328,7 +340,7 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Transform.scale(
-                                scale: 1.3,
+                                scale: 1.0,
                                 child: Checkbox(
                                   activeColor: Theme.of(context).primaryColor,
                                   checkColor: Colors.white,
@@ -376,8 +388,9 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                                   },
                                   child: Text(
                                     "Terms & Conditions",
-                                    style:
-                                        Theme.of(context).textTheme.headline6,
+                                    style: TextStyle(
+                                      fontSize: 18.sp,
+                                    ),
                                   ))
                             ],
                           ),
@@ -463,7 +476,15 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                                 child: Text(
                                   "Buy Plan",
                                   style: checkBoxChecked
-                                      ? Theme.of(context).textTheme.button
+                                      ? TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 17.sp
+                                          // MediaQuery.of(context).size.width >600
+                                          //     ? MediaQuery.of(context).size.width / 33
+                                          //     : 17.0,
+
+                                          )
                                       : TextStyle(
                                           color: isPlanAlreadyPurchased
                                               ? Color.fromARGB(
@@ -474,16 +495,12 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                                                 )
                                               : Theme.of(context).primaryColor,
                                           fontWeight: FontWeight.bold,
-                                          fontSize: MediaQuery.of(context)
-                                                      .size
-                                                      .width >
-                                                  600
-                                              ? MediaQuery.of(context)
-                                                      .size
-                                                      .width /
-                                                  33
-                                              : 17.0,
-                                        ),
+                                          fontSize: 17.sp
+                                          // MediaQuery.of(context).size.width >600
+                                          //     ? MediaQuery.of(context).size.width / 33
+                                          //     : 17.0,
+
+                                          ),
                                 )),
                           )
                   ],

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:ffi';
 
+import 'package:Tiara_by_TJ/constants/fontsizes.dart';
 import 'package:Tiara_by_TJ/providers/order_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:Tiara_by_TJ/api/api_service.dart';
@@ -11,6 +12,7 @@ import 'package:Tiara_by_TJ/providers/customer_provider.dart';
 import 'package:Tiara_by_TJ/views/pages/payment_page.dart';
 import 'package:Tiara_by_TJ/views/pages/payment_successful.dart';
 import 'package:Tiara_by_TJ/views/widgets/shipping_form.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 
@@ -182,7 +184,6 @@ class _ShippingPageState extends State<ShippingPage> {
     final cartProvider = Provider.of<CartProvider>(context, listen: false);
     final orderProvider = Provider.of<OrderProvider>(context);
 
-
     String productName = "";
     for (int i = 0; i < cartProvider.cart.length; i++) {
       productName += cartProvider.cart[i].productName! + ", ";
@@ -225,7 +226,10 @@ class _ShippingPageState extends State<ShippingPage> {
                         countryCodeOptions: countryCodeOptions,
                       ),
                       TextFormField(
-                        style: Theme.of(context).textTheme.subtitle1,
+                        style: TextStyle(
+
+                            // fontSize: (deviceWidth / 33) + 1.5,
+                            fontSize: Fontsizes.textFormInputFieldSize),
                         controller: _emailController,
                         keyboardType: TextInputType.emailAddress,
                         validator: (value) {
@@ -234,7 +238,7 @@ class _ShippingPageState extends State<ShippingPage> {
                         decoration: InputDecoration(
                           // errorText: ,
                           labelText: "Enter your email*",
-                          labelStyle: Theme.of(context).textTheme.subtitle1,
+                        //  labelStyle: Theme.of(context).textTheme.subtitle1,
                           border: OutlineInputBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(20.0))),

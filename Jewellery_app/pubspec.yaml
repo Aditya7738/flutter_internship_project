@@ -71,6 +71,7 @@ dependencies:
   in_app_review: ^2.0.8
   share_plus: ^7.2.2
   flutter_swipe_tutorial: ^1.1.0
+  flutter_screenutil: ^5.9.0
 
 dev_dependencies:
   flutter_test:
