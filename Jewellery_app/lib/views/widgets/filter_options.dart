@@ -1,6 +1,8 @@
 import 'package:Tiara_by_TJ/providers/filteroptions_provider.dart';
 import 'package:Tiara_by_TJ/views/widgets/filter_suboptions.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 class FilterOptions extends StatefulWidget {
@@ -54,38 +56,49 @@ class _FilterOptionsState extends State<FilterOptions> {
             children: [
               Padding(
                 padding: const EdgeInsets.only(left: 20.0, top: 20.0),
-                child: Text(
-                  "Price Range",
-                  style: Theme.of(context).textTheme.subtitle1,
+                child: FittedBox(
+                  child: Text(
+                    "Price Range",
+                    style: TextStyle(
+                      fontSize: deviceWidth > 600 ? 28.sp : 15.sp
+                    ),
+                    //style: Theme.of(context).textTheme.subtitle1,
+                  ),
                 ),
               ),
               SizedBox(
                 height: 10.0,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "₹ ${selectedMin.toInt()} - ₹ ${selectedMax.toInt()}",
-                    style: TextStyle(fontSize: deviceWidth > 600 ? constraints.maxWidth / 22 : constraints.maxWidth / 22),
-                  ),
-                  // Image.asset(
-                  //   "assets/images/rupee.png",
-                  //   width: 19.0,
-                  //   height: 17.0,
-                  // ),
-                  // Text(
-                  //   "",
-                  // ),
-                  // Image.asset(
-                  //   "assets/images/rupee.png",
-                  //   width: 19.0,
-                  //   height: 17.0,
-                  // ),
-                  // Text(
-                  //   " ${selectedMax.toInt()}",
-                  // )
-                ],
+              Container(
+                color: Colors.red,
+              //  height: constraints.maxWidth / 8,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    FittedBox(
+                      child: Text(
+                        "₹ ${selectedMin.toInt()} - ₹ ${selectedMax.toInt()}",
+                       style: TextStyle(fontSize: deviceWidth > 600 ? constraints.maxWidth / 22 : constraints.maxWidth / 20),
+                      ),
+                    ),
+                    // Image.asset(
+                    //   "assets/images/rupee.png",
+                    //   width: 19.0,
+                    //   height: 17.0,
+                    // ),
+                    // Text(
+                    //   "",
+                    // ),
+                    // Image.asset(
+                    //   "assets/images/rupee.png",
+                    //   width: 19.0,
+                    //   height: 17.0,
+                    // ),
+                    // Text(
+                    //   " ${selectedMax.toInt()}",
+                    // )
+                  ],
+                ),
               ),
               SizedBox(
                 height: 10.0,

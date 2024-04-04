@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:Tiara_by_TJ/constants/fontsizes.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:Tiara_by_TJ/api/api_service.dart';
@@ -132,7 +133,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   Padding(
                     padding: const EdgeInsets.only(top: 7.0),
                     child: TextFormField(
-                      style: Theme.of(context).textTheme.subtitle1,
+                      style: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
                       controller: _firstNameController,
                       keyboardType: TextInputType.name,
                       validator: (value) {
@@ -142,7 +143,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         errorStyle: TextStyle(
                              fontSize: deviceWidth > 600 ? (deviceWidth / 37) + 1.5 : (deviceWidth / 33) + 1.5,
                             color: Colors.red),
-                        labelStyle: Theme.of(context).textTheme.subtitle1,
+                        labelStyle: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
                         // errorText: ,
                         labelText: "First Name*",
                         border: OutlineInputBorder(
@@ -155,7 +156,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     height: 30.0,
                   ),
                   TextFormField(
-                    style: Theme.of(context).textTheme.subtitle1,
+                    style: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
                     controller: _lastNameController,
                     keyboardType: TextInputType.name,
                     validator: (value) {
@@ -165,7 +166,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       errorStyle: TextStyle(
                            fontSize: deviceWidth > 600 ? (deviceWidth / 37) + 1.5 : (deviceWidth / 33) + 1.5,
                           color: Colors.red),
-                      labelStyle: Theme.of(context).textTheme.subtitle1,
+                      labelStyle: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
                       labelText: "Last Name*",
                       border: OutlineInputBorder(
                           borderRadius:
@@ -181,7 +182,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                      :
                      deviceWidth > 600 ? 130 : 90.0,
                     child: TextFormField(
-                      style: Theme.of(context).textTheme.subtitle1,
+                      style: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
                       keyboardType: TextInputType.phone,
                       controller: _phoneNoController,
                       validator: (value) {
@@ -195,7 +196,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           errorStyle: TextStyle(
                               fontSize: deviceWidth > 600 ? (deviceWidth / 37) + 1.5 : (deviceWidth / 33) + 1.5,
                               color: Colors.red),
-                          labelStyle: Theme.of(context).textTheme.subtitle1,
+                          labelStyle: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
                           // suffix: GestureDetector(
                           //     onTap: () {
                           //       value.setPhoneNoVerified(true);
@@ -257,7 +258,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   ),
 
                   TextFormField(
-                    style: Theme.of(context).textTheme.subtitle1,
+                    style: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
                     minLines: 2,
                     maxLines: 3,
                     controller: _addressController,
@@ -269,7 +270,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       errorStyle: TextStyle(
                            fontSize: deviceWidth > 600 ? (deviceWidth / 37) + 1.5 : (deviceWidth / 33) + 1.5,
                           color: Colors.red),
-                      labelStyle: Theme.of(context).textTheme.subtitle1,
+                      labelStyle: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
                       labelText: "Address*",
                       border: OutlineInputBorder(
                           borderRadius:
@@ -281,7 +282,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   ),
 
                   TextFormField(
-                    style: Theme.of(context).textTheme.subtitle1,
+                    style: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
                     controller: _pinNoController,
                     validator: (value) {
                       return ValidationHelper.isPincodeValid(value);
@@ -291,7 +292,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       errorStyle: TextStyle(
                            fontSize: deviceWidth > 600 ? (deviceWidth / 37) + 1.5 : (deviceWidth / 33) + 1.5,
                           color: Colors.red),
-                      labelStyle: Theme.of(context).textTheme.subtitle1,
+                      labelStyle: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
                       labelText: "Pin code*",
                       border: OutlineInputBorder(
                           borderRadius:
@@ -304,7 +305,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   ),
 
                   TextFormField(
-                    style: Theme.of(context).textTheme.subtitle1,
+                    style: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
                     controller: _birthdateController,
                     keyboardType: TextInputType.datetime,
                     onTap: () async {
@@ -316,7 +317,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       errorStyle: TextStyle(
                            fontSize: deviceWidth > 600 ? (deviceWidth / 37) + 1.5 : (deviceWidth / 33) + 1.5,
                           color: Colors.red),
-                      labelStyle: Theme.of(context).textTheme.subtitle1,
+                      labelStyle: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
                       suffixIcon: SuffixIcon(icon: Icons.calendar_month),
                       labelText: "Birthday (Optional)",
                       border: OutlineInputBorder(
@@ -330,7 +331,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   ),
 
                   TextFormField(
-                    style: Theme.of(context).textTheme.subtitle1,
+                    style: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
                     onTap: () async {
                       print("CALENDAR PRESSED");
 
@@ -343,7 +344,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       errorStyle: TextStyle(
                            fontSize: deviceWidth > 600 ? (deviceWidth / 37) + 1.5 : (deviceWidth / 33) + 1.5,
                           color: Colors.red),
-                      labelStyle: Theme.of(context).textTheme.subtitle1,
+                      labelStyle: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
                       suffixIcon: SuffixIcon(icon: Icons.calendar_month),
                       labelText: "Anniversary (Optional)",
                       border: OutlineInputBorder(
@@ -357,7 +358,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   ),
 
                   TextFormField(
-                    style: Theme.of(context).textTheme.subtitle1,
+                    style: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
                     onTap: () async {
                       print("CALENDAR PRESSED");
 
@@ -370,7 +371,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       errorStyle: TextStyle(
                            fontSize: deviceWidth > 600 ? (deviceWidth / 37) + 1.5 : (deviceWidth / 33) + 1.5,
                           color: Colors.red),
-                      labelStyle: Theme.of(context).textTheme.subtitle1,
+                      labelStyle: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
                       suffixIcon: SuffixIcon(icon: Icons.calendar_month),
                       labelText: "Spouse Birthday (Optional)",
                       border: OutlineInputBorder(
@@ -513,7 +514,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                 )
                               : Text(
                                   "SAVE CHANGES",
-                                  style: Theme.of(context).textTheme.button,
+                                  style: Fontsizes.buttonTextStyle
                                 ),
                         )),
                   ),

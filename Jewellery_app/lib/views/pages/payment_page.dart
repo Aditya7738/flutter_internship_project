@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:Tiara_by_TJ/constants/fontsizes.dart';
 import 'package:Tiara_by_TJ/helpers/payment_helper.dart';
 import 'package:Tiara_by_TJ/providers/digigold_provider.dart';
 import 'package:Tiara_by_TJ/providers/order_provider.dart';
@@ -14,6 +15,7 @@ import 'package:Tiara_by_TJ/providers/customer_provider.dart';
 import 'package:Tiara_by_TJ/views/pages/payment_failed.dart';
 import 'package:Tiara_by_TJ/views/pages/payment_successful.dart';
 import 'package:Tiara_by_TJ/views/widgets/steplist.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:http/http.dart' as http;
 import 'package:razorpay_flutter/razorpay_flutter.dart';
@@ -409,7 +411,7 @@ class _PaymentPageState extends State<PaymentPage>
                     padding: const EdgeInsets.only(left: 5.0),
                     child: Text(
                       "Select your preferred payment method",
-                      style: Theme.of(context).textTheme.headline2,
+                      style: Fontsizes.headlineTextStyle,
                     ),
                   ),
                   SizedBox(
@@ -480,92 +482,95 @@ class _PaymentPageState extends State<PaymentPage>
                                           child: ListTile(
                                             title: Text(
                                               expansionListItemModel.title,
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .headline6,
+                                              style: TextStyle(
+                                                fontSize: 19.sp
+                                              )
                                             ),
                                           ),
                                         );
                                       },
                                       body: Padding(
                                         padding: const EdgeInsets.all(8.0),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            HtmlWidget(
-                                              expansionListItemModel.body,
-                                              textStyle: Theme.of(context)
-                                                  .textTheme
-                                                  .subtitle1,
-                                            ),
-                                            SizedBox(
-                                              height: 20.0,
-                                            ),
-                                            GestureDetector(
-                                              onTap: () {
-                                                switch (
-                                                    expansionListItemModel.id) {
-                                                  case "cod":
-                                                    break;
-                                                  case "cashfree":
-                                                    //webCheckout();
-                                                    break;
-                                                  case "razorpay":
-                                                    makeRazorPayment();
-                                                    if (mounted) {
-                                                      setState(() {
-                                                        selectedPaymentMethod =
-                                                            expansionListItemModel
-                                                                .title;
-                                                      });
-                                                    }
-
-                                                    break;
-
-                                                  case "ccavenue":
-
-                                                    //Navigate to PaymentScreen - ccavenue _paymet_page.dart
-                                                    initPlatformState();
-                                                    break;
-                                                  case "stripe":
-                                                    break;
-
-                                                  // case "payubiz":
-                                                  // openPayUCheckoutScreen();
-                                                  // break;
-
-                                                  default:
-                                                }
-                                              },
-                                              child: Container(
-                                                  width: 200.0,
-                                                  // height: 40.0,
-                                                  decoration: BoxDecoration(
-                                                      color: const Color(
-                                                          0xffCC868A),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              12.0)),
-                                                  padding: const EdgeInsets
-                                                      .symmetric(
-                                                      vertical: 10.0,
-                                                      horizontal: 20.0),
-                                                  child: Center(
-                                                    child: razorpayLoading
-                                                        ? CircularProgressIndicator(
-                                                            color: Colors.white,
-                                                          )
-                                                        : Text(
-                                                            "Pay now",
-                                                            style: Theme.of(context).textTheme.button,
-                                                          ),
-                                                  )),
-                                            ),
-                                            SizedBox(
-                                              height: 10.0,
-                                            ),
-                                          ],
+                                        child: Container(
+                                          color: Colors.red,
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              HtmlWidget(
+                                                expansionListItemModel.body,
+                                                textStyle:  TextStyle(
+                                                  fontSize: 18.sp
+                                                )
+                                              ),
+                                              SizedBox(
+                                                height: 20.0,
+                                              ),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  switch (
+                                                      expansionListItemModel.id) {
+                                                    case "cod":
+                                                      break;
+                                                    case "cashfree":
+                                                      //webCheckout();
+                                                      break;
+                                                    case "razorpay":
+                                                      makeRazorPayment();
+                                                      if (mounted) {
+                                                        setState(() {
+                                                          selectedPaymentMethod =
+                                                              expansionListItemModel
+                                                                  .title;
+                                                        });
+                                                      }
+                                          
+                                                      break;
+                                          
+                                                    case "ccavenue":
+                                          
+                                                      //Navigate to PaymentScreen - ccavenue _paymet_page.dart
+                                                      initPlatformState();
+                                                      break;
+                                                    case "stripe":
+                                                      break;
+                                          
+                                                    // case "payubiz":
+                                                    // openPayUCheckoutScreen();
+                                                    // break;
+                                          
+                                                    default:
+                                                  }
+                                                },
+                                                child: Container(
+                                                    width: 200.0,
+                                                    // height: 40.0,
+                                                    decoration: BoxDecoration(
+                                                        color: const Color(
+                                                            0xffCC868A),
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                                12.0)),
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                        vertical: 10.0,
+                                                        horizontal: 20.0),
+                                                    child: Center(
+                                                      child: razorpayLoading
+                                                          ? CircularProgressIndicator(
+                                                              color: Colors.white,
+                                                            )
+                                                          : Text(
+                                                              "Pay now",
+                                                              style: Fontsizes.buttonTextStyle,
+                                                            ),
+                                                    )),
+                                              ),
+                                              SizedBox(
+                                                height: 10.0,
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
                                       isExpanded:

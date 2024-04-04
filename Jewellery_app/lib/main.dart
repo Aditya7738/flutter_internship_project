@@ -247,7 +247,7 @@ class _MyAppState extends State<MyApp> {
               appBarTheme: AppBarTheme(
                 actionsIconTheme: IconThemeData(size: (deviceWidth / 21) + 6),
                 titleTextStyle: TextStyle(
-                    fontSize: deviceWidth / 25, color: Colors.black), //product
+                    fontSize: deviceWidth > 600 ? deviceWidth / 25 : deviceWidth / 22, color: Colors.black), //product
               ),
               primaryColor: Color(0xffCC868A),
               textTheme:
@@ -282,11 +282,11 @@ class _MyAppState extends State<MyApp> {
                 //   // fontSize: (deviceWidth / 33) + 1.5,
                 //   fontSize: 16.sp
                 // ),
-                // subtitle2: TextStyle(
-                //   color: Color(0xffCC868A),
-                //   fontWeight: FontWeight.normal,
-                //   fontSize: (deviceWidth / 33),
-                // ),
+                subtitle2: TextStyle(
+                  color: Color(0xffCC868A),
+                  fontWeight: FontWeight.normal,
+                 // fontSize: (deviceWidth / 33),
+                ),
                 // bodyText1: TextStyle(
                 //   color: Color(0xffCC868A),
                 //   fontWeight: FontWeight.bold,

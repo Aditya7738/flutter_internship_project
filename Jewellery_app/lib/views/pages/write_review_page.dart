@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:Tiara_by_TJ/api/api_service.dart';
 import 'package:Tiara_by_TJ/constants/constants.dart';
+import 'package:Tiara_by_TJ/constants/fontsizes.dart';
 import 'package:Tiara_by_TJ/helpers/validation_helper.dart';
 import 'package:Tiara_by_TJ/model/products_model.dart';
 import 'package:Tiara_by_TJ/providers/customer_provider.dart';
@@ -9,6 +10,7 @@ import 'package:Tiara_by_TJ/views/widgets/button_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 class WriteReviewPage extends StatefulWidget {
@@ -54,7 +56,7 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
                     Text(
                       widget.productsModel.name ?? "Jewellery",
                       textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.headline1,
+                      style: Fontsizes.headlineTextStyle,
                       maxLines: 2,
                     ),
                     SizedBox(
@@ -118,8 +120,10 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
                     ),
                   ]),
                 ),
-                Text("Write Review",
-                    style: Theme.of(context).textTheme.headline2),
+                Text(
+                  "Write Review",
+                  style: Fontsizes.headlineTextStyle,
+                ),
                 SizedBox(
                   height: 10.0,
                 ),
@@ -134,6 +138,7 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
                   decoration: const InputDecoration(
                     hintText:
                         "You can talk about the fit, design, size, packaging, etc..",
+                    hintStyle: TextStyle(fontWeight: FontWeight.normal),
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10.0))),
                   ),
@@ -216,22 +221,16 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
               color: Theme.of(context).primaryColor),
           child: Center(
             child: isCreatingReview
-                ? const SizedBox(
-                    width: 25.0,
-                    height: 50.0,
+                ? SizedBox(
+                    width: 18.sp,
+                    height: 18.sp,
                     child: CircularProgressIndicator(
                       color: Colors.white,
                       strokeWidth: 2.0,
                       backgroundColor: Color(0xffCC868A),
                     ),
                   )
-                : Text(
-                    "Submit Review",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: deviceWidth > 600 ? 27.0 : 17.0,
-                        fontWeight: FontWeight.bold),
-                  ),
+                : Text("Submit Review", style: Fontsizes.buttonTextStyle),
           ),
         ),
       ),

@@ -11,6 +11,7 @@ import 'package:Tiara_by_TJ/views/pages/active_payment_page.dart';
 import 'package:Tiara_by_TJ/views/pages/edit_profile_page.dart';
 import 'package:Tiara_by_TJ/views/pages/search_page.dart';
 import 'package:Tiara_by_TJ/views/pages/wishlist_page.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:badges/badges.dart' as badges;
 
@@ -249,21 +250,24 @@ class MyProfilePage extends StatelessWidget {
                         customerProvider.customerData[0]["first_name"],
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: deviceWidth > 600 ? deviceWidth / 28 : deviceWidth / 26,
+                          fontSize:17.sp
+                         //  deviceWidth > 600 ? deviceWidth / 28 : deviceWidth / 26,
                         ),
                       ),
                       Text(
                         customerProvider.customerData[0]["last_name"],
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                           fontSize: deviceWidth > 600 ? deviceWidth / 28 : deviceWidth / 26,
+                           fontSize: 17.sp
+                           //deviceWidth > 600 ? deviceWidth / 28 : deviceWidth / 26,
                         ),
                       ),
                       Text(
                         customerProvider.customerData[0]["user_email"],
                         style: TextStyle(
                           fontWeight: FontWeight.normal,
-                          fontSize: deviceWidth > 600 ? deviceWidth / 28 : deviceWidth / 26,
+                          fontSize: 17.sp
+                          // deviceWidth > 600 ? deviceWidth / 28 : deviceWidth / 26,
                         ),
                       ),
                       const SizedBox(
@@ -284,7 +288,8 @@ class MyProfilePage extends StatelessWidget {
                                   style: TextStyle(
                                     color: Theme.of(context).primaryColor,
                                     fontWeight: FontWeight.normal,
-                                   fontSize: deviceWidth > 600 ? deviceWidth / 36 : deviceWidth / 29,
+                                   fontSize: 15.sp
+                                   //deviceWidth > 600 ? deviceWidth / 36 : deviceWidth / 29,
                                   ),
                                 ),
                                 SizedBox(
@@ -355,7 +360,8 @@ class MyProfilePage extends StatelessWidget {
                           ),
                           title: Text(titles[index],
                               style: TextStyle(
-                                  fontSize: deviceWidth > 600 ? 27.0 : 18.0,
+                                  fontSize:18.sp,
+                                  // deviceWidth > 600 ? 27.0 : 18.0,
                                   fontWeight: FontWeight.normal)),
                           trailing: const Icon(Icons.chevron_right_outlined),
                         ),

@@ -319,8 +319,8 @@ class PurpleAutomatic {
 
     final The375? the375;
     final The583? the583;
-    final The375? the750;
-    final The916? the916;
+    final The750? the750;
+    final The375? the916;
     final The375? the995;
     final The375? the999;
     final The583? the99999;
@@ -330,8 +330,8 @@ class PurpleAutomatic {
         return PurpleAutomatic(
             the375: json["375"] == null ? null : The375.fromJson(json["375"]),
             the583: json["583"] == null ? null : The583.fromJson(json["583"]),
-            the750: json["750"] == null ? null : The375.fromJson(json["750"]),
-            the916: json["916"] == null ? null : The916.fromJson(json["916"]),
+            the750: json["750"] == null ? null : The750.fromJson(json["750"]),
+            the916: json["916"] == null ? null : The375.fromJson(json["916"]),
             the995: json["995"] == null ? null : The375.fromJson(json["995"]),
             the999: json["999"] == null ? null : The375.fromJson(json["999"]),
             the99999: json["999.99"] == null ? null : The583.fromJson(json["999.99"]),
@@ -359,7 +359,7 @@ class Empty {
         required this.purpleDefault,
     });
 
-    final dynamic base;
+    final String? base;
     final String? rate;
     final bool? purpleDefault;
 
@@ -384,17 +384,20 @@ class The375 {
         required this.base,
         required this.margin,
         required this.rate,
+        required this.the375Default,
     });
 
-    final dynamic base;
+    final int? base;
     final int? margin;
     final int? rate;
+    final bool? the375Default;
 
     factory The375.fromJson(Map<String, dynamic> json){ 
         return The375(
-            base: int.parse("${json["base"]}") ,
+            base: json["base"],
             margin: json["margin"],
             rate: json["rate"],
+            the375Default: json["default"],
         );
     }
 
@@ -402,6 +405,7 @@ class The375 {
         "base": base,
         "margin": margin,
         "rate": rate,
+        "default": the375Default,
     };
 
 }
@@ -413,7 +417,7 @@ class The583 {
         required this.rate,
     });
 
-    final dynamic base;
+    final int? base;
     final String? margin;
     final int? rate;
 
@@ -433,22 +437,25 @@ class The583 {
 
 }
 
-class The916 {
-    The916({
+class The750 {
+    The750({
         required this.base,
         required this.margin,
         required this.rate,
+        required this.the750Default,
     });
 
-    final dynamic base;
+    final String? base;
     final int? margin;
     final int? rate;
+    final bool? the750Default;
 
-    factory The916.fromJson(Map<String, dynamic> json){ 
-        return The916(
+    factory The750.fromJson(Map<String, dynamic> json){ 
+        return The750(
             base: json["base"],
             margin: json["margin"],
             rate: json["rate"],
+            the750Default: json["default"],
         );
     }
 
@@ -456,6 +463,7 @@ class The916 {
         "base": base,
         "margin": margin,
         "rate": rate,
+        "default": the750Default,
     };
 
 }
@@ -466,7 +474,7 @@ class Manual {
         required this.rate,
     });
 
-    final dynamic base;
+    final String? base;
     final String? rate;
 
     factory Manual.fromJson(Map<String, dynamic> json){ 
@@ -630,14 +638,14 @@ class PlatinumPricingInr {
     final String? inrDefault;
     final Map<String, AutomaticValue> automatic;
     final Map<String, Manual> manual;
-    final Map<String, bool> enabledPurities;
+    final List<dynamic> enabledPurities;
 
     factory PlatinumPricingInr.fromJson(Map<String, dynamic> json){ 
         return PlatinumPricingInr(
             inrDefault: json["default"],
             automatic: Map.from(json["automatic"]).map((k, v) => MapEntry<String, AutomaticValue>(k, AutomaticValue.fromJson(v))),
             manual: Map.from(json["manual"]).map((k, v) => MapEntry<String, Manual>(k, Manual.fromJson(v))),
-            enabledPurities: Map.from(json["enabled_purities"]).map((k, v) => MapEntry<String, bool>(k, v)),
+            enabledPurities: json["enabled_purities"] == null ? [] : List<dynamic>.from(json["enabled_purities"]!.map((x) => x)),
         );
     }
 
@@ -645,7 +653,7 @@ class PlatinumPricingInr {
         "default": inrDefault,
         "automatic": Map.from(automatic).map((k, v) => MapEntry<String, dynamic>(k, v?.toJson())),
         "manual": Map.from(manual).map((k, v) => MapEntry<String, dynamic>(k, v?.toJson())),
-        "enabled_purities": Map.from(enabledPurities).map((k, v) => MapEntry<String, dynamic>(k, v)),
+        "enabled_purities": enabledPurities.map((x) => x).toList(),
     };
 
 }
@@ -655,17 +663,20 @@ class AutomaticValue {
         required this.base,
         required this.margin,
         required this.rate,
+        required this.automaticDefault,
     });
 
-    final dynamic base;
+    final dynamic? base;
     final int? margin;
     final int? rate;
+    final bool? automaticDefault;
 
     factory AutomaticValue.fromJson(Map<String, dynamic> json){ 
         return AutomaticValue(
             base: json["base"],
             margin: json["margin"],
             rate: json["rate"],
+            automaticDefault: json["default"],
         );
     }
 
@@ -673,6 +684,7 @@ class AutomaticValue {
         "base": base,
         "margin": margin,
         "rate": rate,
+        "default": automaticDefault,
     };
 
 }
@@ -783,17 +795,20 @@ class The650 {
         required this.base,
         required this.margin,
         required this.rate,
+        required this.the650Default,
     });
 
-    final dynamic base;
+    final String? base;
     final int? margin;
     final String? rate;
+    final bool? the650Default;
 
     factory The650.fromJson(Map<String, dynamic> json){ 
         return The650(
             base: json["base"],
             margin: json["margin"],
             rate: json["rate"],
+            the650Default: json["default"],
         );
     }
 
@@ -801,6 +816,7 @@ class The650 {
         "base": base,
         "margin": margin,
         "rate": rate,
+        "default": the650Default,
     };
 
 }

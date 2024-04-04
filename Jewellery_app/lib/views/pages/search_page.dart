@@ -34,7 +34,7 @@ class _SearchPageState extends State<SearchPage> {
 
     filterOptionsProvider =
         Provider.of<FilterOptionsProvider>(context, listen: false);
-     
+
     print(
         "filterOptionsProvider.list.length ${filterOptionsProvider.list.length}");
     filterOptionsProvider.clearFilterList();
@@ -238,151 +238,168 @@ class _SearchPageState extends State<SearchPage> {
                     : SizedBox(
                         height: 70.0,
                         width: MediaQuery.of(context).size.width,
-                        child: Consumer<FilterOptionsProvider>(
-                            builder: (context, value, child) {
-                          return ListView.builder(
-                            padding: EdgeInsets.all(5.0),
-                            scrollDirection: Axis.horizontal,
-                            itemCount: value.list.length,
-                            itemBuilder: (context, index) {
-                              // print("value.list[index][parent] == price_range ${value.list[index]["parent"] == "price_range"}");
+                        child: LayoutBuilder(
+                          builder: (context, constraints) {
+                            return Consumer<FilterOptionsProvider>(
+                                builder: (context, value, child) {
+                              return ListView.builder(
+                                padding: EdgeInsets.all(5.0),
+                                scrollDirection: Axis.horizontal,
+                                itemCount: value.list.length,
+                                itemBuilder: (context, index) {
+                                  // print("value.list[index][parent] == price_range ${value.list[index]["parent"] == "price_range"}");
 
-                              // print( "₹${value.list[index]["price_range"]["min_price"]}");
-                              return Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 8.0),
-                                child: Chip(
-                                    padding: EdgeInsets.all(7.0),
-                                    label: Text(
-                                        value.list[index]["parent"] ==
-                                                "price_range"
-                                            ? "₹ ${value.list[index]["price_range"]["min_price"]} - ₹ ${value.list[index]["price_range"]["max_price"]}"
-                                            : value.list[index]["label"],
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headline4
-                                        //  TextStyle(
-                                        //     fontSize: 16.0,
-                                        //     fontWeight: FontWeight.bold),
+                                  // print( "₹${value.list[index]["price_range"]["min_price"]}");
+                                  return Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8.0),
+                                    child: Chip(
+                                        padding: EdgeInsets.all(7.0),
+                                        label: Text(
+                                            value.list[index]["parent"] ==
+                                                    "price_range"
+                                                ? "₹ ${value.list[index]["price_range"]["min_price"]} - ₹ ${value.list[index]["price_range"]["max_price"]}"
+                                                : value.list[index]["label"],
+                                            style: TextStyle(
+                                             // fontWeight: FontWeight.bold,
+                                              fontSize:
+                                              deviceWidth > 600 ? constraints.maxHeight - 45 :
+                                              constraints.maxHeight - 55
+                                              // deviceWidth / 37,
+                                            )
+
+                                            // Theme.of(context)
+                                            //     .textTheme
+                                            //     .headline4
+
+                                            //  TextStyle(
+                                            //     fontSize: 16.0,
+                                            //     fontWeight: FontWeight.bold),
+                                            ),
+                                        deleteIcon: Container(
+                                          decoration: const BoxDecoration(
+                                            color: Colors.black,
+                                            shape: BoxShape.circle,
+                                          ),
+                                          child: Icon(
+                                            Icons.close_rounded,
+                                            color: Colors.white,
+                                            size: deviceWidth > 600 ? 24.0 : 16.0,
+                                          ),
                                         ),
-                                    deleteIcon: Container(
-                                      decoration: const BoxDecoration(
-                                        color: Colors.black,
-                                        shape: BoxShape.circle,
-                                      ),
-                                      child: const Icon(
-                                        Icons.close_rounded,
-                                        color: Colors.white,
-                                        size: 19.0,
-                                      ),
-                                    ),
-                                    onDeleted: () async {
-                                      print("ONDELETED CALLED");
+                                        onDeleted: () async {
+                                          print("ONDELETED CALLED");
 
-                                      print("index to remove $index");
+                                          print("index to remove $index");
 
-                                      value.removeFromList(index);
+                                          value.removeFromList(index);
 
-                                      print("_list ${value.list}");
+                                          print("_list ${value.list}");
 
-                                      //value.setFilteredListLoading(true);
+                                          //value.setFilteredListLoading(true);
 
-                                      // Map<String, dynamic> selectedSubOptionsdata =
-                                      //     value.selectedSubOptionsdata;
+                                          // Map<String, dynamic> selectedSubOptionsdata =
+                                          //     value.selectedSubOptionsdata;
 
-                                      // if (selectedSubOptionsdata
-                                      //     .containsKey("collection")) {
-                                      //   selectedSubOptionsdata["collection"] =
-                                      //       "";
-                                      // }
+                                          // if (selectedSubOptionsdata
+                                          //     .containsKey("collection")) {
+                                          //   selectedSubOptionsdata["collection"] =
+                                          //       "";
+                                          // }
 
-                                      // if (selectedSubOptionsdata
-                                      //     .containsKey("categories")) {
-                                      //   selectedSubOptionsdata["categories"] =
-                                      //       "";
-                                      // }
+                                          // if (selectedSubOptionsdata
+                                          //     .containsKey("categories")) {
+                                          //   selectedSubOptionsdata["categories"] =
+                                          //       "";
+                                          // }
 
-                                      // if (selectedSubOptionsdata
-                                      //     .containsKey("sub-categories")) {
-                                      //   selectedSubOptionsdata[
-                                      //       "sub-categories"] = "";
-                                      // }
+                                          // if (selectedSubOptionsdata
+                                          //     .containsKey("sub-categories")) {
+                                          //   selectedSubOptionsdata[
+                                          //       "sub-categories"] = "";
+                                          // }
 
-                                      // if (selectedSubOptionsdata
-                                      //     .containsKey("tags")) {
-                                      //   selectedSubOptionsdata["tags"] = "";
-                                      // }
+                                          // if (selectedSubOptionsdata
+                                          //     .containsKey("tags")) {
+                                          //   selectedSubOptionsdata["tags"] = "";
+                                          // }
 
-                                      // if (selectedSubOptionsdata
-                                      //     .containsKey("price_range")) {
-                                      //   selectedSubOptionsdata["price_range"] =
-                                      //       "";
-                                      // }
-                                      bool isThereInternet = await ApiService
-                                          .checkInternetConnection(context);
-                                      if (isThereInternet) {
-                                        value.setFilteredListLoading(true);
+                                          // if (selectedSubOptionsdata
+                                          //     .containsKey("price_range")) {
+                                          //   selectedSubOptionsdata["price_range"] =
+                                          //       "";
+                                          // }
+                                          bool isThereInternet =
+                                              await ApiService
+                                                  .checkInternetConnection(
+                                                      context);
+                                          if (isThereInternet) {
+                                            value.setFilteredListLoading(true);
 
-                                        ApiService.listOfProductsModel.clear();
-                                        await ApiService.fetchProducts(
-                                            textEditingController.text, 1,
-                                            filterList: value.list);
-                                        value.setFilteredListLoading(false);
-                                      }
-                                    }),
+                                            ApiService.listOfProductsModel
+                                                .clear();
+                                            await ApiService.fetchProducts(
+                                                textEditingController.text, 1,
+                                                filterList: value.list);
+                                            value.setFilteredListLoading(false);
+                                          }
+                                        }),
+                                  );
+                                },
                               );
-                            },
-                          );
 
-                          // print("appliedFilter legth 1 ${appliedFilter.length}");
+                              // print("appliedFilter legth 1 ${appliedFilter.length}");
 
-                          // appliedFilter.clear();
+                              // appliedFilter.clear();
 
-                          // print("appliedFilter length 2 ${appliedFilter.length}");
+                              // print("appliedFilter length 2 ${appliedFilter.length}");
 
-                          // for (var i = 0; i < selectedSubOptionsdata.length; i++) {
-                          //   appliedFilter[i] =
-                          // }
-                          // if (selectedSubOptionsdata.containsKey("collection")) {
-                          //   appliedFilter["collection"] = {
-                          //     "id":  selectedSubOptionsdata["collection"],
-                          //     "label": selectedSubOptionsdata["collectionLabel"],
-                          //   };
+                              // for (var i = 0; i < selectedSubOptionsdata.length; i++) {
+                              //   appliedFilter[i] =
+                              // }
+                              // if (selectedSubOptionsdata.containsKey("collection")) {
+                              //   appliedFilter["collection"] = {
+                              //     "id":  selectedSubOptionsdata["collection"],
+                              //     "label": selectedSubOptionsdata["collectionLabel"],
+                              //   };
 
-                          // }
+                              // }
 
-                          // if (selectedSubOptionsdata.containsKey("categories")) {
-                          //    appliedFilter["category"] = {
-                          //     "id":  selectedSubOptionsdata["categories"],
-                          //     "label": selectedSubOptionsdata["categoriesLabel"]
-                          // };
-                          // }
+                              // if (selectedSubOptionsdata.containsKey("categories")) {
+                              //    appliedFilter["category"] = {
+                              //     "id":  selectedSubOptionsdata["categories"],
+                              //     "label": selectedSubOptionsdata["categoriesLabel"]
+                              // };
+                              // }
 
-                          // if (selectedSubOptionsdata
-                          //     .containsKey("sub-categories")) {
-                          //   appliedFilter["subcategory"] = {
-                          //     "id":  selectedSubOptionsdata["sub-categories"],
-                          //     "label": selectedSubOptionsdata["subCategoriesLabel"]
-                          // };
-                          //     }
+                              // if (selectedSubOptionsdata
+                              //     .containsKey("sub-categories")) {
+                              //   appliedFilter["subcategory"] = {
+                              //     "id":  selectedSubOptionsdata["sub-categories"],
+                              //     "label": selectedSubOptionsdata["subCategoriesLabel"]
+                              // };
+                              //     }
 
-                          // if (selectedSubOptionsdata.containsKey("tags")) {
-                          //    appliedFilter["tag"] = {
-                          //     "id":  selectedSubOptionsdata["tags"],
-                          //     "label": selectedSubOptionsdata["tagsLabel"],
-                          // };
-                          // }
+                              // if (selectedSubOptionsdata.containsKey("tags")) {
+                              //    appliedFilter["tag"] = {
+                              //     "id":  selectedSubOptionsdata["tags"],
+                              //     "label": selectedSubOptionsdata["tagsLabel"],
+                              // };
+                              // }
 
-                          // if (selectedSubOptionsdata.containsKey("price_range")) {
-                          //    appliedFilter["price_range"] = {
-                          //     "id":  selectedSubOptionsdata["price_range"],
-                          //     "label": "₹ ${selectedSubOptionsdata["price_range"]["min_price"]} - ₹  ${selectedSubOptionsdata["price_range"]["max_price"]}"
+                              // if (selectedSubOptionsdata.containsKey("price_range")) {
+                              //    appliedFilter["price_range"] = {
+                              //     "id":  selectedSubOptionsdata["price_range"],
+                              //     "label": "₹ ${selectedSubOptionsdata["price_range"]["min_price"]} - ₹  ${selectedSubOptionsdata["price_range"]["max_price"]}"
 
-                          // };
-                          // }
+                              // };
+                              // }
 
-                          // print("appliedFilter length ${appliedFilter.length}");
-                        })),
+                              // print("appliedFilter length ${appliedFilter.length}");
+                            });
+                          },
+                          //  child:
+                        )),
                 value.list.isEmpty
                     ? SizedBox()
                     : Divider(
@@ -398,7 +415,9 @@ class _SearchPageState extends State<SearchPage> {
                             "constraints.maxWidth / 16 ${(constraints.maxWidth / 26) - 0.9}");
                         return Text(
                             "Showing ${ApiService.listOfProductsModel.length} results",
-                            style: TextStyle(fontSize: deviceWidth > 600 ? 27.0 : 15.0, fontWeight: FontWeight.normal) 
+                            style: TextStyle(
+                                fontSize: deviceWidth > 600 ? 27.0 : 15.0,
+                                fontWeight: FontWeight.normal)
                             // TextStyle(
                             //     fontSize: (constraints.maxWidth / 26) - 0.9),
                             );
@@ -433,6 +452,9 @@ class _SearchPageState extends State<SearchPage> {
                                           "ApiService.listOfProductsModel.length ${ApiService.listOfProductsModel.length}");
                                       ProductsModel productsModel =
                                           ApiService.listOfProductsModel[index];
+
+                                      print(
+                                          "${MediaQuery.of(context).size.width / 4}");
                                       return GestureDetector(
                                         onTap: () {
                                           Navigator.of(context).push(
@@ -538,11 +560,22 @@ class _SearchPageState extends State<SearchPage> {
                                                   ),
                                                   Container(
                                                     width:
-                                                        MediaQuery.of(context)
+                                                        // MediaQuery.of(context)
+                                                        //             .size
+                                                        //             .width /
+                                                        //         2 +
+                                                        //     38,
+                                                        deviceWidth > 600
+                                                            ? MediaQuery.of(
+                                                                        context)
                                                                     .size
-                                                                    .width /
-                                                                2 +
-                                                            46,
+                                                                    .width -
+                                                                280
+                                                            : MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width -
+                                                                160,
                                                     padding:
                                                         const EdgeInsets.all(
                                                             5.0),
@@ -554,30 +587,28 @@ class _SearchPageState extends State<SearchPage> {
                                                               CrossAxisAlignment
                                                                   .start,
                                                           children: [
-                                                            LayoutBuilder(
-                                                              builder: (BuildContext
-                                                                      context,
-                                                                  BoxConstraints
-                                                                      constraints) {
-                                                                print(
-                                                                    "constraints.maxWidth / 20 ${(constraints.maxWidth / 20) + 4}");
-                                                                return Text(
-                                                                  ApiService
-                                                                          .listOfProductsModel[
-                                                                              index]
-                                                                          .name ??
-                                                                      "Jewellery",
-                                                                  // softWrap: true,
-                                                                  // overflow:
-                                                                  //     TextOverflow
-                                                                  //         .ellipsis,
-                                                                  style: TextStyle(
-                                                                      fontSize:
-                                                                          (constraints.maxWidth / 20) +
-                                                                              4),
-                                                                );
-                                                              },
-                                                              //child:,
+                                                            Text(
+                                                              ApiService
+                                                                      .listOfProductsModel[
+                                                                          index]
+                                                                      .name ??
+                                                                  "Jewellery",
+                                                              // softWrap: true,
+                                                              // overflow:
+                                                              //     TextOverflow
+                                                              //         .ellipsis,
+                                                              style: TextStyle(
+                                                                  fontSize: deviceWidth >
+                                                                          600
+                                                                      ? (constraints.maxWidth /
+                                                                              20) +
+                                                                          1
+                                                                      : (constraints.maxWidth /
+                                                                              20) +
+                                                                          3,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
                                                             ),
                                                             const SizedBox(
                                                               height: 5.0,
@@ -589,10 +620,17 @@ class _SearchPageState extends State<SearchPage> {
                                                                   ? "₹ ${productsModel.regularPrice ?? 20000}"
                                                                   : "₹ 20000",
                                                               style: TextStyle(
-                                                                  fontSize:
-                                                                      (constraints.maxWidth /
+                                                                  fontSize: deviceWidth >
+                                                                          600
+                                                                      ? (constraints.maxWidth /
                                                                               20) +
-                                                                          2, fontWeight: FontWeight.normal),
+                                                                          1
+                                                                      : (constraints.maxWidth /
+                                                                              20) +
+                                                                          3,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .normal),
                                                             )
                                                           ],
                                                         );

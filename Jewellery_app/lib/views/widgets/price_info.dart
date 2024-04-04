@@ -8,13 +8,7 @@ class PriceInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TextStyle labelHead = TextStyle(
-      fontWeight: FontWeight.bold,
-      fontSize: 16.5.sp,
-    );
-    TextStyle sublabelHead = TextStyle(
-      fontSize: 16.5.sp,
-    );
+double deviceWidth = MediaQuery.of(context).size.width;
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       child: Row(
@@ -24,13 +18,13 @@ class PriceInfo extends StatelessWidget {
             label,
             style: TextStyle(
               fontWeight: FontWeight.bold,
-              fontSize: 16.5.sp,
+              fontSize: deviceWidth > 600 ? 24.sp : 16.5.sp,
             ),
           ),
           Text(
             "₹ $price",
             style: TextStyle(
-              fontSize: 16.5.sp,
+              fontSize: deviceWidth > 600 ? 24.sp : 16.5.sp,
             ),
           ),
         ],

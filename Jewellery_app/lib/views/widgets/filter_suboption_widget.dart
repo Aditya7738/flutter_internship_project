@@ -1,5 +1,6 @@
 import 'package:Tiara_by_TJ/providers/filteroptions_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 class FilterSubOptionsWidget extends StatefulWidget {
@@ -136,6 +137,8 @@ class _FilterSubOptionsWidgetState extends State<FilterSubOptionsWidget> {
             width: widget.width,
             child: LayoutBuilder(
               builder: (context, constraints) {
+                double deviceWidth = MediaQuery.of(context).size.width;
+
                 print(
                     "filter suboption constraints.maxWidth / 2 ${constraints.maxWidth / 23}");
                 return Padding(
@@ -150,20 +153,34 @@ class _FilterSubOptionsWidgetState extends State<FilterSubOptionsWidget> {
                                 "filter${widget.index}",
                             maxLines: 2,
                             style: isSelected
-                                ? Theme.of(context).textTheme.headline5
+                                ? TextStyle(
+                                    color: Theme.of(context).primaryColor,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: deviceWidth > 600 ?
+                                      constraints.maxWidth / 23
+                                      : 14.5.sp)
                                 : TextStyle(
-                                    color: Colors.black,
+                                   
                                     fontWeight: FontWeight.normal,
-                                    fontSize: constraints.maxWidth / 23),
+                                    fontSize: deviceWidth > 600 ?
+                                      constraints.maxWidth / 23
+                                      : 14.5.sp),
                           )),
                       Text(
                         widget.subOptions["count"].toString(),
                         style: isSelected
-                            ? Theme.of(context).textTheme.headline5
+                            ? TextStyle(
+                                    color: Theme.of(context).primaryColor,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: deviceWidth > 600 ?
+                                      constraints.maxWidth / 23
+                                      : 14.5.sp)
                             : TextStyle(
-                                color:  Colors.black,
+                                color: Colors.black,
                                 fontWeight: FontWeight.normal,
-                                fontSize: constraints.maxWidth / 23),
+                                fontSize:  deviceWidth > 600 ?
+                                      constraints.maxWidth / 23
+                                      : 14.5.sp),
                       )
                     ],
                   ),

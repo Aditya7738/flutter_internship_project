@@ -1106,12 +1106,17 @@ class _DigiGoldPageState extends State<DigiGoldPage> {
                                     snapshot.data is DownloadProgress;
                                 // DownloadProgress? progress =
                                 //     snapshot.data as DownloadProgress?;
+
+
+
                                 print("loading $loading");
                                 if (snapshot.hasError) {
                                   print(
                                       "snapshot error ${snapshot.error.toString()}");
                                   body = SizedBox();
-                                } else if (loading) {
+                                } else if (loading
+                                 // snapshot.connectionState == ConnectionState.waiting
+                                  ) {
                                   body = SizedBox(
                                       width: MediaQuery.of(context).size.width,
                                       height:

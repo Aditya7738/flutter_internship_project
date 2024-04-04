@@ -140,6 +140,7 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
 
   @override
   Widget build(BuildContext context) {
+    double deviceWidth = MediaQuery.of(context).size.width;
     final customerProvider =
         Provider.of<CustomerProvider>(context, listen: true);
     final digiGoldProvider =
@@ -149,10 +150,10 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
 
     TextStyle labelHead = TextStyle(
       fontWeight: FontWeight.bold,
-      fontSize: 16.5.sp,
+      fontSize: deviceWidth > 600 ? 24.sp : 16.5.sp,
     );
     TextStyle sublabelHead = TextStyle(
-      fontSize: 16.5.sp,
+      fontSize: deviceWidth > 600 ? 24.sp : 16.5.sp,
     );
     return IgnorePointer(
       ignoring: isPlanAlreadyPurchased,
@@ -168,7 +169,8 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                       height: MediaQuery.of(context).size.width - 42,
                       child: Center(
                         child: CircularProgressIndicator(
-                          color: Theme.of(context).primaryColor,
+                          color:Colors.red
+                          // Theme.of(context).primaryColor,
                         ),
                       ),
                     )
@@ -215,6 +217,7 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                       : widget.digiGoldPlan.images.isNotEmpty
                           ? widget.digiGoldPlan.images[0].src != null
                               ? Image.network(
+                                //loadingBuilder
                                   widget.digiGoldPlan.images[0].src!,
                                   width: MediaQuery.of(context).size.width,
                                 )
@@ -246,7 +249,7 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                       widget.digiGoldPlan.name ?? "Jewellery",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 18.sp,
+                        fontSize: deviceWidth > 600 ? 27.sp : 18.sp,
                       ),
                     ),
                     SizedBox(
@@ -389,7 +392,8 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                                   child: Text(
                                     "Terms & Conditions",
                                     style: TextStyle(
-                                      fontSize: 18.sp,
+                                      fontSize:
+                                          deviceWidth > 600 ? 25.sp : 16.sp,
                                     ),
                                   ))
                             ],
@@ -400,24 +404,26 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                     customerProvider.customerData.isEmpty
                         ? GestureDetector(
                             onTap: () {
-                              if (checkBoxChecked) {
+                              // if (checkBoxChecked) {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) =>
                                           LoginPage(isComeFromCart: false),
                                     ));
-                              }
+                             // }
                             },
                             child: Container(
                                 margin:
                                     EdgeInsets.only(left: 15.0, bottom: 5.0),
-                                decoration: checkBoxChecked
-                                    ? BoxDecoration(
-                                        color: Theme.of(context).primaryColor,
-                                        borderRadius:
-                                            BorderRadius.circular(5.0))
-                                    : BoxDecoration(
+                                decoration: 
+                                // checkBoxChecked
+                                //     ? BoxDecoration(
+                                //         color: Theme.of(context).primaryColor,
+                                //         borderRadius:
+                                //             BorderRadius.circular(5.0))
+                                //     : 
+                                    BoxDecoration(
                                         border: Border.all(
                                             width: 2.0,
                                             color: isPlanAlreadyPurchased
@@ -433,8 +439,33 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                                 child: Text(
                                   "LOGIN",
                                   style: checkBoxChecked
-                                      ? Theme.of(context).textTheme.button
-                                      : Theme.of(context).textTheme.headline5,
+                                      ? TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize:
+                                              deviceWidth > 600 ? 22.sp : 17.sp
+                                          // MediaQuery.of(context).size.width >600
+                                          //     ? MediaQuery.of(context).size.width / 33
+                                          //     : 17.0,
+
+                                          )
+                                      : TextStyle(
+                                          color: isPlanAlreadyPurchased
+                                              ? Color.fromARGB(
+                                                  255,
+                                                  213,
+                                                  167,
+                                                  170,
+                                                )
+                                              : Theme.of(context).primaryColor,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize:
+                                              deviceWidth > 600 ? 22.sp : 17.sp
+                                          // MediaQuery.of(context).size.width >600
+                                          //     ? MediaQuery.of(context).size.width / 33
+                                          //     : 17.0,
+
+                                          ),
                                 )),
                           )
                         : GestureDetector(
@@ -479,7 +510,8 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                                       ? TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold,
-                                          fontSize: 17.sp
+                                          fontSize:
+                                              deviceWidth > 600 ? 22.sp : 17.sp
                                           // MediaQuery.of(context).size.width >600
                                           //     ? MediaQuery.of(context).size.width / 33
                                           //     : 17.0,
@@ -495,7 +527,8 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                                                 )
                                               : Theme.of(context).primaryColor,
                                           fontWeight: FontWeight.bold,
-                                          fontSize: 17.sp
+                                          fontSize:
+                                              deviceWidth > 600 ? 22.sp : 17.sp
                                           // MediaQuery.of(context).size.width >600
                                           //     ? MediaQuery.of(context).size.width / 33
                                           //     : 17.0,

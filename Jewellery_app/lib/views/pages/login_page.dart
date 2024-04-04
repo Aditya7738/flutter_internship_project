@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:Tiara_by_TJ/constants/fontsizes.dart';
 import 'package:Tiara_by_TJ/views/pages/cart_page.dart';
 import 'package:Tiara_by_TJ/views/pages/dashboard_page.dart';
 import 'package:Tiara_by_TJ/views/pages/shipping_page.dart';
@@ -11,6 +12,7 @@ import 'package:Tiara_by_TJ/constants/constants.dart';
 import 'package:Tiara_by_TJ/helpers/validation_helper.dart';
 import 'package:Tiara_by_TJ/views/pages/signup_page.dart';
 import 'package:Tiara_by_TJ/views/pages/account_page.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:Tiara_by_TJ/providers/customer_provider.dart';
 
@@ -107,7 +109,12 @@ class _LoginPageState extends State<LoginPage> {
                           height: 40.0,
                         ),
                         Text("Welcome back!",
-                            style: Theme.of(context).textTheme.headline1),
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: deviceWidth > 600
+                                  ? Fontsizes.tabletHeadingSize
+                                  : Fontsizes.headingSize,
+                            )),
                         const SizedBox(
                           height: 20.0,
                         ),
@@ -162,7 +169,10 @@ class _LoginPageState extends State<LoginPage> {
                         ),
 
                         TextFormField(
-                          style: Theme.of(context).textTheme.titleMedium,
+                          style: TextStyle(
+                              fontSize: deviceWidth > 600
+                                  ? Fontsizes.tabletTextFormInputFieldSize
+                                  : Fontsizes.textFormInputFieldSize),
                           controller: _emailController,
                           keyboardType: TextInputType.emailAddress,
                           validator: (value) {
@@ -170,9 +180,14 @@ class _LoginPageState extends State<LoginPage> {
                           },
                           decoration: InputDecoration(
                             errorStyle: TextStyle(
-                                fontSize: (deviceWidth / 33) + 1.5,
+                                fontSize:deviceWidth > 600
+                                  ? Fontsizes.tabletErrorTextSize
+                                  : Fontsizes.errorTextSize,
                                 color: Colors.red),
-                            labelStyle: Theme.of(context).textTheme.subtitle1,
+                            labelStyle: TextStyle(
+                              fontSize: deviceWidth > 600
+                                  ? Fontsizes.tabletTextFormInputFieldSize
+                                  : Fontsizes.textFormInputFieldSize),
                             // errorText: ,
                             labelText: "Enter your email*",
                             border: OutlineInputBorder(
@@ -188,7 +203,10 @@ class _LoginPageState extends State<LoginPage> {
                         ),
 
                         TextFormField(
-                          style: Theme.of(context).textTheme.subtitle1,
+                          style: TextStyle(
+                              fontSize: deviceWidth > 600
+                                  ? Fontsizes.tabletTextFormInputFieldSize
+                                  : Fontsizes.textFormInputFieldSize),
                           controller: _passwordController,
                           obscureText: isObscured,
                           keyboardType: TextInputType.visiblePassword,
@@ -197,9 +215,14 @@ class _LoginPageState extends State<LoginPage> {
                           },
                           decoration: InputDecoration(
                             errorStyle: TextStyle(
-                                fontSize: (deviceWidth / 33) + 1.5,
+                                fontSize:deviceWidth > 600
+                                  ? Fontsizes.tabletErrorTextSize
+                                  : Fontsizes.errorTextSize,
                                 color: Colors.red),
-                            labelStyle: Theme.of(context).textTheme.subtitle1,
+                            labelStyle: TextStyle(
+                              fontSize: deviceWidth > 600
+                                  ? Fontsizes.tabletTextFormInputFieldSize
+                                  : Fontsizes.textFormInputFieldSize),
                             suffixIcon: IconButton(
                               onPressed: () {
                                 if (mounted) {
@@ -247,9 +270,11 @@ class _LoginPageState extends State<LoginPage> {
                               // };
 
                               // print("LOGIN DATA $data");
+
                               bool isThereInternet =
                                   await ApiService.checkInternetConnection(
                                       context);
+
                               if (isThereInternet) {
                                 if (mounted) {
                                   setState(() {
@@ -305,7 +330,9 @@ class _LoginPageState extends State<LoginPage> {
                                                 customerData =
                                                 <Map<String, dynamic>>[];
                                             try {
-                                              customerData = List<Map<String, dynamic>>.from(
+                                              customerData = List<
+                                                      Map<String,
+                                                          dynamic>>.from(
                                                   jsonDecode(body));
 
                                               if (customerData.isEmpty) {
@@ -419,8 +446,7 @@ class _LoginPageState extends State<LoginPage> {
                                       )
                                     : Text(
                                         "LOGIN",
-                                        style:
-                                            Theme.of(context).textTheme.button,
+                                        style: Fontsizes.buttonTextStyle,
                                       ),
                               )),
                         ),
@@ -433,11 +459,17 @@ class _LoginPageState extends State<LoginPage> {
                                 text: TextSpan(children: <TextSpan>[
                           TextSpan(
                             text: 'New to Tiara By TJ?',
-                            style: Theme.of(context).textTheme.subtitle1,
+                            style: TextStyle(
+                                //  fontWeight: FontWeight.bold,
+                                //  fontSize: 14.5.sp,
+                                color: Colors.black),
                           ),
                           TextSpan(
                             text: '  Create Account',
-                            style: Theme.of(context).textTheme.headline5,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                //  fontSize: 14.5.sp,
+                                color: Theme.of(context).primaryColor),
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
                                 Navigator.of(context).push(MaterialPageRoute(
@@ -445,7 +477,7 @@ class _LoginPageState extends State<LoginPage> {
                                 ));
                               },
                           ),
-                        ], style: TextStyle(fontSize: 17.0)))),
+                        ], style: TextStyle(fontSize: 16.sp)))),
                       ]),
                 ),
               ))),

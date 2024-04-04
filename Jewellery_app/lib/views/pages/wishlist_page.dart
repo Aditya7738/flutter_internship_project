@@ -1,3 +1,4 @@
+import 'package:Tiara_by_TJ/constants/fontsizes.dart';
 import 'package:Tiara_by_TJ/views/pages/dashboard_page.dart';
 import 'package:Tiara_by_TJ/views/widgets/empty_list_widget.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +9,7 @@ import 'package:Tiara_by_TJ/model/cart_product_model.dart';
 import 'package:Tiara_by_TJ/providers/cart_provider.dart';
 import 'package:Tiara_by_TJ/providers/wishlist_provider.dart';
 import 'package:Tiara_by_TJ/views/pages/cart_page.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:provider/provider.dart';
 
@@ -99,7 +101,7 @@ class _WishListPageState extends State<WishListPage> {
                   Text("Your Wishlist is Empty",
                       textAlign: TextAlign.center,
                       maxLines: 2,
-                      style: Theme.of(context).textTheme.headline1),
+                      style: Fontsizes.headlineTextStyle),
                   SizedBox(
                     height: 20.0,
                   ),
@@ -107,7 +109,9 @@ class _WishListPageState extends State<WishListPage> {
                       "Looks like you don't have added any jewelleries to your wishlist yet",
                       maxLines: 2,
                       textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.subtitle1),
+                      style: 
+                          TextStyle(fontSize: 15.sp),
+                      ),
                   const SizedBox(
                     height: 50.0,
                   ),
@@ -123,7 +127,7 @@ class _WishListPageState extends State<WishListPage> {
                         padding: const EdgeInsets.symmetric(
                             vertical: 10.0, horizontal: 40.0),
                         child: Text("Continue Shopping",
-                            style: Theme.of(context).textTheme.button)),
+                            style: Fontsizes.buttonTextStyle)),
                   )
                 ],
               ),
@@ -133,9 +137,9 @@ class _WishListPageState extends State<WishListPage> {
           return Padding(
               padding: const EdgeInsets.all(8.0),
               child: isWishListLoading
-                  ? const Center(
+                  ? Center(
                       child: CircularProgressIndicator(
-                        backgroundColor: Colors.black,
+                        backgroundColor: Theme.of(context).primaryColor,
                         color: Colors.white,
                       ),
                     )

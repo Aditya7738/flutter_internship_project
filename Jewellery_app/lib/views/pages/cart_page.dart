@@ -1,3 +1,4 @@
+import 'package:Tiara_by_TJ/constants/fontsizes.dart';
 import 'package:Tiara_by_TJ/model/cart_product_model.dart';
 import 'package:Tiara_by_TJ/providers/customer_provider.dart';
 import 'package:Tiara_by_TJ/views/pages/coupon_list.dart';
@@ -350,7 +351,8 @@ class _CartPageState extends State<CartPage> {
                                       "Remove",
                                       style:
                                           TextStyle(
-                                            fontSize: 15.sp
+                                            fontSize: 15.sp,
+                                            color: Theme.of(context).primaryColor
                                           ),
                                     ),
                                   ),
@@ -762,7 +764,7 @@ class _CartPageState extends State<CartPage> {
                       Text("Your Cart is Empty",
                           textAlign: TextAlign.center,
                           maxLines: 2,
-                          style: Theme.of(context).textTheme.headline1
+                          style: Fontsizes.headlineTextStyle
                           //  TextStyle(
                           //     fontSize: 22.0,
                           //     // color: Theme.of(context).primaryColor,
@@ -775,8 +777,8 @@ class _CartPageState extends State<CartPage> {
                           "Looks like you don't have added any jewelleries to your cart yet",
                           maxLines: 2,
                           textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.subtitle1
-                          //TextStyle(fontSize: 17.0),
+                          style: 
+                          TextStyle(fontSize: 15.sp),
                           ),
                       const SizedBox(
                         height: 50.0,
@@ -794,7 +796,7 @@ class _CartPageState extends State<CartPage> {
                             padding: const EdgeInsets.symmetric(
                                 vertical: 10.0, horizontal: 40.0),
                             child: Text("Continue Shopping",
-                                style: Theme.of(context).textTheme.button
+                                style: Fontsizes.buttonTextStyle
                                 // TextStyle(
                                 //     color: Colors.white,
                                 //     fontSize: 17.0,

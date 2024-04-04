@@ -342,10 +342,10 @@ class _CouponListPageState extends State<CouponListPage> {
                   ),
                 ),
               ),
-              isCouponListLoading
+                           isCouponListLoading
                   ? SizedBox(
                       width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height - 247,
+                      height: MediaQuery.of(context).size.height - 177,
                       child: Center(
                         child: CircularProgressIndicator(
                           color: Theme.of(context).primaryColor,
@@ -501,7 +501,7 @@ class _CouponListPageState extends State<CouponListPage> {
                         ],
                       ),
                       SizedBox(
-                        height: 20.0,
+                        height: 18.0,
                       ),
                       SizedBox(
                         child: Text(
@@ -649,7 +649,7 @@ class _CouponListPageState extends State<CouponListPage> {
                         ],
                       ),
                       SizedBox(
-                        height: 20.0,
+                        height: 18.0,
                       ),
                       SizedBox(
                         child: Text(

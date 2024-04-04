@@ -1,10 +1,12 @@
 import 'package:Tiara_by_TJ/api/api_service.dart';
+import 'package:Tiara_by_TJ/constants/fontsizes.dart';
 import 'package:Tiara_by_TJ/model/filter_options_model.dart';
 import 'package:Tiara_by_TJ/providers/category_provider.dart';
 import 'package:Tiara_by_TJ/providers/filteroptions_provider.dart';
 import 'package:Tiara_by_TJ/views/widgets/filter_options.dart';
 import 'package:Tiara_by_TJ/views/widgets/filter_tile.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 class FilterModal extends StatefulWidget {
@@ -59,28 +61,28 @@ class _FilterModalState extends State<FilterModal> {
     // if (width > 600) {
     //   width = 600.0;
     // }
-
+    double deviceWidth = MediaQuery.of(context).size.width;
     return Container(
         width: MediaQuery.of(context).size.width,
-        height:  MediaQuery.of(context).size.height / 1.66,
+        height: MediaQuery.of(context).size.height / 1.66,
         //MediaQuery.of(context).size.height / 1.66,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            LayoutBuilder(
-              builder: (context, constraints) {
-
-                print("filter title height ${(constraints.maxWidth/ 12) + 6 }");
-                return Container(
-                    height: (constraints.maxWidth/ 12) + 6 ,
-                    padding: const EdgeInsets.only(left: 20.0, top: 15.0, bottom: 5.0),
-                    child: Text(
-                      "Filter By",
-                      style: Theme.of(context).textTheme.headline1,
-                    ));
-              },
-              // child:
-            ),
+            Container(
+                color: Colors.red,
+                height: deviceWidth > 600 ? 65.0 : 45.0,
+                // height:
+                // //constraints.maxWidth / 12.5,
+                //  (constraints.maxWidth/ 12) + 6 ,
+                padding:
+                    const EdgeInsets.only(left: 20.0, top: 15.0, bottom: 5.0),
+                child: FittedBox(
+                  child: Text(
+                    "Filter By",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                )),
             Divider(
               thickness: 2.0,
             ),
@@ -187,14 +189,15 @@ class _FilterModalState extends State<FilterModal> {
                                 borderRadius: BorderRadius.circular(5.0)),
                             padding: const EdgeInsets.symmetric(
                                 vertical: 10.0, horizontal: 20.0),
-                            child: Text(
-                              "Clear all",
-                              style: 
-                              Theme.of(context).textTheme.subtitle2
-                              // TextStyle(
-                              //     color: Theme.of(context).primaryColor,
-                              //     fontSize: 17.0),
-                            )),
+                            child: Text("Clear all",
+                                style: TextStyle(
+                                    color: Theme.of(context).primaryColor,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 17.sp)
+                                // TextStyle(
+                                //     color: Theme.of(context).primaryColor,
+                                //     fontSize: 17.0),
+                                )),
                       );
                     },
                     //child:
@@ -239,13 +242,12 @@ class _FilterModalState extends State<FilterModal> {
                                 borderRadius: BorderRadius.circular(5.0)),
                             padding: const EdgeInsets.symmetric(
                                 vertical: 10.0, horizontal: 20.0),
-                            child: Text(
-                              "Apply",
-                              style:
-                            Theme.of(context).textTheme.button
-                              //  TextStyle(
-                              //     color: Colors.white, fontSize: 17.0),
-                            )),
+                            child:
+                                Text("Apply", style: Fontsizes.buttonTextStyle
+
+                                    //  TextStyle(
+                                    //     color: Colors.white, fontSize: 17.0),
+                                    )),
                       );
                     },
                     //child:
