@@ -133,7 +133,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   Padding(
                     padding: const EdgeInsets.only(top: 7.0),
                     child: TextFormField(
-                      style: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
+                      style:
+                          TextStyle(fontSize: deviceWidth > 600
+                                  ? Fontsizes.tabletTextFormInputFieldSize
+                                  : Fontsizes.textFormInputFieldSize),
                       controller: _firstNameController,
                       keyboardType: TextInputType.name,
                       validator: (value) {
@@ -141,9 +144,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       },
                       decoration: InputDecoration(
                         errorStyle: TextStyle(
-                             fontSize: deviceWidth > 600 ? (deviceWidth / 37) + 1.5 : (deviceWidth / 33) + 1.5,
+                            fontSize: deviceWidth > 600
+                                    ? Fontsizes.tabletErrorTextSize
+                                    : Fontsizes.errorTextSize,
                             color: Colors.red),
-                        labelStyle: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
+                        labelStyle: TextStyle(
+                            fontSize: deviceWidth > 600
+                                  ? Fontsizes.tabletTextFormInputFieldSize
+                                  : Fontsizes.textFormInputFieldSize),
                         // errorText: ,
                         labelText: "First Name*",
                         border: OutlineInputBorder(
@@ -156,7 +164,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     height: 30.0,
                   ),
                   TextFormField(
-                    style: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
+                    style:
+                        TextStyle(fontSize: deviceWidth > 600
+                                  ? Fontsizes.tabletTextFormInputFieldSize
+                                  : Fontsizes.textFormInputFieldSize),
                     controller: _lastNameController,
                     keyboardType: TextInputType.name,
                     validator: (value) {
@@ -164,9 +175,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     },
                     decoration: InputDecoration(
                       errorStyle: TextStyle(
-                           fontSize: deviceWidth > 600 ? (deviceWidth / 37) + 1.5 : (deviceWidth / 33) + 1.5,
+                          fontSize: deviceWidth > 600
+                                    ? Fontsizes.tabletErrorTextSize
+                                    : Fontsizes.errorTextSize,
                           color: Colors.red),
-                      labelStyle: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
+                      labelStyle:
+                          TextStyle(fontSize: deviceWidth > 600
+                                  ? Fontsizes.tabletTextFormInputFieldSize
+                                  : Fontsizes.textFormInputFieldSize),
                       labelText: "Last Name*",
                       border: OutlineInputBorder(
                           borderRadius:
@@ -177,12 +193,18 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     height: 30.0,
                   ),
                   Container(
-                    height: isPhoneValid ?
-                    deviceWidth > 600 ? 85 : 60.0
-                     :
-                     deviceWidth > 600 ? 130 : 90.0,
+                    height: isPhoneValid
+                        ? deviceWidth > 600
+                            ? 85
+                            : 60.0
+                        : deviceWidth > 600
+                            ? 130
+                            : 90.0,
                     child: TextFormField(
-                      style: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
+                      style:
+                          TextStyle(fontSize: deviceWidth > 600
+                                  ? Fontsizes.tabletTextFormInputFieldSize
+                                  : Fontsizes.textFormInputFieldSize),
                       keyboardType: TextInputType.phone,
                       controller: _phoneNoController,
                       validator: (value) {
@@ -194,9 +216,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       },
                       decoration: InputDecoration(
                           errorStyle: TextStyle(
-                              fontSize: deviceWidth > 600 ? (deviceWidth / 37) + 1.5 : (deviceWidth / 33) + 1.5,
+                              fontSize: deviceWidth > 600
+                                    ? Fontsizes.tabletErrorTextSize
+                                    : Fontsizes.errorTextSize,
                               color: Colors.red),
-                          labelStyle: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
+                          labelStyle: TextStyle(
+                              fontSize: deviceWidth > 600
+                                  ? Fontsizes.tabletTextFormInputFieldSize
+                                  : Fontsizes.textFormInputFieldSize),
                           // suffix: GestureDetector(
                           //     onTap: () {
                           //       value.setPhoneNoVerified(true);
@@ -254,11 +281,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   ),
 
                   const SizedBox(
-                    height: 30.0,
+                    height: 25.0,
                   ),
 
                   TextFormField(
-                    style: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
+                    style:
+                        TextStyle(fontSize: deviceWidth > 600
+                                  ? Fontsizes.tabletTextFormInputFieldSize
+                                  : Fontsizes.textFormInputFieldSize),
                     minLines: 2,
                     maxLines: 3,
                     controller: _addressController,
@@ -268,9 +298,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     keyboardType: TextInputType.streetAddress,
                     decoration: InputDecoration(
                       errorStyle: TextStyle(
-                           fontSize: deviceWidth > 600 ? (deviceWidth / 37) + 1.5 : (deviceWidth / 33) + 1.5,
+                          fontSize: deviceWidth > 600
+                                    ? Fontsizes.tabletErrorTextSize
+                                    : Fontsizes.errorTextSize,
                           color: Colors.red),
-                      labelStyle: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
+                      labelStyle:
+                          TextStyle(fontSize: deviceWidth > 600
+                                  ? Fontsizes.tabletTextFormInputFieldSize
+                                  : Fontsizes.textFormInputFieldSize),
                       labelText: "Address*",
                       border: OutlineInputBorder(
                           borderRadius:
@@ -282,7 +317,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   ),
 
                   TextFormField(
-                    style: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
+                    style:
+                        TextStyle(fontSize: deviceWidth > 600
+                                  ? Fontsizes.tabletTextFormInputFieldSize
+                                  : Fontsizes.textFormInputFieldSize),
                     controller: _pinNoController,
                     validator: (value) {
                       return ValidationHelper.isPincodeValid(value);
@@ -290,9 +328,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                       errorStyle: TextStyle(
-                           fontSize: deviceWidth > 600 ? (deviceWidth / 37) + 1.5 : (deviceWidth / 33) + 1.5,
+                          fontSize: deviceWidth > 600
+                                    ? Fontsizes.tabletErrorTextSize
+                                    : Fontsizes.errorTextSize,
                           color: Colors.red),
-                      labelStyle: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
+                      labelStyle:
+                          TextStyle(fontSize: deviceWidth > 600
+                                  ? Fontsizes.tabletTextFormInputFieldSize
+                                  : Fontsizes.textFormInputFieldSize),
                       labelText: "Pin code*",
                       border: OutlineInputBorder(
                           borderRadius:
@@ -305,7 +348,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   ),
 
                   TextFormField(
-                    style: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
+                    style:
+                        TextStyle(fontSize: deviceWidth > 600
+                                  ? Fontsizes.tabletTextFormInputFieldSize
+                                  : Fontsizes.textFormInputFieldSize),
                     controller: _birthdateController,
                     keyboardType: TextInputType.datetime,
                     onTap: () async {
@@ -315,9 +361,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     },
                     decoration: InputDecoration(
                       errorStyle: TextStyle(
-                           fontSize: deviceWidth > 600 ? (deviceWidth / 37) + 1.5 : (deviceWidth / 33) + 1.5,
+                          fontSize: deviceWidth > 600
+                                    ? Fontsizes.tabletErrorTextSize
+                                    : Fontsizes.errorTextSize,
                           color: Colors.red),
-                      labelStyle: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
+                      labelStyle:
+                          TextStyle(fontSize: deviceWidth > 600
+                                  ? Fontsizes.tabletTextFormInputFieldSize
+                                  : Fontsizes.textFormInputFieldSize),
                       suffixIcon: SuffixIcon(icon: Icons.calendar_month),
                       labelText: "Birthday (Optional)",
                       border: OutlineInputBorder(
@@ -331,7 +382,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   ),
 
                   TextFormField(
-                    style: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
+                    style:
+                        TextStyle(fontSize: deviceWidth > 600
+                                  ? Fontsizes.tabletTextFormInputFieldSize
+                                  : Fontsizes.textFormInputFieldSize),
                     onTap: () async {
                       print("CALENDAR PRESSED");
 
@@ -342,9 +396,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     keyboardType: TextInputType.datetime,
                     decoration: InputDecoration(
                       errorStyle: TextStyle(
-                           fontSize: deviceWidth > 600 ? (deviceWidth / 37) + 1.5 : (deviceWidth / 33) + 1.5,
+                          fontSize: deviceWidth > 600
+                                    ? Fontsizes.tabletErrorTextSize
+                                    : Fontsizes.errorTextSize,
                           color: Colors.red),
-                      labelStyle: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
+                      labelStyle:
+                          TextStyle(fontSize: deviceWidth > 600
+                                  ? Fontsizes.tabletTextFormInputFieldSize
+                                  : Fontsizes.textFormInputFieldSize),
                       suffixIcon: SuffixIcon(icon: Icons.calendar_month),
                       labelText: "Anniversary (Optional)",
                       border: OutlineInputBorder(
@@ -358,7 +417,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   ),
 
                   TextFormField(
-                    style: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
+                    style:
+                        TextStyle(fontSize: deviceWidth > 600
+                                  ? Fontsizes.tabletTextFormInputFieldSize
+                                  : Fontsizes.textFormInputFieldSize),
                     onTap: () async {
                       print("CALENDAR PRESSED");
 
@@ -369,9 +431,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     keyboardType: TextInputType.datetime,
                     decoration: InputDecoration(
                       errorStyle: TextStyle(
-                           fontSize: deviceWidth > 600 ? (deviceWidth / 37) + 1.5 : (deviceWidth / 33) + 1.5,
+                          fontSize: deviceWidth > 600
+                                    ? Fontsizes.tabletErrorTextSize
+                                    : Fontsizes.errorTextSize,
                           color: Colors.red),
-                      labelStyle: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
+                      labelStyle:
+                          TextStyle(fontSize: deviceWidth > 600
+                                  ? Fontsizes.tabletTextFormInputFieldSize
+                                  : Fontsizes.textFormInputFieldSize),
                       suffixIcon: SuffixIcon(icon: Icons.calendar_month),
                       labelText: "Spouse Birthday (Optional)",
                       border: OutlineInputBorder(
@@ -502,10 +569,12 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         padding: const EdgeInsets.symmetric(vertical: 14.0),
                         margin: EdgeInsets.only(bottom: 10.0),
                         child: Center(
-                          child: isUpdating
+                          child:
+                          isUpdating
+                           //true
                               ? const SizedBox(
-                                  width: 20.0,
-                                  height: 20.0,
+                                  width: 30.0,
+                                  height: 30.0,
                                   child: CircularProgressIndicator(
                                     color: Colors.white,
                                     strokeWidth: 2.0,
@@ -514,7 +583,12 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                 )
                               : Text(
                                   "SAVE CHANGES",
-                                  style: Fontsizes.buttonTextStyle
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: deviceWidth > 600
+                                          ? Fontsizes.tabletButtonTextSize
+                                          : Fontsizes.buttonTextSize),
                                 ),
                         )),
                   ),

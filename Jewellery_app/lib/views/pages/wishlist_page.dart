@@ -98,20 +98,29 @@ class _WishListPageState extends State<WishListPage> {
                   const SizedBox(
                     height: 40.0,
                   ),
-                  Text("Your Wishlist is Empty",
-                      textAlign: TextAlign.center,
-                      maxLines: 2,
-                      style: Fontsizes.headlineTextStyle),
+                  Text(
+                    "Your Wishlist is Empty",
+                    textAlign: TextAlign.center,
+                    maxLines: 2,
+                    style: TextStyle(
+                        fontSize: deviceWidth > 600
+                            ? Fontsizes.tabletHeadingSize
+                            : Fontsizes.headingSize,
+                        fontWeight: FontWeight.bold),
+                  ),
                   SizedBox(
                     height: 20.0,
                   ),
                   Text(
-                      "Looks like you don't have added any jewelleries to your wishlist yet",
-                      maxLines: 2,
-                      textAlign: TextAlign.center,
-                      style: 
-                          TextStyle(fontSize: 15.sp),
-                      ),
+                    "Looks like you don't have added any jewelleries to your wishlist yet",
+                    maxLines: 2,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: deviceWidth > 600
+                          ? Fontsizes.tabletTextFormInputFieldSize
+                          : Fontsizes.textFormInputFieldSize,
+                    ),
+                  ),
                   const SizedBox(
                     height: 50.0,
                   ),
@@ -126,8 +135,15 @@ class _WishListPageState extends State<WishListPage> {
                             borderRadius: BorderRadius.circular(5.0)),
                         padding: const EdgeInsets.symmetric(
                             vertical: 10.0, horizontal: 40.0),
-                        child: Text("Continue Shopping",
-                            style: Fontsizes.buttonTextStyle)),
+                        child: Text(
+                          "Continue Shopping",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: deviceWidth > 600
+                                  ? Fontsizes.tabletButtonTextSize
+                                  : Fontsizes.buttonTextSize),
+                        )),
                   )
                 ],
               ),
@@ -153,7 +169,6 @@ class _WishListPageState extends State<WishListPage> {
                           child: Card(
                               elevation: 5.0,
                               child: Container(
-                             
                                 padding: const EdgeInsets.all(15.0),
                                 // width: deviceWidth > 600
                                 //     ? (deviceWidth / 3) - 60
@@ -219,9 +234,8 @@ class _WishListPageState extends State<WishListPage> {
                                                           ? (deviceWidth /
                                                                   1.46) -
                                                               10
-                                                          : (deviceWidth /
-                                                                  2) - 
-                                                            10.0,
+                                                          : (deviceWidth / 2) -
+                                                              10.0,
                                                       child: Text(
                                                         wishListItem.name ??
                                                             "Jewellery",
@@ -421,8 +435,13 @@ class _WishListPageState extends State<WishListPage> {
                                                       child: Padding(
                                                         padding:
                                                             EdgeInsets.all(3.0),
-                                                        child:
-                                                            Icon(Icons.share, size: deviceWidth > 600 ? 25.0 : 20.0,),
+                                                        child: Icon(
+                                                          Icons.share,
+                                                          size:
+                                                              deviceWidth > 600
+                                                                  ? 25.0
+                                                                  : 20.0,
+                                                        ),
                                                       ),
                                                     ),
                                                   )

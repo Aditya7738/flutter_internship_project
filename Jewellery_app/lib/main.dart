@@ -8,6 +8,7 @@ import 'package:Tiara_by_TJ/providers/digigold_provider.dart';
 import 'package:Tiara_by_TJ/providers/filteroptions_provider.dart';
 import 'package:Tiara_by_TJ/providers/layoutdesign_provider.dart';
 import 'package:Tiara_by_TJ/providers/order_provider.dart';
+import 'package:Tiara_by_TJ/views/pages/payment_successful.dart';
 import 'package:Tiara_by_TJ/views/widgets/try.dart';
 import 'package:flutter/material.dart';
 import 'package:Tiara_by_TJ/providers/cart_provider.dart';
@@ -247,7 +248,7 @@ class _MyAppState extends State<MyApp> {
               appBarTheme: AppBarTheme(
                 actionsIconTheme: IconThemeData(size: (deviceWidth / 21) + 6),
                 titleTextStyle: TextStyle(
-                    fontSize: deviceWidth > 600 ? deviceWidth / 25 : deviceWidth / 22, color: Colors.black), //product
+                    fontSize: deviceWidth > 600 ? deviceWidth / 27 : deviceWidth / 22, color: Colors.black), //product
               ),
               primaryColor: Color(0xffCC868A),
               textTheme:

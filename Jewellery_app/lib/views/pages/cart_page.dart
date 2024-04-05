@@ -134,7 +134,9 @@ class _CartPageState extends State<CartPage> {
                               // fontSize: deviceWidth > 600
                               //     ? deviceWidth / 30
                               //     : (deviceWidth / 24) - 2,
-                              fontSize: 16.sp),
+                              fontSize: deviceWidth > 600
+                                  ? Fontsizes.tabletHeadingSize
+                                  : 16.sp),
                         ),
                       ),
                       const SizedBox(
@@ -153,7 +155,8 @@ class _CartPageState extends State<CartPage> {
                             value.setSelectedCouponData(selectedCouponData);
                             print(
                                 "selectedCouponData != null ${selectedCouponData != null}");
-                            if (selectedCouponData != null) {
+                            if ( //true
+                                selectedCouponData != null) {
                               showDialog(
                                 context: context,
                                 builder: (context) {
@@ -192,8 +195,8 @@ class _CartPageState extends State<CartPage> {
                                                           text: "You got "),
                                                       TextSpan(
                                                           text:
-                                                              "discountString",
-                                                          // "${selectedCouponData!["discountString"]}",
+                                                              //    "discountString",
+                                                              "${selectedCouponData!["discountString"]}",
                                                           style: TextStyle(
                                                               color: Theme.of(
                                                                       context)
@@ -216,7 +219,7 @@ class _CartPageState extends State<CartPage> {
                                                     ],
                                               style: TextStyle(
                                                   fontSize: deviceWidth > 600
-                                                      ? (deviceWidth / 33) + 6
+                                                      ? (deviceWidth / 33) + 4
                                                       : 19.0,
                                                   color: Colors.black,
                                                   fontWeight: FontWeight.bold),
@@ -272,7 +275,12 @@ class _CartPageState extends State<CartPage> {
                                                       color: Colors.white,
                                                       fontWeight:
                                                           FontWeight.bold,
-                                                      fontSize: 17.sp),
+                                                      fontSize: deviceWidth >
+                                                              600
+                                                          ? Fontsizes
+                                                              .tabletButtonTextSize
+                                                          : Fontsizes
+                                                              .buttonTextSize),
                                                 )),
                                           ),
                                         ],
@@ -307,7 +315,8 @@ class _CartPageState extends State<CartPage> {
                                         // fontSize: deviceWidth > 600
                                         //     ? deviceWidth / 35
                                         //     : 16.0,
-                                        fontSize: 16.sp,
+                                        fontSize:
+                                            deviceWidth > 600 ? 26.sp : 16.sp,
                                         fontWeight: FontWeight.normal),
                                   ),
                                   subtitle: Expanded(
@@ -349,11 +358,11 @@ class _CartPageState extends State<CartPage> {
                                     },
                                     child: Text(
                                       "Remove",
-                                      style:
-                                          TextStyle(
-                                            fontSize: 15.sp,
-                                            color: Theme.of(context).primaryColor
-                                          ),
+                                      style: TextStyle(
+                                          fontSize:
+                                              deviceWidth > 600 ? 25.sp : 15.sp,
+                                          color:
+                                              Theme.of(context).primaryColor),
                                     ),
                                   ),
                                 ),
@@ -385,7 +394,8 @@ class _CartPageState extends State<CartPage> {
                                         // fontSize: deviceWidth > 600
                                         //     ? (deviceWidth / 33)
                                         //     : (deviceWidth / 23),
-                                        fontSize: 16.sp),
+                                        fontSize:
+                                            deviceWidth > 600 ? 26.sp : 16.sp),
                                   ),
                                   trailing: Icon(Icons.east_outlined,
                                       size: deviceWidth > 600
@@ -410,7 +420,9 @@ class _CartPageState extends State<CartPage> {
                                   // fontSize: deviceWidth > 600
                                   //     ? deviceWidth / 30
                                   //     : (deviceWidth / 24) - 2,
-                                  fontSize: 16.sp),
+                                  fontSize: deviceWidth > 600
+                                      ? Fontsizes.tabletHeadingSize
+                                      : 16.sp),
                             ),
                             const SizedBox(
                               height: 10.0,
@@ -432,7 +444,11 @@ class _CartPageState extends State<CartPage> {
                                                     // fontSize: deviceWidth > 600
                                                     //     ? deviceWidth / 30
                                                     //     : (deviceWidth / 27) - 1,
-                                                    fontSize: 14.5.sp),
+                                                    fontSize: deviceWidth > 600
+                                                        ? Fontsizes
+                                                            .tabletTableLabelTextSize
+                                                        : Fontsizes
+                                                            .tableLabelTextSize),
                                               ),
                                               Text(
                                                 value.cart.length.toString(),
@@ -441,7 +457,11 @@ class _CartPageState extends State<CartPage> {
                                                     // fontSize: deviceWidth > 600
                                                     //     ? deviceWidth / 30
                                                     //     : (deviceWidth / 27) - 1,
-                                                    fontSize: 14.5.sp),
+                                                    fontSize: deviceWidth > 600
+                                                        ? Fontsizes
+                                                            .tabletTableLabelTextSize
+                                                        : Fontsizes
+                                                            .tableLabelTextSize),
                                               )
                                             ],
                                           ),
@@ -459,7 +479,11 @@ class _CartPageState extends State<CartPage> {
                                                     // fontSize: deviceWidth > 600
                                                     //     ? deviceWidth / 35
                                                     //     : deviceWidth / 28,
-                                                    fontSize: 14.5.sp),
+                                                    fontSize: deviceWidth > 600
+                                                        ? Fontsizes
+                                                            .tabletTableLabelTextSize
+                                                        : Fontsizes
+                                                            .tableLabelTextSize),
                                               ),
                                               Text(
                                                   "₹ ${value.calculateTotalPrice()}",
@@ -469,7 +493,12 @@ class _CartPageState extends State<CartPage> {
                                                       // fontSize: deviceWidth > 600
                                                       //     ? deviceWidth / 30
                                                       //     : (deviceWidth / 27) - 1,
-                                                      fontSize: 14.5.sp))
+                                                      fontSize: deviceWidth >
+                                                              600
+                                                          ? Fontsizes
+                                                              .tabletTableLabelTextSize
+                                                          : Fontsizes
+                                                              .tableLabelTextSize))
                                             ],
                                           ),
                                           SizedBox(
@@ -486,7 +515,12 @@ class _CartPageState extends State<CartPage> {
                                                       // fontSize: deviceWidth > 600
                                                       //     ? deviceWidth / 30
                                                       //     : (deviceWidth / 27) - 1,
-                                                      fontSize: 14.5.sp)),
+                                                      fontSize: deviceWidth >
+                                                              600
+                                                          ? Fontsizes
+                                                              .tabletTableLabelTextSize
+                                                          : Fontsizes
+                                                              .tableLabelTextSize)),
                                               Text("Free",
                                                   style: TextStyle(
                                                       fontWeight:
@@ -496,7 +530,12 @@ class _CartPageState extends State<CartPage> {
                                                       // fontSize: deviceWidth > 600
                                                       //     ? deviceWidth / 30
                                                       //     : (deviceWidth / 27) - 1,
-                                                      fontSize: 14.5.sp))
+                                                      fontSize: deviceWidth >
+                                                              600
+                                                          ? Fontsizes
+                                                              .tabletTableLabelTextSize
+                                                          : Fontsizes
+                                                              .tableLabelTextSize))
                                             ],
                                           ),
                                           SizedBox(
@@ -513,7 +552,12 @@ class _CartPageState extends State<CartPage> {
                                                       // fontSize: deviceWidth > 600
                                                       //     ? deviceWidth / 30
                                                       //     : (deviceWidth / 27) - 1,
-                                                      fontSize: 14.5.sp)),
+                                                      fontSize: deviceWidth >
+                                                              600
+                                                          ? Fontsizes
+                                                              .tabletTableLabelTextSize
+                                                          : Fontsizes
+                                                              .tableLabelTextSize)),
                                               Text(
                                                   value.selectedCouponData![
                                                               "discountString"]
@@ -527,7 +571,12 @@ class _CartPageState extends State<CartPage> {
                                                           // deviceWidth > 600
                                                           //     ? deviceWidth / 33
                                                           //     : 17.0,
-                                                          14.5.sp,
+
+                                                          deviceWidth > 600
+                                                              ? Fontsizes
+                                                                  .tabletTableLabelTextSize
+                                                              : Fontsizes
+                                                                  .tableLabelTextSize,
                                                       fontWeight:
                                                           FontWeight.bold))
                                             ],
@@ -546,7 +595,12 @@ class _CartPageState extends State<CartPage> {
                                                       // fontSize: deviceWidth > 600
                                                       //     ? deviceWidth / 30
                                                       //     : (deviceWidth / 27) - 1,
-                                                      fontSize: 14.5.sp)),
+                                                      fontSize: deviceWidth >
+                                                              600
+                                                          ? Fontsizes
+                                                              .tabletTableLabelTextSize
+                                                          : Fontsizes
+                                                              .tableLabelTextSize)),
                                               Text("Free",
                                                   style: TextStyle(
                                                       fontWeight:
@@ -556,7 +610,12 @@ class _CartPageState extends State<CartPage> {
                                                       // fontSize: deviceWidth > 600
                                                       //     ? deviceWidth / 30
                                                       //     : (deviceWidth / 27) - 1,
-                                                      fontSize: 14.5.sp))
+                                                      fontSize: deviceWidth >
+                                                              600
+                                                          ? Fontsizes
+                                                              .tabletTableLabelTextSize
+                                                          : Fontsizes
+                                                              .tableLabelTextSize))
                                             ],
                                           ),
                                           SizedBox(
@@ -566,16 +625,17 @@ class _CartPageState extends State<CartPage> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
-                                              Text(
-                                                'Total',
-                                                 style: TextStyle(
+                                              Text('Total',
+                                                  style: TextStyle(
                                                       fontWeight:
                                                           FontWeight.bold,
                                                       // fontSize: deviceWidth > 600
                                                       //     ? deviceWidth / 30
                                                       //     : (deviceWidth / 27) - 1,
-                                                      fontSize: 16.5.sp)
-                                              ),
+                                                      fontSize:
+                                                          deviceWidth > 600
+                                                              ? 26.5.sp
+                                                              : 16.5.sp)),
                                               Text(
                                                   value.selectedCouponData !=
                                                           null
@@ -587,8 +647,10 @@ class _CartPageState extends State<CartPage> {
                                                       // fontSize: deviceWidth > 600
                                                       //     ? deviceWidth / 30
                                                       //     : (deviceWidth / 27) - 1,
-                                                      fontSize: 16.5.sp)
-                                                      )
+                                                      fontSize:
+                                                          deviceWidth > 600
+                                                              ? 26.5.sp
+                                                              : 16.5.sp))
                                             ],
                                           ),
                                         ],
@@ -611,7 +673,11 @@ class _CartPageState extends State<CartPage> {
                                                     // fontSize: deviceWidth > 600
                                                     //     ? deviceWidth / 30
                                                     //     : (deviceWidth / 27) - 1,
-                                                    fontSize: 14.5.sp),
+                                                    fontSize: deviceWidth > 600
+                                                        ? Fontsizes
+                                                            .tabletTableLabelTextSize
+                                                        : Fontsizes
+                                                            .tableLabelTextSize),
                                               ),
                                               Text(
                                                 value.cart.length.toString(),
@@ -620,7 +686,11 @@ class _CartPageState extends State<CartPage> {
                                                     // fontSize: deviceWidth > 600
                                                     //     ? deviceWidth / 30
                                                     //     : (deviceWidth / 27) - 1,
-                                                    fontSize: 14.5.sp),
+                                                    fontSize: deviceWidth > 600
+                                                        ? Fontsizes
+                                                            .tabletTableLabelTextSize
+                                                        : Fontsizes
+                                                            .tableLabelTextSize),
                                               )
                                             ],
                                           ),
@@ -638,7 +708,11 @@ class _CartPageState extends State<CartPage> {
                                                     // fontSize: deviceWidth > 600
                                                     //     ? deviceWidth / 35
                                                     //     : deviceWidth / 28,
-                                                    fontSize: 14.5.sp),
+                                                    fontSize: deviceWidth > 600
+                                                        ? Fontsizes
+                                                            .tabletTableLabelTextSize
+                                                        : Fontsizes
+                                                            .tableLabelTextSize),
                                               ),
                                               Text(
                                                   "₹ ${value.calculateTotalPrice()}",
@@ -648,7 +722,12 @@ class _CartPageState extends State<CartPage> {
                                                       // fontSize: deviceWidth > 600
                                                       //     ? deviceWidth / 30
                                                       //     : (deviceWidth / 27) - 1,
-                                                      fontSize: 14.5.sp))
+                                                      fontSize: deviceWidth >
+                                                              600
+                                                          ? Fontsizes
+                                                              .tabletTableLabelTextSize
+                                                          : Fontsizes
+                                                              .tableLabelTextSize))
                                             ],
                                           ),
                                           SizedBox(
@@ -665,7 +744,12 @@ class _CartPageState extends State<CartPage> {
                                                       // fontSize: deviceWidth > 600
                                                       //     ? deviceWidth / 30
                                                       //     : (deviceWidth / 27) - 1,
-                                                      fontSize: 14.5.sp)),
+                                                      fontSize: deviceWidth >
+                                                              600
+                                                          ? Fontsizes
+                                                              .tabletTableLabelTextSize
+                                                          : Fontsizes
+                                                              .tableLabelTextSize)),
                                               Text("Free",
                                                   style: TextStyle(
                                                       fontWeight:
@@ -675,7 +759,12 @@ class _CartPageState extends State<CartPage> {
                                                       // fontSize: deviceWidth > 600
                                                       //     ? deviceWidth / 30
                                                       //     : (deviceWidth / 27) - 1,
-                                                      fontSize: 14.5.sp))
+                                                      fontSize: deviceWidth >
+                                                              600
+                                                          ? Fontsizes
+                                                              .tabletTableLabelTextSize
+                                                          : Fontsizes
+                                                              .tableLabelTextSize))
                                             ],
                                           ),
                                           SizedBox(
@@ -692,7 +781,12 @@ class _CartPageState extends State<CartPage> {
                                                       // fontSize: deviceWidth > 600
                                                       //     ? deviceWidth / 30
                                                       //     : (deviceWidth / 27) - 1,
-                                                      fontSize: 14.5.sp)),
+                                                      fontSize: deviceWidth >
+                                                              600
+                                                          ? Fontsizes
+                                                              .tabletTableLabelTextSize
+                                                          : Fontsizes
+                                                              .tableLabelTextSize)),
                                               Text("Free",
                                                   style: TextStyle(
                                                       fontWeight:
@@ -702,7 +796,12 @@ class _CartPageState extends State<CartPage> {
                                                       // fontSize: deviceWidth > 600
                                                       //     ? deviceWidth / 30
                                                       //     : (deviceWidth / 27) - 1,
-                                                      fontSize: 14.5.sp))
+                                                      fontSize: deviceWidth >
+                                                              600
+                                                          ? Fontsizes
+                                                              .tabletTableLabelTextSize
+                                                          : Fontsizes
+                                                              .tableLabelTextSize))
                                             ],
                                           ),
                                           SizedBox(
@@ -719,7 +818,10 @@ class _CartPageState extends State<CartPage> {
                                                       // fontSize: deviceWidth > 600
                                                       //     ? deviceWidth / 30
                                                       //     : (deviceWidth / 27) - 1,
-                                                      fontSize: 16.5.sp)),
+                                                      fontSize:
+                                                          deviceWidth > 600
+                                                              ? 26.5.sp
+                                                              : 16.5.sp)),
                                               Text(
                                                   "₹ ${value.calculateTotalPrice().toString()}",
                                                   style: TextStyle(
@@ -728,7 +830,10 @@ class _CartPageState extends State<CartPage> {
                                                       // fontSize: deviceWidth > 600
                                                       //     ? deviceWidth / 30
                                                       //     : (deviceWidth / 27) - 1,
-                                                      fontSize: 16.5.sp))
+                                                      fontSize:
+                                                          deviceWidth > 600
+                                                              ? 26.5
+                                                              : 16.5.sp))
                                             ],
                                           ),
                                         ],
@@ -761,25 +866,29 @@ class _CartPageState extends State<CartPage> {
                       const SizedBox(
                         height: 40.0,
                       ),
-                      Text("Your Cart is Empty",
-                          textAlign: TextAlign.center,
-                          maxLines: 2,
-                          style: Fontsizes.headlineTextStyle
-                          //  TextStyle(
-                          //     fontSize: 22.0,
-                          //     // color: Theme.of(context).primaryColor,
-                          //     fontWeight: FontWeight.bold),
-                          ),
+                      Text(
+                        "Your Cart is Empty",
+                        textAlign: TextAlign.center,
+                        maxLines: 2,
+                        style: TextStyle(
+                            fontSize: deviceWidth > 600
+                                ? Fontsizes.tabletHeadingSize
+                                : Fontsizes.headingSize,
+                            fontWeight: FontWeight.bold),
+                      ),
                       SizedBox(
                         height: 20.0,
                       ),
                       Text(
-                          "Looks like you don't have added any jewelleries to your cart yet",
-                          maxLines: 2,
-                          textAlign: TextAlign.center,
-                          style: 
-                          TextStyle(fontSize: 15.sp),
-                          ),
+                        "Looks like you don't have added any jewelleries to your cart yet",
+                        maxLines: 2,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: deviceWidth > 600
+                              ? Fontsizes.tabletTextFormInputFieldSize
+                              : Fontsizes.textFormInputFieldSize,
+                        ),
+                      ),
                       const SizedBox(
                         height: 50.0,
                       ),
@@ -795,13 +904,15 @@ class _CartPageState extends State<CartPage> {
                                 borderRadius: BorderRadius.circular(5.0)),
                             padding: const EdgeInsets.symmetric(
                                 vertical: 10.0, horizontal: 40.0),
-                            child: Text("Continue Shopping",
-                                style: Fontsizes.buttonTextStyle
-                                // TextStyle(
-                                //     color: Colors.white,
-                                //     fontSize: 17.0,
-                                //     fontWeight: FontWeight.bold),
-                                )),
+                            child: Text(
+                              "Continue Shopping",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: deviceWidth > 600
+                                      ? Fontsizes.tabletButtonTextSize
+                                      : Fontsizes.buttonTextSize),
+                            )),
                       )
                     ],
                   ),
@@ -835,7 +946,9 @@ class _CartPageState extends State<CartPage> {
                               : "₹ ${value.calculateTotalPrice().round().toString()}",
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 16.5.sp,
+                            fontSize: deviceWidth > 600
+                                      ? Fontsizes.tabletHeadingSize
+                                      :  16.5.sp,
                           ),
                         ),
                         GestureDetector(
@@ -891,7 +1004,9 @@ class _CartPageState extends State<CartPage> {
                               style: TextStyle(
                                   color: Colors.white,
                                   // fontSize: deviceWidth > 600 ? 23 : 17.0,
-                                  fontSize: 15.5.sp,
+                                  fontSize: deviceWidth > 600
+                                      ? Fontsizes.tabletButtonTextSize
+                                      : 15.5.sp,
                                   fontWeight: FontWeight.bold),
                             ),
                           ),
@@ -914,7 +1029,7 @@ class _CartPageState extends State<CartPage> {
   List<Widget> getCartList(
       List<CartProductModel> cartList, CartProvider value, double deviceWidth) {
     // print("mobile deviceWidth ${deviceWidth / 3.2}");
-    double dimension = deviceWidth > 600 ? deviceWidth / 3.5 : deviceWidth / 3;
+    double dimension = deviceWidth > 600 ? deviceWidth / 4 : deviceWidth / 3;
 
     return cartList.map((cartData) {
       return Padding(
@@ -969,7 +1084,8 @@ class _CartPageState extends State<CartPage> {
                                       // fontSize: deviceWidth > 600
                                       //     ? deviceWidth / 28
                                       //     : (deviceWidth / 25) - 1,
-                                      fontSize: 16.sp),
+                                      fontSize:
+                                          deviceWidth > 600 ? 26.sp : 16.sp),
                                   // maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
                                   softWrap: true,
@@ -983,7 +1099,8 @@ class _CartPageState extends State<CartPage> {
                                     // fontSize: deviceWidth > 600
                                     //     ? (deviceWidth / 33) + 3
                                     //     : (deviceWidth / 28) + 1,
-                                    fontSize: 15.5.sp),
+                                    fontSize:
+                                        deviceWidth > 600 ? 25.5.sp : 15.5.sp),
                               ),
                               SizedBox(height: deviceWidth > 600 ? 10 : 0),
                               Container(
@@ -1001,7 +1118,9 @@ class _CartPageState extends State<CartPage> {
                                               // fontSize: deviceWidth > 600
                                               //     ? deviceWidth / 30
                                               //     : (deviceWidth / 25) - 2,
-                                              fontSize: 14.sp),
+                                              fontSize: deviceWidth > 600
+                                                  ? 24.sp
+                                                  : 14.sp),
                                         ),
                                         const SizedBox(
                                           width: 5.0,
@@ -1022,7 +1141,10 @@ class _CartPageState extends State<CartPage> {
                                                       // fontSize: deviceWidth > 600
                                                       //     ? deviceWidth / 30
                                                       //       : (deviceWidth / 25) - 2,
-                                                      fontSize: 14.sp),
+                                                      fontSize:
+                                                          deviceWidth > 600
+                                                              ? 24.sp
+                                                              : 14.sp),
                                                 ),
                                               );
                                             }).toList(),
@@ -1049,7 +1171,9 @@ class _CartPageState extends State<CartPage> {
                                               // fontSize: deviceWidth > 600
                                               //     ? deviceWidth / 30
                                               //      : (deviceWidth / 25) - 2,
-                                              fontSize: 14.sp),
+                                              fontSize: deviceWidth > 600
+                                                  ? 24.sp
+                                                  : 14.sp),
                                         ),
                                         const SizedBox(
                                           width: 5.0,
@@ -1070,7 +1194,10 @@ class _CartPageState extends State<CartPage> {
                                                       // fontSize: deviceWidth > 600
                                                       //     ? deviceWidth / 30
                                                       //      : (deviceWidth / 25) - 2,
-                                                      fontSize: 14.sp),
+                                                      fontSize:
+                                                          deviceWidth > 600
+                                                              ? 24.sp
+                                                              : 14.sp),
                                                 ),
                                               );
                                             }).toList(),
@@ -1094,7 +1221,8 @@ class _CartPageState extends State<CartPage> {
                                     // fontSize: deviceWidth > 600
                                     //     ? deviceWidth / 30
                                     //     : (deviceWidth / 25) - 2,
-                                    fontSize: 14.5.sp),
+                                    fontSize:
+                                        deviceWidth > 600 ? 24.5.sp : 14.5.sp),
                               ),
                               SizedBox(
                                   height: deviceWidth > 600
@@ -1108,7 +1236,8 @@ class _CartPageState extends State<CartPage> {
                                     // deviceWidth > 600
                                     //     ? deviceWidth / 30
                                     //     : (deviceWidth / 25) - 2,
-                                    fontSize: 14.5.sp),
+                                    fontSize:
+                                        deviceWidth > 600 ? 24.5.sp : 14.5.sp),
                               )
                             ],
                           ),

@@ -180,14 +180,14 @@ class _LoginPageState extends State<LoginPage> {
                           },
                           decoration: InputDecoration(
                             errorStyle: TextStyle(
-                                fontSize:deviceWidth > 600
-                                  ? Fontsizes.tabletErrorTextSize
-                                  : Fontsizes.errorTextSize,
+                                fontSize: deviceWidth > 600
+                                    ? Fontsizes.tabletErrorTextSize
+                                    : Fontsizes.errorTextSize,
                                 color: Colors.red),
                             labelStyle: TextStyle(
-                              fontSize: deviceWidth > 600
-                                  ? Fontsizes.tabletTextFormInputFieldSize
-                                  : Fontsizes.textFormInputFieldSize),
+                                fontSize: deviceWidth > 600
+                                    ? Fontsizes.tabletTextFormInputFieldSize
+                                    : Fontsizes.textFormInputFieldSize),
                             // errorText: ,
                             labelText: "Enter your email*",
                             border: OutlineInputBorder(
@@ -215,14 +215,14 @@ class _LoginPageState extends State<LoginPage> {
                           },
                           decoration: InputDecoration(
                             errorStyle: TextStyle(
-                                fontSize:deviceWidth > 600
-                                  ? Fontsizes.tabletErrorTextSize
-                                  : Fontsizes.errorTextSize,
+                                fontSize: deviceWidth > 600
+                                    ? Fontsizes.tabletErrorTextSize
+                                    : Fontsizes.errorTextSize,
                                 color: Colors.red),
                             labelStyle: TextStyle(
-                              fontSize: deviceWidth > 600
-                                  ? Fontsizes.tabletTextFormInputFieldSize
-                                  : Fontsizes.textFormInputFieldSize),
+                                fontSize: deviceWidth > 600
+                                    ? Fontsizes.tabletTextFormInputFieldSize
+                                    : Fontsizes.textFormInputFieldSize),
                             suffixIcon: IconButton(
                               onPressed: () {
                                 if (mounted) {
@@ -446,7 +446,13 @@ class _LoginPageState extends State<LoginPage> {
                                       )
                                     : Text(
                                         "LOGIN",
-                                        style: Fontsizes.buttonTextStyle,
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: deviceWidth > 600
+                                                ? Fontsizes.tabletButtonTextSize
+                                                : Fontsizes.buttonTextSize
+                                                ),
                                       ),
                               )),
                         ),
@@ -456,28 +462,35 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         Center(
                             child: RichText(
-                                text: TextSpan(children: <TextSpan>[
-                          TextSpan(
-                            text: 'New to Tiara By TJ?',
-                            style: TextStyle(
-                                //  fontWeight: FontWeight.bold,
-                                //  fontSize: 14.5.sp,
-                                color: Colors.black),
-                          ),
-                          TextSpan(
-                            text: '  Create Account',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                //  fontSize: 14.5.sp,
-                                color: Theme.of(context).primaryColor),
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => const SignupPage(),
-                                ));
-                              },
-                          ),
-                        ], style: TextStyle(fontSize: 16.sp)))),
+                                text: TextSpan(
+                                    children: <TextSpan>[
+                              TextSpan(
+                                text: 'New to Tiara By TJ?',
+                                style: TextStyle(
+                                    //  fontWeight: FontWeight.bold,
+                                    //  fontSize: 14.5.sp,
+                                    color: Colors.black),
+                              ),
+                              TextSpan(
+                                text: '  Create Account',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    //  fontSize: 14.5.sp,
+                                    color: Theme.of(context).primaryColor),
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () {
+                                    Navigator.of(context)
+                                        .push(MaterialPageRoute(
+                                      builder: (context) => const SignupPage(),
+                                    ));
+                                  },
+                              ),
+                            ],
+                                    style: TextStyle(
+                                        fontSize: deviceWidth > 600
+                                            ? 24.sp
+                                            : 16.sp)
+                                            ))),
                       ]),
                 ),
               ))),

@@ -1,4 +1,3 @@
-
 import 'package:Tiara_by_TJ/providers/digigold_provider.dart';
 import 'package:Tiara_by_TJ/views/pages/digigold_plan_bill.dart';
 import 'package:flutter/material.dart';
@@ -7,17 +6,20 @@ import 'package:Tiara_by_TJ/views/pages/payment_page.dart';
 import 'package:Tiara_by_TJ/views/pages/search_page.dart';
 import 'package:Tiara_by_TJ/views/pages/shipping_page.dart';
 import 'package:Tiara_by_TJ/views/widgets/empty_list_widget.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
-class PaymentFailedPage extends StatelessWidget {
 
-    final bool fromCart;
+class PaymentFailedPage extends StatelessWidget {
+  final bool fromCart;
   PaymentFailedPage({super.key, required this.fromCart});
 
   @override
   Widget build(BuildContext context) {
-     final digiGoldProvider =
+    final digiGoldProvider =
         Provider.of<DigiGoldProvider>(context, listen: false);
+
+    double deviceWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -27,7 +29,6 @@ class PaymentFailedPage extends StatelessWidget {
               height: MediaQuery.of(context).size.width,
               repeat: false,
               backgroundLoading: true),
-         
           const SizedBox(
             height: 50.0,
           ),
@@ -37,9 +38,9 @@ class PaymentFailedPage extends StatelessWidget {
               // Navigator.of(context).pushReplacement(
               //     MaterialPageRoute(builder: (context) => ShippingPage()))
               //     :
-                  Navigator.pop(context);
-                  // Navigator.of(context).pushReplacement(
-                  // MaterialPageRoute(builder: (context) => DigiGoldPlanOrderPage(digiGoldPlanModel: digiGoldProvider.digiGoldPlanModel!,)));
+              Navigator.pop(context);
+              // Navigator.of(context).pushReplacement(
+              // MaterialPageRoute(builder: (context) => DigiGoldPlanOrderPage(digiGoldPlanModel: digiGoldProvider.digiGoldPlanModel!,)));
             },
             child: Container(
                 decoration: BoxDecoration(
@@ -47,9 +48,12 @@ class PaymentFailedPage extends StatelessWidget {
                     borderRadius: BorderRadius.circular(5.0)),
                 padding: const EdgeInsets.symmetric(
                     vertical: 10.0, horizontal: 40.0),
-                child:  Text(
+                child: Text(
                   "RETRY",
-                  style: Theme.of(context).textTheme.button,
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: deviceWidth > 600 ? 26.sp : 16.sp,
+                      color: Colors.white),
                 )),
           )
         ],

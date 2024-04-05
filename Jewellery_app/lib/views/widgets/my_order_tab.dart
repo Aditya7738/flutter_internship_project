@@ -5,6 +5,7 @@ import 'package:Tiara_by_TJ/constants/constants.dart';
 import 'package:Tiara_by_TJ/helpers/date_helper.dart';
 import 'package:Tiara_by_TJ/model/order_model.dart';
 import 'package:Tiara_by_TJ/providers/customer_provider.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
@@ -67,6 +68,7 @@ class _MyOrderTabState extends State<MyOrderTab> {
   Widget build(BuildContext context) {
     double deviceWidth = MediaQuery.of(context).size.width;
     final orderProvider = Provider.of<OrderProvider>(context, listen: false);
+
     return orderProvider.isOrderCreating || pageLoading
         ? const Center(
             child: CircularProgressIndicator(
@@ -78,16 +80,16 @@ class _MyOrderTabState extends State<MyOrderTab> {
             padding: const EdgeInsets.all(16.0),
             child: ListView.builder(
               itemCount:
-              // 1,
-              listOfCartOrders.length,
+                  // 1,
+                  listOfCartOrders.length,
               itemBuilder: (context, index) {
-                 OrderModel orderModel = listOfCartOrders[index];
+                OrderModel orderModel = listOfCartOrders[index];
 
-                int totalPrice = 0;
+                // double totalPrice = 0.0;
 
-                for (var i = 0; i < orderModel.lineItems.length; i++) {
-                  totalPrice += orderModel.lineItems[i].price!;
-                }
+                // for (var i = 0; i < orderModel.lineItems.length; i++) {
+                //   totalPrice += orderModel.lineItems[i].price!;
+                // }
 
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 8.0),
@@ -101,23 +103,28 @@ class _MyOrderTabState extends State<MyOrderTab> {
                             children: [
                               Row(
                                 children: [
+                                  Text("Order No: ",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          // fontSize: (deviceWidth / 33) + 1.5,
+                                          fontSize: deviceWidth > 600
+                                              ? 26.sp
+                                              : 15.sp)),
                                   Text(
-                                    "Order No: ",
-                                    style:
-                                        Theme.of(context).textTheme.subtitle1,
-                                  ),
-                                  Text(
-                                    //"orderModel.id",
+                                      //"orderModel.id",
                                       orderModel.id.toString(),
-                                      style:
-                                          Theme.of(context).textTheme.bodyText2)
+                                      style: TextStyle(
+                                          fontSize: deviceWidth > 600
+                                              ? 26.sp
+                                              : 15.sp))
                                 ],
                               ),
                               Text(
-                               // "₹ orderModel.total}",
-                                "₹ ${orderModel.total}",
-                                style: Theme.of(context).textTheme.bodyText2,
-                              )
+                                  // "₹ orderModel.total}",
+                                  "₹ ${orderModel.total}",
+                                  style: TextStyle(
+                                      fontSize:
+                                          deviceWidth > 600 ? 26.sp : 15.sp))
                             ],
                           ),
                         ),
@@ -125,18 +132,17 @@ class _MyOrderTabState extends State<MyOrderTab> {
                           height: 5.0,
                         ),
                         Container(
-                          
                           alignment: Alignment.center,
                           width: MediaQuery.of(context).size.width,
-                          height: deviceWidth > 600 ? 160 : 120.0,
+                          height: deviceWidth > 600 ? 190 : 130.0,
                           padding: const EdgeInsets.symmetric(vertical: 15.0),
                           child: Scrollbar(
                             child: ListView.builder(
                               scrollDirection: Axis.horizontal,
                               reverse: true,
-                              itemCount: 
-                              //1,
-                                orderModel.lineItems.length,
+                              itemCount:
+                                  //1,
+                                  orderModel.lineItems.length,
                               itemBuilder: (context, index) {
                                 LineItem order = orderModel.lineItems[index];
 
@@ -152,11 +158,11 @@ class _MyOrderTabState extends State<MyOrderTab> {
                                           children: [
                                             Container(
                                               height: deviceWidth > 600
-                                                  ? 150
-                                                  : 120.0,
+                                                  ? 160.sp
+                                                  : 120.sp,
                                               width: deviceWidth > 600
-                                                  ? 150
-                                                  : 120.0,
+                                                  ? 160.sp
+                                                  : 120.sp,
                                               decoration: BoxDecoration(
                                                   border: Border.all(
                                                       color: Colors.grey,
@@ -164,13 +170,11 @@ class _MyOrderTabState extends State<MyOrderTab> {
                                                           BorderStyle.solid)),
                                               child: Image.network(
                                                 order.image == null
-                                                    ?
-                                                Constants.defaultImageUrl
-                                                : order.image!.src == ""
-                                                    ? Constants
-                                                        .defaultImageUrl
-                                                    : order.image!.src!
-                                                ,
+                                                    ? Constants.defaultImageUrl
+                                                    : order.image!.src == ""
+                                                        ? Constants
+                                                            .defaultImageUrl
+                                                        : order.image!.src!,
                                                 width: 100.0,
                                                 height: 100.0,
                                                 loadingBuilder: (context, child,
@@ -205,23 +209,29 @@ class _MyOrderTabState extends State<MyOrderTab> {
                                                       20,
                                                   child: Text(
                                                     //" order.name!",
-                                                  order.name!,
+                                                    order.name!,
                                                     maxLines: 2,
                                                     overflow:
                                                         TextOverflow.ellipsis,
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .subtitle1,
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize:
+                                                            deviceWidth > 600
+                                                                ? 27.sp
+                                                                : 15.sp),
                                                   ),
                                                 ),
                                                 Row(
                                                   children: [
                                                     Text(
-                                                     // "₹ order.price",
-                                                      "₹ ${order.price.toString()}",
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .subtitle1,
+                                                      // "₹ order.price",
+                                                      "₹ ${order.price!.toInt().toString()}",
+                                                      style: TextStyle(
+                                                          fontSize:
+                                                              deviceWidth > 600
+                                                                  ? 27.sp
+                                                                  : 15.sp),
                                                     ),
                                                   ],
                                                 ),
@@ -229,17 +239,21 @@ class _MyOrderTabState extends State<MyOrderTab> {
                                                   children: [
                                                     Text(
                                                       "Sku: ",
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .subtitle1,
+                                                      style: TextStyle(
+                                                          fontSize:
+                                                              deviceWidth > 600
+                                                                  ? 27.sp
+                                                                  : 15.sp),
                                                     ),
                                                     Text(
-                                                     // "order.sku",
-                                                       order.sku ?? "sku",
+                                                      // "order.sku",
+                                                      order.sku ?? "sku",
 
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .subtitle1,
+                                                      style: TextStyle(
+                                                          fontSize:
+                                                              deviceWidth > 600
+                                                                  ? 27.sp
+                                                                  : 15.sp),
                                                     ),
                                                   ],
                                                 )
@@ -265,17 +279,19 @@ class _MyOrderTabState extends State<MyOrderTab> {
                               Row(
                                 children: [
                                   Text("Order Received ",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headline2),
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize:
+                                            deviceWidth > 600 ? 27.sp : 15.5.sp,
+                                      )),
                                   Text(
-                                    //"orderModel.dateCreated",
-                                   
-                                       "(${DateHelper.dateFormatForOrder(orderModel.dateCreated!)})",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headline6
-                                      )
+                                      //"orderModel.dateCreated",
+
+                                      "(${DateHelper.dateFormatForOrder(orderModel.dateCreated!)})",
+                                      style: TextStyle(
+                                        fontSize:
+                                            deviceWidth > 600 ? 25.sp : 13.5.sp,
+                                      ))
                                 ],
                               ),
                               Column(
@@ -309,26 +325,28 @@ class _MyOrderTabState extends State<MyOrderTab> {
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       Container(
-                                     
                                         width: deviceWidth > 600 ? 180 : 80.0,
                                         child: Text(
-                                         // "Placed on orderModel on getCurrentDateIn",  maxLines: 5,
+                                          // "Placed on orderModel on getCurrentDateIn",  maxLines: 5,
                                           "Placed on \n${DateHelper.dateFormatForOrder(orderModel.dateCreated!)}",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .subtitle1,
+                                          style: TextStyle(
+                                            fontSize: deviceWidth > 600
+                                                ? 26.sp
+                                                : 12.5.sp,
+                                          ),
                                         ),
                                       ),
                                       Container(
-                                   
                                         width: deviceWidth > 600 ? 180 : 80.0,
                                         child: Text(
-                                        //  "Expected Delivery on getCurrentDateInWords",
-                                         "Expected Delivery on ${DateHelper.getCurrentDateInWords()}",
+                                          //  "Expected Delivery on getCurrentDateInWords",
+                                          "Expected Delivery on ${DateHelper.getCurrentDateInWords()}",
                                           maxLines: 5,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .subtitle1,
+                                          style: TextStyle(
+                                            fontSize: deviceWidth > 600
+                                                ? 26.sp
+                                                : 12.5.sp,
+                                          ),
                                         ),
                                       )
                                     ],

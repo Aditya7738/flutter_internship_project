@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:Tiara_by_TJ/views/pages/dashboard_page.dart';
 import 'package:Tiara_by_TJ/views/pages/search_page.dart';
 import 'package:Tiara_by_TJ/views/widgets/empty_list_widget.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
 
 class PaymentSucessfulPage extends StatelessWidget {
@@ -44,10 +45,12 @@ class PaymentSucessfulPage extends StatelessWidget {
                     borderRadius: BorderRadius.circular(5.0)),
                 padding: const EdgeInsets.symmetric(
                     vertical: 10.0, horizontal: 40.0),
-                child: Text(
-                  "CONTIUE SHOPPING",
-                  style: Theme.of(context).textTheme.button,
-                )),
+                child: Text("CONTINUE SHOPPING",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: deviceWidth > 600 ? 26.sp : 16.sp,
+                      color: Colors.white
+                    ))),
           )
         ],
       ),

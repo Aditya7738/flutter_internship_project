@@ -343,7 +343,7 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Transform.scale(
-                                scale: 1.0,
+                                scale: 1.4,
                                 child: Checkbox(
                                   activeColor: Theme.of(context).primaryColor,
                                   checkColor: Colors.white,

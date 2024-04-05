@@ -382,7 +382,7 @@ class _PaymentPageState extends State<PaymentPage>
     // final customerProvider =
     //     Provider.of<CustomerProvider>(context, listen: false);
     //final customerData = customerProvider.customerData[0];
-
+    final deviceWidth = MediaQuery.of(context).size.width;
     String productName = "";
     for (int i = 0; i < cartProvider.cart.length; i++) {
       productName += cartProvider.cart[i].productName! + ", ";
@@ -390,7 +390,9 @@ class _PaymentPageState extends State<PaymentPage>
 
     return Scaffold(
         appBar: AppBar(
-          title: Text("Payment methods"),
+          title: Text("Payment methods", style: TextStyle(
+            fontSize: deviceWidth > 600 ? 28.sp : 17.sp
+          )),
         ),
         body:
             //  isLoading
@@ -409,10 +411,12 @@ class _PaymentPageState extends State<PaymentPage>
                 children: <Widget>[
                   Padding(
                     padding: const EdgeInsets.only(left: 5.0),
-                    child: Text(
-                      "Select your preferred payment method",
-                      style: Fontsizes.headlineTextStyle,
-                    ),
+                    child: Text("Select your preferred payment method",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: deviceWidth > 600
+                                ? Fontsizes.tabletHeadingSize
+                                : Fontsizes.headingSize)),
                   ),
                   SizedBox(
                     height: 15.0,
@@ -481,35 +485,35 @@ class _PaymentPageState extends State<PaymentPage>
                                           padding: const EdgeInsets.all(10.0),
                                           child: ListTile(
                                             title: Text(
-                                              expansionListItemModel.title,
-                                              style: TextStyle(
-                                                fontSize: 19.sp
-                                              )
-                                            ),
+                                                expansionListItemModel.title,
+                                                style: TextStyle(
+                                                    fontSize: deviceWidth > 600
+                                                        ? 25.sp
+                                                        : 19.sp)),
                                           ),
                                         );
                                       },
                                       body: Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: Container(
-                                          color: Colors.red,
                                           child: Column(
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.center,
                                             children: [
                                               HtmlWidget(
-                                                expansionListItemModel.body,
-                                                textStyle:  TextStyle(
-                                                  fontSize: 18.sp
-                                                )
-                                              ),
+                                                  expansionListItemModel.body,
+                                                  textStyle: TextStyle(
+                                                      fontSize:
+                                                          deviceWidth > 600
+                                                              ? 26.sp
+                                                              : 18.sp)),
                                               SizedBox(
                                                 height: 20.0,
                                               ),
                                               GestureDetector(
                                                 onTap: () {
-                                                  switch (
-                                                      expansionListItemModel.id) {
+                                                  switch (expansionListItemModel
+                                                      .id) {
                                                     case "cod":
                                                       break;
                                                     case "cashfree":
@@ -524,21 +528,21 @@ class _PaymentPageState extends State<PaymentPage>
                                                                   .title;
                                                         });
                                                       }
-                                          
+
                                                       break;
-                                          
+
                                                     case "ccavenue":
-                                          
+
                                                       //Navigate to PaymentScreen - ccavenue _paymet_page.dart
                                                       initPlatformState();
                                                       break;
                                                     case "stripe":
                                                       break;
-                                          
+
                                                     // case "payubiz":
                                                     // openPayUCheckoutScreen();
                                                     // break;
-                                          
+
                                                     default:
                                                   }
                                                 },
@@ -549,8 +553,9 @@ class _PaymentPageState extends State<PaymentPage>
                                                         color: const Color(
                                                             0xffCC868A),
                                                         borderRadius:
-                                                            BorderRadius.circular(
-                                                                12.0)),
+                                                            BorderRadius
+                                                                .circular(
+                                                                    12.0)),
                                                     padding: const EdgeInsets
                                                         .symmetric(
                                                         vertical: 10.0,
@@ -558,12 +563,20 @@ class _PaymentPageState extends State<PaymentPage>
                                                     child: Center(
                                                       child: razorpayLoading
                                                           ? CircularProgressIndicator(
-                                                              color: Colors.white,
+                                                              color:
+                                                                  Colors.white,
                                                             )
-                                                          : Text(
-                                                              "Pay now",
-                                                              style: Fontsizes.buttonTextStyle,
-                                                            ),
+                                                          : Text("Pay now",
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  fontSize: deviceWidth >
+                                                                          600
+                                                                      ? 25.sp
+                                                                      : 17.sp)),
                                                     )),
                                               ),
                                               SizedBox(

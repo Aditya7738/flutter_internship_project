@@ -199,7 +199,9 @@ class MyProfilePage extends StatelessWidget {
                 color: Colors.white,
                 padding: const EdgeInsets.symmetric(
                     vertical: 20.0, horizontal: 30.0),
-                child: Row(children: [
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
                   Container(
                     height: deviceWidth > 600 ? 170.0 : 90.0,
                     width: deviceWidth > 600 ? 170.0 : 90.0,
@@ -249,26 +251,26 @@ class MyProfilePage extends StatelessWidget {
                       Text(
                         customerProvider.customerData[0]["first_name"],
                         style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize:17.sp
-                         //  deviceWidth > 600 ? deviceWidth / 28 : deviceWidth / 26,
-                        ),
+                            fontWeight: FontWeight.bold,
+                            fontSize: deviceWidth > 600 ? 29.sp : 17.sp
+                            //  deviceWidth > 600 ? deviceWidth / 29 : deviceWidth / 26,
+                            ),
                       ),
                       Text(
                         customerProvider.customerData[0]["last_name"],
                         style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                           fontSize: 17.sp
-                           //deviceWidth > 600 ? deviceWidth / 28 : deviceWidth / 26,
-                        ),
+                            fontWeight: FontWeight.bold,
+                            fontSize: deviceWidth > 600 ? 29.sp : 17.sp
+                            //deviceWidth > 600 ? deviceWidth / 28 : deviceWidth / 26,
+                            ),
                       ),
                       Text(
                         customerProvider.customerData[0]["user_email"],
                         style: TextStyle(
-                          fontWeight: FontWeight.normal,
-                          fontSize: 17.sp
-                          // deviceWidth > 600 ? deviceWidth / 28 : deviceWidth / 26,
-                        ),
+                            fontWeight: FontWeight.normal,
+                            fontSize: deviceWidth > 600 ? 26.sp : 17.sp
+                            // deviceWidth > 600 ? deviceWidth / 28 : deviceWidth / 26,
+                            ),
                       ),
                       const SizedBox(
                         height: 10.0,
@@ -286,11 +288,12 @@ class MyProfilePage extends StatelessWidget {
                                 Text(
                                   "Edit Profile",
                                   style: TextStyle(
-                                    color: Theme.of(context).primaryColor,
-                                    fontWeight: FontWeight.normal,
-                                   fontSize: 15.sp
-                                   //deviceWidth > 600 ? deviceWidth / 36 : deviceWidth / 29,
-                                  ),
+                                      color: Theme.of(context).primaryColor,
+                                      fontWeight: FontWeight.normal,
+                                      fontSize:
+                                          deviceWidth > 600 ? 22.sp : 15.sp
+                                      //deviceWidth > 600 ? deviceWidth / 36 : deviceWidth / 29,
+                                      ),
                                 ),
                                 SizedBox(
                                   width: 5.0,
@@ -360,7 +363,7 @@ class MyProfilePage extends StatelessWidget {
                           ),
                           title: Text(titles[index],
                               style: TextStyle(
-                                  fontSize:18.sp,
+                                  fontSize: deviceWidth > 600 ? 27.sp : 18.sp,
                                   // deviceWidth > 600 ? 27.0 : 18.0,
                                   fontWeight: FontWeight.normal)),
                           trailing: const Icon(Icons.chevron_right_outlined),

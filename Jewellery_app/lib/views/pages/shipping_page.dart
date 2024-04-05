@@ -145,15 +145,13 @@ class _ShippingPageState extends State<ShippingPage> {
       _emailController.text = customerData["email"];
     }
 
-    if (customerData.containsKey("mobile_no")) {
-      _phoneNoController.text = customerData["mobile_no"];
-      _phoneNoController2.text = customerData["mobile_no"];
-    }
+    // if (customerData.containsKey("phone")) {
+      
+    // }
 
-    if (customerData.containsKey("pincode")) {
-      _pinNoController.text = customerData["pincode"];
-      _pinNoController2.text = customerData["pincode"];
-    }
+    // if (customerData.containsKey("postcode")) {
+     
+    // }
 
     if (customerData.containsKey("billing")) {
       _companyNameController.text = customerData["billing"]["company"];
@@ -167,6 +165,12 @@ class _ShippingPageState extends State<ShippingPage> {
 
       _cityController.text = customerData["billing"]["city"];
       _cityController2.text = customerData["billing"]["city"];
+
+      _phoneNoController.text = customerData["billing"]["phone"];
+      _phoneNoController2.text = customerData["billing"]["phone"];
+
+       _pinNoController.text = customerData["billing"]["postcode"];
+      _pinNoController2.text = customerData["billing"]["postcode"];
     }
 
     // _addressController1.text = "ghi";
@@ -194,6 +198,8 @@ class _ShippingPageState extends State<ShippingPage> {
 
     int customerId = customerProvider.customerData[0]["id"];
 
+    double deviceWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       appBar: AppBar(
         surfaceTintColor: Colors.white,
@@ -204,6 +210,7 @@ class _ShippingPageState extends State<ShippingPage> {
         ),
       ),
       body: SingleChildScrollView(
+          //phoneno, pincode not comming
           child: Padding(
               padding: const EdgeInsets.all(20.0),
               child: Form(
@@ -229,16 +236,27 @@ class _ShippingPageState extends State<ShippingPage> {
                         style: TextStyle(
 
                             // fontSize: (deviceWidth / 33) + 1.5,
-                            fontSize: Fontsizes.textFormInputFieldSize),
+                            fontSize: deviceWidth > 600
+                                ? Fontsizes.tabletTextFormInputFieldSize
+                                : Fontsizes.textFormInputFieldSize),
                         controller: _emailController,
                         keyboardType: TextInputType.emailAddress,
                         validator: (value) {
                           return ValidationHelper.isEmailValid(value);
                         },
                         decoration: InputDecoration(
-                          // errorText: ,
+                          errorStyle: TextStyle(
+                              fontSize: deviceWidth > 600
+                                  ? Fontsizes.tabletErrorTextSize
+                                  : Fontsizes.errorTextSize,
+                              color: Colors.red),
                           labelText: "Enter your email*",
-                        //  labelStyle: Theme.of(context).textTheme.subtitle1,
+                          labelStyle: TextStyle(
+
+                              // fontSize: (deviceWidth / 33) + 1.5,
+                              fontSize: deviceWidth > 600
+                                  ? Fontsizes.tabletTextFormInputFieldSize
+                                  : Fontsizes.textFormInputFieldSize),
                           border: OutlineInputBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(20.0))),
@@ -247,26 +265,35 @@ class _ShippingPageState extends State<ShippingPage> {
                       const SizedBox(
                         height: 30.0,
                       ),
-                      const Text(
+                      Text(
                         "Products will delievered to billing address",
-                        style: TextStyle(fontSize: 16.0),
+                        style: TextStyle(
+                            fontSize: deviceWidth > 600
+                                ? Fontsizes.tabletTextFormInputFieldSize
+                                : Fontsizes.textFormInputFieldSize),
                       ),
                       Row(
                         children: [
-                          Checkbox(
-                            value: differentShippingAddress,
-                            activeColor: const Color(0xffCC868A),
-                            onChanged: (value) {
-                              if (mounted) {
-                                setState(() {
-                                  differentShippingAddress = value!;
-                                });
-                              }
-                            },
+                          Transform.scale(
+                            scale: 1.199,
+                            child: Checkbox(
+                              value: differentShippingAddress,
+                              activeColor: const Color(0xffCC868A),
+                              onChanged: (value) {
+                                if (mounted) {
+                                  setState(() {
+                                    differentShippingAddress = value!;
+                                  });
+                                }
+                              },
+                            ),
                           ),
-                          const Text(
+                          Text(
                             "Ship to a different address?",
-                            style: TextStyle(fontSize: 16.0),
+                            style: TextStyle(
+                                fontSize: deviceWidth > 600
+                                    ? Fontsizes.tabletTextFormInputFieldSize
+                                    : Fontsizes.textFormInputFieldSize),
                           ),
                         ],
                       ),
@@ -431,23 +458,28 @@ class _ShippingPageState extends State<ShippingPage> {
                             padding: const EdgeInsets.symmetric(
                                 vertical: 10.0, horizontal: 20.0),
                             child: Center(
-                              child: creatingOrder
-                                  ? const SizedBox(
-                                      width: 25.0,
-                                      height: 25.0,
-                                      child: CircularProgressIndicator(
-                                        color: Colors.white,
-                                        strokeWidth: 2.0,
-                                        backgroundColor: Color(0xffCC868A),
-                                      ),
-                                    )
-                                  : const Text(
-                                      "Create order",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 18.0,
-                                          fontWeight: FontWeight.bold),
-                                    ),
+                              child:
+                                  //true
+                                  creatingOrder
+                                      ? const SizedBox(
+                                          width: 35.0,
+                                          height: 35.0,
+                                          child: CircularProgressIndicator(
+                                            color: Colors.white,
+                                            strokeWidth: 2.0,
+                                            backgroundColor: Color(0xffCC868A),
+                                          ),
+                                        )
+                                      : Text(
+                                          "Create order",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: deviceWidth > 600
+                                                  ? (Fontsizes
+                                                      .tabletButtonTextSize) + 2
+                                                  : Fontsizes.buttonTextSize,
+                                              fontWeight: FontWeight.bold),
+                                        ),
                             )),
                       ),
                     ],

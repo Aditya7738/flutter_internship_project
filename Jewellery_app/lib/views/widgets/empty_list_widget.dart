@@ -1,11 +1,13 @@
 import 'package:Tiara_by_TJ/views/pages/dashboard_page.dart';
 import 'package:flutter/material.dart';
 import 'package:Tiara_by_TJ/views/pages/search_page.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class EmptyListWidget extends StatelessWidget {
   final String imagePath;
   final String message;
   bool forCancelledOrder;
+
   EmptyListWidget({
     super.key,
     required this.imagePath,
@@ -73,6 +75,7 @@ class EmptyListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var deviceWidth = MediaQuery.of(context).size.width;
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: SizedBox(
@@ -92,7 +95,11 @@ class EmptyListWidget extends StatelessWidget {
               message,
               textAlign: TextAlign.center,
               maxLines: 2,
-              style: Theme.of(context).textTheme.subtitle2
+              style: TextStyle(
+                color: Theme.of(context).primaryColor,
+                fontWeight: FontWeight.normal,
+                fontSize: deviceWidth > 600 ? 25.sp : 16.sp,
+              ),
             ),
             const SizedBox(
               height: 50.0,

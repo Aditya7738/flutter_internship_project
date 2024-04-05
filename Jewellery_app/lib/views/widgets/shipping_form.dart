@@ -105,11 +105,15 @@ class _ShippingFormState extends State<ShippingForm> {
 
   @override
   Widget build(BuildContext context) {
+    double deviceWidth = MediaQuery.of(context).size.width;
     TextStyle textFormFieldStyle = TextStyle(
         color: Theme.of(context).primaryColor,
-        fontSize: Fontsizes.textFormInputFieldSize);
+        fontSize: deviceWidth > 600
+            ? Fontsizes.tabletTextFormInputFieldSize
+            : deviceWidth > 600
+                ? Fontsizes.tabletTextFormInputFieldSize
+                : Fontsizes.textFormInputFieldSize);
 
-    double deviceWidth = MediaQuery.of(context).size.width;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -117,23 +121,36 @@ class _ShippingFormState extends State<ShippingForm> {
           formHeading,
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: Fontsizes.headingSize,
+            fontSize: deviceWidth > 600
+                ? Fontsizes.tabletHeadingSize
+                : Fontsizes.headingSize,
           ),
         ),
         const SizedBox(
           height: 20.0,
         ),
         TextFormField(
-          style: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
+          style: TextStyle(
+              fontSize: deviceWidth > 600
+                  ? Fontsizes.tabletTextFormInputFieldSize
+                  : Fontsizes.textFormInputFieldSize),
           controller: firstNameController2,
           keyboardType: TextInputType.name,
           validator: (value) {
             return ValidationHelper.nullOrEmptyString(value);
           },
           decoration: InputDecoration(
-            errorStyle:
-                TextStyle(fontSize: Fontsizes.errorTextSize, color: Colors.red),
-            labelStyle: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
+            errorStyle: TextStyle(
+                fontSize: deviceWidth > 600
+                    ? Fontsizes.tabletErrorTextSize
+                    : deviceWidth > 600
+                        ? Fontsizes.tabletErrorTextSize
+                        : Fontsizes.errorTextSize,
+                color: Colors.red),
+            labelStyle: TextStyle(
+                fontSize: deviceWidth > 600
+                    ? Fontsizes.tabletTextFormInputFieldSize
+                    : Fontsizes.textFormInputFieldSize),
             labelText: "First name*",
             border: OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(20.0))),
@@ -143,16 +160,25 @@ class _ShippingFormState extends State<ShippingForm> {
           height: deviceWidth > 600 ? deviceWidth / 30 : 20.0,
         ),
         TextFormField(
-          style: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
+          style: TextStyle(
+              fontSize: deviceWidth > 600
+                  ? Fontsizes.tabletTextFormInputFieldSize
+                  : Fontsizes.textFormInputFieldSize),
           controller: lastNameController2,
           keyboardType: TextInputType.name,
           validator: (value) {
             return ValidationHelper.nullOrEmptyString(value);
           },
           decoration: InputDecoration(
-            errorStyle:
-                TextStyle(fontSize: Fontsizes.errorTextSize, color: Colors.red),
-            labelStyle: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
+            errorStyle: TextStyle(
+                fontSize: deviceWidth > 600
+                    ? Fontsizes.tabletErrorTextSize
+                    : Fontsizes.errorTextSize,
+                color: Colors.red),
+            labelStyle: TextStyle(
+                fontSize: deviceWidth > 600
+                    ? Fontsizes.tabletTextFormInputFieldSize
+                    : Fontsizes.textFormInputFieldSize),
             labelText: "Last name*",
             border: OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(20.0))),
@@ -162,13 +188,22 @@ class _ShippingFormState extends State<ShippingForm> {
           height: deviceWidth > 600 ? deviceWidth / 30 : 20.0,
         ),
         TextFormField(
-          style: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
+          style: TextStyle(
+              fontSize: deviceWidth > 600
+                  ? Fontsizes.tabletTextFormInputFieldSize
+                  : Fontsizes.textFormInputFieldSize),
           controller: companyNameController2,
           keyboardType: TextInputType.name,
           decoration: InputDecoration(
-            errorStyle:
-                TextStyle(fontSize: Fontsizes.errorTextSize, color: Colors.red),
-            labelStyle: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
+            errorStyle: TextStyle(
+                fontSize: deviceWidth > 600
+                    ? Fontsizes.tabletErrorTextSize
+                    : Fontsizes.errorTextSize,
+                color: Colors.red),
+            labelStyle: TextStyle(
+                fontSize: deviceWidth > 600
+                    ? Fontsizes.tabletTextFormInputFieldSize
+                    : Fontsizes.textFormInputFieldSize),
             // errorText: ,
             labelText: "Company name (optional)",
             border: OutlineInputBorder(
@@ -182,7 +217,7 @@ class _ShippingFormState extends State<ShippingForm> {
           padding: EdgeInsets.only(left: 10.0),
           child: Text(
             "Country / Region",
-            style: TextStyle(fontSize: 16.sp
+            style: TextStyle(fontSize: deviceWidth > 600 ? 24.sp : 16.sp
                 // deviceWidth > 600 ? deviceWidth / 38 : 16.0
                 ),
           ),
@@ -208,7 +243,13 @@ class _ShippingFormState extends State<ShippingForm> {
               items: countryOptions.map((String option) {
                 return DropdownMenuItem(
                   value: option,
-                  child: Text(option),
+                  child: Text(
+                    option,
+                    style: TextStyle(
+                        fontSize: deviceWidth > 600
+                            ? Fontsizes.tabletTextFormInputFieldSize
+                            : Fontsizes.textFormInputFieldSize),
+                  ),
                 );
               }).toList(),
               onChanged: (String? newValue) {
@@ -223,16 +264,25 @@ class _ShippingFormState extends State<ShippingForm> {
           height: deviceWidth > 600 ? deviceWidth / 30 : 20.0,
         ),
         TextFormField(
-          style: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
+          style: TextStyle(
+              fontSize: deviceWidth > 600
+                  ? Fontsizes.tabletTextFormInputFieldSize
+                  : Fontsizes.textFormInputFieldSize),
           controller: address2Controller1,
           keyboardType: TextInputType.streetAddress,
           validator: (value) {
             return ValidationHelper.nullOrEmptyString(value);
           },
           decoration: InputDecoration(
-            errorStyle:
-                TextStyle(fontSize: Fontsizes.errorTextSize, color: Colors.red),
-            labelStyle: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
+            errorStyle: TextStyle(
+                fontSize: deviceWidth > 600
+                    ? Fontsizes.tabletErrorTextSize
+                    : Fontsizes.errorTextSize,
+                color: Colors.red),
+            labelStyle: TextStyle(
+                fontSize: deviceWidth > 600
+                    ? Fontsizes.tabletTextFormInputFieldSize
+                    : Fontsizes.textFormInputFieldSize),
             // errorText: ,
             labelText: "Street address*",
             hintText: "House umber and street name",
@@ -244,13 +294,22 @@ class _ShippingFormState extends State<ShippingForm> {
           height: deviceWidth > 600 ? deviceWidth / 50 : 10.0,
         ),
         TextFormField(
-          style: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
+          style: TextStyle(
+              fontSize: deviceWidth > 600
+                  ? Fontsizes.tabletTextFormInputFieldSize
+                  : Fontsizes.textFormInputFieldSize),
           controller: address2Controller2,
           keyboardType: TextInputType.name,
           decoration: InputDecoration(
-            errorStyle:
-                TextStyle(fontSize: Fontsizes.errorTextSize, color: Colors.red),
-            labelStyle: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
+            errorStyle: TextStyle(
+                fontSize: deviceWidth > 600
+                    ? Fontsizes.tabletErrorTextSize
+                    : Fontsizes.errorTextSize,
+                color: Colors.red),
+            labelStyle: TextStyle(
+                fontSize: deviceWidth > 600
+                    ? Fontsizes.tabletTextFormInputFieldSize
+                    : Fontsizes.textFormInputFieldSize),
             // errorText: ,
             hintText: "Apartment, suite, unit, etc. (optional)",
             border: OutlineInputBorder(
@@ -261,16 +320,25 @@ class _ShippingFormState extends State<ShippingForm> {
           height: deviceWidth > 600 ? deviceWidth / 20 : 30.0,
         ),
         TextFormField(
-          style: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
+          style: TextStyle(
+              fontSize: deviceWidth > 600
+                  ? Fontsizes.tabletTextFormInputFieldSize
+                  : Fontsizes.textFormInputFieldSize),
           controller: cityController2,
           keyboardType: TextInputType.name,
           validator: (value) {
             return ValidationHelper.nullOrEmptyString(value);
           },
           decoration: InputDecoration(
-            errorStyle:
-                TextStyle(fontSize: Fontsizes.errorTextSize, color: Colors.red),
-            labelStyle: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
+            errorStyle: TextStyle(
+                fontSize: deviceWidth > 600
+                    ? Fontsizes.tabletErrorTextSize
+                    : Fontsizes.errorTextSize,
+                color: Colors.red),
+            labelStyle: TextStyle(
+                fontSize: deviceWidth > 600
+                    ? Fontsizes.tabletTextFormInputFieldSize
+                    : Fontsizes.textFormInputFieldSize),
             // errorText: ,
             labelText: "Town / City *",
             border: OutlineInputBorder(
@@ -287,7 +355,7 @@ class _ShippingFormState extends State<ShippingForm> {
             style: TextStyle(
                 fontSize:
                     //  deviceWidth > 600 ? deviceWidth / 38 : 16.0
-                    16.sp),
+                    deviceWidth > 600 ? 24.sp : 16.sp),
           ),
         ),
         const SizedBox(
@@ -316,7 +384,13 @@ class _ShippingFormState extends State<ShippingForm> {
               items: stateOptions.map((String option) {
                 return DropdownMenuItem(
                   value: option,
-                  child: Text(option),
+                  child: Text(
+                    option,
+                    style: TextStyle(
+                        fontSize: deviceWidth > 600
+                            ? Fontsizes.tabletTextFormInputFieldSize
+                            : Fontsizes.textFormInputFieldSize),
+                  ),
                 );
               }).toList(),
               onChanged: (String? newValue) {
@@ -331,16 +405,25 @@ class _ShippingFormState extends State<ShippingForm> {
           height: deviceWidth > 600 ? deviceWidth / 30 : 20.0,
         ),
         TextFormField(
-          style: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
+          style: TextStyle(
+              fontSize: deviceWidth > 600
+                  ? Fontsizes.tabletTextFormInputFieldSize
+                  : Fontsizes.textFormInputFieldSize),
           controller: pinNoController2,
           keyboardType: TextInputType.number,
           validator: (value) {
             return ValidationHelper.isPincodeValid(value);
           },
           decoration: InputDecoration(
-            errorStyle:
-                TextStyle(fontSize: Fontsizes.errorTextSize, color: Colors.red),
-            labelStyle: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
+            errorStyle: TextStyle(
+                fontSize: deviceWidth > 600
+                    ? Fontsizes.tabletErrorTextSize
+                    : Fontsizes.errorTextSize,
+                color: Colors.red),
+            labelStyle: TextStyle(
+                fontSize: deviceWidth > 600
+                    ? Fontsizes.tabletTextFormInputFieldSize
+                    : Fontsizes.textFormInputFieldSize),
             // errorText: ,
             labelText: "PIN code *",
             border: OutlineInputBorder(
@@ -353,7 +436,10 @@ class _ShippingFormState extends State<ShippingForm> {
         SizedBox(
           height: deviceWidth > 600 ? deviceWidth / 7 : 75.0,
           child: TextFormField(
-            style: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
+            style: TextStyle(
+                fontSize: deviceWidth > 600
+                    ? Fontsizes.tabletTextFormInputFieldSize
+                    : Fontsizes.textFormInputFieldSize),
             controller: phoneNoController2,
             keyboardType: TextInputType.phone,
             validator: (value) {
@@ -361,9 +447,14 @@ class _ShippingFormState extends State<ShippingForm> {
             },
             decoration: InputDecoration(
                 errorStyle: TextStyle(
-                    fontSize: Fontsizes.errorTextSize, color: Colors.red),
-                labelStyle:
-                    TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
+                    fontSize: deviceWidth > 600
+                        ? Fontsizes.tabletErrorTextSize
+                        : Fontsizes.errorTextSize,
+                    color: Colors.red),
+                labelStyle: TextStyle(
+                    fontSize: deviceWidth > 600
+                        ? Fontsizes.tabletTextFormInputFieldSize
+                        : Fontsizes.textFormInputFieldSize),
                 border: const OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(20.0))),
                 prefix: DropdownButton(

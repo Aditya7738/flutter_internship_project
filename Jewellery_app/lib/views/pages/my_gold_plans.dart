@@ -45,7 +45,7 @@ class _MyGoldPlansState extends State<MyGoldPlans> {
       print("customerId ${customerProvider.customerData[0]["id"]}");
       await ApiService.fetchOrders(customerProvider.customerData[0]["id"], 1);
 
-
+      print("digi unfilter orders ${ApiService.listOfOrders.length}");
       for (var i = 0; i < ApiService.listOfOrders.length; i++) {
         for (var j = 0; j < ApiService.listOfOrders[i].metaData.length; j++) {
           if (ApiService.listOfOrders[i].metaData[j].key == "virtual_order" &&
@@ -54,8 +54,6 @@ class _MyGoldPlansState extends State<MyGoldPlans> {
           }
         }
       }
-
-    
 
       for (OrderModel orderModel in listOfGoldPlans) {
         for (OrderModelMetaDatum map in orderModel.metaData) {
@@ -80,8 +78,6 @@ class _MyGoldPlansState extends State<MyGoldPlans> {
         }
       }
 
-    
-
       digiPlanModelMap.forEach((key, value) {
         purchasedPlans.add(value.last);
       });
@@ -102,18 +98,15 @@ class _MyGoldPlansState extends State<MyGoldPlans> {
     }
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     final orderProvider = Provider.of<OrderProvider>(context, listen: false);
-
+//left to show u have not purchased digi gold plan
     return Scaffold(
       appBar: AppBar(
         title: Text("My Gold Plans"),
       ),
-      body: 
-           orderProvider.isOrderCreating || isOrderFetching
+      body: orderProvider.isOrderCreating || isOrderFetching
           ? Center(
               child: CircularProgressIndicator(
                 color: Theme.of(context).primaryColor,
@@ -140,8 +133,7 @@ class _MyGoldPlansState extends State<MyGoldPlans> {
 
                   return MyGoldPlanListItem(
                       orderModel: orderModel,
-                      allOrdersList: allOrdersOfThatPlan
-                      );
+                      allOrdersList: allOrdersOfThatPlan);
                 },
               ),
             ),

@@ -250,7 +250,10 @@ class _CouponListPageState extends State<CouponListPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Apply Coupon"),
+        title: Text(
+          "Apply Coupon",
+          style: TextStyle(fontSize: deviceWidth > 600 ? 28.sp : 17.sp),
+        ),
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -267,7 +270,9 @@ class _CouponListPageState extends State<CouponListPage> {
                     style: TextStyle(
                         fontWeight: FontWeight.normal,
                         // fontSize: (deviceWidth / 33) + 1.5,
-                        fontSize: Fontsizes.textFormInputFieldSize),
+                        fontSize: deviceWidth > 600
+                            ? Fontsizes.tabletTextFormInputFieldSize
+                            : Fontsizes.textFormInputFieldSize),
                     controller: _couponController,
                     keyboardType: TextInputType.text,
                     onChanged: (value) {
@@ -323,7 +328,7 @@ class _CouponListPageState extends State<CouponListPage> {
                                         // fontSize: deviceWidth > 600
                                         //     ? deviceWidth / 40
                                         //     : 13.0,
-                                        fontSize: 14.sp,
+                                        fontSize: deviceWidth > 600 ? 22.sp : 14.sp,
                                         color: Theme.of(context).primaryColor)),
                               ),
                             )
@@ -331,10 +336,15 @@ class _CouponListPageState extends State<CouponListPage> {
                       labelStyle: TextStyle(
                           fontWeight: FontWeight.normal,
                           // fontSize: (deviceWidth / 33) + 1.5,
-                          fontSize: 16.sp),
+                          fontSize: deviceWidth > 600
+                              ? Fontsizes.tabletTextFormInputFieldSize
+                              : Fontsizes.textFormInputFieldSize),
                       labelText: "Enter coupon code",
                       errorStyle: TextStyle(
-                          fontSize: (deviceWidth / 36), color: Colors.red),
+                          fontSize: deviceWidth > 600
+                              ? Fontsizes.tabletErrorTextSize
+                              : Fontsizes.errorTextSize,
+                          color: Colors.red),
                       border: OutlineInputBorder(
                           borderRadius:
                               BorderRadius.all(Radius.circular(20.0))),
@@ -342,7 +352,7 @@ class _CouponListPageState extends State<CouponListPage> {
                   ),
                 ),
               ),
-                           isCouponListLoading
+              isCouponListLoading
                   ? SizedBox(
                       width: MediaQuery.of(context).size.width,
                       height: MediaQuery.of(context).size.height - 177,
@@ -363,7 +373,7 @@ class _CouponListPageState extends State<CouponListPage> {
                             "Great deal for you!",
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              fontSize: 18.sp,
+                              fontSize: deviceWidth > 600 ? 26.sp : 18.sp,
                             ),
                           ),
                           SizedBox(
@@ -379,7 +389,7 @@ class _CouponListPageState extends State<CouponListPage> {
                             "Other Offers at Tiara by TJ!",
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              fontSize: 17.5.sp,
+                              fontSize: deviceWidth > 600 ? 26.sp : 17.5.sp,
                             ),
                           ),
                           SizedBox(
@@ -438,7 +448,7 @@ class _CouponListPageState extends State<CouponListPage> {
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
-                        fontSize: 18.sp,
+                        fontSize: deviceWidth > 600 ? 27.sp : 18.sp,
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -462,7 +472,8 @@ class _CouponListPageState extends State<CouponListPage> {
                                   couponsModel.code ?? "",
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 16.5.sp,
+                                    fontSize:
+                                        deviceWidth > 600 ? 28.5.sp : 16.5.sp,
                                   ),
                                 ),
                                 GestureDetector(
@@ -481,7 +492,8 @@ class _CouponListPageState extends State<CouponListPage> {
                                           // fontSize: deviceWidth > 600
                                           //     ? deviceWidth / 35
                                           //     : 13.0,
-                                           fontSize: 14.sp,
+                                          fontSize:
+                                              deviceWidth > 600 ? 24.sp : 14.sp,
                                           color:
                                               Theme.of(context).primaryColor)),
                                 )
@@ -495,7 +507,7 @@ class _CouponListPageState extends State<CouponListPage> {
                             "Valid till ${couponsModel.dateExpires}",
                             style: TextStyle(
                                 // fontSize: deviceWidth / 30,
-                                fontSize: 14.5.sp,
+                                fontSize: deviceWidth > 600 ? 23.sp : 14.sp,
                                 fontWeight: FontWeight.normal),
                           )
                         ],
@@ -508,7 +520,8 @@ class _CouponListPageState extends State<CouponListPage> {
                           //couponsModel.description ??
                           "Description",
                           style: TextStyle(
-                              fontWeight: FontWeight.normal, fontSize: 15.sp
+                              fontWeight: FontWeight.normal,
+                              fontSize: deviceWidth > 600 ? 25.sp : 15.sp
                               //   deviceWidth > 600 ? deviceWidth / 32 : 15.0,
                               ),
                           maxLines: 2,
@@ -523,7 +536,7 @@ class _CouponListPageState extends State<CouponListPage> {
             // Rectangle color
           ),
           Positioned(
-            top: 55,
+            top: deviceWidth > 600 ? 73 : 55,
             left: -15.0,
             child: Container(
               width: 30,
@@ -535,7 +548,7 @@ class _CouponListPageState extends State<CouponListPage> {
             ),
           ),
           Positioned(
-            top: 55,
+             top: deviceWidth > 600 ? 73 : 55,
             right: -15.0,
             child: Container(
               width: 30,
@@ -589,7 +602,7 @@ class _CouponListPageState extends State<CouponListPage> {
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                         // fontSize: deviceWidth > 600 ? deviceWidth / 33 : 19.0,
-                        fontSize: 18.sp,
+                        fontSize: deviceWidth > 600 ? 27.sp : 18.sp,
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -613,7 +626,8 @@ class _CouponListPageState extends State<CouponListPage> {
                                   couponsModel.code ?? "",
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 16.5.sp,
+                                  fontSize:
+                                        deviceWidth > 600 ? 28.5.sp : 16.5.sp,
                                   ),
                                 ),
                                 Text("Not Applicable",
@@ -630,7 +644,8 @@ class _CouponListPageState extends State<CouponListPage> {
                                       // fontSize: deviceWidth > 600
                                       //     ? deviceWidth / 36
                                       //     : 13.0,
-                                      fontSize: 14.sp,
+                                       fontSize:
+                                              deviceWidth > 600 ? 24.sp : 14.sp,
                                     ))
                               ],
                             ),
@@ -641,7 +656,7 @@ class _CouponListPageState extends State<CouponListPage> {
                           Text(
                             "Valid till ${couponsModel.dateExpires}",
                             style: TextStyle(
-                                fontSize: 14.5.sp,
+                                fontSize: deviceWidth > 600 ? 23.sp : 14.sp,
                                  fontWeight: FontWeight.normal
                                 // deviceWidth > 600 ? deviceWidth / 32 : 15.0,
                                 ),
@@ -656,7 +671,7 @@ class _CouponListPageState extends State<CouponListPage> {
                           couponsModel.description ?? "Description;",
                           style: TextStyle(
                             fontWeight: FontWeight.normal,
-                            fontSize: 15.sp,
+                            fontSize: deviceWidth > 600 ? 25.sp : 15.sp
                           ),
                           maxLines: 2,
                         ),
@@ -670,7 +685,7 @@ class _CouponListPageState extends State<CouponListPage> {
             // Rectangle color
           ),
           Positioned(
-            top: 55,
+             top: deviceWidth > 600 ? 73 : 55,
             left: -15.0,
             child: Container(
               width: 30,
@@ -682,7 +697,7 @@ class _CouponListPageState extends State<CouponListPage> {
             ),
           ),
           Positioned(
-            top: 55,
+              top: deviceWidth > 600 ? 73 : 55,
             right: -15.0,
             child: Container(
               width: 30,

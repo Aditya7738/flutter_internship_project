@@ -8,6 +8,7 @@ import 'dart:convert';
 import 'package:Tiara_by_TJ/helpers/validation_helper.dart';
 import 'package:Tiara_by_TJ/providers/customer_provider.dart';
 import 'package:Tiara_by_TJ/views/pages/login_page.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -100,8 +101,11 @@ class _SignupPageState extends State<SignupPage> {
                       Text("Signup with Tiara By TJ",
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: Fontsizes.headingSize,
-                          )),
+                            fontSize: deviceWidth > 600
+                                ? Fontsizes.tabletHeadingSize
+                                : Fontsizes.headingSize,
+                          )
+                          ),
                       const SizedBox(
                         height: 40.0,
                       ),
@@ -146,7 +150,9 @@ class _SignupPageState extends State<SignupPage> {
                       //     },
                       //     decoration: InputDecoration(
                       //         errorStyle: TextStyle(
-                      //             fontSize: (deviceWidth / 33) + 1.5,
+                      //             fontSize:  deviceWidth > 600
+                                  // ? Fontsizes.tabletErrorTextSize
+                                  // : Fontsizes.errorTextSize,
                       //             color: Colors.red),
                       //         labelStyle: Theme.of(context).textTheme.subtitle1,
                       //         border: const OutlineInputBorder(
@@ -178,7 +184,9 @@ class _SignupPageState extends State<SignupPage> {
                       // ),
                       TextFormField(
                         style: TextStyle(
-                            fontSize: Fontsizes.textFormInputFieldSize),
+                            fontSize: deviceWidth > 600
+                                ? Fontsizes.tabletTextFormInputFieldSize
+                                : Fontsizes.textFormInputFieldSize),
                         controller: _emailController,
                         keyboardType: TextInputType.emailAddress,
                         validator: (value) {
@@ -186,10 +194,14 @@ class _SignupPageState extends State<SignupPage> {
                         },
                         decoration: InputDecoration(
                           errorStyle: TextStyle(
-                              fontSize: Fontsizes.errorTextSize,
+                              fontSize: deviceWidth > 600
+                                  ? Fontsizes.tabletErrorTextSize
+                                  : Fontsizes.errorTextSize,
                               color: Colors.red),
                           labelStyle: TextStyle(
-                              fontSize: Fontsizes.textFormInputFieldSize),
+                              fontSize: deviceWidth > 600
+                                  ? Fontsizes.tabletTextFormInputFieldSize
+                                  : Fontsizes.textFormInputFieldSize),
                           labelText: "Enter your email*",
                           border: OutlineInputBorder(
                               borderRadius:
@@ -207,7 +219,9 @@ class _SignupPageState extends State<SignupPage> {
                                 : (deviceWidth / 2) - 35,
                             child: TextFormField(
                               style: TextStyle(
-                                  fontSize: Fontsizes.textFormInputFieldSize),
+                                  fontSize: deviceWidth > 600
+                                      ? Fontsizes.tabletTextFormInputFieldSize
+                                      : Fontsizes.textFormInputFieldSize),
                               controller: _firstNameController,
                               keyboardType: TextInputType.name,
                               validator: (value) {
@@ -216,10 +230,14 @@ class _SignupPageState extends State<SignupPage> {
                               },
                               decoration: InputDecoration(
                                 errorStyle: TextStyle(
-                                    fontSize: (deviceWidth / 33) + 1.5,
+                                    fontSize:  deviceWidth > 600
+                                  ? Fontsizes.tabletErrorTextSize
+                                  : Fontsizes.errorTextSize,
                                     color: Colors.red),
                                 labelStyle: TextStyle(
-                                    fontSize: Fontsizes.textFormInputFieldSize),
+                                    fontSize: deviceWidth > 600
+                                        ? Fontsizes.tabletTextFormInputFieldSize
+                                        : Fontsizes.textFormInputFieldSize),
                                 labelText: "First Name*",
                                 border: OutlineInputBorder(
                                     borderRadius: BorderRadius.all(
@@ -236,7 +254,9 @@ class _SignupPageState extends State<SignupPage> {
                                 : (deviceWidth / 2) - 35,
                             child: TextFormField(
                               style: TextStyle(
-                                  fontSize: Fontsizes.textFormInputFieldSize),
+                                  fontSize: deviceWidth > 600
+                                      ? Fontsizes.tabletTextFormInputFieldSize
+                                      : Fontsizes.textFormInputFieldSize),
                               controller: _lastNameController,
                               keyboardType: TextInputType.name,
                               validator: (value) {
@@ -245,10 +265,14 @@ class _SignupPageState extends State<SignupPage> {
                               },
                               decoration: InputDecoration(
                                 errorStyle: TextStyle(
-                                    fontSize: (deviceWidth / 33) + 1.5,
+                                    fontSize:  deviceWidth > 600
+                                  ? Fontsizes.tabletErrorTextSize
+                                  : Fontsizes.errorTextSize,
                                     color: Colors.red),
                                 labelStyle: TextStyle(
-                                    fontSize: Fontsizes.textFormInputFieldSize),
+                                    fontSize: deviceWidth > 600
+                                        ? Fontsizes.tabletTextFormInputFieldSize
+                                        : Fontsizes.textFormInputFieldSize),
                                 labelText: "Last Name*",
                                 border: OutlineInputBorder(
                                     borderRadius: BorderRadius.all(
@@ -263,7 +287,9 @@ class _SignupPageState extends State<SignupPage> {
                       ),
                       TextFormField(
                         style: TextStyle(
-                            fontSize: Fontsizes.textFormInputFieldSize),
+                            fontSize: deviceWidth > 600
+                                ? Fontsizes.tabletTextFormInputFieldSize
+                                : Fontsizes.textFormInputFieldSize),
                         controller: _passwordController,
                         obscureText: isObscured,
                         keyboardType: TextInputType.visiblePassword,
@@ -272,10 +298,14 @@ class _SignupPageState extends State<SignupPage> {
                         },
                         decoration: InputDecoration(
                           errorStyle: TextStyle(
-                              fontSize: (deviceWidth / 33) + 1.5,
+                              fontSize:  deviceWidth > 600
+                                  ? Fontsizes.tabletErrorTextSize
+                                  : Fontsizes.errorTextSize,
                               color: Colors.red),
                           labelStyle: TextStyle(
-                              fontSize: Fontsizes.textFormInputFieldSize),
+                              fontSize: deviceWidth > 600
+                                  ? Fontsizes.tabletTextFormInputFieldSize
+                                  : Fontsizes.textFormInputFieldSize),
                           suffixIcon: IconButton(
                             onPressed: () {
                               if (mounted) {
@@ -303,7 +333,9 @@ class _SignupPageState extends State<SignupPage> {
                       ),
                       TextFormField(
                         style: TextStyle(
-                            fontSize: Fontsizes.textFormInputFieldSize),
+                            fontSize: deviceWidth > 600
+                                ? Fontsizes.tabletTextFormInputFieldSize
+                                : Fontsizes.textFormInputFieldSize),
                         controller: _confirmPasswordController,
                         obscureText: isObscured2,
                         keyboardType: TextInputType.visiblePassword,
@@ -313,10 +345,14 @@ class _SignupPageState extends State<SignupPage> {
                         },
                         decoration: InputDecoration(
                           errorStyle: TextStyle(
-                              fontSize: (deviceWidth / 33) + 1.5,
+                              fontSize:  deviceWidth > 600
+                                  ? Fontsizes.tabletErrorTextSize
+                                  : Fontsizes.errorTextSize,
                               color: Colors.red),
                           labelStyle: TextStyle(
-                              fontSize: Fontsizes.textFormInputFieldSize),
+                              fontSize: deviceWidth > 600
+                                  ? Fontsizes.tabletTextFormInputFieldSize
+                                  : Fontsizes.textFormInputFieldSize),
                           suffixIcon: IconButton(
                             onPressed: () {
                               if (mounted) {
@@ -345,49 +381,55 @@ class _SignupPageState extends State<SignupPage> {
                       Center(
                           child: RichText(
                               text: TextSpan(
-                                  text:
-                                      '*By clicking on Save chage, you accept our ',
-                                  style: TextStyle(
-                                      fontSize:
-                                          Fontsizes.textFormInputFieldSize,
-                                      color: Colors.black),
-                                  children: <TextSpan>[
-                            TextSpan(
-                              text: 'T&C',
-                              style: TextStyle(
-                                  fontSize: Fontsizes.textFormInputFieldSize,
-                                  color: Theme.of(context).primaryColor,
-                                  fontWeight: FontWeight.bold),
-                              recognizer: TapGestureRecognizer()
-                                ..onTap = () {
-                                  // Handle the click event for the specific word.
-                                  print('You clicked on T&C');
-                                  onLinkClicked(
-                                      "https://tiarabytj.com/terms-conditions/");
-                                  // Add your custom action here.
-                                },
-                            ),
-                            TextSpan(
-                              text: ' and ',
-                              style: TextStyle(
-                                  fontSize: Fontsizes.textFormInputFieldSize),
-                            ),
-                            TextSpan(
-                              text: 'Privacy Policy',
-                              style: TextStyle(
-                                  fontSize: Fontsizes.textFormInputFieldSize,
-                                  color: Theme.of(context).primaryColor,
-                                  fontWeight: FontWeight.bold),
-                              recognizer: TapGestureRecognizer()
-                                ..onTap = () {
-                                  // Handle the click event for the specific word.
-                                  print('You clicked on Privacy Policy');
-                                  onLinkClicked(
-                                      "https://tiarabytj.com/privacy-policy/");
-                                  // Add your custom action here.
-                                },
-                            ),
-                          ]))),
+                        text: '*By clicking on Save chage, you accept our ',
+                        style: TextStyle(
+                            fontSize: deviceWidth > 600 ? 24.sp : 16.sp,
+                            color: Colors.black),
+                        children: <TextSpan>[
+                          TextSpan(
+                            text: 'T&C',
+                            style: TextStyle(
+                                // fontSize: deviceWidth > 600
+                                // ? Fontsizes.tabletTextFormInputFieldSize
+                                // : Fontsizes.textFormInputFieldSize,
+                                color: Theme.of(context).primaryColor,
+                                fontWeight: FontWeight.bold),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                // Handle the click event for the specific word.
+                                print('You clicked on T&C');
+                                onLinkClicked(
+                                    "https://tiarabytj.com/terms-conditions/");
+                                // Add your custom action here.
+                              },
+                          ),
+                          TextSpan(
+                            text: ' and ',
+                            style: TextStyle(
+                                // fontSize: deviceWidth > 600
+                                // ? Fontsizes.tabletTextFormInputFieldSize
+                                // : Fontsizes.textFormInputFieldSize
+                                ),
+                          ),
+                          TextSpan(
+                            text: 'Privacy Policy',
+                            style: TextStyle(
+                                //  fontSize: deviceWidth > 600
+                                // ? Fontsizes.tabletTextFormInputFieldSize
+                                // : Fontsizes.textFormInputFieldSize,
+                                color: Theme.of(context).primaryColor,
+                                fontWeight: FontWeight.bold),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                // Handle the click event for the specific word.
+                                print('You clicked on Privacy Policy');
+                                onLinkClicked(
+                                    "https://tiarabytj.com/privacy-policy/");
+                                // Add your custom action here.
+                              },
+                          ),
+                        ],
+                      ))),
                       SizedBox(
                         height: deviceWidth > 600 ? 80.0 : 30.0,
                       ),
@@ -495,7 +537,8 @@ class _SignupPageState extends State<SignupPage> {
                             padding: const EdgeInsets.symmetric(
                                 vertical: 5.0, horizontal: 20.0),
                             child: Center(
-                              child: isLoading
+                              child: 
+                              isLoading
                                   ? Container(
                                       padding:
                                           EdgeInsets.symmetric(vertical: 5.0),
@@ -509,7 +552,12 @@ class _SignupPageState extends State<SignupPage> {
                                     )
                                   : Text(
                                       "Sign up",
-                                      style: Fontsizes.buttonTextStyle,
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: deviceWidth > 600
+                                              ? Fontsizes.tabletButtonTextSize
+                                              : Fontsizes.buttonTextSize),
                                     ),
                             )),
                       ),
@@ -519,20 +567,23 @@ class _SignupPageState extends State<SignupPage> {
                       Center(
                           child: RichText(
                               text: TextSpan(
-                                  text: 'Already have an account?',
-                                  style: TextStyle(
-                                      fontSize:
-                                          Fontsizes.textFormInputFieldSize,
-                                          color: Colors.black),
                                   children: <TextSpan>[
                             TextSpan(
+                              text: 'Already have an account?',
+                              style: TextStyle(
+                                  // fontSize: deviceWidth > 600
+                                  // ? Fontsizes.tabletTextFormInputFieldSize
+                                  // : Fontsizes.textFormInputFieldSize,
+                                  color: Colors.black),
+                            ),
+                            TextSpan(
                               text: ' Login',
-                              style:  TextStyle(
-                                fontWeight: FontWeight.bold,
-                                      fontSize:
-                                          Fontsizes.textFormInputFieldSize,
-                                          color: Theme.of(context).primaryColor
-                                          ),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  // fontSize: deviceWidth > 600
+                                  // ? Fontsizes.tabletTextFormInputFieldSize
+                                  // : Fontsizes.textFormInputFieldSize,
+                                  color: Theme.of(context).primaryColor),
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
                                   Navigator.of(context).push(MaterialPageRoute(
@@ -542,7 +593,10 @@ class _SignupPageState extends State<SignupPage> {
                                   ));
                                 },
                             ),
-                          ]))),
+                          ],
+                                  style: TextStyle(
+                                      fontSize:
+                                          deviceWidth > 600 ? 24.sp : 16.sp)))),
                     ]),
               ))),
         ));

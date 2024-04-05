@@ -14,6 +14,7 @@ class CartTotalRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double deviceWidth = MediaQuery.of(context).size.width;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -21,18 +22,18 @@ class CartTotalRow extends StatelessWidget {
           label,
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: 16.5.sp,
+            fontSize: deviceWidth > 600 ? 25.sp : 16.5.sp,
           ),
           maxLines: 2,
         ),
         showMoney
             ? Text("₹ $value",
                 style: TextStyle(
-                  fontSize: 16.5.sp,
+                  fontSize: deviceWidth > 600 ? 25.sp : 16.5.sp,
                 ))
             : Text(value[0].toUpperCase() + value.substring(1).toLowerCase(),
                 style: TextStyle(
-                  fontSize: 16.5.sp,
+                  fontSize: deviceWidth > 600 ? 25.sp : 16.5.sp,
                 ))
       ],
     );
