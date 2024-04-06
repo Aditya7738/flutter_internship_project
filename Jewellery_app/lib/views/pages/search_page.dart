@@ -428,9 +428,9 @@ class _SearchPageState extends State<SearchPage> {
                         child: SizedBox(
                           width: MediaQuery.of(context).size.width,
                           height: MediaQuery.of(context).size.height / 2,
-                          child: const Center(
+                          child: Center(
                               child: CircularProgressIndicator(
-                            color: Color(0xffCC868A),
+                            color:  Theme.of(context).primaryColor,
                           )),
                         ),
                       )
@@ -534,9 +534,8 @@ class _SearchPageState extends State<SearchPage> {
                                                                     height:
                                                                         92.0,
                                                                     child:
-                                                                        const CircularProgressIndicator(
-                                                                      color: Colors
-                                                                          .black,
+                                                                        CircularProgressIndicator(
+                                                                      color:  Theme.of(context).primaryColor,
                                                                     ),
                                                                   );
                                                                 },
@@ -660,12 +659,12 @@ class _SearchPageState extends State<SearchPage> {
                                         )),
                                       );
                                     } else {
-                                      return const Padding(
+                                      return Padding(
                                         padding: EdgeInsets.symmetric(
                                             vertical: 15.0, horizontal: 10.0),
                                         child: Center(
                                             child: CircularProgressIndicator(
-                                          color: Color(0xffCC868A),
+                                          color:  Theme.of(context).primaryColor,
                                         )),
                                       );
                                     }

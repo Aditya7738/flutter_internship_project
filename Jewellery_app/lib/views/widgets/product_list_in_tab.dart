@@ -63,10 +63,10 @@ class _ProductListInTabState extends State<ProductListInTab> {
   @override
   Widget build(BuildContext context) {
     return newListLoading
-        ? const Center(
+        ?  Center(
             child: CircularProgressIndicator(
-              backgroundColor: Colors.black,
-              color: Colors.white,
+            
+              color:  Theme.of(context).primaryColor,
             ),
           )
         : Padding(
@@ -100,12 +100,12 @@ class _ProductListInTabState extends State<ProductListInTab> {
                         )),
                       );
                     } else {
-                      return const Padding(
+                      return  Padding(
                         padding: EdgeInsets.symmetric(
                             vertical: 15.0, horizontal: 10.0),
                         child: Center(
                             child: CircularProgressIndicator(
-                          color: Color(0xffCC868A),
+                          color:  Theme.of(context).primaryColor,
                         )),
                       );
                     }

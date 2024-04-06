@@ -136,8 +136,8 @@ class _CarouselSliderWidgetState extends State<CarouselSliderWidget> {
                                               MediaQuery.of(context).size.width,
                                           height: 92.0,
                                           child:
-                                              const CircularProgressIndicator(
-                                            color: Colors.black,
+                                               CircularProgressIndicator(
+                                            color:  Theme.of(context).primaryColor,
                                           ),
                                         );
                                       },
@@ -216,8 +216,8 @@ class _CarouselSliderWidgetState extends State<CarouselSliderWidget> {
                                               MediaQuery.of(context).size.width,
                                           height: 92.0,
                                           child:
-                                              const CircularProgressIndicator(
-                                            color: Colors.black,
+                                             CircularProgressIndicator(
+                                            color:  Theme.of(context).primaryColor,
                                           ),
                                         );
                                       },

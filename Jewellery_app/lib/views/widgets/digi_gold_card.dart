@@ -163,15 +163,16 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+            //true
               planPurchasedChecking
                   ? SizedBox(
                       width: MediaQuery.of(context).size.width - 32,
-                      height: MediaQuery.of(context).size.width - 42,
+                      height: //MediaQuery.of(context).size.width - 42,
+                          540,
                       child: Center(
-                        child: CircularProgressIndicator(
-                          color:Colors.red
-                          // Theme.of(context).primaryColor,
-                        ),
+                        child: CircularProgressIndicator(color: //Colors.red
+                            Theme.of(context).primaryColor,
+                            ),
                       ),
                     )
                   : isPlanAlreadyPurchased
@@ -217,7 +218,7 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                       : widget.digiGoldPlan.images.isNotEmpty
                           ? widget.digiGoldPlan.images[0].src != null
                               ? Image.network(
-                                //loadingBuilder
+                                  //loadingBuilder
                                   widget.digiGoldPlan.images[0].src!,
                                   width: MediaQuery.of(context).size.width,
                                 )
@@ -405,24 +406,24 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                         ? GestureDetector(
                             onTap: () {
                               // if (checkBoxChecked) {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          LoginPage(isComeFromCart: false),
-                                    ));
-                             // }
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        LoginPage(isComeFromCart: false),
+                                  ));
+                              // }
                             },
                             child: Container(
                                 margin:
                                     EdgeInsets.only(left: 15.0, bottom: 5.0),
-                                decoration: 
-                                // checkBoxChecked
-                                //     ? BoxDecoration(
-                                //         color: Theme.of(context).primaryColor,
-                                //         borderRadius:
-                                //             BorderRadius.circular(5.0))
-                                //     : 
+                                decoration:
+                                    // checkBoxChecked
+                                    //     ? BoxDecoration(
+                                    //         color: Theme.of(context).primaryColor,
+                                    //         borderRadius:
+                                    //             BorderRadius.circular(5.0))
+                                    //     :
                                     BoxDecoration(
                                         border: Border.all(
                                             width: 2.0,

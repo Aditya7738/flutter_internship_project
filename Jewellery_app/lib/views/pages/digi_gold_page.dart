@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:Tiara_by_TJ/api/api_service.dart';
 import 'package:Tiara_by_TJ/api/cache_memory.dart';
+import 'package:Tiara_by_TJ/constants/fontsizes.dart';
 import 'package:Tiara_by_TJ/model/digi_gold_plan_model.dart' as DigiGoldPlans;
 import 'package:Tiara_by_TJ/model/gold_rate_model.dart';
 import 'package:Tiara_by_TJ/model/order_model.dart';
@@ -16,6 +17,7 @@ import 'package:Tiara_by_TJ/views/pages/login_page.dart';
 import 'package:Tiara_by_TJ/views/widgets/digi_gold_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -399,24 +401,66 @@ class _DigiGoldPageState extends State<DigiGoldPage> {
     }
   }
 
+  String moneyErrorText = "";
+
+  String monthErrorText = "";
+
+  void checkIfItsNumber(String value) {
+    if (RegExp(r'^[0-9]+$').hasMatch(value)) {
+      double goldGrams = int.parse(value) / goldRate;
+      flexiGoldController.text = ((goldGrams * 1000).round() / 1000).toString();
+    } else if (value == "") {
+      if (monthErrorText != "") {
+        setState(() {
+          monthErrorText = "";
+        });
+      }
+    } else {
+      setState(() {
+        monthErrorText = "Please enter value in number";
+      });
+    }
+  }
+
   void calculateGoldGrams(String value) {
     if (value == "0") {
       flexiGoldController.text = "0.0";
+    } else if (value == "") {
+      if (moneyErrorText != "") {
+        setState(() {
+          moneyErrorText = "";
+        });
+      }
+    } else if (RegExp(r'^[0-9]+$').hasMatch(value)) {
+      double goldGrams = int.parse(value) / goldRate;
+      flexiGoldController.text = ((goldGrams * 1000).round() / 1000).toString();
+    } else {
+      setState(() {
+        moneyErrorText = "Please enter value in number";
+      });
     }
-
-    double goldGrams = int.parse(value) / goldRate;
-    flexiGoldController.text = ((goldGrams * 1000).round() / 1000).toString();
   }
 
+  String goldErrorText = "";
   void calculatePriceForGoldGrams(String value) {
     if (value == "0.0") {
       flexiPayController.text = "0";
     } else if (value == "") {
       flexiPayController.text = "";
+      if (goldErrorText != "") {
+        setState(() {
+          goldErrorText = "";
+        });
+      }
+    } else if (RegExp(r'^[0-9]+$').hasMatch(value)) {
+      double priceOfGoldGram = double.parse(value) * goldRate;
+      flexiPayController.text =
+          ((priceOfGoldGram * 100).round() / 100).toString();
+    } else {
+      setState(() {
+        goldErrorText = "Please enter value in number";
+      });
     }
-    double priceOfGoldGram = double.parse(value) * goldRate;
-    flexiPayController.text =
-        ((priceOfGoldGram * 100).round() / 100).toString();
   }
 
   String getMaxFlexiPlanDuration() {
@@ -445,6 +489,8 @@ class _DigiGoldPageState extends State<DigiGoldPage> {
     final digiGoldProvider =
         Provider.of<DigiGoldProvider>(context, listen: true);
 
+    double deviceWidth = MediaQuery.of(context).size.width;
+
     bool isCustomerDataEmpty = customerProvider.customerData.isEmpty;
     return Scaffold(
       appBar: AppBar(
@@ -457,11 +503,14 @@ class _DigiGoldPageState extends State<DigiGoldPage> {
                 const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
             child: Column(
               children: [
-                isFlexiPlanEnabled
+                   isFlexiPlanEnabled
+                //true
                     ? Column(children: [
                         Consumer<DigiGoldProvider>(
                           builder: (context, value, child) {
-                            if (value.isGoldRateLoading) {
+                            if (//false
+                                value.isGoldRateLoading
+                                ) {
                               return Container(
                                 color: Colors.white,
                                 height: MediaQuery.of(context).size.height -
@@ -484,7 +533,8 @@ class _DigiGoldPageState extends State<DigiGoldPage> {
                                         "flexi constraints.maxWidth / 33 ${(constraints.maxWidth / 32)}");
                                     return Column(
                                       children: [
-                                        isFlexiPlanAlreadyPurchased
+                                        //true
+                                            isFlexiPlanAlreadyPurchased
                                             ? Column(
                                                 children: [
                                                   SizedBox(
@@ -507,7 +557,11 @@ class _DigiGoldPageState extends State<DigiGoldPage> {
                                                                   .primaryColor,
                                                           fontWeight:
                                                               FontWeight.bold,
-                                                          fontSize: 16.0),
+                                                          fontSize: deviceWidth > 600 
+                                                          ? (constraints.maxWidth /32).sp
+                                                          : 14.5.sp
+                                                          // 16.sp
+                                                          ),
                                                       textAlign:
                                                           TextAlign.center,
                                                     ),
@@ -516,8 +570,8 @@ class _DigiGoldPageState extends State<DigiGoldPage> {
                                               )
                                             : SizedBox(),
                                         IgnorePointer(
-                                            ignoring:
-                                                isFlexiPlanAlreadyPurchased,
+                                            ignoring: //false,
+                                               isFlexiPlanAlreadyPurchased,
                                             child: Padding(
                                                 // width: MediaQuery.of(context)
                                                 //     .size
@@ -583,8 +637,8 @@ class _DigiGoldPageState extends State<DigiGoldPage> {
                                                                 maxLines: 2,
                                                                 style:
                                                                     TextStyle(
-                                                                  fontSize:
-                                                                      fontSize,
+                                                                  fontSize:  deviceWidth > 600 
+                                                          ? fontSize.sp : 15.sp,
                                                                   color: Colors
                                                                       .yellow,
                                                                 ),
@@ -602,10 +656,12 @@ class _DigiGoldPageState extends State<DigiGoldPage> {
                                                     Text(
                                                       "Buy Gold Worth",
                                                       style: TextStyle(
-                                                          fontSize: (constraints
+                                                          fontSize: deviceWidth > 600 
+                                                          ? ((constraints
                                                                       .maxWidth /
                                                                   30) +
-                                                              0.99,
+                                                              0.99)
+                                                              : 16.sp,
                                                           color: Colors.white,
                                                           fontWeight:
                                                               FontWeight.bold),
@@ -614,23 +670,21 @@ class _DigiGoldPageState extends State<DigiGoldPage> {
                                                       children: [
                                                         Image.asset(
                                                             "assets/images/rupee.png",
-                                                            scale: 14.5,
+                                                            scale: deviceWidth >
+                                                                    600
+                                                                ? 14.5
+                                                                : 24.5,
                                                             color:
                                                                 Colors.white),
                                                         SizedBox(
-                                                            width: MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .width -
-                                                                120,
+                                                            width: deviceWidth > 600 ? deviceWidth -120 : (deviceWidth - 105).sp,
                                                             child: TextField(
                                                               style: TextStyle(
                                                                   color: Colors
                                                                       .white,
-                                                                  fontSize:
-                                                                      constraints.maxWidth /
-                                                                              40 +
-                                                                          5),
+                                                                  fontSize:  deviceWidth > 600 
+                                                          ? (constraints.maxWidth / 40 + 5) : Fontsizes.textFormInputFieldSize
+                                                                      ),
                                                               onChanged:
                                                                   (value) {
                                                                 calculateGoldGrams(
@@ -644,12 +698,21 @@ class _DigiGoldPageState extends State<DigiGoldPage> {
                                                     SizedBox(
                                                       height: 5.0,
                                                     ),
+                                                    moneyErrorText != ""
+                                                        ? Text(
+                                                            moneyErrorText,
+                                                            style: TextStyle(
+                                                                fontSize:  deviceWidth > 600 
+                                                          ? (constraints.maxWidth / 37).sp : 13.sp,
+                                                                color: Colors
+                                                                    .white),
+                                                          )
+                                                        : SizedBox(),
                                                     Text(
                                                       "Min : ₹ 30 / Max : ₹ 199999",
                                                       style: TextStyle(
-                                                          fontSize: constraints
-                                                                  .maxWidth /
-                                                              37,
+                                                          fontSize:  deviceWidth > 600 
+                                                          ? (constraints.maxWidth / 37).sp : 13.sp,
                                                           color: Colors.white),
                                                     ),
                                                     SizedBox(
@@ -658,10 +721,12 @@ class _DigiGoldPageState extends State<DigiGoldPage> {
                                                     Text(
                                                       "Buy Gold By Grams",
                                                       style: TextStyle(
-                                                          fontSize: (constraints
+                                                          fontSize: deviceWidth > 600 
+                                                          ? ((constraints
                                                                       .maxWidth /
                                                                   30) +
-                                                              0.99,
+                                                              0.99)
+                                                              : 16.sp,
                                                           color: Colors.white,
                                                           fontWeight:
                                                               FontWeight.bold),
@@ -669,11 +734,7 @@ class _DigiGoldPageState extends State<DigiGoldPage> {
                                                     Row(
                                                       children: [
                                                         SizedBox(
-                                                            width: MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .width -
-                                                                140,
+                                                            width: deviceWidth > 600 ? deviceWidth - 140 : (deviceWidth - 115).sp,
                                                             child: TextField(
                                                               onChanged:
                                                                   (value) {
@@ -684,34 +745,48 @@ class _DigiGoldPageState extends State<DigiGoldPage> {
                                                                   color: Colors
                                                                       .white,
                                                                   fontSize:
-                                                                      constraints.maxWidth /
-                                                                              40 +
-                                                                          5),
+                                                                     deviceWidth > 600 
+                                                          ? (constraints.maxWidth / 40 + 5) : Fontsizes.textFormInputFieldSize),
                                                               controller:
                                                                   flexiGoldController,
                                                             )),
                                                         Text(
                                                           "gms",
                                                           style: TextStyle(
-                                                            fontSize: constraints
+                                                            fontSize:deviceWidth > 600 ?  constraints
                                                                         .maxWidth /
                                                                     40 +
-                                                                5,
+                                                                5 : Fontsizes.textFormInputFieldSize,
                                                             color: Colors.white,
                                                           ),
                                                         )
                                                       ],
                                                     ),
                                                     SizedBox(
+                                                      height: 5.0,
+                                                    ),
+                                                    goldErrorText != ""
+                                                        ? Text(
+                                                            goldErrorText,
+                                                            style: TextStyle(
+                                                                fontSize:  deviceWidth > 600 
+                                                          ? (constraints.maxWidth / 37).sp : 13.sp,
+                                                                color: Colors
+                                                                    .white),
+                                                          )
+                                                        : SizedBox(),
+                                                    SizedBox(
                                                       height: 40.0,
                                                     ),
                                                     Text(
                                                       "Enter plan duration",
                                                       style: TextStyle(
-                                                          fontSize: (constraints
+                                                          fontSize: deviceWidth > 600 
+                                                          ? ((constraints
                                                                       .maxWidth /
                                                                   30) +
-                                                              0.99,
+                                                              0.99)
+                                                              : 16.sp,
                                                           color: Colors.white,
                                                           fontWeight:
                                                               FontWeight.bold),
@@ -719,29 +794,28 @@ class _DigiGoldPageState extends State<DigiGoldPage> {
                                                     Row(
                                                       children: [
                                                         SizedBox(
-                                                            width: MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .width -
-                                                                174,
+                                                            width: deviceWidth > 600 ? deviceWidth - 174 : (deviceWidth - 142).sp,
                                                             child: TextField(
+                                                              onChanged:
+                                                                  (value) {
+                                                                checkIfItsNumber(
+                                                                    value);
+                                                              },
                                                               style: TextStyle(
                                                                   color: Colors
                                                                       .white,
-                                                                  fontSize:
-                                                                      constraints.maxWidth /
-                                                                              40 +
-                                                                          5),
+                                                                  fontSize:deviceWidth > 600 
+                                                          ? (constraints.maxWidth / 40 + 5) : Fontsizes.textFormInputFieldSize),
                                                               controller:
                                                                   flexiPlanDurationController,
                                                             )),
                                                         Text(
                                                           "months",
                                                           style: TextStyle(
-                                                              fontSize:
-                                                                  constraints.maxWidth /
-                                                                          40 +
-                                                                      5,
+                                                             fontSize:deviceWidth > 600 ?  constraints
+                                                                        .maxWidth /
+                                                                    40 +
+                                                                5 : Fontsizes.textFormInputFieldSize,
                                                               color:
                                                                   Colors.white),
                                                         )
@@ -750,12 +824,24 @@ class _DigiGoldPageState extends State<DigiGoldPage> {
                                                     SizedBox(
                                                       height: 5.0,
                                                     ),
+                                                    monthErrorText != ""
+                                                        ? Text(
+                                                            monthErrorText,
+                                                            style: TextStyle(
+                                                               fontSize:  deviceWidth > 600 
+                                                          ? (constraints.maxWidth / 37).sp : 13.sp,
+                                                                color: Colors
+                                                                    .white),
+                                                          )
+                                                        : SizedBox(),
+
                                                     Text(
-                                                      "Max duration: ${getMaxFlexiPlanDuration()} months",
+                                                      "Max duration: 12 "
+                                                      //  ${getMaxFlexiPlanDuration()}
+                                                      " months",
                                                       style: TextStyle(
-                                                          fontSize: constraints
-                                                                  .maxWidth /
-                                                              37,
+                                                          fontSize:  deviceWidth > 600 
+                                                          ? (constraints.maxWidth / 37).sp : 13.sp,
                                                           color: Colors.white),
                                                     ),
                                                     SizedBox(
@@ -767,7 +853,10 @@ class _DigiGoldPageState extends State<DigiGoldPage> {
                                                               .center,
                                                       children: [
                                                         Transform.scale(
-                                                          scale: 1.199,
+                                                          scale:
+                                                              deviceWidth > 600
+                                                                  ? 1.4
+                                                                  : 0.9,
                                                           child: Checkbox(
                                                             activeColor:
                                                                 Colors.white,
@@ -809,10 +898,13 @@ class _DigiGoldPageState extends State<DigiGoldPage> {
                                                             style: TextStyle(
                                                                 color: Colors
                                                                     .white,
-                                                                fontSize:
-                                                                    (constraints.maxWidth /
-                                                                            30) +
-                                                                        2,
+                                                                fontSize: deviceWidth > 600
+                                                                    ? (constraints
+                                                                            .maxWidth /
+                                                                        31)
+                                                                    : (constraints
+                                                                            .maxWidth /
+                                                                        23),
                                                                 decoration:
                                                                     TextDecoration
                                                                         .underline),
@@ -823,6 +915,7 @@ class _DigiGoldPageState extends State<DigiGoldPage> {
                                                     SizedBox(
                                                       height: 80.0,
                                                     ),
+                                                    //true
                                                     isCustomerDataEmpty
                                                         ? GestureDetector(
                                                             onTap: () {
@@ -858,15 +951,19 @@ class _DigiGoldPageState extends State<DigiGoldPage> {
                                                                   100,
                                                               child: Text(
                                                                 "LOGIN",
-                                                                style: checkBoxChecked
-                                                                    ? Theme.of(
-                                                                            context)
-                                                                        .textTheme
-                                                                        .headline5
-                                                                    : Theme.of(
-                                                                            context)
-                                                                        .textTheme
-                                                                        .button
+                                                                style:
+                                                                    TextStyle(
+                                                                        color: checkBoxChecked
+                                                                            ? Colors
+                                                                                .black
+                                                                            : Colors
+                                                                                .white,
+                                                                        fontSize:
+                                                                            constraints.maxWidth /
+                                                                                28,
+                                                                        //16.0,
+                                                                        fontWeight:
+                                                                            FontWeight.bold),
                                                                 // : TextStyle(
                                                                 //     color: checkBoxChecked
                                                                 //         ? Colors
@@ -877,7 +974,6 @@ class _DigiGoldPageState extends State<DigiGoldPage> {
                                                                 //         16.0,
                                                                 //     fontWeight:
                                                                 //         FontWeight.bold)
-                                                                ,
                                                               ),
                                                               decoration:
                                                                   checkBoxChecked
@@ -953,17 +1049,19 @@ class _DigiGoldPageState extends State<DigiGoldPage> {
                                                                   100,
                                                               child: Text(
                                                                 "PROCEED TO PAY",
-                                                                style: TextStyle(
-                                                                    color: checkBoxChecked
-                                                                        ? Colors
-                                                                            .black
-                                                                        : Colors
-                                                                            .white,
-                                                                    fontSize:
-                                                                        16.0,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold),
+                                                                style:
+                                                                    TextStyle(
+                                                                        color: checkBoxChecked
+                                                                            ? Colors
+                                                                                .black
+                                                                            : Colors
+                                                                                .white,
+                                                                        fontSize:
+                                                                            constraints.maxWidth /
+                                                                                28,
+                                                                        //16.0,
+                                                                        fontWeight:
+                                                                            FontWeight.bold),
                                                               ),
                                                               decoration:
                                                                   checkBoxChecked
@@ -1107,16 +1205,14 @@ class _DigiGoldPageState extends State<DigiGoldPage> {
                                 // DownloadProgress? progress =
                                 //     snapshot.data as DownloadProgress?;
 
-
-
                                 print("loading $loading");
                                 if (snapshot.hasError) {
                                   print(
                                       "snapshot error ${snapshot.error.toString()}");
                                   body = SizedBox();
                                 } else if (loading
-                                 // snapshot.connectionState == ConnectionState.waiting
-                                  ) {
+                                    // snapshot.connectionState == ConnectionState.waiting
+                                    ) {
                                   body = SizedBox(
                                       width: MediaQuery.of(context).size.width,
                                       height:

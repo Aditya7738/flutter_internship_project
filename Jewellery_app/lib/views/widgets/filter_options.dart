@@ -70,7 +70,7 @@ class _FilterOptionsState extends State<FilterOptions> {
                 height: 10.0,
               ),
               Container(
-                color: Colors.red,
+            
               //  height: constraints.maxWidth / 8,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,

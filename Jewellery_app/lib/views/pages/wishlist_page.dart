@@ -195,10 +195,10 @@ class _WishListPageState extends State<WishListPage> {
                                               return child;
                                             }
                                             return SizedBox(
-                                              child: const Center(
+                                              child: Center(
                                                 child:
                                                     CircularProgressIndicator(
-                                                  color: Colors.black,
+                                                  color:  Theme.of(context).primaryColor,
                                                 ),
                                               ),
                                             );

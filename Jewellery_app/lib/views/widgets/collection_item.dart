@@ -92,9 +92,9 @@ class _CollectionItemState extends State<CollectionItem> {
                           height: deviceWidth > 600
                               ? (deviceWidth / 2) - 111
                               : (deviceWidth / 2) - 10,
-                          child: const Center(
+                          child: Center(
                             child: CircularProgressIndicator(
-                              color: Colors.black,
+                              color:  Theme.of(context).primaryColor,
                             ),
                           ),
                         );

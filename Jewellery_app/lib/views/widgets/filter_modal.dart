@@ -70,7 +70,7 @@ class _FilterModalState extends State<FilterModal> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-                color: Colors.red,
+            
                 height: deviceWidth > 600 ? 65.0 : 45.0,
                 // height:
                 // //constraints.maxWidth / 12.5,

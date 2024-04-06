@@ -85,9 +85,9 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
                           return SizedBox(
                             width: MediaQuery.of(context).size.width / 3,
                             height: MediaQuery.of(context).size.width / 3,
-                            child: const Center(
+                            child: Center(
                               child: CircularProgressIndicator(
-                                color: Colors.black,
+                                color:  Theme.of(context).primaryColor,
                               ),
                             ),
                           );

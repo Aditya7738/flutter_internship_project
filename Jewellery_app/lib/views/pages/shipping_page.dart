@@ -461,13 +461,13 @@ class _ShippingPageState extends State<ShippingPage> {
                               child:
                                   //true
                                   creatingOrder
-                                      ? const SizedBox(
+                                      ? SizedBox(
                                           width: 35.0,
                                           height: 35.0,
                                           child: CircularProgressIndicator(
                                             color: Colors.white,
                                             strokeWidth: 2.0,
-                                            backgroundColor: Color(0xffCC868A),
+                                            backgroundColor:  Theme.of(context).primaryColor,
                                           ),
                                         )
                                       : Text(

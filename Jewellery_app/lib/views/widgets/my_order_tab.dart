@@ -70,9 +70,9 @@ class _MyOrderTabState extends State<MyOrderTab> {
     final orderProvider = Provider.of<OrderProvider>(context, listen: false);
 
     return orderProvider.isOrderCreating || pageLoading
-        ? const Center(
+        ?  Center(
             child: CircularProgressIndicator(
-              backgroundColor: Colors.black,
+              backgroundColor:  Theme.of(context).primaryColor,
               color: Colors.white,
             ),
           )
@@ -187,8 +187,8 @@ class _MyOrderTabState extends State<MyOrderTab> {
                                                     width: 90.0,
                                                     height: 87.0,
                                                     child:
-                                                        const CircularProgressIndicator(
-                                                      color: Colors.black,
+                                                         CircularProgressIndicator(
+                                                      color:  Theme.of(context).primaryColor,
                                                     ),
                                                   );
                                                 },

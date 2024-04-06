@@ -947,8 +947,8 @@ class _CartPageState extends State<CartPage> {
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: deviceWidth > 600
-                                      ? Fontsizes.tabletHeadingSize
-                                      :  16.5.sp,
+                                ? Fontsizes.tabletHeadingSize
+                                : 16.5.sp,
                           ),
                         ),
                         GestureDetector(
@@ -1057,9 +1057,9 @@ class _CartPageState extends State<CartPage> {
                           if (loadingProgress == null) {
                             return child;
                           }
-                          return const Center(
+                          return Center(
                             child: CircularProgressIndicator(
-                              color: Colors.black,
+                              color: Theme.of(context).primaryColor,
                             ),
                           );
                         },

@@ -17,6 +17,7 @@ import 'package:badges/badges.dart' as badges;
 import 'package:Tiara_by_TJ/api/api_service.dart';
 
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 class FetchHomeScreen extends StatefulWidget {
@@ -206,7 +207,8 @@ class _FetchHomeScreenState extends State<FetchHomeScreen> {
                                     "Show more",
                                     style: TextStyle(
                                         fontWeight: FontWeight.normal,
-                                        decoration: TextDecoration.underline),
+                                        decoration: TextDecoration.underline,
+                                        fontSize: deviceWidth > 600 ? 25.sp : 13.sp),
                                   ),
                                 )),
                             SizedBox(
@@ -317,7 +319,7 @@ class _FetchHomeScreenState extends State<FetchHomeScreen> {
                   height: MediaQuery.of(context).size.height - 200,
                   child: Center(
                     child: CircularProgressIndicator(
-                      color: Colors.black,
+                      color:  Theme.of(context).primaryColor,
                     ),
                   ),
                 )

@@ -105,8 +105,8 @@ class _CategoryListState extends State<CategoryList> {
                         child: Center(
                           child: CircularProgressIndicator(
                             color:
-                                //Theme.of(context).primaryColor,
-                                Colors.yellow,
+                                Theme.of(context).primaryColor,
+                                //Colors.yellow,
                           ),
                         ));
                   } else {
@@ -131,9 +131,9 @@ class _CategoryListState extends State<CategoryList> {
                                 isLoading: isLoading,
                               );
                             } else {
-                              return const Center(
+                              return Center(
                                   child: CircularProgressIndicator(
-                                color: Color(0xffCC868A),
+                                color:  Theme.of(context).primaryColor,
                               ));
                             }
                           }),

@@ -86,7 +86,7 @@ class _ProductItemState extends State<ProductItem> {
                           "assets/images/image_placeholder.jpg",
                           width: (deviceWidth / 2) + 16.0,
                           height: deviceWidth > 600
-                              ? (deviceWidth / 2) - 111
+                              ? (deviceWidth / 2) - 125
                               : (deviceWidth / 2) - 10,
                         ),
                       )
@@ -97,17 +97,17 @@ class _ProductItemState extends State<ProductItem> {
                                 Constants.defaultImageUrl,
                         width: (deviceWidth / 2) + 16.0,
                         height: deviceWidth > 600
-                            ? (deviceWidth / 2) - 111
+                            ? (deviceWidth / 2) - 125
                             : (deviceWidth / 2) - 10,
                         placeholder: (context, url) {
                           return SizedBox(
                             width: (deviceWidth / 2) + 16.0,
                             height: deviceWidth > 600
-                                ? (deviceWidth / 2) - 111
+                                ? (deviceWidth / 2) - 125
                                 : (deviceWidth / 2) - 10,
-                            child: const Center(
+                            child:  Center(
                               child: CircularProgressIndicator(
-                                color: Colors.black,
+                                color:  Theme.of(context).primaryColor,
                               ),
                             ),
                           );
@@ -224,6 +224,8 @@ class _ProductItemState extends State<ProductItem> {
                                 : SizedBox(
                                     width: deviceWidth / 2 - 60,
                                   ),
+
+                                  
                           ],
                         ),
                       ),

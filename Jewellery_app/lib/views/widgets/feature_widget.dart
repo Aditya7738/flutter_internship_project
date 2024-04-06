@@ -174,8 +174,8 @@ class _FeatureWidgetState extends State<FeatureWidget> {
                                       alignment: Alignment.center,
                                       width: constraints.maxHeight - 72,
                                       height: constraints.maxHeight - 72,
-                                      child: const CircularProgressIndicator(
-                                        color: Colors.black,
+                                      child:  CircularProgressIndicator(
+                                        color:  Theme.of(context).primaryColor,
                                       ),
                                     ); // Show a loading indicator
                                   } else if (snapshot.hasError) {
@@ -203,8 +203,8 @@ class _FeatureWidgetState extends State<FeatureWidget> {
                                         alignment: Alignment.center,
                                         width: 90.0,
                                         height: 87.0,
-                                        child: const CircularProgressIndicator(
-                                          color: Colors.black,
+                                        child:  CircularProgressIndicator(
+                                          color:  Theme.of(context).primaryColor,
                                         ),
                                       );
                                     }
@@ -216,8 +216,8 @@ class _FeatureWidgetState extends State<FeatureWidget> {
                                 alignment: Alignment.center,
                                 width: constraints.maxHeight - 72,
                                 height: constraints.maxHeight - 72,
-                                child: const CircularProgressIndicator(
-                                  color: Colors.black,
+                                child: CircularProgressIndicator(
+                                  color:  Theme.of(context).primaryColor,
                                 ),
                               );
                             }
@@ -226,8 +226,8 @@ class _FeatureWidgetState extends State<FeatureWidget> {
                               alignment: Alignment.center,
                               width: constraints.maxHeight - 72,
                               height: constraints.maxHeight - 72,
-                              child: const CircularProgressIndicator(
-                                color: Colors.black,
+                              child:  CircularProgressIndicator(
+                                color:  Theme.of(context).primaryColor,
                               ),
                             );
                           }
@@ -339,8 +339,8 @@ class _FeatureWidgetState extends State<FeatureWidget> {
       alignment: Alignment.center,
       width: 172.0,
       height: 172.0,
-      child: const CircularProgressIndicator(
-        color: Colors.black,
+      child:  CircularProgressIndicator(
+        color:  Theme.of(context).primaryColor,
       ),
     );
   }

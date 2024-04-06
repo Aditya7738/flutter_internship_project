@@ -347,8 +347,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             height: MediaQuery.of(context).size.height / 6,
                             child: Center(
                               child: CircularProgressIndicator(
-                                color: Colors.red,
-                                // Theme.of(context).primaryColor,
+                                color: //Colors.red,
+                                 Theme.of(context).primaryColor,
                               ),
                             ));
                         print("snapshot.loading");
@@ -368,8 +368,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                 child: Center(
                                   child: CircularProgressIndicator(
                                     color:
-                                        //Theme.of(context).primaryColor,
-                                        Colors.yellow,
+                                        Theme.of(context).primaryColor,
+                                        //Colors.yellow,
                                   ),
                                 ));
                           } else {
@@ -396,9 +396,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                         isLoading: isLoading,
                                       );
                                     } else {
-                                      return const Center(
+                                      return  Center(
                                           child: CircularProgressIndicator(
-                                        color: Color(0xffCC868A),
+                                        color:  Theme.of(context).primaryColor,
                                       ));
                                     }
                                   }),
@@ -517,8 +517,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 .width,
                                             height: 92.0,
                                             child:
-                                                const CircularProgressIndicator(
-                                              color: Colors.black,
+                                                 CircularProgressIndicator(
+                                              color:  Theme.of(context).primaryColor,
                                             ),
                                           );
                                         },
@@ -599,8 +599,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   .width,
                                               height: 92.0,
                                               child:
-                                                  const CircularProgressIndicator(
-                                                color: Colors.black,
+                                                  CircularProgressIndicator(
+                                                color:  Theme.of(context).primaryColor,
                                               ),
                                             );
                                           },

@@ -597,7 +597,7 @@ class _PaymentPageState extends State<PaymentPage>
                           height: MediaQuery.of(context).size.height / 2,
                           child: Center(
                             child: CircularProgressIndicator(
-                              color: Colors.black,
+                              color:  Theme.of(context).primaryColor,
                             ),
                           ),
                         );

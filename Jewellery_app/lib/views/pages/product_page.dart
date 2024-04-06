@@ -52,7 +52,7 @@ class _ProductPageState extends State<ProductPage> {
 
   Stream<FileResponse>? productFileStream;
   Stream<FileResponse>? collectionFileStream;
- 
+
   @override
   void initState() {
     super.initState();
@@ -346,6 +346,7 @@ class _ProductPageState extends State<ProductPage> {
     if (isThereInternet) {
       categoryProvider.setIsCategoryProductFetching(true);
       ApiService.listOfProductsCategoryWise.clear();
+      print("categoryId ${widget.id}");
       await ApiService.fetchProductsCategoryWise(id: widget.id, pageNo: 1);
 
       categoryProvider.setIsCategoryProductFetching(false);
@@ -563,9 +564,7 @@ class _ProductPageState extends State<ProductPage> {
                                     ConnectionState.waiting) {
                                   body = SizedBox(
                                       width: deviceWidth,
-                                      height:
-                                          deviceHeight -
-                                              176,
+                                      height: deviceHeight - 176,
                                       child: Center(
                                         child: CircularProgressIndicator(
                                           color:
@@ -600,8 +599,7 @@ class _ProductPageState extends State<ProductPage> {
                                         "cacheProvider.fileInfoFetching ${cacheProvider.fileInfoFetching!}");
                                     if (cacheProvider.fileInfoFetching!) {
                                       body = SizedBox(
-                                          width:
-                                              deviceWidth,
+                                          width: deviceWidth,
                                           height: MediaQuery.of(context)
                                                   .size
                                                   .height -
@@ -615,8 +613,7 @@ class _ProductPageState extends State<ProductPage> {
                                           ));
                                     } else {
                                       body = SizedBox(
-                                          width:
-                                              deviceWidth,
+                                          width: deviceWidth,
                                           height: MediaQuery.of(context)
                                                   .size
                                                   .height -
@@ -634,9 +631,7 @@ class _ProductPageState extends State<ProductPage> {
                                         "CacheMemory.listOfProducts.length ${CacheMemory.listOfProducts.length}");
                                     body = SizedBox(
                                       width: deviceWidth,
-                                      height:
-                                          deviceHeight -
-                                              176,
+                                      height: deviceHeight - 176,
                                       child: Scrollbar(
                                         child: GridView.builder(
                                             controller: _scrollController,
@@ -691,14 +686,15 @@ class _ProductPageState extends State<ProductPage> {
                                                   )),
                                                 );
                                               } else {
-                                                return const Padding(
+                                                return Padding(
                                                   padding: EdgeInsets.symmetric(
                                                       vertical: 15.0,
                                                       horizontal: 10.0),
                                                   child: Center(
                                                       child:
                                                           CircularProgressIndicator(
-                                                    color: Color(0xffCC868A),
+                                                    color: Theme.of(context)
+                                                        .primaryColor,
                                                   )),
                                                 );
                                               }
@@ -726,8 +722,7 @@ class _ProductPageState extends State<ProductPage> {
                             return value.isCategoryProductFetching
                                 ? SizedBox(
                                     width: deviceWidth,
-                                    height: deviceHeight -
-                                        reduceSize,
+                                    height: deviceHeight - reduceSize,
                                     child: Center(
                                       child: CircularProgressIndicator(
                                         color: Theme.of(context).primaryColor,
@@ -735,8 +730,7 @@ class _ProductPageState extends State<ProductPage> {
                                     ))
                                 : SizedBox(
                                     width: deviceWidth,
-                                    height: deviceHeight -
-                                        reduceSize,
+                                    height: deviceHeight - reduceSize,
                                     child: Scrollbar(
                                       child: GridView.builder(
                                           controller: _scrollController,
@@ -748,7 +742,10 @@ class _ProductPageState extends State<ProductPage> {
                                                   : 0),
                                           gridDelegate:
                                               SliverGridDelegateWithFixedCrossAxisCount(
-                                            childAspectRatio: 0.64,
+                                            childAspectRatio: MediaQuery.of(context)
+                                                            .size
+                                                            .width >
+                                                        600 ? 0.105 : 0.64,
                                             crossAxisCount:
                                                 MediaQuery.of(context)
                                                             .size
@@ -826,7 +823,8 @@ class _ProductPageState extends State<ProductPage> {
                                 print("reduceSize $reduceSize");
                                 print(
                                     "ProductPage.listOfCollections.length ${ProductPage.listOfCollections.length}");
-                                if (index < ProductPage.listOfCollections.length) {
+                                if (index <
+                                    ProductPage.listOfCollections.length) {
                                   AllProducts.ProductsModel collectionsModel =
                                       ProductPage.listOfCollections[index];
                                   print(" productIndex: $index");
@@ -849,12 +847,12 @@ class _ProductPageState extends State<ProductPage> {
                                     )),
                                   );
                                 } else {
-                                  return const Padding(
+                                  return Padding(
                                     padding: EdgeInsets.symmetric(
                                         vertical: 15.0, horizontal: 10.0),
                                     child: Center(
                                         child: CircularProgressIndicator(
-                                      color: Color(0xffCC868A),
+                                      color: Theme.of(context).primaryColor,
                                     )),
                                   );
                                 }
@@ -868,8 +866,7 @@ class _ProductPageState extends State<ProductPage> {
                           return value.collectionsProductFileInfoFetching
                               ? Container(
                                   width: deviceWidth,
-                                  height:
-                                      deviceHeight - 104,
+                                  height: deviceHeight - 104,
                                   child: Center(
                                     child: CircularProgressIndicator(
                                       color: Theme.of(context).primaryColor,
@@ -877,8 +874,7 @@ class _ProductPageState extends State<ProductPage> {
                                   ))
                               : Container(
                                   width: deviceWidth,
-                                  height:
-                                      deviceHeight - 104,
+                                  height: deviceHeight - 104,
                                   child: Scrollbar(
                                     child: GridView.builder(
                                       controller: _scrollController,
@@ -896,10 +892,12 @@ class _ProductPageState extends State<ProductPage> {
                                               crossAxisCount:
                                                   deviceWidth > 600 ? 3 : 2),
                                       itemBuilder: (context, index) {
-                                        if (index < ProductPage.listOfCollections.length) {
+                                        if (index <
+                                            ProductPage
+                                                .listOfCollections.length) {
                                           AllProducts.ProductsModel
-                                              collectionsModel =
-                                              ProductPage.listOfCollections[index];
+                                              collectionsModel = ProductPage
+                                                  .listOfCollections[index];
                                           print(" productIndex: $index");
                                           return ProductItem(
                                             productIndex: index,
@@ -920,14 +918,15 @@ class _ProductPageState extends State<ProductPage> {
                                             )),
                                           );
                                         } else if (value.isMoreProductLoading) {
-                                          return const Padding(
+                                          return Padding(
                                             padding: EdgeInsets.symmetric(
                                                 vertical: 15.0,
                                                 horizontal: 10.0),
                                             child: Center(
                                                 child:
                                                     CircularProgressIndicator(
-                                              color: Color(0xffCC868A),
+                                              color: Theme.of(context)
+                                                  .primaryColor,
                                             )),
                                           );
                                         }

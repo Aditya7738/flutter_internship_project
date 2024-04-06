@@ -53,12 +53,12 @@ class _WholeCarouselSliderState extends State<WholeCarouselSlider> {
                           if (loadingProgress == null) {
                             return child;
                           }
-                          return const SizedBox(
+                          return SizedBox(
                             width: 46.0,
                             height: 16.0,
                             child: Center(
                               child: CircularProgressIndicator(
-                                color: Colors.black,
+                                color: Theme.of(context).primaryColor,
                               ),
                             ),
                           );

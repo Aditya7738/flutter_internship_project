@@ -271,21 +271,19 @@ class _HomeScreen2State extends State<HomeScreen2> {
                             : ProductItem(
                                 productsModel: ApiService.onSaleProducts[index], forCollections: false,
                               )),
-                    Container(
-                        color: Colors.red,
-                        child: isNewCategoryLoading
-                            ? SizedBox(
-                                width: MediaQuery.of(context).size.width / 2,
-                                height: MediaQuery.of(context).size.width / 2,
-                                child: const Center(
-                                  child: CircularProgressIndicator(
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              )
-                            : ProductItem(
-                                productsModel: ApiService.onSaleProducts[index], forCollections: false,
-                              )),
+                    isNewCategoryLoading
+                        ? SizedBox(
+                            width: MediaQuery.of(context).size.width / 2,
+                            height: MediaQuery.of(context).size.width / 2,
+                            child: const Center(
+                              child: CircularProgressIndicator(
+                                color: Colors.black,
+                              ),
+                            ),
+                          )
+                        : ProductItem(
+                            productsModel: ApiService.onSaleProducts[index], forCollections: false,
+                          ),
                   ],
                 );
               },

@@ -257,8 +257,8 @@ class _CollectionGridListState extends State<CollectionGridList> {
               height: (MediaQuery.of(context).size.height / 2) + 220,
               child: Center(
                 child: CircularProgressIndicator(
-                  color: Colors.red,
-                  // Theme.of(context).primaryColor,
+                  color:// Colors.red,
+                  Theme.of(context).primaryColor,
                 ),
               ));
           print("snapshot.loading");
@@ -287,12 +287,12 @@ class _CollectionGridListState extends State<CollectionGridList> {
                     fromHomeScreen: true,
                   );
                 } else {
-                  return const Padding(
+                  return Padding(
                     padding:
                         EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
                     child: Center(
                         child: CircularProgressIndicator(
-                      color: Color(0xffCC868A),
+                      color:  Theme.of(context).primaryColor,
                     )),
                   );
                 }
