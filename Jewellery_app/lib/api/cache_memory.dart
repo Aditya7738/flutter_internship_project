@@ -63,7 +63,8 @@ class CacheMemory {
     if (result.isNotEmpty) {
       final json = jsonDecode(http.Response(result, 200).body);
       print("getFile json $json");
-      listOfProducts.clear();
+     // listOfProducts.clear();
+      print("listOfProducts length ${listOfProducts.length}");
       for (int i = 0; i < json.length; i++) {
         listOfProducts.add(AllProducts.ProductsModel(
           id: json[i]['id'],
@@ -217,7 +218,7 @@ class CacheMemory {
       print("collections basicAuth $basicAuth");
 
       var headers = {
-       'Content-Type': 'application/json',
+        'Content-Type': 'application/json',
         'Authorization': basicAuth
       };
 

@@ -106,9 +106,9 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
               ),
             ]
           ,
-      bottom: !isNeededForHome || isNeededForProductPage
-          ? null
-          : const CustomSearchBar(),
+      // bottom: !isNeededForHome || isNeededForProductPage
+      //     ? null
+      //     : const CustomSearchBar(),
       elevation: 5.0,
     );
   }

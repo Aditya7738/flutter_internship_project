@@ -5,6 +5,7 @@ import 'package:Tiara_by_TJ/views/pages/home_screen3.dart';
 import 'package:flutter/material.dart';
 import 'package:Tiara_by_TJ/model/choice_model.dart';
 import 'package:Tiara_by_TJ/views/widgets/label_widget.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ChoiceWidget extends StatefulWidget {
   final ChoiceModel choiceModel;
@@ -44,7 +45,7 @@ class _ChoiceWidgetState extends State<ChoiceWidget> {
   @override
   Widget build(BuildContext context) {
     double deviceWidth = MediaQuery.of(context).size.width;
-    print("ddl deviceWidth ${(deviceWidth / 36) +  4}");
+    print("ddl deviceWidth ${(deviceWidth / 36) + 4}");
 
     Widget mobileDdl = DropdownButton(
         value: selectedOption,
@@ -76,7 +77,13 @@ class _ChoiceWidgetState extends State<ChoiceWidget> {
             items: options.map((String option) {
               return DropdownMenuItem(
                 value: option,
-                child: Text(option),
+                child: Text(
+                  option,
+                  style: TextStyle(
+                    fontSize:
+                        deviceWidth > 600 ? (deviceWidth / 36) + 4 : 17.sp,
+                  ),
+                ),
               );
             }).toList(),
             onChanged: (String? newValue) {
@@ -118,7 +125,7 @@ class _ChoiceWidgetState extends State<ChoiceWidget> {
       children: [
         LabelWidget(
           label: choiceModel.label ?? "",
-          fontSize: (deviceWidth / 36) +  4,
+          fontSize: (deviceWidth / 36) + 4,
         ),
         const SizedBox(
           height: 15.0,
@@ -129,7 +136,13 @@ class _ChoiceWidgetState extends State<ChoiceWidget> {
             items: options.map((String option) {
               return DropdownMenuItem(
                 value: option,
-                child: Text(option),
+                child: Text(
+                  option,
+                  style: TextStyle(
+                    fontSize:
+                        deviceWidth > 600 ? (deviceWidth / 36) + 3 : 16.sp,
+                  ),
+                ),
               );
             }).toList(),
             onChanged: (String? newValue) {

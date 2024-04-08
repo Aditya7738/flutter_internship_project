@@ -9,6 +9,7 @@ import 'package:Tiara_by_TJ/providers/cache_provider.dart';
 import 'package:Tiara_by_TJ/providers/cart_provider.dart';
 import 'package:Tiara_by_TJ/providers/category_provider.dart';
 import 'package:Tiara_by_TJ/providers/filteroptions_provider.dart';
+import 'package:Tiara_by_TJ/providers/layoutdesign_provider.dart';
 import 'package:Tiara_by_TJ/providers/wishlist_provider.dart';
 import 'package:Tiara_by_TJ/views/pages/cart_page.dart';
 import 'package:Tiara_by_TJ/views/widgets/filter_modal.dart';
@@ -50,7 +51,7 @@ class _ProductPageState extends State<ProductPage> {
 
   bool isCollectionLoading = false;
 
-  Stream<FileResponse>? productFileStream;
+  //Stream<FileResponse>? productFileStream;
   Stream<FileResponse>? collectionFileStream;
 
   @override
@@ -61,15 +62,16 @@ class _ProductPageState extends State<ProductPage> {
     filterOptionsProvider =
         Provider.of<FilterOptionsProvider>(context, listen: false);
 
-    // if (widget.forCollections == false) {
-    //   getProducts();
-    // }
     if (widget.forCollections == false) {
-      print("productFileStream == null ${productFileStream == null}");
-      if (productFileStream == null) {
-        _downloadFile();
-      }
-    } else {
+      getProducts();
+    }
+    // if (widget.forCollections == false) {
+    //   print("productFileStream == null ${productFileStream == null}");
+    //   if (productFileStream == null) {
+    //     _downloadFile();
+    //   }
+    // } else {
+    if (widget.forCollections) {
       if (collectionFile == null) {
         _downloadCollectionFile(1);
       }
@@ -321,25 +323,25 @@ class _ProductPageState extends State<ProductPage> {
     }
   }
 
-  void _downloadFile() {
-    String productsUri =
-        "${Constants.baseUrl}/wp-json/wc/v3/products?consumer_key=${Constants.consumerKey}&consumer_secret=${Constants.consumerSecret}&category=${widget.id}&per_page=100&page=1";
-    if (mounted) {
-      setState(() {
-        productFileStream = DefaultCacheManager()
-            .getFileStream(productsUri, withProgress: true);
-      });
-      print("productFileStream == null ${productFileStream == null}");
-    }
-  }
+  // void _downloadFile() {
+  //   String productsUri =
+  //       "${Constants.baseUrl}/wp-json/wc/v3/products?consumer_key=${Constants.consumerKey}&consumer_secret=${Constants.consumerSecret}&category=${widget.id}&per_page=100&page=1";
+  //   if (mounted) {
+  //     setState(() {
+  //       productFileStream = DefaultCacheManager()
+  //           .getFileStream(productsUri, withProgress: true);
+  //     });
+  //     print("productFileStream == null ${productFileStream == null}");
+  //   }
+  // }
 
-  void loadMoreData() async {
-    if (widget.forCollections == false) {
-      isThereMoreProducts = await ApiService.showNextPagesCategoryProduct();
-    } else {
-      isThereMoreProducts = await ApiService.showNextPagesCollectionProduct();
-    }
-  }
+  // void loadMoreData() async {
+  //   if (widget.forCollections == false) {
+  //     isThereMoreProducts = await ApiService.showNextPagesCategoryProduct();
+  //   } else {
+  //     isThereMoreProducts = await ApiService.showNextPagesCollectionProduct();
+  //   }
+  // }
 
   Future<void> getProducts() async {
     bool isThereInternet = await ApiService.checkInternetConnection(context);
@@ -362,15 +364,15 @@ class _ProductPageState extends State<ProductPage> {
     super.dispose();
   }
 
-  void getFile(
-      AsyncSnapshot<Object?> snapshot, CacheProvider cacheProvider) async {
-    if (cacheProvider.fileInfoFetching != null) {
-      cacheProvider.setFileInfoFetching(true);
-      //  CacheMemory.cacheProviderValue.clear();
-      await CacheMemory.getProductsFile(snapshot);
-      cacheProvider.setFileInfoFetching(null);
-    }
-  }
+  // void getFile(
+  //     AsyncSnapshot<Object?> snapshot, CacheProvider cacheProvider) async {
+  //   if (cacheProvider.fileInfoFetching != null) {
+  //     cacheProvider.setFileInfoFetching(true);
+  //     CacheMemory.listOfProducts.clear();
+  //     await CacheMemory.getProductsFile(snapshot);
+  //     cacheProvider.setFileInfoFetching(null);
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -380,15 +382,19 @@ class _ProductPageState extends State<ProductPage> {
     FilterOptionsProvider filterOptionsProvider =
         Provider.of<FilterOptionsProvider>(context);
 
+    LayoutDesignProvider layoutDesignProvider =
+        Provider.of<LayoutDesignProvider>(context, listen: false);
+
     CategoryProvider categoryProvider = Provider.of(context, listen: false);
 
     double deviceWidth = MediaQuery.of(context).size.width;
     double deviceHeight = MediaQuery.of(context).size.height;
     print("deviceWidth / 20 ${deviceWidth / 31}");
 
+    print("forCollection ${widget.forCollections}");
     double reduceSize = widget.forCollections
         ? kToolbarHeight - 30
-        : (kToolbarHeight + kToolbarHeight) - 50;
+        : (kToolbarHeight + kToolbarHeight) + 70;
 
     return Scaffold(
         appBar: AppBar(
@@ -400,8 +406,11 @@ class _ProductPageState extends State<ProductPage> {
               Container(
                 width: (deviceWidth / 16) + 4,
                 child: badges.Badge(
-                  badgeStyle:
-                      const badges.BadgeStyle(badgeColor: Colors.purple),
+                  badgeStyle: badges.BadgeStyle(
+                      badgeColor:
+                          //    Colors.purple
+                          Color(int.parse(
+                              "0xff${layoutDesignProvider.primary.substring(1)}"))),
                   badgeContent: Consumer<WishlistProvider>(
                       builder: (context, value, child) {
                     print("LENGTH OF FAV: ${value.favProductIds}");
@@ -427,8 +436,9 @@ class _ProductPageState extends State<ProductPage> {
               Container(
                 width: (deviceWidth / 16) + 4,
                 child: badges.Badge(
-                  badgeStyle:
-                      const badges.BadgeStyle(badgeColor: Colors.purple),
+                  badgeStyle: badges.BadgeStyle(
+                      badgeColor: Color(int.parse(
+                          "0xff${layoutDesignProvider.primary.substring(1)}"))),
                   badgeContent: Consumer<CartProvider>(
                       builder: (context, value, child) => Text(
                             value.cart.length.toString(),
@@ -527,283 +537,285 @@ class _ProductPageState extends State<ProductPage> {
                 },
               ),
               widget.forCollections == false
-                  ? filterOptionsProvider.haveSubmitClicked == false
-                      ? productFileStream != null
-                          ? StreamBuilder(
-                              stream: productFileStream!,
-                              builder: (context, snapshot) {
-                                print(
-                                    "cacheProvider.fileInfoFetching != true ${cacheProvider.fileInfoFetching != true}");
-                                if (cacheProvider.fileInfoFetching != true) {
-                                  print(
-                                      "!snapshot.hasData ${!snapshot.hasData}");
-                                  if (snapshot.hasData) {
-                                    getFile(snapshot, cacheProvider);
-                                  } else {
-                                    cacheProvider.setIsProductListEmpty(true);
-                                  }
-                                }
+                  // ?
+                  // filterOptionsProvider.haveSubmitClicked == false
+                  // ? productFileStream != null
+                  // false
+                  //     ? StreamBuilder(
+                  //         stream: productFileStream!,
+                  //         builder: (context, snapshot) {
+                  //           print(
+                  //               "cacheProvider.fileInfoFetching != true ${cacheProvider.fileInfoFetching != true}");
+                  //           if (cacheProvider.fileInfoFetching != true) {
+                  //             print(
+                  //                 "!snapshot.hasData ${!snapshot.hasData}");
+                  //             if (snapshot.hasData) {
+                  //               getFile(snapshot, cacheProvider);
+                  //             } else {
+                  //               cacheProvider.setIsProductListEmpty(true);
+                  //             }
+                  //           }
 
-                                Widget body;
+                  //           Widget body;
 
-                                print(
-                                    "snapshot.data is DownloadProgress ${snapshot.data is DownloadProgress}");
-                                final loading = !snapshot.hasData ||
-                                    snapshot.data is DownloadProgress;
-                                // DownloadProgress? progress =
-                                //     snapshot.data as DownloadProgress?;
-                                print("loading $loading");
-                                if (snapshot.hasError) {
-                                  body = SizedBox();
-                                  print(
-                                      "snapshot error ${snapshot.error.toString()}");
-                                }
-                                //   uncomment below code
+                  //           print(
+                  //               "snapshot.data is DownloadProgress ${snapshot.data is DownloadProgress}");
+                  //           final loading = !snapshot.hasData ||
+                  //               snapshot.data is DownloadProgress;
+                  //           // DownloadProgress? progress =
+                  //           //     snapshot.data as DownloadProgress?;
+                  //           print("loading $loading");
+                  //           if (snapshot.hasError) {
+                  //             body = SizedBox();
+                  //             print(
+                  //                 "snapshot error ${snapshot.error.toString()}");
+                  //           }
+                  //           //   uncomment below code
 
-                                else if (snapshot.connectionState ==
-                                    ConnectionState.waiting) {
-                                  body = SizedBox(
-                                      width: deviceWidth,
-                                      height: deviceHeight - 176,
-                                      child: Center(
-                                        child: CircularProgressIndicator(
-                                          color:
-                                              // Colors.red,
-                                              Theme.of(context).primaryColor,
-                                        ),
-                                      ));
-                                  print("snapshot.loading");
-                                }
-                                // else if (loading) {
-                                //   body = SizedBox(
-                                //       width: deviceWidth,
-                                //       height: deviceHeight -
-                                //           176,
-                                //       child: Center(
-                                //         child: CircularProgressIndicator(
-                                //           color:
-                                //               // Colors.red,
-                                //               Theme.of(context).primaryColor,
-                                //         ),
-                                //       ));
-                                //   print("snapshot.loading");
-                                //   //  p_i.ProgressIndicator(
-                                //   //   progress: snapshot.data as DownloadProgress?,
-                                //   // );
-                                // }
-                                else {
-                                  // print("productFileStream.length ${}");
+                  //           else if (snapshot.connectionState ==
+                  //               ConnectionState.waiting) {
+                  //             body = SizedBox(
+                  //                 width: deviceWidth,
+                  //                 height: deviceHeight - 176,
+                  //                 child: Center(
+                  //                   child: CircularProgressIndicator(
+                  //                     color:
+                  //                         // Colors.red,
+                  //                         Theme.of(context).primaryColor,
+                  //                   ),
+                  //                 ));
+                  //             print("snapshot.loading");
+                  //           }
+                  //           // else if (loading) {
+                  //           //   body = SizedBox(
+                  //           //       width: deviceWidth,
+                  //           //       height: deviceHeight -
+                  //           //           176,
+                  //           //       child: Center(
+                  //           //         child: CircularProgressIndicator(
+                  //           //           color:
+                  //           //               // Colors.red,
+                  //           //               Theme.of(context).primaryColor,
+                  //           //         ),
+                  //           //       ));
+                  //           //   print("snapshot.loading");
+                  //           //   //  p_i.ProgressIndicator(
+                  //           //   //   progress: snapshot.data as DownloadProgress?,
+                  //           //   // );
+                  //           // }
+                  //           else {
+                  //             // print("productFileStream.length ${}");
 
-                                  if (cacheProvider.fileInfoFetching != null) {
-                                    print(
-                                        "cacheProvider.fileInfoFetching ${cacheProvider.fileInfoFetching!}");
-                                    if (cacheProvider.fileInfoFetching!) {
-                                      body = SizedBox(
-                                          width: deviceWidth,
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height -
-                                              176,
-                                          child: Center(
-                                            child: CircularProgressIndicator(
-                                              color: Theme.of(context)
-                                                  .primaryColor,
-                                              // Colors.yellow,
-                                            ),
-                                          ));
-                                    } else {
-                                      body = SizedBox(
-                                          width: deviceWidth,
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height -
-                                              176,
-                                          child: Center(
-                                            child: CircularProgressIndicator(
-                                              color: Theme.of(context)
-                                                  .primaryColor,
-                                              // Colors.yellow,
-                                            ),
-                                          ));
-                                    }
-                                  } else {
-                                    print(
-                                        "CacheMemory.listOfProducts.length ${CacheMemory.listOfProducts.length}");
-                                    body = SizedBox(
-                                      width: deviceWidth,
-                                      height: deviceHeight - 176,
-                                      child: Scrollbar(
-                                        child: GridView.builder(
-                                            controller: _scrollController,
-                                            itemCount:
-                                                CacheMemory
-                                                        .listOfProducts.length +
-                                                    (isLoading ||
-                                                            !isThereMoreProducts
-                                                        ? 1
-                                                        : 0),
-                                            gridDelegate:
-                                                SliverGridDelegateWithFixedCrossAxisCount(
-                                              childAspectRatio: 0.64,
-                                              crossAxisCount:
-                                                  MediaQuery.of(context)
-                                                              .size
-                                                              .width >
-                                                          600
-                                                      ? 3
-                                                      : 2,
-                                            ),
-                                            itemBuilder: (BuildContext context,
-                                                int index) {
-                                              print(
-                                                  "index < CacheMemory.listOfProducts.length ${index < CacheMemory.listOfProducts.length}");
-                                              if (index <
-                                                  CacheMemory
-                                                      .listOfProducts.length) {
-                                                print(" productIndex: $index");
-                                                return ProductItem(
-                                                  productIndex: index,
-                                                  productsModel: CacheMemory
-                                                      .listOfProducts[index],
-                                                  forCollections:
-                                                      widget.forCollections,
-                                                );
-                                              } else if (!isThereMoreProducts ||
-                                                  cacheProvider
-                                                      .isProductListEmpty) {
-                                                return Padding(
-                                                  padding: EdgeInsets.symmetric(
-                                                      vertical: 15.0,
-                                                      horizontal: 10.0),
-                                                  child: Center(
-                                                      child: Text(
-                                                    "There are no more products",
-                                                    style: TextStyle(
-                                                        fontSize:
-                                                            deviceWidth / 33,
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  )),
-                                                );
-                                              } else {
-                                                return Padding(
-                                                  padding: EdgeInsets.symmetric(
-                                                      vertical: 15.0,
-                                                      horizontal: 10.0),
-                                                  child: Center(
-                                                      child:
-                                                          CircularProgressIndicator(
-                                                    color: Theme.of(context)
-                                                        .primaryColor,
-                                                  )),
-                                                );
-                                              }
-                                            }),
+                  //             if (cacheProvider.fileInfoFetching != null) {
+                  //               print(
+                  //                   "cacheProvider.fileInfoFetching ${cacheProvider.fileInfoFetching!}");
+                  //               if (cacheProvider.fileInfoFetching!) {
+                  //                 body = SizedBox(
+                  //                     width: deviceWidth,
+                  //                     height: MediaQuery.of(context)
+                  //                             .size
+                  //                             .height -
+                  //                         176,
+                  //                     child: Center(
+                  //                       child: CircularProgressIndicator(
+                  //                         color: Theme.of(context)
+                  //                             .primaryColor,
+                  //                         // Colors.yellow,
+                  //                       ),
+                  //                     ));
+                  //               } else {
+                  //                 body = SizedBox(
+                  //                     width: deviceWidth,
+                  //                     height: MediaQuery.of(context)
+                  //                             .size
+                  //                             .height -
+                  //                         176,
+                  //                     child: Center(
+                  //                       child: CircularProgressIndicator(
+                  //                         color: Theme.of(context)
+                  //                             .primaryColor,
+                  //                         // Colors.yellow,
+                  //                       ),
+                  //                     ));
+                  //               }
+                  //             } else {
+                  //               print(
+                  //                   "CacheMemory.listOfProducts.length ${CacheMemory.listOfProducts.length}");
+                  //               body = SizedBox(
+                  //                 width: deviceWidth,
+                  //                 height: deviceHeight - 176,
+                  //                 child: Scrollbar(
+                  //                   child: GridView.builder(
+                  //                       controller: _scrollController,
+                  //                       itemCount:
+                  //                           CacheMemory
+                  //                                   .listOfProducts.length +
+                  //                               (isLoading ||
+                  //                                       !isThereMoreProducts
+                  //                                   ? 1
+                  //                                   : 0),
+                  //                       gridDelegate:
+                  //                           SliverGridDelegateWithFixedCrossAxisCount(
+                  //                         childAspectRatio: 0.64,
+                  //                         crossAxisCount:
+                  //                             MediaQuery.of(context)
+                  //                                         .size
+                  //                                         .width >
+                  //                                     600
+                  //                                 ? 3
+                  //                                 : 2,
+                  //                       ),
+                  //                       itemBuilder: (BuildContext context,
+                  //                           int index) {
+                  //                         print(
+                  //                             "index < CacheMemory.listOfProducts.length ${index < CacheMemory.listOfProducts.length}");
+                  //                         if (index <
+                  //                             CacheMemory
+                  //                                 .listOfProducts.length) {
+                  //                           print(" productIndex: $index");
+                  //                           return ProductItem(
+                  //                             productIndex: index,
+                  //                             productsModel: CacheMemory
+                  //                                 .listOfProducts[index],
+                  //                             forCollections:
+                  //                                 widget.forCollections,
+                  //                           );
+                  //                         } else if (!isThereMoreProducts ||
+                  //                             cacheProvider
+                  //                                 .isProductListEmpty) {
+                  //                           return Padding(
+                  //                             padding: EdgeInsets.symmetric(
+                  //                                 vertical: 15.0,
+                  //                                 horizontal: 10.0),
+                  //                             child: Center(
+                  //                                 child: Text(
+                  //                               "There are no more products",
+                  //                               style: TextStyle(
+                  //                                   fontSize:
+                  //                                       deviceWidth / 33,
+                  //                                   fontWeight:
+                  //                                       FontWeight.bold),
+                  //                             )),
+                  //                           );
+                  //                         } else {
+                  //                           return Padding(
+                  //                             padding: EdgeInsets.symmetric(
+                  //                                 vertical: 15.0,
+                  //                                 horizontal: 10.0),
+                  //                             child: Center(
+                  //                                 child:
+                  //                                     CircularProgressIndicator(
+                  //                               color: Theme.of(context)
+                  //                                   .primaryColor,
+                  //                             )),
+                  //                           );
+                  //                         }
+                  //                       }),
+                  //                 ),
+                  //               );
+                  //             }
+                  //             print("snapshot.data ${snapshot.data}");
+                  //           }
+                  //           return body;
+                  //         },
+                  //       )
+                  //     : SizedBox(
+                  //         width: deviceWidth,
+                  //         height: deviceHeight - 176,
+                  //         child: Center(
+                  //           child: CircularProgressIndicator(
+                  //             color: Theme.of(context).primaryColor,
+                  //           ),
+                  //         ),
+                  //       )
+                  // :
+                  ? Consumer<CategoryProvider>(
+                      builder: (context, value, child) {
+                        print("search reduceSize $reduceSize");
+                        return value.isCategoryProductFetching
+                            ? SizedBox(
+                                width: deviceWidth,
+                                height: deviceHeight - reduceSize,
+                                child: Center(
+                                  child: CircularProgressIndicator(
+                                    color: Color(int.parse(
+                                  "0xff${layoutDesignProvider.primary.substring(1)}")),
+                                  ),
+                                ))
+                            : SizedBox(
+                                width: deviceWidth,
+                                height: deviceHeight - reduceSize,
+                                child: Scrollbar(
+                                  child: GridView.builder(
+                                      controller: _scrollController,
+                                      itemCount: ApiService
+                                              .listOfProductsCategoryWise
+                                              .length +
+                                          (isLoading || !isThereMoreProducts
+                                              ? 1
+                                              : 0),
+                                      gridDelegate:
+                                          SliverGridDelegateWithFixedCrossAxisCount(
+                                        childAspectRatio: 0.64,
+                                        crossAxisCount:
+                                            MediaQuery.of(context).size.width >
+                                                    600
+                                                ? 3
+                                                : 2,
                                       ),
-                                    );
-                                  }
-                                  print("snapshot.data ${snapshot.data}");
-                                }
-                                return body;
-                              },
-                            )
-                          : SizedBox(
-                              width: deviceWidth,
-                              height: deviceHeight - 176,
-                              child: Center(
-                                child: CircularProgressIndicator(
-                                  color: Theme.of(context).primaryColor,
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        if (index <
+                                            ApiService
+                                                .listOfProductsCategoryWise
+                                                .length) {
+                                          print(" productIndex: $index");
+                                          return ProductItem(
+                                            productIndex: index,
+                                            productsModel: ApiService
+                                                    .listOfProductsCategoryWise[
+                                                index],
+                                            forCollections:
+                                                widget.forCollections,
+                                          );
+                                        } else if (ApiService
+                                                .listOfProductsCategoryWise
+                                                .isEmpty
+                                            //value.isProductListEmpty
+                                            ) {
+                                          return Padding(
+                                            padding: EdgeInsets.symmetric(
+                                                vertical: 15.0,
+                                                horizontal: 10.0),
+                                            child: Center(
+                                                child: Text(
+                                              "There are no more products",
+                                              style: TextStyle(
+                                                  fontSize: deviceWidth / 33,
+                                                  fontWeight: FontWeight.bold),
+                                            )),
+                                          );
+                                        } else {
+                                          // return Padding(
+                                          //   padding: EdgeInsets.symmetric(
+                                          //       vertical: 15.0,
+                                          //       horizontal: 10.0),
+                                          //   child: Center(
+                                          //       child: CircularProgressIndicator(
+                                          //           color:
+                                          //               //Theme.of(context).primaryColor,
+                                          //               Colors.red)),
+                                          // );
+                                          return SizedBox();
+                                        }
+                                      }),
                                 ),
-                              ),
-                            )
-                      : Consumer<CategoryProvider>(
-                          builder: (context, value, child) {
-                            print("search reduceSize $reduceSize");
-                            return value.isCategoryProductFetching
-                                ? SizedBox(
-                                    width: deviceWidth,
-                                    height: deviceHeight - reduceSize,
-                                    child: Center(
-                                      child: CircularProgressIndicator(
-                                        color: Theme.of(context).primaryColor,
-                                      ),
-                                    ))
-                                : SizedBox(
-                                    width: deviceWidth,
-                                    height: deviceHeight - reduceSize,
-                                    child: Scrollbar(
-                                      child: GridView.builder(
-                                          controller: _scrollController,
-                                          itemCount: ApiService
-                                                  .listOfProductsCategoryWise
-                                                  .length +
-                                              (isLoading || !isThereMoreProducts
-                                                  ? 1
-                                                  : 0),
-                                          gridDelegate:
-                                              SliverGridDelegateWithFixedCrossAxisCount(
-                                            childAspectRatio: MediaQuery.of(context)
-                                                            .size
-                                                            .width >
-                                                        600 ? 0.105 : 0.64,
-                                            crossAxisCount:
-                                                MediaQuery.of(context)
-                                                            .size
-                                                            .width >
-                                                        600
-                                                    ? 3
-                                                    : 2,
-                                          ),
-                                          itemBuilder: (BuildContext context,
-                                              int index) {
-                                            if (index <
-                                                ApiService
-                                                    .listOfProductsCategoryWise
-                                                    .length) {
-                                              print(" productIndex: $index");
-                                              return ProductItem(
-                                                productIndex: index,
-                                                productsModel: ApiService
-                                                        .listOfProductsCategoryWise[
-                                                    index],
-                                                forCollections:
-                                                    widget.forCollections,
-                                              );
-                                            } else if (value
-                                                .isProductListEmpty) {
-                                              return Padding(
-                                                padding: EdgeInsets.symmetric(
-                                                    vertical: 15.0,
-                                                    horizontal: 10.0),
-                                                child: Center(
-                                                    child: Text(
-                                                  "There are no more products",
-                                                  style: TextStyle(
-                                                      fontSize:
-                                                          deviceWidth / 33,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                )),
-                                              );
-                                            } else {
-                                              // return Padding(
-                                              //   padding: EdgeInsets.symmetric(
-                                              //       vertical: 15.0,
-                                              //       horizontal: 10.0),
-                                              //   child: Center(
-                                              //       child: CircularProgressIndicator(
-                                              //           color:
-                                              //               //Theme.of(context).primaryColor,
-                                              //               Colors.red)),
-                                              // );
-                                              return SizedBox();
-                                            }
-                                          }),
-                                    ),
-                                  );
-                          },
-                          // child:
-                        )
+                              );
+                      },
+                    )
+                  //     // child:
+                  //   )
+                  //:
                   : collectionFile != null
                       ? Container(
                           width: deviceWidth,
@@ -852,7 +864,8 @@ class _ProductPageState extends State<ProductPage> {
                                         vertical: 15.0, horizontal: 10.0),
                                     child: Center(
                                         child: CircularProgressIndicator(
-                                      color: Theme.of(context).primaryColor,
+                                      color: Color(int.parse(
+                                  "0xff${layoutDesignProvider.primary.substring(1)}")),
                                     )),
                                   );
                                 }
@@ -869,7 +882,8 @@ class _ProductPageState extends State<ProductPage> {
                                   height: deviceHeight - 104,
                                   child: Center(
                                     child: CircularProgressIndicator(
-                                      color: Theme.of(context).primaryColor,
+                                      color: Color(int.parse(
+                                  "0xff${layoutDesignProvider.primary.substring(1)}")),
                                     ),
                                   ))
                               : Container(
@@ -925,8 +939,8 @@ class _ProductPageState extends State<ProductPage> {
                                             child: Center(
                                                 child:
                                                     CircularProgressIndicator(
-                                              color: Theme.of(context)
-                                                  .primaryColor,
+                                              color: Color(int.parse(
+                                  "0xff${layoutDesignProvider.primary.substring(1)}")),
                                             )),
                                           );
                                         }

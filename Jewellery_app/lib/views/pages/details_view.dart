@@ -1,10 +1,14 @@
 import 'package:Tiara_by_TJ/api/api_service.dart';
 import 'package:Tiara_by_TJ/api/cache_memory.dart';
+import 'package:Tiara_by_TJ/providers/cart_provider.dart';
 import 'package:Tiara_by_TJ/providers/filteroptions_provider.dart';
+import 'package:Tiara_by_TJ/providers/wishlist_provider.dart';
+import 'package:Tiara_by_TJ/views/pages/cart_page.dart';
 import 'package:Tiara_by_TJ/views/pages/product_details_page.dart';
 import 'package:Tiara_by_TJ/views/pages/product_page.dart';
+import 'package:Tiara_by_TJ/views/pages/wishlist_page.dart';
 import 'package:Tiara_by_TJ/views/widgets/collection_grid_list.dart';
-
+import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -34,7 +38,60 @@ class _DetailsViewState extends State<DetailsView> {
 
   @override
   Widget build(BuildContext context) {
+    double deviceWidth = MediaQuery.of(context).size.width;
     return Scaffold(
+      appBar: AppBar(title: Text("Details"), actions: <Widget>[
+        Container(
+          width: (deviceWidth / 16) + 4,
+          child: badges.Badge(
+            badgeStyle: const badges.BadgeStyle(badgeColor: Colors.purple),
+            badgeContent:
+                Consumer<WishlistProvider>(builder: (context, value, child) {
+              print("LENGTH OF FAV: ${value.favProductIds}");
+              return Text(
+                value.favProductIds.length.toString(),
+                style: TextStyle(
+                    color: Colors.white, fontSize: (deviceWidth / 31) - 1),
+              );
+            }),
+            child: IconButton(
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const WishListPage()));
+              },
+              icon: const Icon(Icons.favorite_sharp, color: Colors.black),
+            ),
+          ),
+        ),
+        const SizedBox(
+          width: 24,
+        ),
+        Container(
+          width: (deviceWidth / 16) + 4,
+          child: badges.Badge(
+            badgeStyle: const badges.BadgeStyle(badgeColor: Colors.purple),
+            badgeContent: Consumer<CartProvider>(
+                builder: (context, value, child) => Text(
+                      value.cart.length.toString(),
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: (deviceWidth / 31) - 1),
+                    )),
+            child: IconButton(
+              onPressed: () {
+                print("CART CLICKED");
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) => CartPage()));
+              },
+              icon: const Icon(Icons.shopping_cart),
+              color: Colors.black,
+            ),
+          ),
+        ),
+        const SizedBox(
+          width: 24,
+        ),
+      ]),
       body: PageView(
           controller: pageController,
           scrollDirection: Axis.horizontal,

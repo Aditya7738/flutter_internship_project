@@ -56,7 +56,11 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
                     Text(
                       widget.productsModel.name ?? "Jewellery",
                       textAlign: TextAlign.center,
-                      style: Fontsizes.headlineTextStyle,
+                      style: TextStyle(
+                          fontSize: deviceWidth > 600
+                              ? Fontsizes.tabletHeadingSize
+                              : Fontsizes.headingSize,
+                          fontWeight: FontWeight.bold),
                       maxLines: 2,
                     ),
                     SizedBox(
@@ -87,7 +91,7 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
                             height: MediaQuery.of(context).size.width / 3,
                             child: Center(
                               child: CircularProgressIndicator(
-                                color:  Theme.of(context).primaryColor,
+                                color: Theme.of(context).primaryColor,
                               ),
                             ),
                           );
@@ -122,7 +126,11 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
                 ),
                 Text(
                   "Write Review",
-                  style: Fontsizes.headlineTextStyle,
+                  style: TextStyle(
+                      fontSize: deviceWidth > 600
+                          ? Fontsizes.tabletHeadingSize
+                          : Fontsizes.headingSize,
+                      fontWeight: FontWeight.bold),
                 ),
                 SizedBox(
                   height: 10.0,
@@ -134,11 +142,23 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
                   validator: (value) {
                     return ValidationHelper.nullOrEmptyString(value);
                   },
+                  style: TextStyle(
+                      fontSize: deviceWidth > 600
+                          ? Fontsizes.tabletTextFormInputFieldSize
+                          : Fontsizes.textFormInputFieldSize),
                   // keyboardType: TextInputType.streetAddress,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     hintText:
                         "You can talk about the fit, design, size, packaging, etc..",
-                    hintStyle: TextStyle(fontWeight: FontWeight.normal),
+                    hintStyle: TextStyle(
+                        fontWeight: FontWeight.normal,
+                        fontSize: deviceWidth > 600
+                            ? Fontsizes.tabletTextFormInputFieldSize
+                            : Fontsizes.textFormInputFieldSize),
+                    errorStyle: TextStyle(
+                        fontSize: deviceWidth > 600
+                            ? Fontsizes.tabletErrorTextSize
+                            : Fontsizes.errorTextSize),
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10.0))),
                   ),
@@ -161,8 +181,17 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                   padding: EdgeInsets.all(15.0),
                   backgroundColor: Theme.of(context).primaryColor,
-                  content: Text("Please select rating")));
-            }
+                  content: Text(
+                    "Please select rating",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: deviceWidth > 600
+                            ? Fontsizes.tabletButtonTextSize
+                            : Fontsizes.buttonTextSize),
+                  )));
+              return;
+            } 
 
             Map<String, dynamic> data = {
               "product_id": widget.productsModel.id,
@@ -189,14 +218,21 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
 
               print("REVIEW response.statusCode ${response.statusCode}");
 
-              if (response.statusCode == 201) {
+              if (//false
+                  response.statusCode == 201
+                  ) {
                 print(jsonDecode(response.body));
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     padding: EdgeInsets.all(15.0),
                     backgroundColor: Colors.green,
                     content: Text(
                       "Thanks for your review",
-                      style: TextStyle(fontSize: 17.0),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: deviceWidth > 600
+                            ? Fontsizes.tabletButtonTextSize
+                            : Fontsizes.buttonTextSize)
                     )));
                 Navigator.pop(context, true);
               } else {
@@ -205,7 +241,12 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
                     backgroundColor: Colors.red,
                     content: Text(
                       "Don't able to send review",
-                      style: TextStyle(fontSize: 17.0),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: deviceWidth > 600
+                            ? Fontsizes.tabletButtonTextSize
+                            : Fontsizes.buttonTextSize),
                     )));
               }
             }
@@ -230,7 +271,13 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
                       backgroundColor: Color(0xffCC868A),
                     ),
                   )
-                : Text("Submit Review", style: Fontsizes.buttonTextStyle),
+                : Text("Submit Review",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: deviceWidth > 600
+                            ? Fontsizes.tabletButtonTextSize
+                            : Fontsizes.buttonTextSize)),
           ),
         ),
       ),

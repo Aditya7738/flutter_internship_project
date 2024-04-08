@@ -39,7 +39,6 @@ class _FetchHomeScreenState extends State<FetchHomeScreen> {
     LayoutDesignProvider layoutDesignProvider =
         Provider.of<LayoutDesignProvider>(context, listen: false);
 
-    
     WidgetsBinding.instance.addPostFrameCallback((_) {
       getLayoutDesign(layoutDesignProvider);
     });
@@ -99,6 +98,7 @@ class _FetchHomeScreenState extends State<FetchHomeScreen> {
                             width: MediaQuery.of(context).size.width,
                             child: Text(
                               children[i].text!,
+                              // "HI",
                               style: children[i].style != null
                                   ? TextStyle(
                                       color: children[i].style!.color != null
@@ -106,12 +106,13 @@ class _FetchHomeScreenState extends State<FetchHomeScreen> {
                                               "0xff${children[i].style!.color!.substring(1)}"))
                                           : Color(0xff000000),
                                       fontSize:
-                                          children[i].style!.fontSize != null
-                                              ? children[i]
-                                                  .style!
-                                                  .fontSize!
-                                                  .toDouble()
-                                              : deviceWidth > 600 ? 30.0 : 20,
+                                          // children[i].style!.fontSize != null
+                                          //     ? children[i]
+                                          //         .style!
+                                          //         .fontSize!
+                                          //         .toDouble()
+                                          //     :
+                                          deviceWidth > 600 ? 40.0 : 20,
                                       fontFamily:
                                           layoutDesignProvider.fontFamily)
                                   : TextStyle(),
@@ -175,7 +176,7 @@ class _FetchHomeScreenState extends State<FetchHomeScreen> {
                               child: Text(
                                 label,
                                 style: TextStyle(
-                                     fontSize: deviceWidth > 600 ? 30.0 : 18.0,
+                                    fontSize: deviceWidth > 600 ? 30.0 : 18.0,
                                     fontWeight: FontWeight.bold,
                                     fontFamily:
                                         layoutDesignProvider.fontFamily),
@@ -208,7 +209,8 @@ class _FetchHomeScreenState extends State<FetchHomeScreen> {
                                     style: TextStyle(
                                         fontWeight: FontWeight.normal,
                                         decoration: TextDecoration.underline,
-                                        fontSize: deviceWidth > 600 ? 25.sp : 13.sp),
+                                        fontSize:
+                                            deviceWidth > 600 ? 25.sp : 13.sp),
                                   ),
                                 )),
                             SizedBox(
@@ -247,83 +249,95 @@ class _FetchHomeScreenState extends State<FetchHomeScreen> {
         Provider.of<LayoutDesignProvider>(context, listen: false);
     double deviceWidth = MediaQuery.of(context).size.width;
     print("deviceWidth / 20 ${deviceWidth / 31}");
-    return Scaffold(
-        appBar: AppBar(
-          toolbarHeight: (kToolbarHeight + kToolbarHeight) - 26,
-          automaticallyImplyLeading: false,
-          title: Image.network(
-            Constants.app_logo,
-            width: 239,
-            height: kToolbarHeight,
-            fit: BoxFit.fitWidth,
-          ),
-          backgroundColor: Colors.white,
-          actions: <Widget>[
-            Container(
-              width: (deviceWidth / 16) + 4,
-              child: badges.Badge(
-                badgeStyle: const badges.BadgeStyle(badgeColor: Colors.purple),
-                badgeContent: Consumer<WishlistProvider>(
-                    builder: (context, value, child) {
-                  print("LENGTH OF FAV: ${value.favProductIds}");
-                  return Text(
-                    value.favProductIds.length.toString(),
-                    style: TextStyle(
-                        color: Colors.white, fontSize: (deviceWidth / 31) - 1),
-                  );
-                }),
-                child: IconButton(
-                  onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const WishListPage()));
-                  },
-                  icon: const Icon(Icons.favorite_sharp, color: Colors.black),
-                ),
+    return Consumer<LayoutDesignProvider>(
+      builder: (context, value, child) {
+        Color primaryColor = Color(0xffCC868A);
+        if (value.primary != "") {
+          primaryColor = Color(int.parse("0xff${value.primary.substring(1)}"));
+        }
+
+        return Scaffold(
+            appBar: AppBar(
+              toolbarHeight: (kToolbarHeight + kToolbarHeight) - 26,
+              automaticallyImplyLeading: false,
+              title: Image.network(
+                Constants.app_logo,
+                width: 239,
+                height: kToolbarHeight,
+                fit: BoxFit.fitWidth,
               ),
-            ),
-            const SizedBox(
-              width: 24,
-            ),
-            Container(
-              width: (deviceWidth / 16) + 4,
-              child: badges.Badge(
-                badgeStyle: const badges.BadgeStyle(badgeColor: Colors.purple),
-                badgeContent: Consumer<CartProvider>(
-                    builder: (context, value, child) => Text(
-                          value.cart.length.toString(),
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: (deviceWidth / 31) - 1),
-                        )),
-                child: IconButton(
-                  onPressed: () {
-                    print("CART CLICKED");
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => CartPage()));
-                  },
-                  icon: const Icon(Icons.shopping_cart),
-                  color: Colors.black,
-                ),
-              ),
-            ),
-            const SizedBox(
-              width: 34,
-            ),
-          ],
-          bottom: const CustomSearchBar(),
-        ),
-        body: SingleChildScrollView(
-          child: isLayoutLoading
-              ? SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height - 200,
-                  child: Center(
-                    child: CircularProgressIndicator(
-                      color:  Theme.of(context).primaryColor,
+              backgroundColor: Colors.white,
+              actions: <Widget>[
+                Container(
+                  width: (deviceWidth / 16) + 4,
+                  child: badges.Badge(
+                    badgeStyle: badges.BadgeStyle(badgeColor: primaryColor),
+                    badgeContent: Consumer<WishlistProvider>(
+                        builder: (context, value, child) {
+                      print("LENGTH OF FAV: ${value.favProductIds}");
+                      return Text(
+                        value.favProductIds.length.toString(),
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: (deviceWidth / 31) - 1),
+                      );
+                    }),
+                    child: IconButton(
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => const WishListPage()));
+                      },
+                      icon:
+                          const Icon(Icons.favorite_sharp, color: Colors.black),
                     ),
                   ),
-                )
-              : layoutDesignProvider.parentWidget,
-        ));
+                ),
+                const SizedBox(
+                  width: 24,
+                ),
+                Container(
+                  width: (deviceWidth / 16) + 4,
+                  child: badges.Badge(
+                    badgeStyle: badges.BadgeStyle(badgeColor: primaryColor),
+                    badgeContent: Consumer<CartProvider>(
+                        builder: (context, value, child) => Text(
+                              value.cart.length.toString(),
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: (deviceWidth / 31) - 1),
+                            )),
+                    child: IconButton(
+                      onPressed: () {
+                        print("CART CLICKED");
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => CartPage()));
+                      },
+                      icon: const Icon(Icons.shopping_cart),
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  width: 34,
+                ),
+              ],
+              bottom: CustomSearchBar(),
+            ),
+            body: SingleChildScrollView(
+              child: isLayoutLoading
+                  ? SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height - 200,
+                      child: Center(
+                        child: CircularProgressIndicator(
+                          color: primaryColor,
+                        ),
+                      ),
+                    )
+                  : layoutDesignProvider.parentWidget,
+            ));
+      },
+      //  child:
+    );
   }
 }

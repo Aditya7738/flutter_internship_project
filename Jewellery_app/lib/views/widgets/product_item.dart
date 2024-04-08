@@ -70,6 +70,7 @@ class _ProductItemState extends State<ProductItem> {
       child: Container(
         //width: (deviceWidth / 2),
         decoration: BoxDecoration(
+     
           border: Border.all(
               color: Colors.grey, style: BorderStyle.solid, width: 0.5),
           shape: BoxShape.rectangle,
@@ -105,9 +106,9 @@ class _ProductItemState extends State<ProductItem> {
                             height: deviceWidth > 600
                                 ? (deviceWidth / 2) - 125
                                 : (deviceWidth / 2) - 10,
-                            child:  Center(
+                            child: Center(
                               child: CircularProgressIndicator(
-                                color:  Theme.of(context).primaryColor,
+                                color: Theme.of(context).primaryColor,
                               ),
                             ),
                           );
@@ -121,7 +122,6 @@ class _ProductItemState extends State<ProductItem> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
-                     
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -132,7 +132,7 @@ class _ProductItemState extends State<ProductItem> {
                               width: deviceWidth > 600
                                   ? (constraints.maxWidth / 1.25)
                                   : (constraints.maxWidth / 1.5),
-                           
+
                               child: Text(
                                 productsModel.name ?? "Jewellery",
                                 style: TextStyle(
@@ -224,14 +224,11 @@ class _ProductItemState extends State<ProductItem> {
                                 : SizedBox(
                                     width: deviceWidth / 2 - 60,
                                   ),
-
-                                  
                           ],
                         ),
                       ),
 
                       Container(
-                       
                         //height: 91,
                         height: deviceWidth > 600
                             ? constraints.maxHeight / 4.65
@@ -243,7 +240,6 @@ class _ProductItemState extends State<ProductItem> {
                               builder: (BuildContext context,
                                   CartProvider value, Widget? child) {
                                 return Container(
-                                
                                   // width: constraints.maxWidth - 168,
                                   // height: constraints.maxWidth - 146,
                                   child: GestureDetector(
@@ -305,7 +301,6 @@ class _ProductItemState extends State<ProductItem> {
                               },
                             ),
                             Container(
-                             
                               // height: constraints.maxWidth - 168,
                               // height: constraints.maxWidth - 206,
                               child: GestureDetector(

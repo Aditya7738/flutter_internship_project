@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:Tiara_by_TJ/constants/fontsizes.dart';
+import 'package:Tiara_by_TJ/providers/layoutdesign_provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:Tiara_by_TJ/api/api_service.dart';
@@ -239,6 +240,8 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
 
   @override
   Widget build(BuildContext context) {
+    LayoutDesignProvider layoutDesignProvider =
+        Provider.of<LayoutDesignProvider>(context, listen: false);
     final customerProvider =
         Provider.of<CustomerProvider>(context, listen: false);
     final orderProvider = Provider.of<OrderProvider>(context);
@@ -551,13 +554,20 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(SnackBar(
                                                 padding: EdgeInsets.all(15.0),
-                                                backgroundColor:
-                                                    Theme.of(context)
-                                                        .primaryColor,
+                                                backgroundColor: Color(int.parse(
+                                                    "0xff${layoutDesignProvider.primary.substring(1)}")),
                                                 content: Text(
                                                   "Image upload successfully",
                                                   style: TextStyle(
-                                                      color: Colors.white),
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: deviceWidth >
+                                                              600
+                                                          ? Fontsizes
+                                                              .tabletButtonTextSize
+                                                          : Fontsizes
+                                                              .buttonTextSize),
                                                 )));
 
                                         if (mounted) {
@@ -572,10 +582,17 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
                                                 padding: EdgeInsets.all(15.0),
                                                 backgroundColor: Colors.red,
                                                 content: Text(
-                                                  "Failed to upload image",
-                                                  style: TextStyle(
-                                                      color: Colors.white),
-                                                )));
+                                                    "Failed to upload image",
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: deviceWidth >
+                                                                600
+                                                            ? Fontsizes
+                                                                .tabletButtonTextSize
+                                                            : Fontsizes
+                                                                .buttonTextSize))));
                                       }
                                     }
                                   }
@@ -583,8 +600,8 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
                                 child: Container(
                                     decoration: BoxDecoration(
                                         border: Border.all(
-                                            color:
-                                                Theme.of(context).primaryColor,
+                                            color: Color(int.parse(
+                                                "0xff${layoutDesignProvider.primary.substring(1)}")),
                                             style: BorderStyle.solid),
                                         borderRadius:
                                             BorderRadius.circular(5.0)),
@@ -602,16 +619,16 @@ class _DigiGoldPlanOrderPageState extends State<DigiGoldPlanOrderPage> {
                                                   child:
                                                       CircularProgressIndicator(
                                                     strokeWidth: 3.0,
-                                                    color: Theme.of(context)
-                                                        .primaryColor,
+                                                    color: Color(int.parse(
+                                                        "0xff${layoutDesignProvider.primary.substring(1)}")),
                                                   ),
                                                 ),
                                               )
                                             : Text(
                                                 "Upload document image",
                                                 style: TextStyle(
-                                                    color: Theme.of(context)
-                                                        .primaryColor,
+                                                    color: Color(int.parse(
+                                                        "0xff${layoutDesignProvider.primary.substring(1)}")),
                                                     fontSize: deviceWidth > 600
                                                         ? Fontsizes
                                                             .tabletButtonTextSize

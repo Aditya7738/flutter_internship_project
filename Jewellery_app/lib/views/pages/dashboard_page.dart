@@ -1,9 +1,12 @@
 import 'package:Tiara_by_TJ/api/api_service.dart';
+import 'package:Tiara_by_TJ/helpers/db_helper.dart';
+import 'package:Tiara_by_TJ/model/layout_model.dart' as LayoutModel;
 import 'package:Tiara_by_TJ/model/filter_options_model.dart';
 import 'package:Tiara_by_TJ/model/product_customization_option_model.dart';
 import 'package:Tiara_by_TJ/providers/customize_options_provider.dart';
 import 'package:Tiara_by_TJ/providers/digigold_provider.dart';
 import 'package:Tiara_by_TJ/providers/filteroptions_provider.dart';
+import 'package:Tiara_by_TJ/providers/layoutdesign_provider.dart';
 import 'package:Tiara_by_TJ/views/pages/digi_gold_page.dart';
 import 'package:Tiara_by_TJ/views/pages/fetch_home_screen.dart';
 import 'package:flutter/material.dart';
@@ -35,6 +38,54 @@ class _DashboardPageState extends State<DashboardPage> {
     getProductCustomizeOptions();
     getFilterOptions();
     getBasicAuthForRazorPay();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    LayoutDesignProvider layoutDesignProvider =
+        Provider.of<LayoutDesignProvider>(context, listen: false);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      getLayoutDesign(layoutDesignProvider);
+    });
+  }
+
+  getLayoutDesign(LayoutDesignProvider layoutDesignProvider) async {
+    double deviceWidth = MediaQuery.of(context).size.width;
+    // setState(() {
+    //   isLayoutLoading = true;
+    // });
+    DBHelper dbHelper = DBHelper();
+    LayoutModel.LayoutModel layoutModel;
+    if (layoutDesignProvider.layoutModel != null) {
+      layoutModel = layoutDesignProvider.layoutModel!;
+    } else {
+      await dbHelper.readData();
+      layoutModel = dbHelper.layoutModel;
+      layoutDesignProvider.setLayoutModel(layoutModel);
+    }
+
+    print("layoutModel.toJson() ${layoutModel.toJson()}");
+    // LayoutModel.LayoutModel? layoutModel = await ApiService.getHomeLayout();
+
+    if (layoutModel.data != null) {
+      LayoutModel.Theme? theme = layoutModel.data!.theme;
+      final pages = layoutModel.data!.pages;
+
+      print("pages.runtimeType ${pages.runtimeType}");
+
+      if (theme != null) {
+        if (theme.colors != null) {
+          layoutDesignProvider.setPrimary(theme.colors!.primary ?? "#CC868A");
+          layoutDesignProvider
+              .setSecondary(theme.colors!.secondary ?? "#FFFFFF");
+          layoutDesignProvider
+              .setBackground(theme.colors!.background ?? "#FFFFFF");
+        } else if (theme.fontFamily != null) {
+          layoutDesignProvider.setfontFamily(theme.fontFamily!);
+        }
+      }
+    }
   }
 
   Future<void> getBasicAuthForRazorPay() async {
@@ -220,6 +271,9 @@ class _DashboardPageState extends State<DashboardPage> {
 
   @override
   Widget build(BuildContext context) {
+    LayoutDesignProvider layoutDesignProvider =
+        Provider.of<LayoutDesignProvider>(context, listen: false);
+
     final tabs = <Widget>[
       DigiGoldPage(),
       FetchHomeScreen(),
@@ -231,73 +285,90 @@ class _DashboardPageState extends State<DashboardPage> {
 
     return Scaffold(
       body: tabs[_currentIndex],
-      bottomNavigationBar: 
-      BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          onTap: (index) {
-            print("TAB O: $index");
-            if (mounted) {
-              setState(() {
-                _currentIndex = index;
-              });
-            }
-          },
-          selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
-          selectedItemColor: Theme.of(context).primaryColor,
-          currentIndex: _currentIndex,
-          selectedFontSize: ///12.sp,
-              deviceWidth > 600 ? deviceWidth / 40 : deviceWidth / 30,
-          unselectedFontSize: //11.sp,
-             deviceWidth > 600 ? deviceWidth / 40 : deviceWidth / 31,
-          iconSize: //10.sp,
-          deviceWidth / 25,
-          items: <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-                icon: Image.asset(
-                  "assets/images/icons_gold_bars_outline.png",
-                  width: 45.0,
-                  height: deviceWidth > 600 ? 40.0 : 25.0,
-                  color: Theme.of(context).primaryColor,
+      bottomNavigationBar: Consumer<LayoutDesignProvider>(
+        builder: (context, value, child) {
+          Color primaryColor = Color(0xffCC868A);
+          if (value.primary != "") {
+            primaryColor =
+                Color(int.parse("0xff${value.primary.substring(1)}"));
+          }
+          return BottomNavigationBar(
+              type: BottomNavigationBarType.fixed,
+              onTap: (index) {
+                print("TAB O: $index");
+                if (mounted) {
+                  setState(() {
+                    _currentIndex = index;
+                  });
+                }
+              },
+              selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
+              selectedItemColor:
+                  primaryColor,
+              currentIndex: _currentIndex,
+              selectedFontSize:
+
+                  ///12.sp,
+                  deviceWidth > 600 ? deviceWidth / 40 : deviceWidth / 30,
+              unselectedFontSize: //11.sp,
+                  deviceWidth > 600 ? deviceWidth / 40 : deviceWidth / 31,
+              iconSize: //10.sp,
+                  deviceWidth / 25,
+              items: <BottomNavigationBarItem>[
+                BottomNavigationBarItem(
+                    icon: Image.asset(
+                      "assets/images/icons_gold_bars_outline.png",
+                      width: 45.0,
+                      height: deviceWidth > 600 ? 40.0 : 25.0,
+                      color:
+                          primaryColor,
+                    ),
+                    label: "Digi Gold",
+                    activeIcon: Image.asset(
+                      "assets/images/icons_gold_bars_filled.png",
+                      width: 45.0,
+                      height: deviceWidth > 600 ? 40.0 : 25.0,
+                      color:
+                          primaryColor,
+                    )),
+                BottomNavigationBarItem(
+                  icon: Image.asset(
+                    "assets/images/home_outlined.png",
+                    width: 45.0,
+                    height: deviceWidth > 600 ? 40.0 : 25.0,
+                    color:
+                        primaryColor,
+                  ),
+                  label: "Home",
+                  activeIcon: Image.asset(
+                    "assets/images/home_filled.png",
+                    width: 45.0,
+                    height: deviceWidth > 600 ? 40.0 : 25.0,
+                    color:
+                        primaryColor,
+                  ),
                 ),
-                label: "Digi Gold",
-                activeIcon: Image.asset(
-                  "assets/images/icons_gold_bars_filled.png",
-                  width: 45.0,
-                  height: deviceWidth > 600 ? 40.0 : 25.0,
-                  color: Theme.of(context).primaryColor,
-                )),
-            BottomNavigationBarItem(
-              icon: Image.asset(
-                "assets/images/home_outlined.png",
-                width: 45.0,
-                height: deviceWidth > 600 ? 40.0 : 25.0,
-                color: Theme.of(context).primaryColor,
-              ),
-              label: "Home",
-              activeIcon: Image.asset(
-                "assets/images/home_filled.png",
-                width: 45.0,
-                height: deviceWidth > 600 ? 40.0 : 25.0,
-                color: Theme.of(context).primaryColor,
-              ),
-            ),
-            BottomNavigationBarItem(
-              icon: Image.asset(
-                "assets/images/user_outlined.png",
-                width: 45.0,
-                height: deviceWidth > 600 ? 40.0 : 25.0,
-                color: Theme.of(context).primaryColor,
-              ),
-              label: "Account",
-              activeIcon: Image.asset(
-                "assets/images/user_filled.png",
-                width: 45.0,
-                height: deviceWidth > 600 ? 40.0 : 25.0,
-                color: Theme.of(context).primaryColor,
-              ),
-            ),
-          ]),
-    
+                BottomNavigationBarItem(
+                  icon: Image.asset(
+                    "assets/images/user_outlined.png",
+                    width: 45.0,
+                    height: deviceWidth > 600 ? 40.0 : 25.0,
+                    color:
+                        primaryColor,
+                  ),
+                  label: "Account",
+                  activeIcon: Image.asset(
+                    "assets/images/user_filled.png",
+                    width: 45.0,
+                    height: deviceWidth > 600 ? 40.0 : 25.0,
+                    color:
+                        primaryColor,
+                  ),
+                ),
+              ]);
+        },
+        // child:
+      ),
     );
   }
 }

@@ -77,7 +77,8 @@ class _CategoryListState extends State<CategoryList> {
                 print("snapshot error ${snapshot.error.toString()}");
               }
               //   uncomment below code
-              else if (loading) {
+              else if ( //loading
+                  snapshot.connectionState == ConnectionState.waiting) {
                 body = SizedBox(
                     width: deviceWidth,
                     height: MediaQuery.of(context).size.height / 6,
@@ -104,13 +105,21 @@ class _CategoryListState extends State<CategoryList> {
                         height: MediaQuery.of(context).size.height / 6,
                         child: Center(
                           child: CircularProgressIndicator(
-                            color:
-                                Theme.of(context).primaryColor,
-                                //Colors.yellow,
+                            color: Theme.of(context).primaryColor,
+                            //Colors.yellow,
                           ),
                         ));
                   } else {
-                    body = SizedBox();
+                    //  body = SizedBox();
+                    body = SizedBox(
+                        width: deviceWidth,
+                        height: MediaQuery.of(context).size.height / 6,
+                        child: Center(
+                          child: CircularProgressIndicator(
+                            color: Theme.of(context).primaryColor,
+                            //Colors.yellow,
+                          ),
+                        ));
                   }
                 } else {
                   body = SizedBox(
@@ -133,7 +142,7 @@ class _CategoryListState extends State<CategoryList> {
                             } else {
                               return Center(
                                   child: CircularProgressIndicator(
-                                color:  Theme.of(context).primaryColor,
+                                color: Theme.of(context).primaryColor,
                               ));
                             }
                           }),

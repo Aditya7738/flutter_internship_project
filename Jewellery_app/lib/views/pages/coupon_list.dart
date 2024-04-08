@@ -2,8 +2,10 @@ import 'package:Tiara_by_TJ/api/api_service.dart';
 import 'package:Tiara_by_TJ/constants/fontsizes.dart';
 import 'package:Tiara_by_TJ/helpers/validation_helper.dart';
 import 'package:Tiara_by_TJ/model/coupons_model.dart';
+import 'package:Tiara_by_TJ/providers/layoutdesign_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
 class CouponListPage extends StatefulWidget {
   final List<int> cartProductIds;
@@ -247,7 +249,8 @@ class _CouponListPageState extends State<CouponListPage> {
   @override
   Widget build(BuildContext context) {
     double deviceWidth = MediaQuery.of(context).size.width;
-
+    LayoutDesignProvider layoutDesignProvider =
+        Provider.of<LayoutDesignProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -328,8 +331,10 @@ class _CouponListPageState extends State<CouponListPage> {
                                         // fontSize: deviceWidth > 600
                                         //     ? deviceWidth / 40
                                         //     : 13.0,
-                                        fontSize: deviceWidth > 600 ? 22.sp : 14.sp,
-                                        color: Theme.of(context).primaryColor)),
+                                        fontSize:
+                                            deviceWidth > 600 ? 22.sp : 14.sp,
+                                        color: Color(int.parse(
+                                            "0xff${layoutDesignProvider.primary.substring(1)}")))),
                               ),
                             )
                           : SizedBox(),
@@ -358,7 +363,8 @@ class _CouponListPageState extends State<CouponListPage> {
                       height: MediaQuery.of(context).size.height - 177,
                       child: Center(
                         child: CircularProgressIndicator(
-                          color: Theme.of(context).primaryColor,
+                          color: Color(int.parse(
+                              "0xff${layoutDesignProvider.primary.substring(1)}")),
                         ),
                       ),
                     )
@@ -407,6 +413,8 @@ class _CouponListPageState extends State<CouponListPage> {
   }
 
   List<Widget> getListOfApplyCoupons() {
+    LayoutDesignProvider layoutDesignProvider =
+        Provider.of<LayoutDesignProvider>(context, listen: false);
     double deviceWidth = MediaQuery.of(context).size.width;
     List<Widget> widgets = <Widget>[];
     for (var i = 0; i < listOfApplyCoupons.length; i++) {
@@ -436,7 +444,8 @@ class _CouponListPageState extends State<CouponListPage> {
                   width: 84,
                   // width: 100,
                   decoration: BoxDecoration(
-                      color: Theme.of(context).primaryColor,
+                      color: Color(int.parse(
+                          "0xff${layoutDesignProvider.primary.substring(1)}")),
                       borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(20.0),
                           bottomLeft: Radius.circular(20.0))),
@@ -494,8 +503,8 @@ class _CouponListPageState extends State<CouponListPage> {
                                           //     : 13.0,
                                           fontSize:
                                               deviceWidth > 600 ? 24.sp : 14.sp,
-                                          color:
-                                              Theme.of(context).primaryColor)),
+                                          color: Color(int.parse(
+                                              "0xff${layoutDesignProvider.primary.substring(1)}")))),
                                 )
                               ],
                             ),
@@ -548,7 +557,7 @@ class _CouponListPageState extends State<CouponListPage> {
             ),
           ),
           Positioned(
-             top: deviceWidth > 600 ? 73 : 55,
+            top: deviceWidth > 600 ? 73 : 55,
             right: -15.0,
             child: Container(
               width: 30,
@@ -626,7 +635,7 @@ class _CouponListPageState extends State<CouponListPage> {
                                   couponsModel.code ?? "",
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
-                                  fontSize:
+                                    fontSize:
                                         deviceWidth > 600 ? 28.5.sp : 16.5.sp,
                                   ),
                                 ),
@@ -644,8 +653,8 @@ class _CouponListPageState extends State<CouponListPage> {
                                       // fontSize: deviceWidth > 600
                                       //     ? deviceWidth / 36
                                       //     : 13.0,
-                                       fontSize:
-                                              deviceWidth > 600 ? 24.sp : 14.sp,
+                                      fontSize:
+                                          deviceWidth > 600 ? 24.sp : 14.sp,
                                     ))
                               ],
                             ),
@@ -657,7 +666,7 @@ class _CouponListPageState extends State<CouponListPage> {
                             "Valid till ${couponsModel.dateExpires}",
                             style: TextStyle(
                                 fontSize: deviceWidth > 600 ? 23.sp : 14.sp,
-                                 fontWeight: FontWeight.normal
+                                fontWeight: FontWeight.normal
                                 // deviceWidth > 600 ? deviceWidth / 32 : 15.0,
                                 ),
                           )
@@ -670,9 +679,8 @@ class _CouponListPageState extends State<CouponListPage> {
                         child: Text(
                           couponsModel.description ?? "Description;",
                           style: TextStyle(
-                            fontWeight: FontWeight.normal,
-                            fontSize: deviceWidth > 600 ? 25.sp : 15.sp
-                          ),
+                              fontWeight: FontWeight.normal,
+                              fontSize: deviceWidth > 600 ? 25.sp : 15.sp),
                           maxLines: 2,
                         ),
                         width: MediaQuery.of(context).size.width - 148,
@@ -685,7 +693,7 @@ class _CouponListPageState extends State<CouponListPage> {
             // Rectangle color
           ),
           Positioned(
-             top: deviceWidth > 600 ? 73 : 55,
+            top: deviceWidth > 600 ? 73 : 55,
             left: -15.0,
             child: Container(
               width: 30,
@@ -697,7 +705,7 @@ class _CouponListPageState extends State<CouponListPage> {
             ),
           ),
           Positioned(
-              top: deviceWidth > 600 ? 73 : 55,
+            top: deviceWidth > 600 ? 73 : 55,
             right: -15.0,
             child: Container(
               width: 30,

@@ -6,7 +6,6 @@ import 'package:Tiara_by_TJ/providers/customize_options_provider.dart';
 import 'package:Tiara_by_TJ/views/pages/login_page.dart';
 import 'package:Tiara_by_TJ/views/pages/reviews_page.dart';
 
-import 'package:Tiara_by_TJ/views/pages/wishlist_page.dart';
 import 'package:Tiara_by_TJ/views/pages/write_review_page.dart';
 import 'package:flutter/material.dart';
 import 'package:Tiara_by_TJ/constants/constants.dart';
@@ -18,14 +17,12 @@ import 'package:Tiara_by_TJ/providers/cart_provider.dart';
 import 'package:Tiara_by_TJ/providers/wishlist_provider.dart';
 import 'package:Tiara_by_TJ/views/pages/cart_page.dart';
 
-import 'package:Tiara_by_TJ/views/widgets/button_widget.dart';
 import 'package:Tiara_by_TJ/views/widgets/choice_widget.dart';
 import 'package:Tiara_by_TJ/views/widgets/label_widget.dart';
 import 'package:Tiara_by_TJ/views/widgets/whole_carousel_slider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:provider/provider.dart';
-import 'package:badges/badges.dart' as badges;
 import 'package:flutter_swipe_tutorial/flutter_swipe_tutorial.dart';
 
 class ProductDetailsPage extends StatefulWidget {
@@ -334,58 +331,6 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
     double deviceWidth = MediaQuery.of(context).size.width;
     print("deviceWidth / 20 ${deviceWidth / 31}");
     return Scaffold(
-      appBar: AppBar(title: Text("Details"), actions: <Widget>[
-        Container(
-          width: (deviceWidth / 16) + 4,
-          child: badges.Badge(
-            badgeStyle: const badges.BadgeStyle(badgeColor: Colors.purple),
-            badgeContent:
-                Consumer<WishlistProvider>(builder: (context, value, child) {
-              print("LENGTH OF FAV: ${value.favProductIds}");
-              return Text(
-                value.favProductIds.length.toString(),
-                style: TextStyle(
-                    color: Colors.white, fontSize: (deviceWidth / 31) - 1),
-              );
-            }),
-            child: IconButton(
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const WishListPage()));
-              },
-              icon: const Icon(Icons.favorite_sharp, color: Colors.black),
-            ),
-          ),
-        ),
-        const SizedBox(
-          width: 24,
-        ),
-        Container(
-          width: (deviceWidth / 16) + 4,
-          child: badges.Badge(
-            badgeStyle: const badges.BadgeStyle(badgeColor: Colors.purple),
-            badgeContent: Consumer<CartProvider>(
-                builder: (context, value, child) => Text(
-                      value.cart.length.toString(),
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: (deviceWidth / 31) - 1),
-                    )),
-            child: IconButton(
-              onPressed: () {
-                print("CART CLICKED");
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) => CartPage()));
-              },
-              icon: const Icon(Icons.shopping_cart),
-              color: Colors.black,
-            ),
-          ),
-        ),
-        const SizedBox(
-          width: 24,
-        ),
-      ]),
       body: GestureDetector(
         onTap: () {
           customizationOptionsProvider.setShowTutorial(false);
@@ -393,6 +338,10 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
         child: SwipeTutorial(
           text:
               "Swipe under carousel slider right or left to see details of more products",
+          textStyle: TextStyle(
+              fontSize: deviceWidth > 600 ? 30.sp : 18.sp,
+              fontWeight: FontWeight.w500,
+              color: Colors.white),
           showTutorial: customizationOptionsProvider.showTutorial,
           swipeDirection: SwipeDirection.rightToLeft,
           child: Scrollbar(
@@ -419,8 +368,10 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                       // productsModel.regularPrice ??
                                       //     "20,000",
                                       style: TextStyle(
-                                          // fontSize: (deviceWidth / 36) + 4,
-                                          fontSize: 18.sp,
+                                          fontSize: deviceWidth > 600
+                                              ? (deviceWidth / 36) + 4
+                                              : 18.sp,
+                                          // fontSize: 18.sp,
                                           fontWeight: FontWeight.bold))
                                   : Row(
                                       children: [
@@ -429,7 +380,9 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                                 ? "₹ 10,000"
                                                 : "₹ ${productsModel.salePrice ?? 10000}",
                                             style: TextStyle(
-                                                fontSize: 18.sp,
+                                                fontSize: deviceWidth > 600
+                                                    ? (deviceWidth / 36) + 4
+                                                    : 18.sp,
                                                 fontWeight: FontWeight.bold)),
                                         const SizedBox(
                                           width: 5.0,
@@ -439,7 +392,9 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                               ? "₹ ${productsModel.regularPrice ?? 20000}"
                                               : "₹ 0.0",
                                           style: TextStyle(
-                                            fontSize: 18.sp,
+                                            fontSize: deviceWidth > 600
+                                                ? (deviceWidth / 36) + 4
+                                                : 18.sp,
                                             decoration:
                                                 TextDecoration.lineThrough,
                                           ),
@@ -460,7 +415,9 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                       // size: deviceWidth > 600
                                       //     ? deviceWidth / 23
                                       //     : deviceWidth / 16,
-                                      size: 25.sp,
+                                      size: deviceWidth > 600
+                                          ? (deviceWidth / 23).sp
+                                          : 25.sp,
                                     ),
                                     onPressed: () {
                                       print("PRESSED");
@@ -488,12 +445,12 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                 ? LabelWidget(
                                     label: "Available on backorder",
                                     color: Color(0xff85BA60),
-                                    fontSize: 16.sp,
+                                    fontSize: deviceWidth > 600 ? 26.sp : 16.sp,
                                   )
                                 : LabelWidget(
                                     label: "Unavailable on backorder",
                                     color: Color(0xff85BA60),
-                                    fontSize: 16.sp,
+                                    fontSize: deviceWidth > 600 ? 26.sp : 16.sp,
                                   )),
                         const SizedBox(
                           height: 20.0,
@@ -550,7 +507,9 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         ),
                         LabelWidget(
                           label: Constants.description_label,
-                          fontSize: 17.sp,
+                          fontSize: deviceWidth > 600
+                              ? (deviceWidth / 36) + 4
+                              : 17.sp,
                         ),
                         HtmlWidget(
                           productsModel.description ??
@@ -565,7 +524,10 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                             Text(
                               "SKU:",
                               style: TextStyle(
-                                  fontSize: 17.sp, fontWeight: FontWeight.bold),
+                                  fontSize: deviceWidth > 600
+                                      ? (deviceWidth / 36) + 4
+                                      : 17.sp,
+                                  fontWeight: FontWeight.bold),
                             ),
                             const SizedBox(
                               width: 10.0,
@@ -573,7 +535,9 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                             Text(
                               productsModel.sku ?? "12007AN",
                               style: TextStyle(
-                                  fontSize: 17.sp,
+                                  fontSize: deviceWidth > 600
+                                      ? (deviceWidth / 36) + 4
+                                      : 17.sp,
                                   fontWeight: FontWeight.normal),
                             ),
                           ],
@@ -586,7 +550,10 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                             Text(
                               "Category:",
                               style: TextStyle(
-                                  fontSize: 17.sp, fontWeight: FontWeight.bold),
+                                  fontSize: deviceWidth > 600
+                                      ? (deviceWidth / 36) + 4
+                                      : 17.sp,
+                                  fontWeight: FontWeight.bold),
                             ),
                             const SizedBox(
                               width: 10.0,
@@ -597,7 +564,9 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                       "Jewellery"
                                   : "Jewellery",
                               style: TextStyle(
-                                  fontSize: 17.sp,
+                                  fontSize: deviceWidth > 600
+                                      ? (deviceWidth / 36) + 4
+                                      : 17.sp,
                                   fontWeight: FontWeight.normal),
                               // overflow: TextOverflow.ellipsis,
                               // softWrap: true,
@@ -610,7 +579,10 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         Text(
                           "Tags:",
                           style: TextStyle(
-                              fontSize: 17.sp, fontWeight: FontWeight.bold),
+                              fontSize: deviceWidth > 600
+                                  ? (deviceWidth / 36) + 4
+                                  : 17.sp,
+                              fontWeight: FontWeight.bold),
                         ),
                         const SizedBox(
                           height: 5.0,
@@ -619,7 +591,9 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                             ? Text(
                                 "Jewellery",
                                 style: TextStyle(
-                                    fontSize: 17.sp,
+                                    fontSize: deviceWidth > 600
+                                        ? (deviceWidth / 36) + 4
+                                        : 17.sp,
                                     fontWeight: FontWeight.normal),
                               )
                             : SizedBox(
@@ -635,7 +609,9 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                         productsModel.tags?[index].name ??
                                             "Category ",
                                         style: TextStyle(
-                                            fontSize: 17.sp,
+                                            fontSize: deviceWidth > 600
+                                                ? (deviceWidth / 36) + 4
+                                                : 17.sp,
                                             fontWeight: FontWeight.normal),
                                       ),
                                     );
@@ -652,68 +628,71 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                             Text(
                               "Customer Reviews",
                               style: TextStyle(
-                                  fontSize: 17.sp, fontWeight: FontWeight.bold),
+                                  fontSize: deviceWidth > 600
+                                      ? (deviceWidth / 36) + 4
+                                      : 17.sp,
+                                  fontWeight: FontWeight.bold),
                             ),
-   GestureDetector(
-                          onTap: () async {
-                            print(
-                                "customerData.isNotEmpty ${customerProvider.customerData.isNotEmpty}");
-                            if (customerProvider.customerData.length != 0) {
-                              bool? isReviewUploaded = await Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => WriteReviewPage(
-                                          productsModel: productsModel)));
+                            GestureDetector(
+                              onTap: () async {
+                                print(
+                                    "customerData.isNotEmpty ${customerProvider.customerData.isNotEmpty}");
+                                if (customerProvider.customerData.length != 0) {
+                                  bool? isReviewUploaded = await Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => WriteReviewPage(
+                                              productsModel: productsModel)));
 
-                              if (isReviewUploaded != null &&
-                                  isReviewUploaded) {
-                                if (mounted) {
-                                  setState(() {
-                                    getReviews();
-                                  });
+                                  if (isReviewUploaded != null &&
+                                      isReviewUploaded) {
+                                    if (mounted) {
+                                      setState(() {
+                                        getReviews();
+                                      });
+                                    }
+                                  }
+                                } else {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            LoginPage(isComeFromCart: false),
+                                      ));
                                 }
-                              }
-                            } else {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        LoginPage(isComeFromCart: false),
-                                  ));
-                            }
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 5.0, horizontal: 10.0),
-                            // margin: const EdgeInsets.symmetric(horizontal: 10.0),
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: Theme.of(context).primaryColor),
-                              shape: BoxShape.rectangle,
-                              borderRadius: BorderRadius.circular(10.0),
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 5.0, horizontal: 10.0),
+                                // margin: const EdgeInsets.symmetric(horizontal: 10.0),
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                      color: Theme.of(context).primaryColor),
+                                  shape: BoxShape.rectangle,
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                child: Text(
+                                  "Write a review",
+                                  style: TextStyle(
+                                      fontSize:
+                                          deviceWidth > 600 ? 25.sp : 15.sp,
+                                      color: Theme.of(context).primaryColor),
+                                ),
+                              ),
                             ),
-                            child: Text(
-                              "Write a review",
-                              style: TextStyle(
-                                  fontSize: 15.sp,
-                                  color: Theme.of(context).primaryColor),
-                            ),
-                          ),
-                        ),
-                        
                           ],
                         ),
                         // const SizedBox(
                         //   height: 5.0,
                         // ),
-                     
+
                         const SizedBox(
                           height: 10.0,
                         ),
                         isReviewLoading
                             ? SizedBox(
                                 height:
-                                    MediaQuery.of(context).size.height / 3.0,
+                                    MediaQuery.of(context).size.height / 2.7,
                                 width: MediaQuery.of(context).size.width,
                                 child: Center(
                                   child: CircularProgressIndicator(
@@ -723,15 +702,15 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                               )
                             : ApiService.reviewsList.isNotEmpty
                                 ? Container(
-                                 
                                     height: MediaQuery.of(context).size.height /
-                                        3.0,
+                                        2.7,
                                     width: MediaQuery.of(context).size.width,
                                     padding: EdgeInsets.all(10.0),
                                     decoration: BoxDecoration(
-                                       color: Color.fromARGB(255, 245, 245, 245),
-                                      borderRadius: BorderRadius.circular(10.0)
-                                    ),
+                                        color:
+                                            Color.fromARGB(255, 245, 245, 245),
+                                        borderRadius:
+                                            BorderRadius.circular(10.0)),
                                     child: Scrollbar(
                                       child: ListView.separated(
                                           itemCount:
@@ -750,24 +729,32 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                                     CrossAxisAlignment.start,
                                                 children: [
                                                   Row(
-                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
                                                     children: [
                                                       Row(
                                                         children: [
                                                           Container(
                                                             padding:
-                                                                EdgeInsets.all(5.0),
+                                                                EdgeInsets.all(
+                                                                    5.0),
                                                             decoration: BoxDecoration(
-                                                                shape:
-                                                                    BoxShape.circle,
+                                                                shape: BoxShape
+                                                                    .circle,
                                                                 border: Border.all(
                                                                     color: Colors
                                                                         .grey)),
                                                             child: Icon(
                                                               Icons.person,
-                                                              color: Colors.grey,
+                                                              color:
+                                                                  Colors.grey,
                                                               size:
-                                                                  deviceWidth > 600
+                                                                  deviceWidth >
+                                                                          600
                                                                       ? 45.0
                                                                       : 27.0,
                                                             ),
@@ -786,10 +773,15 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                                                       reviewsModel
                                                                               .reviewer ??
                                                                           "Reviewer",
-                                                                      style: TextStyle(
-                                                                          fontWeight:
-                                                                              FontWeight
-                                                                                  .bold)),
+                                                                      style:
+                                                                          TextStyle(
+                                                                        fontWeight:
+                                                                            FontWeight.bold,
+                                                                        fontSize: deviceWidth >
+                                                                                600
+                                                                            ? 25.sp
+                                                                            : 14.sp,
+                                                                      )),
                                                                   SizedBox(
                                                                     width: 10.0,
                                                                   ),
@@ -802,12 +794,15 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                                                             : ""
                                                                         : "",
                                                                     style: TextStyle(
-                                                                        color: Theme.of(
-                                                                                context)
+                                                                        color: Theme.of(context)
                                                                             .primaryColor,
                                                                         fontWeight:
                                                                             FontWeight
-                                                                                .bold),
+                                                                                .bold,
+                                                                        fontSize: deviceWidth >
+                                                                                600
+                                                                            ? 23.sp
+                                                                            : 13.sp),
                                                                   )
                                                                 ],
                                                               ),
@@ -815,23 +810,23 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                                                 mainAxisSize:
                                                                     MainAxisSize
                                                                         .min,
-                                                                children:
-                                                                    List.generate(5,
+                                                                children: List
+                                                                    .generate(5,
                                                                         (index) {
                                                                   return Icon(
                                                                     index <
                                                                             (reviewsModel.rating ??
                                                                                 0)
-                                                                        ? Icons.star
+                                                                        ? Icons
+                                                                            .star
                                                                         : Icons
                                                                             .star_border,
                                                                     color: Colors
                                                                         .amber,
-                                                                    size:
-                                                                        deviceWidth >
-                                                                                600
-                                                                            ? 33.0
-                                                                            : 22.0,
+                                                                    size: deviceWidth >
+                                                                            600
+                                                                        ? 33.0
+                                                                        : 22.0,
                                                                   );
                                                                 }),
                                                               ),
@@ -839,19 +834,35 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                                           )
                                                         ],
                                                       ),
-                                                    Text(DateHelper.dateFormatForOrder(reviewsModel.dateCreated ?? DateTime.now()))
-
+                                                      Text(
+                                                        DateHelper
+                                                            .dateFormatForOrder(
+                                                                reviewsModel
+                                                                        .dateCreated ??
+                                                                    DateTime
+                                                                        .now()),
+                                                        style: TextStyle(
+                                                          fontSize:
+                                                              deviceWidth > 600
+                                                                  ? 25.sp
+                                                                  : 14.sp,
+                                                        ),
+                                                      )
                                                     ],
                                                   ),
                                                   SizedBox(
                                                     height: 10.0,
                                                   ),
                                                   HtmlWidget(
-                                                     reviewsModel.review ??
-                                                    "<p>Reviewwwwwwwwwwwwwwwwwwwwwwwwwwwwwww</p>",
+                                                    reviewsModel.review ??
+                                                        "<p>Reviewwwwwwwwwwwwwwwwwwwwwwwwwwwwwww</p>",
                                                     textStyle: TextStyle(
                                                         fontWeight:
-                                                            FontWeight.normal, fontSize: 14.sp),
+                                                            FontWeight.normal,
+                                                        fontSize:
+                                                            deviceWidth > 600
+                                                                ? 24.sp
+                                                                : 13.sp),
                                                   ),
                                                 ],
                                               ),
@@ -866,7 +877,9 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                 : Text(
                                     "Be the first to review this product",
                                     style: TextStyle(
-                                      fontSize: 18.sp,
+                                      fontSize: deviceWidth > 600
+                                          ? (deviceWidth / 36) + 4
+                                          : 18.sp,
                                     ),
                                   ),
                         ApiService.reviewsList.length > 3
@@ -914,7 +927,9 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                 : "₹ ${productsModel.salePrice ?? 10000}",
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              fontSize: Fontsizes.headingSize,
+                              fontSize: deviceWidth > 600
+                                  ? Fontsizes.tabletHeadingSize
+                                  : Fontsizes.headingSize,
                             ),
                           ),
                           SizedBox(
@@ -927,7 +942,9 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                               // productsModel.regularPrice ??
                               //     "20,000",
                               style: TextStyle(
-                                  fontSize: Fontsizes.headingSize,
+                                  fontSize: deviceWidth > 600
+                                      ? Fontsizes.tabletHeadingSize
+                                      : Fontsizes.headingSize,
                                   decoration: TextDecoration.lineThrough)),
                         ],
                         //child:
@@ -940,7 +957,8 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         //     "20,000",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: Fontsizes.headingSize,
+                          fontSize:
+                              deviceWidth > 600 ? 29.sp : Fontsizes.headingSize,
                         ),
                       ),
 
@@ -954,127 +972,72 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
 
                 ////////////////
 
-                SizedBox(
+                GestureDetector(
+                  onTap: () async {
+                    print("CART PRESSED");
+                    cartProvider.addToCartId(productsModel.id!);
+                    print("CART IDS : ${cartProvider.cartProductIds}");
+
+                    cartProvider.addToCart(CartProductModel(
+                        cartProductid: productsModel.id,
+                        price: productsModel.regularPrice != ""
+                            ? productsModel.regularPrice ?? "20000"
+                            : "0.0",
+                        productName: productsModel.name ?? "Jewellery",
+                        quantity: "1",
+                        size: 5,
+                        deliveryDate: DateHelper.getCurrentDateInWords(),
+                        imageUrl: productsModel.images.isEmpty
+                            ? Constants.defaultImageUrl
+                            : productsModel.images[0].src ??
+                                Constants.defaultImageUrl,
+                        sku: productsModel.sku ?? "ABC",
+                        imageId: productsModel.images.isNotEmpty
+                            ? productsModel.images[0].id
+                            : 0));
+
+                    print("Product is added to cart");
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => CartPage()));
+                  },
+                  child: Container(
+                    // height: deviceWidth > 600 ? 100 - 10 : 100 - 50,
                     width: MediaQuery.of(context).size.width > 600
                         ? MediaQuery.of(context).size.width / 3.7
                         : MediaQuery.of(context).size.width / 2,
-                    child: GestureDetector(
-                      onTap: () async {
-                        print("CART PRESSED");
-                        cartProvider.addToCartId(productsModel.id!);
-                        print("CART IDS : ${cartProvider.cartProductIds}");
-
-                        cartProvider.addToCart(CartProductModel(
-                            cartProductid: productsModel.id,
-                            price: productsModel.regularPrice != ""
-                                ? productsModel.regularPrice ?? "20000"
-                                : "0.0",
-                            productName: productsModel.name ?? "Jewellery",
-                            quantity: "1",
-                            size: 5,
-                            deliveryDate: DateHelper.getCurrentDateInWords(),
-                            imageUrl: productsModel.images.isEmpty
-                                ? Constants.defaultImageUrl
-                                : productsModel.images[0].src ??
-                                    Constants.defaultImageUrl,
-                            sku: productsModel.sku ?? "ABC",
-                            imageId: productsModel.images.isNotEmpty
-                                ? productsModel.images[0].id
-                                : 0));
-
-                        print("Product is added to cart");
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => CartPage()));
-                      },
-                      child: Container(
-                        height: 100 - 50,
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 10.0, horizontal: 10.0),
-                        decoration: BoxDecoration(
-                            shape: BoxShape.rectangle,
-                            borderRadius: BorderRadius.circular(10.0),
-                            color: Theme.of(context).primaryColor),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              Constants.cart_btn_text,
-                              style: Fontsizes.buttonTextStyle,
-                            ),
-                            const SizedBox(
-                              width: 10.0,
-                            ),
-                            Image.asset(
-                              "assets/images/grocery_store.png",
-                              // width: 17.0,
-                              // height: 17.0,
-                              height: 20.sp,
-                              //  scale: 0.5,
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 10.0, horizontal: 10.0),
+                    decoration: BoxDecoration(
+                        shape: BoxShape.rectangle,
+                        borderRadius: BorderRadius.circular(10.0),
+                        color: Theme.of(context).primaryColor),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          Constants.cart_btn_text,
+                          style: TextStyle(
                               color: Colors.white,
-                            )
-                          ],
+                              fontWeight: FontWeight.bold,
+                              fontSize: deviceWidth > 600
+                                  ? Fontsizes.tabletButtonTextSize
+                                  : Fontsizes.buttonTextSize),
                         ),
-                      ),
-                    )
-
-                    // ButtonWidget(
-                    //     imagePath: "assets/images/grocery_store.png",
-                    //     btnString: Constants.cart_btn_text,
-                    //     onTap: () async {
-                    //       print("CART PRESSED");
-                    //       cartProvider.addToCartId(productsModel.id!);
-                    //       print("CART IDS : ${cartProvider.cartProductIds}");
-
-                    //       // if (customerProvider.customerData.isNotEmpty ||
-                    //       //     customerProvider.customerData.length != 0) {
-                    //       //   print(
-                    //       //       "customerData.isNotEmpty ${customerProvider.customerData.isNotEmpty}");
-
-                    //       //   List<CartProductModel> cart = <CartProductModel>[];
-                    //       //   cart.add(CartProductModel(
-                    //       //       cartProductid: productsModel.id,
-                    //       //       price: productsModel.regularPrice != ""
-                    //       //           ? productsModel.regularPrice ?? "20000"
-                    //       //           : "0.0",
-                    //       //       productName: productsModel.name ?? "Jewellery",
-                    //       //       quantity: "1",
-                    //       //       size: 5,
-                    //       //       deliveryDate: DateHelper.getCurrentDateInWords(),
-                    //       //       imageUrl: productsModel.images.isEmpty
-                    //       //           ? Constants.defaultImageUrl
-                    //       //           : productsModel.images[0].src ??
-                    //       //               Constants.defaultImageUrl,
-                    //       //       sku: productsModel.sku ?? "ABC",
-                    //       //       imageId: productsModel.images.isNotEmpty
-                    //       //           ? productsModel.images[0].id
-                    //       //           : 0));
-
-                    //       //   customerProvider.customerData[0]["cartList"] = cart;
-                    //       // }
-
-                    //       cartProvider.addToCart(CartProductModel(
-                    //           cartProductid: productsModel.id,
-                    //           price: productsModel.regularPrice != ""
-                    //               ? productsModel.regularPrice ?? "20000"
-                    //               : "0.0",
-                    //           productName: productsModel.name ?? "Jewellery",
-                    //           quantity: "1",
-                    //           size: 5,
-                    //           deliveryDate: DateHelper.getCurrentDateInWords(),
-                    //           imageUrl: productsModel.images.isEmpty
-                    //               ? Constants.defaultImageUrl
-                    //               : productsModel.images[0].src ??
-                    //                   Constants.defaultImageUrl,
-                    //           sku: productsModel.sku ?? "ABC",
-                    //           imageId: productsModel.images.isNotEmpty
-                    //               ? productsModel.images[0].id
-                    //               : 0));
-
-                    //       print("Product is added to cart");
-                    //       Navigator.of(context).push(MaterialPageRoute(
-                    //           builder: (context) => CartPage()));
-                    //     }),
-                    )
+                        const SizedBox(
+                          width: 10.0,
+                        ),
+                        Image.asset(
+                          "assets/images/grocery_store.png",
+                          // width: 17.0,
+                          // height: 17.0,
+                          height: deviceWidth > 600 ? 25.sp : 20.sp,
+                          //  scale: 0.5,
+                          color: Colors.white,
+                        )
+                      ],
+                    ),
+                  ),
+                )
               ],
             ),
           );

@@ -1,6 +1,7 @@
 import 'package:Tiara_by_TJ/constants/fontsizes.dart';
 import 'package:Tiara_by_TJ/model/cart_product_model.dart';
 import 'package:Tiara_by_TJ/providers/customer_provider.dart';
+import 'package:Tiara_by_TJ/providers/layoutdesign_provider.dart';
 import 'package:Tiara_by_TJ/views/pages/coupon_list.dart';
 import 'package:Tiara_by_TJ/views/pages/dashboard_page.dart';
 import 'package:Tiara_by_TJ/views/pages/login_page.dart';
@@ -100,7 +101,8 @@ class _CartPageState extends State<CartPage> {
   Widget build(BuildContext context) {
     final cartProvider = Provider.of<CartProvider>(context, listen: false);
     double deviceWidth = MediaQuery.of(context).size.width;
-
+    LayoutDesignProvider layoutDesignProvider =
+        Provider.of<LayoutDesignProvider>(context, listen: false);
     print("coupon deviceWidth / 50 ${deviceWidth / 50}");
     return Scaffold(
         appBar: AppBar(
@@ -163,7 +165,8 @@ class _CartPageState extends State<CartPage> {
                                   return AlertDialog(
                                     title: Image.asset(
                                       "assets/images/discount.png",
-                                      color: Theme.of(context).primaryColor,
+                                      color: Color(int.parse(
+                                          "0xff${layoutDesignProvider.primary.substring(1)}")),
                                       width: deviceWidth > 600 ? 40.0 : 30.0,
                                       height: deviceWidth > 600 ? 40.0 : 30.0,
                                     ),
@@ -198,9 +201,9 @@ class _CartPageState extends State<CartPage> {
                                                               //    "discountString",
                                                               "${selectedCouponData!["discountString"]}",
                                                           style: TextStyle(
-                                                              color: Theme.of(
-                                                                      context)
-                                                                  .primaryColor)),
+                                                              color: Color(
+                                                                  int.parse(
+                                                                      "0xff${layoutDesignProvider.primary.substring(1)}")))),
                                                       TextSpan(
                                                           text:
                                                               " discount with this coupon!"),
@@ -210,9 +213,9 @@ class _CartPageState extends State<CartPage> {
                                                           text:
                                                               "${selectedCouponData!["discountString"]}",
                                                           style: TextStyle(
-                                                              color: Theme.of(
-                                                                      context)
-                                                                  .primaryColor)),
+                                                              color: Color(
+                                                                  int.parse(
+                                                                      "0xff${layoutDesignProvider.primary.substring(1)}")))),
                                                       TextSpan(
                                                           text:
                                                               " saved with this coupon!")
@@ -298,7 +301,7 @@ class _CartPageState extends State<CartPage> {
                                 decoration: BoxDecoration(
                                     color: Color.fromARGB(255, 255, 227, 230),
                                     // border: Border.all(
-                                    //     color: Theme.of(context).primaryColor),
+                                    //     color: Color(int.parse("0xff${layoutDesignProvider.primary.substring(1)}"))),
                                     shape: BoxShape.rectangle,
                                     borderRadius: BorderRadius.circular(10.0)),
                                 child: ListTile(
@@ -311,7 +314,7 @@ class _CartPageState extends State<CartPage> {
                                     //"'couponcode' applied"
                                     "'${value.selectedCouponData!["couponcode"]}' applied",
                                     style: TextStyle(
-                                        // color: Theme.of(context).primaryColor,
+                                        // color: Color(int.parse("0xff${layoutDesignProvider.primary.substring(1)}")),
                                         // fontSize: deviceWidth > 600
                                         //     ? deviceWidth / 35
                                         //     : 16.0,
@@ -335,8 +338,8 @@ class _CartPageState extends State<CartPage> {
                                               fontSize: deviceWidth > 600
                                                   ? deviceWidth / 35
                                                   : 16.0,
-                                              color: Theme.of(context)
-                                                  .primaryColor),
+                                              color: Color(int.parse(
+                                                  "0xff${layoutDesignProvider.primary.substring(1)}"))),
                                         ),
                                         TextSpan(
                                           text: " saved on this order",
@@ -361,8 +364,8 @@ class _CartPageState extends State<CartPage> {
                                       style: TextStyle(
                                           fontSize:
                                               deviceWidth > 600 ? 25.sp : 15.sp,
-                                          color:
-                                              Theme.of(context).primaryColor),
+                                          color: Color(int.parse(
+                                              "0xff${layoutDesignProvider.primary.substring(1)}"))),
                                     ),
                                   ),
                                 ),
@@ -373,7 +376,8 @@ class _CartPageState extends State<CartPage> {
                                     vertical: deviceWidth > 600 ? 10.0 : 0.0),
                                 decoration: BoxDecoration(
                                     border: Border.all(
-                                        color: Theme.of(context).primaryColor),
+                                        color: Color(int.parse(
+                                            "0xff${layoutDesignProvider.primary.substring(1)}"))),
                                     shape: BoxShape.rectangle,
                                     borderRadius: BorderRadius.circular(10.0)),
                                 child: ListTile(
@@ -382,7 +386,8 @@ class _CartPageState extends State<CartPage> {
                                     scale: deviceWidth > 600
                                         ? deviceWidth / 70
                                         : 20,
-                                    color: Theme.of(context).primaryColor,
+                                    color: Color(int.parse(
+                                        "0xff${layoutDesignProvider.primary.substring(1)}")),
                                     // width: 30.0,
                                     // height: 30.0,
                                   ),
@@ -401,7 +406,8 @@ class _CartPageState extends State<CartPage> {
                                       size: deviceWidth > 600
                                           ? deviceWidth / 25
                                           : 25,
-                                      color: Theme.of(context).primaryColor),
+                                      color: Color(int.parse(
+                                          "0xff${layoutDesignProvider.primary.substring(1)}"))),
                                 ),
                               ),
                       ),
@@ -525,8 +531,8 @@ class _CartPageState extends State<CartPage> {
                                                   style: TextStyle(
                                                       fontWeight:
                                                           FontWeight.bold,
-                                                      color: Theme.of(context)
-                                                          .primaryColor,
+                                                      color: Color(int.parse(
+                                                          "0xff${layoutDesignProvider.primary.substring(1)}")),
                                                       // fontSize: deviceWidth > 600
                                                       //     ? deviceWidth / 30
                                                       //     : (deviceWidth / 27) - 1,
@@ -605,8 +611,8 @@ class _CartPageState extends State<CartPage> {
                                                   style: TextStyle(
                                                       fontWeight:
                                                           FontWeight.bold,
-                                                      color: Theme.of(context)
-                                                          .primaryColor,
+                                                      color: Color(int.parse(
+                                                          "0xff${layoutDesignProvider.primary.substring(1)}")),
                                                       // fontSize: deviceWidth > 600
                                                       //     ? deviceWidth / 30
                                                       //     : (deviceWidth / 27) - 1,
@@ -754,8 +760,8 @@ class _CartPageState extends State<CartPage> {
                                                   style: TextStyle(
                                                       fontWeight:
                                                           FontWeight.bold,
-                                                      color: Theme.of(context)
-                                                          .primaryColor,
+                                                      color: Color(int.parse(
+                                                          "0xff${layoutDesignProvider.primary.substring(1)}")),
                                                       // fontSize: deviceWidth > 600
                                                       //     ? deviceWidth / 30
                                                       //     : (deviceWidth / 27) - 1,
@@ -791,8 +797,8 @@ class _CartPageState extends State<CartPage> {
                                                   style: TextStyle(
                                                       fontWeight:
                                                           FontWeight.bold,
-                                                      color: Theme.of(context)
-                                                          .primaryColor,
+                                                      color: Color(int.parse(
+                                                          "0xff${layoutDesignProvider.primary.substring(1)}")),
                                                       // fontSize: deviceWidth > 600
                                                       //     ? deviceWidth / 30
                                                       //     : (deviceWidth / 27) - 1,
@@ -900,7 +906,8 @@ class _CartPageState extends State<CartPage> {
                         },
                         child: Container(
                             decoration: BoxDecoration(
-                                color: Theme.of(context).primaryColor,
+                                color: Color(int.parse(
+                                    "0xff${layoutDesignProvider.primary.substring(1)}")),
                                 borderRadius: BorderRadius.circular(5.0)),
                             padding: const EdgeInsets.symmetric(
                                 vertical: 10.0, horizontal: 40.0),
@@ -998,7 +1005,8 @@ class _CartPageState extends State<CartPage> {
                             decoration: BoxDecoration(
                                 shape: BoxShape.rectangle,
                                 borderRadius: BorderRadius.circular(10.0),
-                                color: Theme.of(context).primaryColor),
+                                color: Color(int.parse(
+                                    "0xff${layoutDesignProvider.primary.substring(1)}"))),
                             child: Text(
                               "PLACE ORDER",
                               style: TextStyle(
@@ -1030,7 +1038,8 @@ class _CartPageState extends State<CartPage> {
       List<CartProductModel> cartList, CartProvider value, double deviceWidth) {
     // print("mobile deviceWidth ${deviceWidth / 3.2}");
     double dimension = deviceWidth > 600 ? deviceWidth / 4 : deviceWidth / 3;
-
+    LayoutDesignProvider layoutDesignProvider =
+        Provider.of<LayoutDesignProvider>(context, listen: false);
     return cartList.map((cartData) {
       return Padding(
         padding: const EdgeInsets.only(bottom: 10.0, left: 8.0, right: 8.0),
@@ -1059,7 +1068,8 @@ class _CartPageState extends State<CartPage> {
                           }
                           return Center(
                             child: CircularProgressIndicator(
-                              color: Theme.of(context).primaryColor,
+                              color: Color(int.parse(
+                                  "0xff${layoutDesignProvider.primary.substring(1)}")),
                             ),
                           );
                         },

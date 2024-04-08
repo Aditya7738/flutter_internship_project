@@ -1,6 +1,7 @@
 import 'package:Tiara_by_TJ/api/api_service.dart';
 import 'package:Tiara_by_TJ/model/order_model.dart';
 import 'package:Tiara_by_TJ/providers/customer_provider.dart';
+import 'package:Tiara_by_TJ/providers/layoutdesign_provider.dart';
 import 'package:Tiara_by_TJ/providers/order_provider.dart';
 import 'package:Tiara_by_TJ/views/widgets/my_gold_plan_list_item.dart';
 import 'package:Tiara_by_TJ/views/widgets/price_info.dart';
@@ -100,6 +101,8 @@ class _MyGoldPlansState extends State<MyGoldPlans> {
 
   @override
   Widget build(BuildContext context) {
+    LayoutDesignProvider layoutDesignProvider =
+        Provider.of<LayoutDesignProvider>(context, listen: false);
     final orderProvider = Provider.of<OrderProvider>(context, listen: false);
 //left to show u have not purchased digi gold plan
     return Scaffold(
@@ -109,7 +112,8 @@ class _MyGoldPlansState extends State<MyGoldPlans> {
       body: orderProvider.isOrderCreating || isOrderFetching
           ? Center(
               child: CircularProgressIndicator(
-                color: Theme.of(context).primaryColor,
+                color: Color(int.parse(
+                    "0xff${layoutDesignProvider.primary.substring(1)}")),
               ),
             )
           : Padding(

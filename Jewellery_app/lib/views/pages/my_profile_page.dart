@@ -1,3 +1,4 @@
+import 'package:Tiara_by_TJ/providers/layoutdesign_provider.dart';
 import 'package:Tiara_by_TJ/providers/wishlist_provider.dart';
 import 'package:Tiara_by_TJ/views/pages/my_gold_plans.dart';
 import 'package:flutter/material.dart';
@@ -130,6 +131,8 @@ class MyProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    LayoutDesignProvider layoutDesignProvider =
+        Provider.of<LayoutDesignProvider>(context, listen: false);
     final customerProvider =
         Provider.of<CustomerProvider>(context, listen: false);
 
@@ -200,121 +203,124 @@ class MyProfilePage extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(
                     vertical: 20.0, horizontal: 30.0),
                 child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                  Container(
-                    height: deviceWidth > 600 ? 170.0 : 90.0,
-                    width: deviceWidth > 600 ? 170.0 : 90.0,
-                    color: Colors.red,
-                    alignment: Alignment.center,
-                    // padding: const EdgeInsets.symmetric(
-                    //     horizontal: 35.0, vertical: 20.0),
-                    child: Text(
-                      firstCharacter,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                          fontSize: deviceWidth > 600 ? 70.0 : 30.0),
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 20.0,
-                  ),
-                  Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Text("Aditya",
-                      //     style: deviceWidth > 600
-                      //         ? TextStyle(
-                      //             fontWeight: FontWeight.bold,
-                      //             fontSize: deviceWidth / 28,
-                      //           )
-                      //         : TextStyle(
-                      //             fontWeight: FontWeight.bold,
-                      //             fontSize: (deviceWidth / 30) + 3,
-                      //           )),
-
-                      // // SizedBox(
-                      // //   height: 5.0,
-                      // // ),
-                      // Text("Shigwan",
-                      //     style: deviceWidth > 600
-                      //         ? TextStyle(
-                      //             fontWeight: FontWeight.bold,
-                      //             fontSize: deviceWidth / 28,
-                      //           )
-                      //         : TextStyle(
-                      //             fontWeight: FontWeight.bold,
-                      //             fontSize: (deviceWidth / 30) + 3,
-                      //           )),
-
-                      Text(
-                        customerProvider.customerData[0]["first_name"],
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: deviceWidth > 600 ? 29.sp : 17.sp
-                            //  deviceWidth > 600 ? deviceWidth / 29 : deviceWidth / 26,
-                            ),
-                      ),
-                      Text(
-                        customerProvider.customerData[0]["last_name"],
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: deviceWidth > 600 ? 29.sp : 17.sp
-                            //deviceWidth > 600 ? deviceWidth / 28 : deviceWidth / 26,
-                            ),
-                      ),
-                      Text(
-                        customerProvider.customerData[0]["user_email"],
-                        style: TextStyle(
-                            fontWeight: FontWeight.normal,
-                            fontSize: deviceWidth > 600 ? 26.sp : 17.sp
-                            // deviceWidth > 600 ? deviceWidth / 28 : deviceWidth / 26,
-                            ),
+                      Container(
+                        height: deviceWidth > 600 ? 170.0 : 90.0,
+                        width: deviceWidth > 600 ? 170.0 : 90.0,
+                        color: Colors.red,
+                        alignment: Alignment.center,
+                        // padding: const EdgeInsets.symmetric(
+                        //     horizontal: 35.0, vertical: 20.0),
+                        child: Text(
+                          firstCharacter,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              fontSize: deviceWidth > 600 ? 70.0 : 30.0),
+                        ),
                       ),
                       const SizedBox(
-                        height: 10.0,
+                        width: 20.0,
                       ),
-                      InkWell(
-                          onTap: () => Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      const EditProfilePage())),
-                          child: Container(
-                            padding: EdgeInsets.symmetric(
-                                vertical: 1.0, horizontal: 10.0),
-                            child: Row(
-                              children: [
-                                Text(
-                                  "Edit Profile",
-                                  style: TextStyle(
-                                      color: Theme.of(context).primaryColor,
-                                      fontWeight: FontWeight.normal,
-                                      fontSize:
-                                          deviceWidth > 600 ? 22.sp : 15.sp
-                                      //deviceWidth > 600 ? deviceWidth / 36 : deviceWidth / 29,
-                                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Text("Aditya",
+                          //     style: deviceWidth > 600
+                          //         ? TextStyle(
+                          //             fontWeight: FontWeight.bold,
+                          //             fontSize: deviceWidth / 28,
+                          //           )
+                          //         : TextStyle(
+                          //             fontWeight: FontWeight.bold,
+                          //             fontSize: (deviceWidth / 30) + 3,
+                          //           )),
+
+                          // // SizedBox(
+                          // //   height: 5.0,
+                          // // ),
+                          // Text("Shigwan",
+                          //     style: deviceWidth > 600
+                          //         ? TextStyle(
+                          //             fontWeight: FontWeight.bold,
+                          //             fontSize: deviceWidth / 28,
+                          //           )
+                          //         : TextStyle(
+                          //             fontWeight: FontWeight.bold,
+                          //             fontSize: (deviceWidth / 30) + 3,
+                          //           )),
+
+                          Text(
+                            customerProvider.customerData[0]["first_name"],
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: deviceWidth > 600 ? 29.sp : 17.sp
+                                //  deviceWidth > 600 ? deviceWidth / 29 : deviceWidth / 26,
                                 ),
-                                SizedBox(
-                                  width: 5.0,
+                          ),
+                          Text(
+                            customerProvider.customerData[0]["last_name"],
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: deviceWidth > 600 ? 29.sp : 17.sp
+                                //deviceWidth > 600 ? deviceWidth / 28 : deviceWidth / 26,
                                 ),
-                                Icon(
-                                  Icons.edit,
-                                  color: Theme.of(context).primaryColor,
-                                  size: deviceWidth > 600 ? 28.0 : 23.0,
-                                )
-                              ],
-                            ),
-                            decoration: BoxDecoration(
-                                border: Border.all(
-                                    width: 2.0,
-                                    color: Theme.of(context).primaryColor,
-                                    style: BorderStyle.solid),
-                                shape: BoxShape.rectangle),
-                          ))
-                    ],
-                  )
-                ]),
+                          ),
+                          Text(
+                            customerProvider.customerData[0]["user_email"],
+                            style: TextStyle(
+                                fontWeight: FontWeight.normal,
+                                fontSize: deviceWidth > 600 ? 26.sp : 17.sp
+                                // deviceWidth > 600 ? deviceWidth / 28 : deviceWidth / 26,
+                                ),
+                          ),
+                          const SizedBox(
+                            height: 10.0,
+                          ),
+                          InkWell(
+                              onTap: () => Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const EditProfilePage())),
+                              child: Container(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 1.0, horizontal: 10.0),
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      "Edit Profile",
+                                      style: TextStyle(
+                                          color: Color(int.parse(
+                                              "0xff${layoutDesignProvider.primary.substring(1)}")),
+                                          fontWeight: FontWeight.normal,
+                                          fontSize:
+                                              deviceWidth > 600 ? 22.sp : 15.sp
+                                          //deviceWidth > 600 ? deviceWidth / 36 : deviceWidth / 29,
+                                          ),
+                                    ),
+                                    SizedBox(
+                                      width: 5.0,
+                                    ),
+                                    Icon(
+                                      Icons.edit,
+                                      color: Color(int.parse(
+                                          "0xff${layoutDesignProvider.primary.substring(1)}")),
+                                      size: deviceWidth > 600 ? 28.0 : 23.0,
+                                    )
+                                  ],
+                                ),
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                        width: 2.0,
+                                        color: Color(int.parse(
+                                            "0xff${layoutDesignProvider.primary.substring(1)}")),
+                                        style: BorderStyle.solid),
+                                    shape: BoxShape.rectangle),
+                              ))
+                        ],
+                      )
+                    ]),
               ),
               const SizedBox(
                 height: 10.0,

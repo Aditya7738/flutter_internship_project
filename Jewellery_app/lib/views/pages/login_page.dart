@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:Tiara_by_TJ/constants/fontsizes.dart';
+import 'package:Tiara_by_TJ/providers/layoutdesign_provider.dart';
 import 'package:Tiara_by_TJ/views/pages/cart_page.dart';
 import 'package:Tiara_by_TJ/views/pages/dashboard_page.dart';
 import 'package:Tiara_by_TJ/views/pages/shipping_page.dart';
@@ -52,6 +53,8 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    LayoutDesignProvider layoutDesignProvider =
+        Provider.of<LayoutDesignProvider>(context, listen: false);
     final customerProvider = Provider.of<CustomerProvider>(context);
     final deviceWidth = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -192,7 +195,8 @@ class _LoginPageState extends State<LoginPage> {
                             labelText: "Enter your email*",
                             border: OutlineInputBorder(
                                 borderSide: BorderSide(
-                                  color: Theme.of(context).primaryColor,
+                                  color: Color(int.parse(
+                                      "0xff${layoutDesignProvider.primary.substring(1)}")),
                                 ),
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(20.0))),
@@ -451,8 +455,7 @@ class _LoginPageState extends State<LoginPage> {
                                             fontWeight: FontWeight.bold,
                                             fontSize: deviceWidth > 600
                                                 ? Fontsizes.tabletButtonTextSize
-                                                : Fontsizes.buttonTextSize
-                                                ),
+                                                : Fontsizes.buttonTextSize),
                                       ),
                               )),
                         ),
@@ -476,7 +479,8 @@ class _LoginPageState extends State<LoginPage> {
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     //  fontSize: 14.5.sp,
-                                    color: Theme.of(context).primaryColor),
+                                    color: Color(int.parse(
+                                        "0xff${layoutDesignProvider.primary.substring(1)}"))),
                                 recognizer: TapGestureRecognizer()
                                   ..onTap = () {
                                     Navigator.of(context)
@@ -489,8 +493,7 @@ class _LoginPageState extends State<LoginPage> {
                                     style: TextStyle(
                                         fontSize: deviceWidth > 600
                                             ? 24.sp
-                                            : 16.sp)
-                                            ))),
+                                            : 16.sp)))),
                       ]),
                 ),
               ))),

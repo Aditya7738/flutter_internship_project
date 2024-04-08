@@ -298,7 +298,7 @@ class _HomeScreenState extends State<HomeScreen> {
             width: 34,
           ),
         ],
-        bottom: const CustomSearchBar(),
+       // bottom: const CustomSearchBar(),
       ),
 
       body: SingleChildScrollView(
