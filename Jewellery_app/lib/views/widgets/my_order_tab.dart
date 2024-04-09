@@ -1,3 +1,4 @@
+import 'package:Tiara_by_TJ/providers/layoutdesign_provider.dart';
 import 'package:Tiara_by_TJ/providers/order_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:Tiara_by_TJ/api/api_service.dart';
@@ -66,13 +67,16 @@ class _MyOrderTabState extends State<MyOrderTab> {
 
   @override
   Widget build(BuildContext context) {
+    LayoutDesignProvider layoutDesignProvider =
+        Provider.of(context, listen: false);
     double deviceWidth = MediaQuery.of(context).size.width;
     final orderProvider = Provider.of<OrderProvider>(context, listen: false);
 
     return orderProvider.isOrderCreating || pageLoading
-        ?  Center(
+        ? Center(
             child: CircularProgressIndicator(
-              backgroundColor:  Theme.of(context).primaryColor,
+              backgroundColor: Color(int.parse(
+                  "0xff${layoutDesignProvider.primary.substring(1)}")),
               color: Colors.white,
             ),
           )
@@ -170,7 +174,7 @@ class _MyOrderTabState extends State<MyOrderTab> {
                                                           BorderStyle.solid)),
                                               child: Image.network(
                                                 order.image == null
-                                                    ? Constants.defaultImageUrl
+                                                    ? layoutDesignProvider.placeHolder
                                                     : order.image!.src == ""
                                                         ? Constants
                                                             .defaultImageUrl
@@ -187,8 +191,9 @@ class _MyOrderTabState extends State<MyOrderTab> {
                                                     width: 90.0,
                                                     height: 87.0,
                                                     child:
-                                                         CircularProgressIndicator(
-                                                      color:  Theme.of(context).primaryColor,
+                                                        CircularProgressIndicator(
+                                                      color: Color(int.parse(
+                                                          "0xff${layoutDesignProvider.primary.substring(1)}")),
                                                     ),
                                                   );
                                                 },

@@ -1,6 +1,8 @@
+import 'package:Tiara_by_TJ/providers/layoutdesign_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
 class FilterTile extends StatelessWidget {
   final bool isFilterTileClicked;
@@ -15,6 +17,8 @@ class FilterTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    LayoutDesignProvider layoutDesignProvider =
+        Provider.of<LayoutDesignProvider>(context, listen: false);
     double deviceWidth = MediaQuery.of(context).size.width;
     print(
         "(MediaQuery.of(context).size.width / 20) ${(MediaQuery.of(context).size.width / 20)}");
@@ -38,7 +42,9 @@ class FilterTile extends StatelessWidget {
                       ? TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 13.5.sp,
-                          color: Theme.of(context).primaryColor)
+                          color: Color(int.parse(
+                              "0xff${layoutDesignProvider.primary.substring(1)}"))
+                              )
                       : TextStyle(
                           fontWeight: FontWeight.normal,
                           // fontSize: (deviceWidth / 33) + 1.5,

@@ -25,21 +25,25 @@ class Data {
     Data({
         required this.theme,
         required this.pages,
+        required this.placeholders,
     });
 
     final Theme? theme;
     final List<Page> pages;
+    final Placeholders? placeholders;
 
     factory Data.fromJson(Map<String, dynamic> json){ 
         return Data(
             theme: json["theme"] == null ? null : Theme.fromJson(json["theme"]),
             pages: json["pages"] == null ? [] : List<Page>.from(json["pages"]!.map((x) => Page.fromJson(x))),
+            placeholders: json["placeholders"] == null ? null : Placeholders.fromJson(json["placeholders"]),
         );
     }
 
     Map<String, dynamic> toJson() => {
         "theme": theme?.toJson(),
         "pages": pages.map((x) => x?.toJson()).toList(),
+        "placeholders": placeholders?.toJson(),
     };
 
 }
@@ -171,6 +175,25 @@ class Style {
     Map<String, dynamic> toJson() => {
         "color": color,
         "fontSize": fontSize,
+    };
+
+}
+
+class Placeholders {
+    Placeholders({
+        required this.productImage,
+    });
+
+    final String? productImage;
+
+    factory Placeholders.fromJson(Map<String, dynamic> json){ 
+        return Placeholders(
+            productImage: json["product_image"],
+        );
+    }
+
+    Map<String, dynamic> toJson() => {
+        "product_image": productImage,
     };
 
 }

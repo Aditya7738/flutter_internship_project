@@ -56,11 +56,18 @@ class MyProfilePage extends StatelessWidget {
           alignment: Alignment.center,
           title: Text(
             "Confirm Logout",
-            style: Theme.of(context).textTheme.bodyText1,
+            style: TextStyle(
+              color: Color(0xffCC868A),
+              fontWeight: FontWeight.bold,
+              fontSize: deviceWidth > 600 ? deviceWidth / 29 : deviceWidth / 25,
+            ),
           ),
           content: Text(
-            "Please click on confirm button for logout else cancel",
-            style: Theme.of(context).textTheme.subtitle1,
+            "Please click on 'Confirm' button for logout else 'Cancel'",
+            style: TextStyle(
+                fontWeight: FontWeight.normal,
+                // fontSize: (deviceWidth / 33) + 1.5,
+                fontSize: deviceWidth > 600 ? deviceWidth / 33 :  16.sp),
           ),
           actions: [
             GestureDetector(
@@ -78,7 +85,7 @@ class MyProfilePage extends StatelessWidget {
                     "Cancel",
                     style: TextStyle(
                         color: Colors.black,
-                        fontSize: deviceWidth > 600 ? 25.0 : 17.0),
+                        fontSize: deviceWidth > 600 ? 25.sp : 17.sp),
                   )),
             ),
             SizedBox(
@@ -120,7 +127,7 @@ class MyProfilePage extends StatelessWidget {
                     "Confirm",
                     style: TextStyle(
                         color: Colors.white,
-                        fontSize: deviceWidth > 600 ? 25.0 : 17.0),
+                        fontSize: deviceWidth > 600 ? 25.sp : 17.sp),
                   )),
             ),
           ],
@@ -167,7 +174,7 @@ class MyProfilePage extends StatelessWidget {
             Container(
               width: (deviceWidth / 16) + 4,
               child: badges.Badge(
-                badgeStyle: const badges.BadgeStyle(badgeColor: Colors.purple),
+                badgeStyle:  badges.BadgeStyle(badgeColor:Color(int.parse("0xff${layoutDesignProvider.primary.substring(1)}"))),
                 badgeContent: Consumer<CartProvider>(
                     builder: (context, value, child) => Text(
                           value.cart.length.toString(),
@@ -217,7 +224,7 @@ class MyProfilePage extends StatelessWidget {
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
-                              fontSize: deviceWidth > 600 ? 70.0 : 30.0),
+                              fontSize: deviceWidth > 600 ? 70.sp : 30.sp),
                         ),
                       ),
                       const SizedBox(
@@ -295,7 +302,7 @@ class MyProfilePage extends StatelessWidget {
                                               "0xff${layoutDesignProvider.primary.substring(1)}")),
                                           fontWeight: FontWeight.normal,
                                           fontSize:
-                                              deviceWidth > 600 ? 22.sp : 15.sp
+                                              deviceWidth > 600 ? 23.sp : 15.sp
                                           //deviceWidth > 600 ? deviceWidth / 36 : deviceWidth / 29,
                                           ),
                                     ),

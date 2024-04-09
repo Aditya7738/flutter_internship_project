@@ -1,3 +1,4 @@
+import 'package:Tiara_by_TJ/providers/layoutdesign_provider.dart';
 import 'package:Tiara_by_TJ/views/widgets/custom_searchbar.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:Tiara_by_TJ/constants/constants.dart';
@@ -226,6 +227,8 @@ class _HomeScreenState extends State<HomeScreen> {
     // }
     // print("categoryFileStream == null ${categoryFileStream == null}");
     double deviceWidth = MediaQuery.of(context).size.width;
+     LayoutDesignProvider layoutDesignProvider =
+        Provider.of<LayoutDesignProvider>(context, listen: false);
     print("deviceWidth / 20 ${deviceWidth / 31}");
     return Scaffold(
       key: scaffoldKey,
@@ -250,7 +253,7 @@ class _HomeScreenState extends State<HomeScreen> {
           Container(
             width: (deviceWidth / 16) + 4,
             child: badges.Badge(
-              badgeStyle: const badges.BadgeStyle(badgeColor: Colors.purple),
+              badgeStyle:  badges.BadgeStyle(badgeColor:Color(int.parse("0xff${layoutDesignProvider.primary.substring(1)}"))),
               badgeContent:
                   Consumer<WishlistProvider>(builder: (context, value, child) {
                 print("LENGTH OF FAV: ${value.favProductIds}");
@@ -275,7 +278,7 @@ class _HomeScreenState extends State<HomeScreen> {
           Container(
             width: (deviceWidth / 16) + 4,
             child: badges.Badge(
-              badgeStyle: const badges.BadgeStyle(badgeColor: Colors.purple),
+              badgeStyle:  badges.BadgeStyle(badgeColor:Color(int.parse("0xff${layoutDesignProvider.primary.substring(1)}"))),
               badgeContent: Consumer<CartProvider>(
                   builder: (context, value, child) => Text(
                         value.cart.length.toString(),

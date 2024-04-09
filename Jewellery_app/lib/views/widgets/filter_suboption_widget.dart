@@ -1,4 +1,5 @@
 import 'package:Tiara_by_TJ/providers/filteroptions_provider.dart';
+import 'package:Tiara_by_TJ/providers/layoutdesign_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -46,8 +47,8 @@ class _FilterSubOptionsWidgetState extends State<FilterSubOptionsWidget> {
 
   @override
   Widget build(BuildContext context) {
-    // final filterOptionsProvider =
-    //     Provider.of<FilterOptionsProvider>(context, listen: true);
+    final layoutDesignProvider =
+        Provider.of<LayoutDesignProvider>(context, listen: true);
     // final filterOptionsProvider =
     //     Provider.of<FilterOptionsProvider>(context, listen: false);
     // for (var i = 0; i < filterOptionsProvider.list.length; i++) {
@@ -154,33 +155,34 @@ class _FilterSubOptionsWidgetState extends State<FilterSubOptionsWidget> {
                             maxLines: 2,
                             style: isSelected
                                 ? TextStyle(
-                                    color: Theme.of(context).primaryColor,
+                                    color: Color(int.parse(
+                                        "0xff${layoutDesignProvider.primary.substring(1)}")),
                                     fontWeight: FontWeight.bold,
-                                    fontSize: deviceWidth > 600 ?
-                                      constraints.maxWidth / 23
-                                      : 14.5.sp)
+                                    fontSize: deviceWidth > 600
+                                        ? constraints.maxWidth / 23
+                                        : 14.5.sp)
                                 : TextStyle(
-                                   
                                     fontWeight: FontWeight.normal,
-                                    fontSize: deviceWidth > 600 ?
-                                      constraints.maxWidth / 23
-                                      : 14.5.sp),
+                                    fontSize: deviceWidth > 600
+                                        ? constraints.maxWidth / 23
+                                        : 14.5.sp),
                           )),
                       Text(
                         widget.subOptions["count"].toString(),
                         style: isSelected
                             ? TextStyle(
-                                    color: Theme.of(context).primaryColor,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: deviceWidth > 600 ?
-                                      constraints.maxWidth / 23
-                                      : 14.5.sp)
+                                color: Color(int.parse(
+                                    "0xff${layoutDesignProvider.primary.substring(1)}")),
+                                fontWeight: FontWeight.bold,
+                                fontSize: deviceWidth > 600
+                                    ? constraints.maxWidth / 23
+                                    : 14.5.sp)
                             : TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.normal,
-                                fontSize:  deviceWidth > 600 ?
-                                      constraints.maxWidth / 23
-                                      : 14.5.sp),
+                                fontSize: deviceWidth > 600
+                                    ? constraints.maxWidth / 23
+                                    : 14.5.sp),
                       )
                     ],
                   ),

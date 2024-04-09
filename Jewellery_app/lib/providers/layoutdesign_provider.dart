@@ -43,6 +43,14 @@ class LayoutDesignProvider with ChangeNotifier {
     });
   }
 
+  String _placeHolder = "";
+  String get placeHolder => _placeHolder;
+
+  void setPlaceHolder(String placeHolder) {
+    _placeHolder = placeHolder;
+    notifyListeners();
+  }
+
   String _fontFamily = "";
   String get fontFamily => _fontFamily;
 

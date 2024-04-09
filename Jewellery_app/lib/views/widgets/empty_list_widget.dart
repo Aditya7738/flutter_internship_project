@@ -1,7 +1,9 @@
+import 'package:Tiara_by_TJ/providers/layoutdesign_provider.dart';
 import 'package:Tiara_by_TJ/views/pages/dashboard_page.dart';
 import 'package:flutter/material.dart';
 import 'package:Tiara_by_TJ/views/pages/search_page.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
 class EmptyListWidget extends StatelessWidget {
   final String imagePath;
@@ -76,6 +78,8 @@ class EmptyListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var deviceWidth = MediaQuery.of(context).size.width;
+    LayoutDesignProvider layoutDesignProvider =
+        Provider.of<LayoutDesignProvider>(context, listen: false);
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: SizedBox(
@@ -87,7 +91,8 @@ class EmptyListWidget extends StatelessWidget {
             Image.asset(imagePath,
                 width: 150.0,
                 height: 150.0,
-                color: Theme.of(context).primaryColor),
+                color: Color(int.parse(
+                    "0xff${layoutDesignProvider.primary.substring(1)}"))),
             const SizedBox(
               height: 40.0,
             ),
@@ -96,7 +101,8 @@ class EmptyListWidget extends StatelessWidget {
               textAlign: TextAlign.center,
               maxLines: 2,
               style: TextStyle(
-                color: Theme.of(context).primaryColor,
+                color: Color(int.parse(
+                    "0xff${layoutDesignProvider.primary.substring(1)}")),
                 fontWeight: FontWeight.normal,
                 fontSize: deviceWidth > 600 ? 25.sp : 16.sp,
               ),

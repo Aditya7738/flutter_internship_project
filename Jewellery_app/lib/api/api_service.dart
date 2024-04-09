@@ -2332,7 +2332,7 @@ class ApiService {
   static Future<LayoutModel?> getHomeLayout() async {
     //final endpoint = "https://websockets.tanika.tech/frontend/mobile";
 
-     final endpoint = "http://192.168.1.5:8082/frontend/mobile";
+     final endpoint = "http://192.168.1.2:8082/frontend/mobile";
     String basicAuth = "Basic " +
         base64Encode(
             utf8.encode('${Constants.userName}:${Constants.password}'));
@@ -2348,7 +2348,7 @@ class ApiService {
 
     final response = await http.post(uri,
         headers: headers,
-        body: json.encode({"website": "https://tiarabytj.com"}));
+        body: json.encode({"website": "${Constants.baseUrl}"}));
 
     print("layout body ${response.body}");
 

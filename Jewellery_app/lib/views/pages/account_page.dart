@@ -1,3 +1,4 @@
+import 'package:Tiara_by_TJ/providers/layoutdesign_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:Tiara_by_TJ/constants/constants.dart';
@@ -85,7 +86,8 @@ class AccountPage extends StatelessWidget {
     print("CUSTOMERDATA ${customerProvider.customerData.length}");
     double deviceWidth = MediaQuery.of(context).size.width;
     print("deviceWidth / 20 ${deviceWidth / 31}");
-
+LayoutDesignProvider layoutDesignProvider =
+        Provider.of(context, listen: false);
     return Scaffold(
       appBar: AppBar(
           toolbarHeight: kToolbarHeight + 20,
@@ -114,7 +116,7 @@ class AccountPage extends StatelessWidget {
             Container(
               width: (deviceWidth / 16) + 4,
               child: badges.Badge(
-                badgeStyle: const badges.BadgeStyle(badgeColor: Colors.purple),
+                badgeStyle:  badges.BadgeStyle(badgeColor:Color(int.parse("0xff${layoutDesignProvider.primary.substring(1)}"))),
                 badgeContent: Consumer<WishlistProvider>(
                     builder: (context, value, child) {
                   print("LENGTH OF FAV: ${value.favProductIds}");
@@ -139,7 +141,7 @@ class AccountPage extends StatelessWidget {
             Container(
               width: (deviceWidth / 16) + 4,
               child: badges.Badge(
-                badgeStyle: const badges.BadgeStyle(badgeColor: Colors.purple),
+                badgeStyle:  badges.BadgeStyle(badgeColor:Color(int.parse("0xff${layoutDesignProvider.primary.substring(1)}"))),
                 badgeContent: Consumer<CartProvider>(
                     builder: (context, value, child) => Text(
                           value.cart.length.toString(),

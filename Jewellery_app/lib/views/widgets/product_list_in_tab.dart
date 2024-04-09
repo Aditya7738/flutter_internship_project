@@ -1,6 +1,8 @@
 import 'package:Tiara_by_TJ/api/api_service.dart';
+import 'package:Tiara_by_TJ/providers/layoutdesign_provider.dart';
 import 'package:Tiara_by_TJ/views/widgets/product_item.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ProductListInTab extends StatefulWidget {
   const ProductListInTab({super.key});
@@ -62,11 +64,13 @@ class _ProductListInTabState extends State<ProductListInTab> {
 
   @override
   Widget build(BuildContext context) {
+    LayoutDesignProvider layoutDesignProvider =
+        Provider.of<LayoutDesignProvider>(context, listen: false);
     return newListLoading
-        ?  Center(
+        ? Center(
             child: CircularProgressIndicator(
-            
-              color:  Theme.of(context).primaryColor,
+              color: Color(int.parse(
+                  "0xff${layoutDesignProvider.primary.substring(1)}")),
             ),
           )
         : Padding(
@@ -100,12 +104,13 @@ class _ProductListInTabState extends State<ProductListInTab> {
                         )),
                       );
                     } else {
-                      return  Padding(
+                      return Padding(
                         padding: EdgeInsets.symmetric(
                             vertical: 15.0, horizontal: 10.0),
                         child: Center(
                             child: CircularProgressIndicator(
-                          color:  Theme.of(context).primaryColor,
+                          color: Color(int.parse(
+                              "0xff${layoutDesignProvider.primary.substring(1)}")),
                         )),
                       );
                     }

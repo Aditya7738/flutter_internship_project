@@ -161,7 +161,10 @@ class _LoginPageState extends State<LoginPage> {
                                     errorMsg,
                                     maxLines: 3,
                                     style: TextStyle(
-                                        color: Colors.red, fontSize: 17.0),
+                                        color: Colors.red,
+                                        fontSize: deviceWidth > 600
+                                            ? 25.sp
+                                            : 17.sp),
                                   ),
                                 ),
                               )

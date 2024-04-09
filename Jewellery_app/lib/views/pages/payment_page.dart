@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:Tiara_by_TJ/constants/fontsizes.dart';
 import 'package:Tiara_by_TJ/helpers/payment_helper.dart';
 import 'package:Tiara_by_TJ/providers/digigold_provider.dart';
+import 'package:Tiara_by_TJ/providers/layoutdesign_provider.dart';
 import 'package:Tiara_by_TJ/providers/order_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:Tiara_by_TJ/api/api_service.dart';
@@ -388,11 +389,12 @@ class _PaymentPageState extends State<PaymentPage>
       productName += cartProvider.cart[i].productName! + ", ";
     }
 
+    LayoutDesignProvider layoutDesignProvider =
+        Provider.of(context, listen: false);
     return Scaffold(
         appBar: AppBar(
-          title: Text("Payment methods", style: TextStyle(
-            fontSize: deviceWidth > 600 ? 28.sp : 17.sp
-          )),
+          title: Text("Payment methods",
+              style: TextStyle(fontSize: deviceWidth > 600 ? 28.sp : 17.sp)),
         ),
         body:
             //  isLoading
@@ -597,7 +599,8 @@ class _PaymentPageState extends State<PaymentPage>
                           height: MediaQuery.of(context).size.height / 2,
                           child: Center(
                             child: CircularProgressIndicator(
-                              color:  Theme.of(context).primaryColor,
+                              color: Color(int.parse(
+                                  "0xff${layoutDesignProvider.primary.substring(1)}")),
                             ),
                           ),
                         );

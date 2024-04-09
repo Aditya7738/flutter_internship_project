@@ -1,7 +1,9 @@
 import 'package:Tiara_by_TJ/constants/fontsizes.dart';
+import 'package:Tiara_by_TJ/providers/layoutdesign_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:Tiara_by_TJ/helpers/validation_helper.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
 class ShippingForm extends StatefulWidget {
   final TextEditingController firstNameController2;
@@ -105,9 +107,13 @@ class _ShippingFormState extends State<ShippingForm> {
 
   @override
   Widget build(BuildContext context) {
+    LayoutDesignProvider layoutDesignProvider =
+        Provider.of<LayoutDesignProvider>(context, listen: false);
     double deviceWidth = MediaQuery.of(context).size.width;
+
     TextStyle textFormFieldStyle = TextStyle(
-        color: Theme.of(context).primaryColor,
+        color: Color(
+            int.parse("0xff${layoutDesignProvider.primary.substring(1)}")),
         fontSize: deviceWidth > 600
             ? Fontsizes.tabletTextFormInputFieldSize
             : deviceWidth > 600

@@ -2,10 +2,12 @@ import 'package:Tiara_by_TJ/api/api_service.dart';
 import 'package:Tiara_by_TJ/helpers/date_helper.dart';
 import 'package:Tiara_by_TJ/model/products_model.dart';
 import 'package:Tiara_by_TJ/model/reviews_model.dart';
+import 'package:Tiara_by_TJ/providers/layoutdesign_provider.dart';
 import 'package:Tiara_by_TJ/views/pages/write_review_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
+import 'package:provider/provider.dart';
 
 class ReviewsPage extends StatefulWidget {
   final ProductsModel productsModel;
@@ -18,6 +20,8 @@ class ReviewsPage extends StatefulWidget {
 class _ReviewsPageState extends State<ReviewsPage> {
   @override
   Widget build(BuildContext context) {
+    LayoutDesignProvider layoutDesignProvider =
+        Provider.of(context, listen: false);
     double deviceWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
@@ -35,7 +39,8 @@ class _ReviewsPageState extends State<ReviewsPage> {
             child: Text(
               "Write Review",
               style: TextStyle(
-                  color: Theme.of(context).primaryColor,
+                  color: Color(int.parse(
+                      "0xff${layoutDesignProvider.primary.substring(1)}")),
                   fontSize: deviceWidth > 600 ? 25.0 : 15.0,
                   fontWeight: FontWeight.bold),
             ),
@@ -100,8 +105,8 @@ class _ReviewsPageState extends State<ReviewsPage> {
                                                 : ""
                                             : "",
                                         style: TextStyle(
-                                            color:
-                                                Theme.of(context).primaryColor,
+                                            color: Color(int.parse(
+                                                "0xff${layoutDesignProvider.primary.substring(1)}")),
                                             fontWeight: FontWeight.bold,
                                             fontSize: deviceWidth > 600
                                                 ? 23.sp

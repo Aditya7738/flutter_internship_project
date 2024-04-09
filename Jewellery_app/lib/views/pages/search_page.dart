@@ -1,4 +1,5 @@
 import 'package:Tiara_by_TJ/providers/filteroptions_provider.dart';
+import 'package:Tiara_by_TJ/providers/layoutdesign_provider.dart';
 import 'package:Tiara_by_TJ/views/widgets/filter_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:Tiara_by_TJ/api/api_service.dart';
@@ -89,6 +90,8 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
+    LayoutDesignProvider layoutDesignProvider =
+        Provider.of<LayoutDesignProvider>(context, listen: false);
     double deviceWidth = MediaQuery.of(context).size.width;
     final filterOptionsProvider = Provider.of<FilterOptionsProvider>(context);
     print("kToolbarHeight - 37.5 ${kToolbarHeight - 37.5}");
@@ -261,12 +264,12 @@ class _SearchPageState extends State<SearchPage> {
                                                 ? "₹ ${value.list[index]["price_range"]["min_price"]} - ₹ ${value.list[index]["price_range"]["max_price"]}"
                                                 : value.list[index]["label"],
                                             style: TextStyle(
-                                             // fontWeight: FontWeight.bold,
-                                              fontSize:
-                                              deviceWidth > 600 ? constraints.maxHeight - 45 :
-                                              constraints.maxHeight - 55
-                                              // deviceWidth / 37,
-                                            )
+                                                // fontWeight: FontWeight.bold,
+                                                fontSize: deviceWidth > 600
+                                                    ? constraints.maxHeight - 45
+                                                    : constraints.maxHeight - 55
+                                                // deviceWidth / 37,
+                                                )
 
                                             // Theme.of(context)
                                             //     .textTheme
@@ -284,7 +287,8 @@ class _SearchPageState extends State<SearchPage> {
                                           child: Icon(
                                             Icons.close_rounded,
                                             color: Colors.white,
-                                            size: deviceWidth > 600 ? 24.0 : 16.0,
+                                            size:
+                                                deviceWidth > 600 ? 24.0 : 16.0,
                                           ),
                                         ),
                                         onDeleted: () async {
@@ -430,7 +434,8 @@ class _SearchPageState extends State<SearchPage> {
                           height: MediaQuery.of(context).size.height / 2,
                           child: Center(
                               child: CircularProgressIndicator(
-                            color:  Theme.of(context).primaryColor,
+                            color: Color(int.parse(
+                                "0xff${layoutDesignProvider.primary.substring(1)}")),
                           )),
                         ),
                       )
@@ -535,7 +540,9 @@ class _SearchPageState extends State<SearchPage> {
                                                                         92.0,
                                                                     child:
                                                                         CircularProgressIndicator(
-                                                                      color:  Theme.of(context).primaryColor,
+                                                                      color: Color(
+                                                                          int.parse(
+                                                                              "0xff${layoutDesignProvider.primary.substring(1)}")),
                                                                     ),
                                                                   );
                                                                 },
@@ -664,7 +671,8 @@ class _SearchPageState extends State<SearchPage> {
                                             vertical: 15.0, horizontal: 10.0),
                                         child: Center(
                                             child: CircularProgressIndicator(
-                                          color:  Theme.of(context).primaryColor,
+                                          color: Color(int.parse(
+                                              "0xff${layoutDesignProvider.primary.substring(1)}")),
                                         )),
                                       );
                                     }

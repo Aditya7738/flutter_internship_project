@@ -234,85 +234,277 @@ class _GoldPlanDetailState extends State<GoldPlanDetail> {
         ),
         body: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.all(16.0),
+            padding: EdgeInsets.all(30.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // Row(
+                //   children: [
+                //     Text(
+                //       "Plan Name:",
+                //       style: TextStyle(
+                //           fontSize: deviceWidth > 600 ? 32.0 : 18.0,
+                //           fontWeight: FontWeight.bold),
+                //     ),
+                //     SizedBox(
+                //       width: 5.0,
+                //     ),
+                //     Text("${getPlaneName()}",
+                //         style: TextStyle(
+                //             fontSize: deviceWidth > 600 ? 32.0 : 17.0,
+                //             fontWeight: FontWeight.normal)),
+                //   ],
+                // ),
+
                 Row(
                   children: [
-                    Text(
-                      "Plan Name:",
-                      style: TextStyle(
-                          fontSize: deviceWidth > 600 ? 32.0 : 18.0,
-                          fontWeight: FontWeight.bold),
+                    Image.asset(
+                      "assets/images/gold_coin.png",
+                      width: deviceWidth > 600 ? 74.0 : 64.0,
+                      height: deviceWidth > 600 ? 74.0 : 64.0,
                     ),
                     SizedBox(
-                      width: 5.0,
+                      width: 20.0,
                     ),
                     Text("${getPlaneName()}",
                         style: TextStyle(
                             fontSize: deviceWidth > 600 ? 32.0 : 17.0,
-                            fontWeight: FontWeight.normal)),
+                            fontWeight: FontWeight.bold)),
                   ],
                 ),
                 SizedBox(
                   height: 10.0,
                 ),
-                Row(
-                  children: [
-                    Text(
-                      "Plan Type:",
-                      style: TextStyle(
-                          fontSize: deviceWidth > 600 ? 32.0 : 18.0,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(
-                      width: 5.0,
-                    ),
-                    Text(" ${getPlanType()}",
+                Text(
+                  "Description:",
+                  style: TextStyle(
+                      fontSize: deviceWidth > 600 ? 32.0 : 18.0,
+                      fontWeight: FontWeight.bold),
+                ),
+                SizedBox(
+                  height: 5.0,
+                ),
+                HtmlWidget("<p>${getPlanDescription()}</p>",
+                    textStyle: TextStyle(
+                        fontSize: deviceWidth > 600 ? 32.0 : 18.0,
+                        fontWeight: FontWeight.normal)),
+//////////////////////////////////////////////////////////////////////////////////
+
+                Card(
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Date of joining:",
+                                  style: TextStyle(
+                                      fontSize: deviceWidth > 600 ? 27.0 : 13.0,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.grey),
+                                ),
+                                SizedBox(
+                                  height: 5.0,
+                                ),
+                                Text("${getPaymentDate()}",
+                                    style: TextStyle(
+                                        fontSize: deviceWidth > 600 ? 30.0 : 16.0,
+                                        fontWeight: FontWeight.bold)),
+                              ],
+                            ),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Duration:",
+                                  style: TextStyle(
+                                      fontSize: deviceWidth > 600 ? 27.0 : 13.0,
+                                      fontWeight: FontWeight.bold, color: Colors.grey),
+                                ),
+                                  SizedBox(
+                                  height: 5.0,
+                                ),
+                                Text("${getPlanDuration()} months",
+                                    style: TextStyle(
+                                         fontSize: deviceWidth > 600 ? 30.0 : 16.0,
+                                        fontWeight: FontWeight.bold)),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 20.0,
+                      ),
+                     Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Date of joining:",
+                                  style: TextStyle(
+                                      fontSize: deviceWidth > 600 ? 27.0 : 13.0,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.grey),
+                                ),
+                                SizedBox(
+                                  height: 5.0,
+                                ),
+                                Text("${getPaymentDate()}",
+                                    style: TextStyle(
+                                        fontSize: deviceWidth > 600 ? 30.0 : 16.0,
+                                        fontWeight: FontWeight.bold)),
+                              ],
+                            ),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Duration:",
+                                  style: TextStyle(
+                                      fontSize: deviceWidth > 600 ? 27.0 : 13.0,
+                                      fontWeight: FontWeight.bold, color: Colors.grey),
+                                ),
+                                  SizedBox(
+                                  height: 5.0,
+                                ),
+                                Text("${getPlanDuration()} months",
+                                    style: TextStyle(
+                                         fontSize: deviceWidth > 600 ? 30.0 : 16.0,
+                                        fontWeight: FontWeight.bold)),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                /////////////////////////////////////////////////////////////
+                Container(
+                  width: deviceWidth,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Plan Name: ",
                         style: TextStyle(
-                            fontSize: deviceWidth > 600 ? 32.0 : 17.0,
-                            fontWeight: FontWeight.normal)),
-                  ],
+                            fontSize: deviceWidth > 600 ? 32.0 : 18.0,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      Text("${getPlaneName()}",
+                          style: TextStyle(
+                              fontSize: deviceWidth > 600 ? 32.0 : 17.0,
+                              fontWeight: FontWeight.normal)),
+                    ],
+                  ),
                 ),
+
                 SizedBox(
                   height: 10.0,
                 ),
-                Row(
-                  children: [
-                    Text(
-                      "Plan Amount:",
-                      style: TextStyle(
-                          fontSize: deviceWidth > 600 ? 32.0 : 18.0,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(
-                      width: 5.0,
-                    ),
-                    Text("₹ ${widget.orderModel.total}",
+                Container(
+                  width: deviceWidth,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Plan Type:",
                         style: TextStyle(
-                            fontSize: deviceWidth > 600 ? 32.0 : 17.0,
-                            fontWeight: FontWeight.normal)),
-                  ],
+                            fontSize: deviceWidth > 600 ? 32.0 : 18.0,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(
+                        width: 5.0,
+                      ),
+                      Text(" ${getPlanType()}",
+                          style: TextStyle(
+                              fontSize: deviceWidth > 600 ? 32.0 : 17.0,
+                              fontWeight: FontWeight.normal)),
+                    ],
+                  ),
                 ),
                 SizedBox(
                   height: 10.0,
                 ),
+                // Container(
+                //   width: MediaQuery.of(context).size.width,
+                //   child: Row(
+                //      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //     children: [
+                //       Text(
+                //         "Plan Amount:",
+                //         style: TextStyle(
+                //             fontSize: deviceWidth > 600 ? 32.0 : 18.0,
+                //             fontWeight: FontWeight.bold),
+                //       ),
+                //       SizedBox(
+                //         width: 5.0,
+                //       ),
+                //       Text("₹ ${widget.orderModel.total}",
+                //           style: TextStyle(
+                //               fontSize: deviceWidth > 600 ? 32.0 : 17.0,
+                //               fontWeight: FontWeight.normal)),
+                //     ],
+                //   ),
+                // ),
+                // SizedBox(
+                //   height: 10.0,
+                // ),
+                // true
                 isJewellerContributing
                     ? Column(
                         children: [
-                          RichText(
-                            text: TextSpan(
+                          // RichText(
+                          //   text: TextSpan(
+                          //     children: [
+                          //       TextSpan(
+                          //         text: "Jeweller contribution on last month: ",
+                          //         style: TextStyle(
+                          //             color: Colors.black,
+                          //             fontSize: deviceWidth > 600 ? 32.0 : 18.0,
+                          //             fontWeight: FontWeight.bold),
+                          //       ),
+                          //       TextSpan(
+                          //         text: "₹ $jewellerContribution",
+                          //         style: TextStyle(
+                          //             color: Colors.black,
+                          //             fontSize: deviceWidth > 600 ? 32.0 : 18.0,
+                          //             fontWeight: FontWeight.normal),
+                          //       )
+                          //     ],
+                          //   ),
+                          //   maxLines: 2,
+                          // ),
+                          Container(
+                            width: deviceWidth,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                TextSpan(
-                                  text: "Jeweller contribution on last month: ",
+                                Text(
+                                  "Jeweller contribution on last month: ",
+                                  maxLines: 2,
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontSize: deviceWidth > 600 ? 32.0 : 18.0,
                                       fontWeight: FontWeight.bold),
                                 ),
-                                TextSpan(
-                                  text: "₹ $jewellerContribution",
+                                SizedBox(
+                                  width: 5.0,
+                                ),
+                                Text(
+                                  "₹ 1000",
+                                  //"₹ $jewellerContribution",
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontSize: deviceWidth > 600 ? 32.0 : 18.0,
@@ -320,7 +512,6 @@ class _GoldPlanDetailState extends State<GoldPlanDetail> {
                                 )
                               ],
                             ),
-                            maxLines: 2,
                           ),
                           SizedBox(
                             height: 10.0,
@@ -328,41 +519,47 @@ class _GoldPlanDetailState extends State<GoldPlanDetail> {
                         ],
                       )
                     : SizedBox(),
-                Row(
-                  children: [
-                    Text(
-                      "Date of joining:",
-                      style: TextStyle(
-                          fontSize: deviceWidth > 600 ? 32.0 : 18.0,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(
-                      width: 5.0,
-                    ),
-                    Text("${getPaymentDate()}",
+                Container(
+                  width: deviceWidth,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Date of joining:",
                         style: TextStyle(
                             fontSize: deviceWidth > 600 ? 32.0 : 18.0,
-                            fontWeight: FontWeight.normal)),
-                  ],
+                            fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(
+                        width: 5.0,
+                      ),
+                      Text("${getPaymentDate()}",
+                          style: TextStyle(
+                              fontSize: deviceWidth > 600 ? 32.0 : 18.0,
+                              fontWeight: FontWeight.normal)),
+                    ],
+                  ),
                 ),
                 SizedBox(
                   height: 10.0,
                 ),
-                Row(
-                  children: [
-                    Text(
-                      "Duration:",
-                      style:
-                          TextStyle(fontSize: deviceWidth > 600 ? 32.0 : 18.0),
-                    ),
-                    SizedBox(
-                      width: 5.0,
-                    ),
-                    Text("${getPlanDuration()} months",
+                Container(
+                  width: deviceWidth,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Duration:",
                         style: TextStyle(
                             fontSize: deviceWidth > 600 ? 32.0 : 18.0,
-                            fontWeight: FontWeight.normal)),
-                  ],
+                            fontWeight: FontWeight.bold),
+                      ),
+                      Text("${getPlanDuration()} months",
+                          style: TextStyle(
+                              fontSize: deviceWidth > 600 ? 32.0 : 18.0,
+                              fontWeight: FontWeight.normal)),
+                    ],
+                  ),
                 ),
                 SizedBox(
                   height: 10.0,

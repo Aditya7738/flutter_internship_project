@@ -3,6 +3,7 @@ import 'package:Tiara_by_TJ/constants/fontsizes.dart';
 import 'package:Tiara_by_TJ/model/filter_options_model.dart';
 import 'package:Tiara_by_TJ/providers/category_provider.dart';
 import 'package:Tiara_by_TJ/providers/filteroptions_provider.dart';
+import 'package:Tiara_by_TJ/providers/layoutdesign_provider.dart';
 import 'package:Tiara_by_TJ/views/widgets/filter_options.dart';
 import 'package:Tiara_by_TJ/views/widgets/filter_tile.dart';
 import 'package:flutter/material.dart';
@@ -46,7 +47,8 @@ class _FilterModalState extends State<FilterModal> {
 
   @override
   Widget build(BuildContext context) {
-    //   final filterOptionsProvider = Provider.of<FilterOptionsProvider>(context);
+    LayoutDesignProvider layoutDesignProvider =
+        Provider.of<LayoutDesignProvider>(context);
     final categoryProvider =
         Provider.of<CategoryProvider>(context, listen: false);
 
@@ -70,7 +72,6 @@ class _FilterModalState extends State<FilterModal> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-            
                 height: deviceWidth > 600 ? 65.0 : 45.0,
                 // height:
                 // //constraints.maxWidth / 12.5,
@@ -184,18 +185,21 @@ class _FilterModalState extends State<FilterModal> {
                         child: Container(
                             decoration: BoxDecoration(
                                 border: Border.all(
-                                    color: Theme.of(context).primaryColor,
+                                    color: Color(int.parse(
+                                        "0xff${layoutDesignProvider.primary.substring(1)}")),
                                     style: BorderStyle.solid),
                                 borderRadius: BorderRadius.circular(5.0)),
                             padding: const EdgeInsets.symmetric(
                                 vertical: 10.0, horizontal: 20.0),
                             child: Text("Clear all",
                                 style: TextStyle(
-                                    color: Theme.of(context).primaryColor,
+                                    color: Color(int.parse(
+                                        "0xff${layoutDesignProvider.primary.substring(1)}")),
                                     fontWeight: FontWeight.bold,
                                     fontSize: 17.sp)
                                 // TextStyle(
-                                //     color: Theme.of(context).primaryColor,
+                                //     color: Color(int.parse(
+                                // "0xff${layoutDesignProvider.primary.substring(1)}")),
                                 //     fontSize: 17.0),
                                 )),
                       );
@@ -238,7 +242,8 @@ class _FilterModalState extends State<FilterModal> {
                         },
                         child: Container(
                             decoration: BoxDecoration(
-                                color: Theme.of(context).primaryColor,
+                                color: Color(int.parse(
+                                    "0xff${layoutDesignProvider.primary.substring(1)}")),
                                 borderRadius: BorderRadius.circular(5.0)),
                             padding: const EdgeInsets.symmetric(
                                 vertical: 10.0, horizontal: 20.0),

@@ -1,8 +1,10 @@
+import 'package:Tiara_by_TJ/providers/layoutdesign_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:Tiara_by_TJ/constants/constants.dart';
 import 'package:Tiara_by_TJ/model/products_model.dart';
+import 'package:provider/provider.dart';
 
 class WholeCarouselSlider extends StatefulWidget {
   final List<ProductImage> listOfProductImage;
@@ -31,6 +33,8 @@ class _WholeCarouselSliderState extends State<WholeCarouselSlider> {
   int currentIndex = 0;
   @override
   Widget build(BuildContext context) {
+    LayoutDesignProvider layoutDesignProvider =
+        Provider.of(context, listen: false);
     return Column(children: [
       Stack(
         alignment: Alignment.center,
@@ -58,7 +62,8 @@ class _WholeCarouselSliderState extends State<WholeCarouselSlider> {
                             height: 16.0,
                             child: Center(
                               child: CircularProgressIndicator(
-                                color: Theme.of(context).primaryColor,
+                                color: Color(int.parse(
+                                    "0xff${layoutDesignProvider.primary.substring(1)}")),
                               ),
                             ),
                           );

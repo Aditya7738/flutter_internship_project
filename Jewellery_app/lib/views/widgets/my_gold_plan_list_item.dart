@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:Tiara_by_TJ/api/api_service.dart';
 import 'package:Tiara_by_TJ/model/order_model.dart';
 import 'package:Tiara_by_TJ/providers/customer_provider.dart';
+import 'package:Tiara_by_TJ/providers/layoutdesign_provider.dart';
 import 'package:Tiara_by_TJ/providers/order_provider.dart';
 import 'package:Tiara_by_TJ/views/pages/gold_plan_detail.dart';
 import 'package:Tiara_by_TJ/views/pages/payment_page.dart';
@@ -94,6 +95,9 @@ class _MyGoldPlanListItemState extends State<MyGoldPlanListItem> {
         "widget.allOrdersList.length == int.parse(getPlanDuration()) ${widget.allOrdersList.length == int.parse(getPlanDuration())}");
 
     double deviceWidth = MediaQuery.of(context).size.width;
+
+    LayoutDesignProvider layoutDesignProvider =
+        Provider.of(context, listen: false);
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 8.0),
@@ -224,7 +228,8 @@ class _MyGoldPlanListItemState extends State<MyGoldPlanListItem> {
                         decoration: BoxDecoration(
                             border: Border.all(
                                 width: 2.0,
-                                color: Theme.of(context).primaryColor,
+                                color: Color(int.parse(
+                                    "0xff${layoutDesignProvider.primary.substring(1)}")),
                                 style: BorderStyle.solid),
                             borderRadius: BorderRadius.circular(12.0)),
                         padding: const EdgeInsets.symmetric(
@@ -233,7 +238,8 @@ class _MyGoldPlanListItemState extends State<MyGoldPlanListItem> {
                           child: Text(
                             "Details",
                             style: TextStyle(
-                                color: Theme.of(context).primaryColor,
+                                color: Color(int.parse(
+                                    "0xff${layoutDesignProvider.primary.substring(1)}")),
                                 fontSize: deviceWidth > 600 ? 28.0 : 18.0,
                                 fontWeight: FontWeight.bold),
                           ),

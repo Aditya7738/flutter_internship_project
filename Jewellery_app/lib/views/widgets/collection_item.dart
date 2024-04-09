@@ -1,4 +1,5 @@
 import 'package:Tiara_by_TJ/model/collections_model.dart' as CollectionsModel;
+import 'package:Tiara_by_TJ/providers/layoutdesign_provider.dart';
 import 'package:Tiara_by_TJ/views/pages/details_view.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -37,6 +38,8 @@ class _CollectionItemState extends State<CollectionItem> {
     final wishListProvider = Provider.of<WishlistProvider>(context);
     // final cartProvider = Provider.of<CartProvider>(context);
     double deviceWidth = MediaQuery.of(context).size.width;
+    LayoutDesignProvider layoutDesignProvider =
+        Provider.of<LayoutDesignProvider>(context, listen: false);
 
     print("product item ${(deviceWidth / 3) - 75}");
     print(collectionsModel.toJson());
@@ -47,7 +50,6 @@ class _CollectionItemState extends State<CollectionItem> {
         print("widget.productIndex != null ${widget.productIndex != null}");
         print("widget.productIndex ${widget.productIndex}");
 
-     
         // Navigator.of(context).push(MaterialPageRoute(
         //     builder: (context) =>
         //         DetailsView(productIndex: widget.productIndex!))
@@ -60,6 +62,7 @@ class _CollectionItemState extends State<CollectionItem> {
       },
       child: Container(
         decoration: BoxDecoration(
+          color: Colors.red,
           border: Border.all(
               color: Colors.grey, style: BorderStyle.solid, width: 0.5),
           shape: BoxShape.rectangle,
@@ -70,18 +73,8 @@ class _CollectionItemState extends State<CollectionItem> {
             children: [
               collectionsModel.images.isEmpty ||
                       collectionsModel.images[0].src == null
-                  ? ClipRRect(
-                      child: Image.asset(
-                        "assets/images/image_placeholder.jpg",
-                        width: (deviceWidth / 2) + 16.0,
-                        height: (deviceWidth / 2) + 10.0,
-                      ),
-                    )
-                  : CachedNetworkImage(
-                      imageUrl: collectionsModel.images.isEmpty
-                          ? Constants.defaultImageUrl
-                          : collectionsModel.images[0].src ??
-                              Constants.defaultImageUrl,
+                  ? CachedNetworkImage(
+                      imageUrl: layoutDesignProvider.placeHolder,
                       width: (deviceWidth / 2) + 16.0,
                       height: deviceWidth > 600
                           ? (deviceWidth / 2) - 111
@@ -94,7 +87,32 @@ class _CollectionItemState extends State<CollectionItem> {
                               : (deviceWidth / 2) - 10,
                           child: Center(
                             child: CircularProgressIndicator(
-                              color:  Theme.of(context).primaryColor,
+                              color: Color(int.parse(
+                                  "0xff${layoutDesignProvider.primary.substring(1)}")),
+                            ),
+                          ),
+                        );
+                      },
+                    )
+                  : CachedNetworkImage(
+                      imageUrl: collectionsModel.images.isEmpty
+                          ? layoutDesignProvider.placeHolder
+                          : collectionsModel.images[0].src ??
+                              layoutDesignProvider.placeHolder,
+                      width: (deviceWidth / 2) + 16.0,
+                      height: deviceWidth > 600
+                          ? (deviceWidth / 2) - 111
+                          : (deviceWidth / 2) - 10,
+                      placeholder: (context, url) {
+                        return SizedBox(
+                          width: (deviceWidth / 2) + 16.0,
+                          height: deviceWidth > 600
+                              ? (deviceWidth / 2) - 111
+                              : (deviceWidth / 2) - 10,
+                          child: Center(
+                            child: CircularProgressIndicator(
+                              color: Color(int.parse(
+                                  "0xff${layoutDesignProvider.primary.substring(1)}")),
                             ),
                           ),
                         );
@@ -107,6 +125,7 @@ class _CollectionItemState extends State<CollectionItem> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
+                      
                       padding: EdgeInsets.only(left: 15.0),
                       width: deviceWidth > 600
                           ? (deviceWidth / 3) - 75
@@ -197,7 +216,8 @@ class _CollectionItemState extends State<CollectionItem> {
                                           ),
                                           const Icon(
                                             Icons.star,
-                                            color: Colors.yellow,
+                                            color: Colors.red,
+                                            size: 10.0,
                                           )
                                         ],
                                       ),
@@ -232,9 +252,9 @@ class _CollectionItemState extends State<CollectionItem> {
                                         deliveryDate: deliveryDate,
                                         imageUrl: collectionsModel
                                                 .images.isEmpty
-                                            ? Constants.defaultImageUrl
+                                            ? layoutDesignProvider.placeHolder
                                             : collectionsModel.images[0].src ??
-                                                Constants.defaultImageUrl,
+                                                layoutDesignProvider.placeHolder,
                                         sku: collectionsModel.sku,
                                         imageId:
                                             collectionsModel.images.isNotEmpty
@@ -262,7 +282,7 @@ class _CollectionItemState extends State<CollectionItem> {
                                       //   deliveryDate:
                                       //       deliveryDate,
                                       //   imageUrl: collectionsModel.images.isEmpty
-                                      //       ? Constants.defaultImageUrl
+                                      //       ? layoutDesignProvider.placeHolder
                                       //       : collectionsModel.images[0].src ??
                                       //           Constants.defaultImageUrl,
                                       //   sku: collectionsModel.sku,

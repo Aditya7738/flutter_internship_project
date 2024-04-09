@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:ffi';
 
 import 'package:Tiara_by_TJ/constants/fontsizes.dart';
+import 'package:Tiara_by_TJ/providers/layoutdesign_provider.dart';
 import 'package:Tiara_by_TJ/providers/order_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:Tiara_by_TJ/api/api_service.dart';
@@ -146,11 +147,11 @@ class _ShippingPageState extends State<ShippingPage> {
     }
 
     // if (customerData.containsKey("phone")) {
-      
+
     // }
 
     // if (customerData.containsKey("postcode")) {
-     
+
     // }
 
     if (customerData.containsKey("billing")) {
@@ -169,7 +170,7 @@ class _ShippingPageState extends State<ShippingPage> {
       _phoneNoController.text = customerData["billing"]["phone"];
       _phoneNoController2.text = customerData["billing"]["phone"];
 
-       _pinNoController.text = customerData["billing"]["postcode"];
+      _pinNoController.text = customerData["billing"]["postcode"];
       _pinNoController2.text = customerData["billing"]["postcode"];
     }
 
@@ -199,6 +200,9 @@ class _ShippingPageState extends State<ShippingPage> {
     int customerId = customerProvider.customerData[0]["id"];
 
     double deviceWidth = MediaQuery.of(context).size.width;
+
+    LayoutDesignProvider layoutDesignProvider =
+        Provider.of(context, listen: false);
 
     return Scaffold(
       appBar: AppBar(
@@ -467,7 +471,8 @@ class _ShippingPageState extends State<ShippingPage> {
                                           child: CircularProgressIndicator(
                                             color: Colors.white,
                                             strokeWidth: 2.0,
-                                            backgroundColor:  Theme.of(context).primaryColor,
+                                            backgroundColor: Color(int.parse(
+                                                "0xff${layoutDesignProvider.primary.substring(1)}")),
                                           ),
                                         )
                                       : Text(
@@ -476,7 +481,8 @@ class _ShippingPageState extends State<ShippingPage> {
                                               color: Colors.white,
                                               fontSize: deviceWidth > 600
                                                   ? (Fontsizes
-                                                      .tabletButtonTextSize) + 2
+                                                          .tabletButtonTextSize) +
+                                                      2
                                                   : Fontsizes.buttonTextSize,
                                               fontWeight: FontWeight.bold),
                                         ),

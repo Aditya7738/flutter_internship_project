@@ -63,22 +63,28 @@ class _FetchHomeScreenState extends State<FetchHomeScreen> {
     // LayoutModel.LayoutModel? layoutModel = await ApiService.getHomeLayout();
 
     if (layoutModel.data != null) {
-      LayoutModel.Theme? theme = layoutModel.data!.theme;
+     // LayoutModel.Theme? theme = layoutModel.data!.theme;
       final pages = layoutModel.data!.pages;
-
+      LayoutModel.Placeholders? placeholders = layoutModel.data!.placeholders;
       print("pages.runtimeType ${pages.runtimeType}");
 
-      if (theme != null) {
-        if (theme.colors != null) {
-          layoutDesignProvider.setPrimary(theme.colors!.primary ?? "#CC868A");
-          layoutDesignProvider
-              .setSecondary(theme.colors!.secondary ?? "#FFFFFF");
-          layoutDesignProvider
-              .setBackground(theme.colors!.background ?? "#FFFFFF");
-        } else if (theme.fontFamily != null) {
-          layoutDesignProvider.setfontFamily(theme.fontFamily!);
+      if (placeholders != null) {
+        if (placeholders.productImage != null) {
+          layoutDesignProvider.setPlaceHolder(placeholders.productImage!);
         }
       }
+
+      // if (theme != null) {
+      //   if (theme.colors != null) {
+      //     layoutDesignProvider.setPrimary(theme.colors!.primary ?? "#CC868A");
+      //     layoutDesignProvider
+      //         .setSecondary(theme.colors!.secondary ?? "#FFFFFF");
+      //     layoutDesignProvider
+      //         .setBackground(theme.colors!.background ?? "#FFFFFF");
+      //   } else if (theme.fontFamily != null) {
+      //     layoutDesignProvider.setfontFamily(theme.fontFamily!);
+      //   }
+      // }
 
       if (pages.isNotEmpty) {
         for (var i = 0; i < 1; i++) {

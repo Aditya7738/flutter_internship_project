@@ -4,6 +4,7 @@ import 'package:Tiara_by_TJ/api/api_service.dart';
 import 'package:Tiara_by_TJ/api/cache_memory.dart';
 import 'package:Tiara_by_TJ/providers/cache_provider.dart';
 import 'package:Tiara_by_TJ/providers/category_provider.dart';
+import 'package:Tiara_by_TJ/providers/layoutdesign_provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -26,17 +27,24 @@ class _FeatureWidgetState extends State<FeatureWidget> {
   bool localLoading = true;
   late CategoriesModel categoriesModel;
 
-  final defaultImageUrl =
-      "https://cdn.shopify.com/s/files/1/0985/9548/products/Orissa_jewellery_Silver_Filigree_OD012h_1_1000x1000.JPG?v=1550653176";
+  //final defaultImageUrl ="https://cdn.shopify.com/s/files/1/0985/9548/products/Orissa_jewellery_Silver_Filigree_OD012h_1_1000x1000.JPG?v=1550653176";
   Stream<FileResponse>? categoryImageFileStream;
 
   @override
   void initState() {
     super.initState();
     CacheProvider cacheProvider = Provider.of(context, listen: false);
+
     localLoading = widget.isLoading;
     categoriesModel = widget.categoriesModel;
-    _downloadFile(categoriesModel.image?.src ?? defaultImageUrl, cacheProvider);
+    LayoutDesignProvider layoutDesignProvider =
+        Provider.of<LayoutDesignProvider>(context, listen: false);
+    _downloadFile(
+        categoriesModel.image?.src ??
+            //defaultImageUrl
+            layoutDesignProvider.placeHolder,
+        cacheProvider,
+        layoutDesignProvider);
     // _downloadFile(categoriesModel.image?.src ?? defaultImageUrl);
 
     // if (categoryImageFileStream == null) {
@@ -45,7 +53,8 @@ class _FeatureWidgetState extends State<FeatureWidget> {
     // }
   }
 
-  void _downloadFile(String imageUrl, CacheProvider cacheProvider) {
+  void _downloadFile(String imageUrl, CacheProvider cacheProvider,
+      LayoutDesignProvider layoutDesignProvider) {
     if (categoryImageFileStream == null) {
       if (mounted) {
         setState(() {
@@ -61,7 +70,7 @@ class _FeatureWidgetState extends State<FeatureWidget> {
           } else {
             //  cacheProvider.setCategoryImageFileStream(
             categoryImageFileStream = DefaultCacheManager().getImageFile(
-              defaultImageUrl,
+              layoutDesignProvider.placeHolder,
               withProgress: true,
               maxWidth: 172,
               maxHeight: 172,
@@ -120,8 +129,8 @@ class _FeatureWidgetState extends State<FeatureWidget> {
   Widget build(BuildContext context) {
     //   CacheProvider cacheProvider = Provider.of(context, listen: false);
     print("categoriesModel.id ${categoriesModel.id}");
-    // CategoryProvider categoryProvider =
-    //     Provider.of<CategoryProvider>(context, listen: false);
+    LayoutDesignProvider layoutDesignProvider =
+        Provider.of<LayoutDesignProvider>(context, listen: false);
     print("categoriesModel.image?.src ${categoriesModel.image?.src}");
 
     // Call _downloadFile method here
@@ -174,8 +183,9 @@ class _FeatureWidgetState extends State<FeatureWidget> {
                                       alignment: Alignment.center,
                                       width: constraints.maxHeight - 72,
                                       height: constraints.maxHeight - 72,
-                                      child:  CircularProgressIndicator(
-                                        color:  Theme.of(context).primaryColor,
+                                      child: CircularProgressIndicator(
+                                        color: Color(int.parse(
+                                            "0xff${layoutDesignProvider.primary.substring(1)}")),
                                       ),
                                     ); // Show a loading indicator
                                   } else if (snapshot.hasError) {
@@ -191,20 +201,38 @@ class _FeatureWidgetState extends State<FeatureWidget> {
                                           height: constraints.maxHeight - 72,
                                         );
                                       } else {
-                                        return Image.asset(
-                                          "assets/images/image_placeholder.jpg",
+                                        return Image.network(
+                                          layoutDesignProvider.placeHolder,
                                           fit: BoxFit.fill,
+                                          loadingBuilder: (context, child,
+                                              loadingProgress) {
+                                            if (loadingProgress == null) {
+                                              return child;
+                                            } else {
+                                              return CircularProgressIndicator(
+                                                color: Color(int.parse(
+                                                    "0xff${layoutDesignProvider.primary.substring(1)}")),
+                                              );
+                                            }
+                                          },
                                           width: constraints.maxHeight - 72,
                                           height: constraints.maxHeight - 72,
                                         );
+                                        // return Image.asset(
+                                        //   "assets/images/image_placeholder.jpg",
+                                        //   fit: BoxFit.fill,
+                                        //   width: constraints.maxHeight - 72,
+                                        //   height: constraints.maxHeight - 72,
+                                        // );
                                       }
                                     } else {
                                       return Container(
                                         alignment: Alignment.center,
                                         width: 90.0,
                                         height: 87.0,
-                                        child:  CircularProgressIndicator(
-                                          color:  Theme.of(context).primaryColor,
+                                        child: CircularProgressIndicator(
+                                          color: Color(int.parse(
+                                              "0xff${layoutDesignProvider.primary.substring(1)}")),
                                         ),
                                       );
                                     }
@@ -217,7 +245,8 @@ class _FeatureWidgetState extends State<FeatureWidget> {
                                 width: constraints.maxHeight - 72,
                                 height: constraints.maxHeight - 72,
                                 child: CircularProgressIndicator(
-                                  color:  Theme.of(context).primaryColor,
+                                  color: Color(int.parse(
+                                      "0xff${layoutDesignProvider.primary.substring(1)}")),
                                 ),
                               );
                             }
@@ -226,8 +255,9 @@ class _FeatureWidgetState extends State<FeatureWidget> {
                               alignment: Alignment.center,
                               width: constraints.maxHeight - 72,
                               height: constraints.maxHeight - 72,
-                              child:  CircularProgressIndicator(
-                                color:  Theme.of(context).primaryColor,
+                              child: CircularProgressIndicator(
+                                color: Color(int.parse(
+                                    "0xff${layoutDesignProvider.primary.substring(1)}")),
                               ),
                             );
                           }
@@ -318,13 +348,12 @@ class _FeatureWidgetState extends State<FeatureWidget> {
                   padding: const EdgeInsets.all(2.0),
                   child: Text(
                     categoriesModel.name ?? "Jewellery",
-                    style:
-                    TextStyle(
-                fontWeight: FontWeight.normal,
-                fontSize: MediaQuery.of(context).size.width > 600 ?
-                (MediaQuery.of(context).size.width / 37) + 1.5
-                :  (MediaQuery.of(context).size.width / 32) + 1.5,
-              ),
+                    style: TextStyle(
+                      fontWeight: FontWeight.normal,
+                      fontSize: MediaQuery.of(context).size.width > 600
+                          ? (MediaQuery.of(context).size.width / 37) + 1.5
+                          : (MediaQuery.of(context).size.width / 32) + 1.5,
+                    ),
                     // Theme.of(context).textTheme.subtitle1,
                   ),
                 ),
@@ -339,8 +368,9 @@ class _FeatureWidgetState extends State<FeatureWidget> {
       alignment: Alignment.center,
       width: 172.0,
       height: 172.0,
-      child:  CircularProgressIndicator(
-        color:  Theme.of(context).primaryColor,
+      child: CircularProgressIndicator(
+        color: Color(
+            int.parse("0xff${layoutDesignProvider.primary.substring(1)}")),
       ),
     );
   }

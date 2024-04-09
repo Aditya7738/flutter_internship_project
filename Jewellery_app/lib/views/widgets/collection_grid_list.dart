@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'package:Tiara_by_TJ/providers/layoutdesign_provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:Tiara_by_TJ/api/api_service.dart';
 import 'package:Tiara_by_TJ/api/cache_memory.dart';
@@ -187,7 +188,8 @@ class _CollectionGridListState extends State<CollectionGridList> {
         }
 
         CollectionGridList.listOfCollections.forEach((element) {
-          print("CollectionGridList.listOfCollections element ${jsonEncode(element)}");
+          print(
+              "CollectionGridList.listOfCollections element ${jsonEncode(element)}");
         });
       } else {
         print("error 404, 401");
@@ -236,7 +238,10 @@ class _CollectionGridListState extends State<CollectionGridList> {
   Widget build(BuildContext context) {
     double deviceWidth = MediaQuery.of(context).size.width;
     // CacheProvider cacheProvider = Provider.of(context, listen: false);
+    LayoutDesignProvider layoutDesignProvider =
+        Provider.of<LayoutDesignProvider>(context, listen: false);
 
+    Color primaryColor = Color(0xffCC868A);
     return FutureBuilder(
       future: _downloadFile(),
       builder: (context, snapshot) {
@@ -257,18 +262,19 @@ class _CollectionGridListState extends State<CollectionGridList> {
               height: (MediaQuery.of(context).size.height / 2) + 220,
               child: Center(
                 child: CircularProgressIndicator(
-                  color:// Colors.red,
-                  Theme.of(context).primaryColor,
+                  color: layoutDesignProvider.primary != ""
+                      ? Color(int.parse(
+                          "0xff${layoutDesignProvider.primary.substring(1)}"))
+                      : primaryColor,
                 ),
               ));
           print("snapshot.loading");
         } else {
           body = Container(
-          
             width: deviceWidth,
-            height: deviceWidth > 600 ?
-             (MediaQuery.of(context).size.height / 1.2) 
-             :(MediaQuery.of(context).size.height / 2) + 220,
+            height: deviceWidth > 600
+                ? (MediaQuery.of(context).size.height / 1.2)
+                : (MediaQuery.of(context).size.height / 2) + 220,
             child: GridView.builder(
               physics: NeverScrollableScrollPhysics(),
               itemCount: deviceWidth > 600 ? 6 : 4,
@@ -292,7 +298,10 @@ class _CollectionGridListState extends State<CollectionGridList> {
                         EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
                     child: Center(
                         child: CircularProgressIndicator(
-                      color:  Theme.of(context).primaryColor,
+                      color: layoutDesignProvider.primary != ""
+                          ? Color(int.parse(
+                              "0xff${layoutDesignProvider.primary.substring(1)}"))
+                          : primaryColor,
                     )),
                   );
                 }

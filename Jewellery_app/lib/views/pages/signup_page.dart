@@ -1,4 +1,5 @@
 import 'package:Tiara_by_TJ/constants/fontsizes.dart';
+import 'package:Tiara_by_TJ/providers/layoutdesign_provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -63,6 +64,8 @@ class _SignupPageState extends State<SignupPage> {
   Widget build(BuildContext context) {
     _passwordController.text = "Sldi4e@#45";
     _confirmPasswordController.text = "Sldi4e@#45";
+    LayoutDesignProvider layoutDesignProvider =
+        Provider.of(context, listen: false);
     CustomerProvider customerProvider =
         Provider.of<CustomerProvider>(context, listen: false);
 
@@ -104,8 +107,7 @@ class _SignupPageState extends State<SignupPage> {
                             fontSize: deviceWidth > 600
                                 ? Fontsizes.tabletHeadingSize
                                 : Fontsizes.headingSize,
-                          )
-                          ),
+                          )),
                       const SizedBox(
                         height: 40.0,
                       ),
@@ -151,8 +153,8 @@ class _SignupPageState extends State<SignupPage> {
                       //     decoration: InputDecoration(
                       //         errorStyle: TextStyle(
                       //             fontSize:  deviceWidth > 600
-                                  // ? Fontsizes.tabletErrorTextSize
-                                  // : Fontsizes.errorTextSize,
+                      // ? Fontsizes.tabletErrorTextSize
+                      // : Fontsizes.errorTextSize,
                       //             color: Colors.red),
                       //         labelStyle: Theme.of(context).textTheme.subtitle1,
                       //         border: const OutlineInputBorder(
@@ -230,9 +232,9 @@ class _SignupPageState extends State<SignupPage> {
                               },
                               decoration: InputDecoration(
                                 errorStyle: TextStyle(
-                                    fontSize:  deviceWidth > 600
-                                  ? Fontsizes.tabletErrorTextSize
-                                  : Fontsizes.errorTextSize,
+                                    fontSize: deviceWidth > 600
+                                        ? Fontsizes.tabletErrorTextSize
+                                        : Fontsizes.errorTextSize,
                                     color: Colors.red),
                                 labelStyle: TextStyle(
                                     fontSize: deviceWidth > 600
@@ -265,9 +267,9 @@ class _SignupPageState extends State<SignupPage> {
                               },
                               decoration: InputDecoration(
                                 errorStyle: TextStyle(
-                                    fontSize:  deviceWidth > 600
-                                  ? Fontsizes.tabletErrorTextSize
-                                  : Fontsizes.errorTextSize,
+                                    fontSize: deviceWidth > 600
+                                        ? Fontsizes.tabletErrorTextSize
+                                        : Fontsizes.errorTextSize,
                                     color: Colors.red),
                                 labelStyle: TextStyle(
                                     fontSize: deviceWidth > 600
@@ -298,7 +300,7 @@ class _SignupPageState extends State<SignupPage> {
                         },
                         decoration: InputDecoration(
                           errorStyle: TextStyle(
-                              fontSize:  deviceWidth > 600
+                              fontSize: deviceWidth > 600
                                   ? Fontsizes.tabletErrorTextSize
                                   : Fontsizes.errorTextSize,
                               color: Colors.red),
@@ -345,7 +347,7 @@ class _SignupPageState extends State<SignupPage> {
                         },
                         decoration: InputDecoration(
                           errorStyle: TextStyle(
-                              fontSize:  deviceWidth > 600
+                              fontSize: deviceWidth > 600
                                   ? Fontsizes.tabletErrorTextSize
                                   : Fontsizes.errorTextSize,
                               color: Colors.red),
@@ -392,7 +394,8 @@ class _SignupPageState extends State<SignupPage> {
                                 // fontSize: deviceWidth > 600
                                 // ? Fontsizes.tabletTextFormInputFieldSize
                                 // : Fontsizes.textFormInputFieldSize,
-                                color: Theme.of(context).primaryColor,
+                                color: Color(int.parse(
+                                    "0xff${layoutDesignProvider.primary.substring(1)}")),
                                 fontWeight: FontWeight.bold),
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
@@ -417,7 +420,8 @@ class _SignupPageState extends State<SignupPage> {
                                 //  fontSize: deviceWidth > 600
                                 // ? Fontsizes.tabletTextFormInputFieldSize
                                 // : Fontsizes.textFormInputFieldSize,
-                                color: Theme.of(context).primaryColor,
+                                color: Color(int.parse(
+                                    "0xff${layoutDesignProvider.primary.substring(1)}")),
                                 fontWeight: FontWeight.bold),
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
@@ -530,20 +534,19 @@ class _SignupPageState extends State<SignupPage> {
                         },
                         child: Container(
                             width: deviceWidth,
-                            height: 65.0,
+                          
                             decoration: BoxDecoration(
                                 color: const Color(0xffCC868A),
                                 borderRadius: BorderRadius.circular(15.0)),
                             padding: const EdgeInsets.symmetric(
-                                vertical: 5.0, horizontal: 20.0),
+                                vertical: 10.0, horizontal: 20.0),
                             child: Center(
-                              child: 
-                              isLoading
+                              child: isLoading
                                   ? Container(
                                       padding:
                                           EdgeInsets.symmetric(vertical: 5.0),
-                                      width: (deviceWidth / 28),
-                                      height: (deviceWidth / 28) + 5,
+                                      width: (deviceWidth / 28) + 4,
+                                     height: (deviceWidth / 28) + 13,
                                       child: CircularProgressIndicator(
                                         color: Colors.white,
                                         strokeWidth: 2.0,
@@ -583,7 +586,8 @@ class _SignupPageState extends State<SignupPage> {
                                   // fontSize: deviceWidth > 600
                                   // ? Fontsizes.tabletTextFormInputFieldSize
                                   // : Fontsizes.textFormInputFieldSize,
-                                  color: Theme.of(context).primaryColor),
+                                  color: Color(int.parse(
+                                      "0xff${layoutDesignProvider.primary.substring(1)}"))),
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
                                   Navigator.of(context).push(MaterialPageRoute(

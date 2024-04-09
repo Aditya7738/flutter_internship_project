@@ -1,11 +1,15 @@
 import 'package:Tiara_by_TJ/constants/fontsizes.dart';
+import 'package:Tiara_by_TJ/providers/layoutdesign_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Try extends StatelessWidget {
   const Try({super.key});
 
   @override
   Widget build(BuildContext context) {
+    LayoutDesignProvider layoutDesignProvider =
+        Provider.of<LayoutDesignProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(),
       body: Column(
@@ -16,7 +20,7 @@ class Try extends StatelessWidget {
           ),
           Text(
             "Hi@_+,",
-            style:TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
+            style: TextStyle(fontSize: Fontsizes.textFormInputFieldSize),
           ),
           Text(
             "Hi@_+,",
@@ -32,7 +36,8 @@ class Try extends StatelessWidget {
           ),
           Container(
               decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor,
+                  color: Color(int.parse(
+                      "0xff${layoutDesignProvider.primary.substring(1)}")),
                   borderRadius: BorderRadius.circular(5.0)),
               padding:
                   const EdgeInsets.symmetric(vertical: 10.0, horizontal: 40.0),

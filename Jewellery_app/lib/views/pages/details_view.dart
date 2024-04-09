@@ -2,6 +2,7 @@ import 'package:Tiara_by_TJ/api/api_service.dart';
 import 'package:Tiara_by_TJ/api/cache_memory.dart';
 import 'package:Tiara_by_TJ/providers/cart_provider.dart';
 import 'package:Tiara_by_TJ/providers/filteroptions_provider.dart';
+import 'package:Tiara_by_TJ/providers/layoutdesign_provider.dart';
 import 'package:Tiara_by_TJ/providers/wishlist_provider.dart';
 import 'package:Tiara_by_TJ/views/pages/cart_page.dart';
 import 'package:Tiara_by_TJ/views/pages/product_details_page.dart';
@@ -39,12 +40,15 @@ class _DetailsViewState extends State<DetailsView> {
   @override
   Widget build(BuildContext context) {
     double deviceWidth = MediaQuery.of(context).size.width;
+     LayoutDesignProvider layoutDesignProvider =
+        Provider.of<LayoutDesignProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(title: Text("Details"), actions: <Widget>[
         Container(
+          height: kToolbarHeight,
           width: (deviceWidth / 16) + 4,
           child: badges.Badge(
-            badgeStyle: const badges.BadgeStyle(badgeColor: Colors.purple),
+            badgeStyle:  badges.BadgeStyle(badgeColor:Color(int.parse("0xff${layoutDesignProvider.primary.substring(1)}"))),
             badgeContent:
                 Consumer<WishlistProvider>(builder: (context, value, child) {
               print("LENGTH OF FAV: ${value.favProductIds}");
@@ -69,7 +73,7 @@ class _DetailsViewState extends State<DetailsView> {
         Container(
           width: (deviceWidth / 16) + 4,
           child: badges.Badge(
-            badgeStyle: const badges.BadgeStyle(badgeColor: Colors.purple),
+            badgeStyle:  badges.BadgeStyle(badgeColor:Color(int.parse("0xff${layoutDesignProvider.primary.substring(1)}"))),
             badgeContent: Consumer<CartProvider>(
                 builder: (context, value, child) => Text(
                       value.cart.length.toString(),

@@ -1,4 +1,5 @@
 import 'package:Tiara_by_TJ/constants/fontsizes.dart';
+import 'package:Tiara_by_TJ/providers/layoutdesign_provider.dart';
 import 'package:Tiara_by_TJ/views/pages/dashboard_page.dart';
 import 'package:Tiara_by_TJ/views/widgets/empty_list_widget.dart';
 import 'package:flutter/material.dart';
@@ -70,6 +71,8 @@ class _WishListPageState extends State<WishListPage> {
   @override
   Widget build(BuildContext context) {
     final cartProvider = Provider.of<CartProvider>(context);
+    LayoutDesignProvider layoutDesignProvider =
+        Provider.of<LayoutDesignProvider>(context, listen: false);
     //final wishlistProvider = Provider.of<WishlistProvider>(context, listen: false);
     double deviceWidth = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -131,7 +134,8 @@ class _WishListPageState extends State<WishListPage> {
                     },
                     child: Container(
                         decoration: BoxDecoration(
-                            color: Theme.of(context).primaryColor,
+                            color: Color(int.parse(
+                                "0xff${layoutDesignProvider.primary.substring(1)}")),
                             borderRadius: BorderRadius.circular(5.0)),
                         padding: const EdgeInsets.symmetric(
                             vertical: 10.0, horizontal: 40.0),
@@ -155,7 +159,8 @@ class _WishListPageState extends State<WishListPage> {
               child: isWishListLoading
                   ? Center(
                       child: CircularProgressIndicator(
-                        backgroundColor: Theme.of(context).primaryColor,
+                        backgroundColor: Color(int.parse(
+                            "0xff${layoutDesignProvider.primary.substring(1)}")),
                         color: Colors.white,
                       ),
                     )
@@ -185,9 +190,9 @@ class _WishListPageState extends State<WishListPage> {
                                             BorderRadius.circular(10.0),
                                         child: Image.network(
                                           wishListItem.images.isEmpty
-                                              ? Constants.defaultImageUrl
+                                              ? layoutDesignProvider.placeHolder
                                               : wishListItem.images[0].src ??
-                                                  Constants.defaultImageUrl,
+                                                  layoutDesignProvider.placeHolder,
                                           fit: BoxFit.cover,
                                           loadingBuilder: (context, child,
                                               loadingProgress) {
@@ -198,7 +203,8 @@ class _WishListPageState extends State<WishListPage> {
                                               child: Center(
                                                 child:
                                                     CircularProgressIndicator(
-                                                  color:  Theme.of(context).primaryColor,
+                                                  color: Color(int.parse(
+                                                      "0xff${layoutDesignProvider.primary.substring(1)}")),
                                                 ),
                                               ),
                                             );

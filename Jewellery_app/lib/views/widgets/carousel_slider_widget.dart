@@ -1,8 +1,11 @@
+
 import 'package:Tiara_by_TJ/api/api_service.dart';
+import 'package:Tiara_by_TJ/providers/layoutdesign_provider.dart';
 import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class CarouselSliderWidget extends StatefulWidget {
@@ -59,15 +62,19 @@ class _CarouselSliderWidgetState extends State<CarouselSliderWidget> {
   Widget build(BuildContext context) {
     CarouselController carouselController = CarouselController();
     double deviceWidth = MediaQuery.of(context).size.width;
+
+    LayoutDesignProvider layoutDesignProvider =
+        Provider.of<LayoutDesignProvider>(context, listen: false);
     return Column(
       children: [
         isBannerLoading
             ? SizedBox(
                 width: MediaQuery.of(context).size.width,
-                height: 300,
+                height: (MediaQuery.of(context).size.height / 2) + 30,
                 child: Center(
                   child: CircularProgressIndicator(
-                    color: Theme.of(context).primaryColor,
+                    color: Color(int.parse(
+                        "0xff${layoutDesignProvider.primary.substring(1)}")),
                   ),
                 ),
               )
@@ -135,9 +142,9 @@ class _CarouselSliderWidgetState extends State<CarouselSliderWidget> {
                                           width:
                                               MediaQuery.of(context).size.width,
                                           height: 92.0,
-                                          child:
-                                               CircularProgressIndicator(
-                                            color:  Theme.of(context).primaryColor,
+                                          child: CircularProgressIndicator(
+                                            color: Color(int.parse(
+                                                "0xff${layoutDesignProvider.primary.substring(1)}")),
                                           ),
                                         );
                                       },
@@ -215,9 +222,9 @@ class _CarouselSliderWidgetState extends State<CarouselSliderWidget> {
                                           width:
                                               MediaQuery.of(context).size.width,
                                           height: 92.0,
-                                          child:
-                                             CircularProgressIndicator(
-                                            color:  Theme.of(context).primaryColor,
+                                          child: CircularProgressIndicator(
+                                            color: Color(int.parse(
+                                                "0xff${layoutDesignProvider.primary.substring(1)}")),
                                           ),
                                         );
                                       },

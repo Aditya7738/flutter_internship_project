@@ -1,3 +1,4 @@
+import 'package:Tiara_by_TJ/providers/layoutdesign_provider.dart';
 import 'package:Tiara_by_TJ/views/pages/details_view.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -41,7 +42,7 @@ class _ProductItemState extends State<ProductItem> {
   @override
   Widget build(BuildContext context) {
     final wishListProvider = Provider.of<WishlistProvider>(context);
-    // final cartProvider = Provider.of<CartProvider>(context);
+    final layoutDesignProvider = Provider.of<LayoutDesignProvider>(context);
     double deviceWidth = MediaQuery.of(context).size.width;
 
     print("product item ${(deviceWidth / 3) - 75}");
@@ -70,7 +71,7 @@ class _ProductItemState extends State<ProductItem> {
       child: Container(
         //width: (deviceWidth / 2),
         decoration: BoxDecoration(
-     
+        
           border: Border.all(
               color: Colors.grey, style: BorderStyle.solid, width: 0.5),
           shape: BoxShape.rectangle,
@@ -82,20 +83,8 @@ class _ProductItemState extends State<ProductItem> {
               children: [
                 productsModel.images.isEmpty ||
                         productsModel.images[0].src == null
-                    ? ClipRRect(
-                        child: Image.asset(
-                          "assets/images/image_placeholder.jpg",
-                          width: (deviceWidth / 2) + 16.0,
-                          height: deviceWidth > 600
-                              ? (deviceWidth / 2) - 125
-                              : (deviceWidth / 2) - 10,
-                        ),
-                      )
-                    : CachedNetworkImage(
-                        imageUrl: productsModel.images.isEmpty
-                            ? Constants.defaultImageUrl
-                            : productsModel.images[0].src ??
-                                Constants.defaultImageUrl,
+                    ? CachedNetworkImage(
+                        imageUrl: layoutDesignProvider.placeHolder,
                         width: (deviceWidth / 2) + 16.0,
                         height: deviceWidth > 600
                             ? (deviceWidth / 2) - 125
@@ -108,7 +97,32 @@ class _ProductItemState extends State<ProductItem> {
                                 : (deviceWidth / 2) - 10,
                             child: Center(
                               child: CircularProgressIndicator(
-                                color: Theme.of(context).primaryColor,
+                                color: Color(int.parse(
+                                    "0xff${layoutDesignProvider.primary.substring(1)}")),
+                              ),
+                            ),
+                          );
+                        },
+                      )
+                    : CachedNetworkImage(
+                        imageUrl: productsModel.images.isEmpty
+                            ? layoutDesignProvider.placeHolder
+                            : productsModel.images[0].src ??
+                                layoutDesignProvider.placeHolder,
+                        width: (deviceWidth / 2) + 16.0,
+                        height: deviceWidth > 600
+                            ? (deviceWidth / 2) - 125
+                            : (deviceWidth / 2) - 10,
+                        placeholder: (context, url) {
+                          return SizedBox(
+                            width: (deviceWidth / 2) + 16.0,
+                            height: deviceWidth > 600
+                                ? (deviceWidth / 2) - 125
+                                : (deviceWidth / 2) - 10,
+                            child: Center(
+                              child: CircularProgressIndicator(
+                                color: Color(int.parse(
+                                    "0xff${layoutDesignProvider.primary.substring(1)}")),
                               ),
                             ),
                           );
@@ -258,7 +272,7 @@ class _ProductItemState extends State<ProductItem> {
                                                 deliveryDate: deliveryDate,
                                                 imageUrl: productsModel
                                                         .images.isEmpty
-                                                    ? Constants.defaultImageUrl
+                                                    ? layoutDesignProvider.placeHolder
                                                     : productsModel
                                                             .images[0].src ??
                                                         Constants

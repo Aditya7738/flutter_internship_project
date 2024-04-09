@@ -2,6 +2,7 @@ import 'package:Tiara_by_TJ/api/api_service.dart';
 import 'package:Tiara_by_TJ/api/cache_memory.dart';
 import 'package:Tiara_by_TJ/providers/cache_provider.dart';
 import 'package:Tiara_by_TJ/providers/category_provider.dart';
+import 'package:Tiara_by_TJ/providers/layoutdesign_provider.dart';
 import 'package:Tiara_by_TJ/views/widgets/feature_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
@@ -55,6 +56,11 @@ class _CategoryListState extends State<CategoryList> {
     CategoryProvider categoryProvider =
         Provider.of<CategoryProvider>(context, listen: false);
     double deviceWidth = MediaQuery.of(context).size.width;
+
+    LayoutDesignProvider layoutDesignProvider =
+        Provider.of<LayoutDesignProvider>(context, listen: false);
+
+    Color primaryColor = Color(0xffCC868A);
     return categoryFileStream != null
         ? StreamBuilder(
             stream: categoryFileStream!,
@@ -84,9 +90,10 @@ class _CategoryListState extends State<CategoryList> {
                     height: MediaQuery.of(context).size.height / 6,
                     child: Center(
                       child: CircularProgressIndicator(
-                        color:
-                            // Colors.red,
-                            Theme.of(context).primaryColor,
+                        color: layoutDesignProvider.primary != ""
+                            ? Color(int.parse(
+                                "0xff${layoutDesignProvider.primary.substring(1)}"))
+                            : primaryColor,
                       ),
                     ));
                 print("snapshot.loading");
@@ -105,7 +112,10 @@ class _CategoryListState extends State<CategoryList> {
                         height: MediaQuery.of(context).size.height / 6,
                         child: Center(
                           child: CircularProgressIndicator(
-                            color: Theme.of(context).primaryColor,
+                            color: layoutDesignProvider.primary != ""
+                                ? Color(int.parse(
+                                    "0xff${layoutDesignProvider.primary.substring(1)}"))
+                                : primaryColor,
                             //Colors.yellow,
                           ),
                         ));
@@ -116,7 +126,10 @@ class _CategoryListState extends State<CategoryList> {
                         height: MediaQuery.of(context).size.height / 6,
                         child: Center(
                           child: CircularProgressIndicator(
-                            color: Theme.of(context).primaryColor,
+                            color: layoutDesignProvider.primary != ""
+                                ? Color(int.parse(
+                                    "0xff${layoutDesignProvider.primary.substring(1)}"))
+                                : primaryColor,
                             //Colors.yellow,
                           ),
                         ));
@@ -142,7 +155,10 @@ class _CategoryListState extends State<CategoryList> {
                             } else {
                               return Center(
                                   child: CircularProgressIndicator(
-                                color: Theme.of(context).primaryColor,
+                                color: layoutDesignProvider.primary != ""
+                                    ? Color(int.parse(
+                                        "0xff${layoutDesignProvider.primary.substring(1)}"))
+                                    : primaryColor,
                               ));
                             }
                           }),
@@ -184,7 +200,10 @@ class _CategoryListState extends State<CategoryList> {
             height: MediaQuery.of(context).size.height / 6,
             child: Center(
               child: CircularProgressIndicator(
-                color: Theme.of(context).primaryColor,
+                color: layoutDesignProvider.primary != ""
+                    ? Color(int.parse(
+                        "0xff${layoutDesignProvider.primary.substring(1)}"))
+                    : primaryColor,
               ),
             ),
           );

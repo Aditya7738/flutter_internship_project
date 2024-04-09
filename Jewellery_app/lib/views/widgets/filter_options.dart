@@ -1,4 +1,5 @@
 import 'package:Tiara_by_TJ/providers/filteroptions_provider.dart';
+import 'package:Tiara_by_TJ/providers/layoutdesign_provider.dart';
 import 'package:Tiara_by_TJ/views/widgets/filter_suboptions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -24,6 +25,9 @@ class _FilterOptionsState extends State<FilterOptions> {
     double deviceWidth = MediaQuery.of(context).size.width;
     final filterOptionsProvider =
         Provider.of<FilterOptionsProvider>(context, listen: false);
+
+    LayoutDesignProvider layoutDesignProvider =
+        Provider.of(context, listen: false);
     // Map<String, dynamic> selectedSubOptionsdata =
     //     filterOptionsProvider.selectedSubOptionsdata;
 
@@ -44,8 +48,7 @@ class _FilterOptionsState extends State<FilterOptions> {
     }
 
     Widget priceRange = Container(
-      width: deviceWidth -
-          (deviceWidth / 3),
+      width: deviceWidth - (deviceWidth / 3),
       height: (MediaQuery.of(context).size.height / 2) - 77,
       child: LayoutBuilder(
         builder: (context, constraints) {
@@ -59,9 +62,8 @@ class _FilterOptionsState extends State<FilterOptions> {
                 child: FittedBox(
                   child: Text(
                     "Price Range",
-                    style: TextStyle(
-                      fontSize: deviceWidth > 600 ? 28.sp : 15.sp
-                    ),
+                    style:
+                        TextStyle(fontSize: deviceWidth > 600 ? 28.sp : 15.sp),
                     //style: Theme.of(context).textTheme.subtitle1,
                   ),
                 ),
@@ -70,15 +72,17 @@ class _FilterOptionsState extends State<FilterOptions> {
                 height: 10.0,
               ),
               Container(
-            
-              //  height: constraints.maxWidth / 8,
+                //  height: constraints.maxWidth / 8,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     FittedBox(
                       child: Text(
                         "₹ ${selectedMin.toInt()} - ₹ ${selectedMax.toInt()}",
-                       style: TextStyle(fontSize: deviceWidth > 600 ? constraints.maxWidth / 22 : constraints.maxWidth / 20),
+                        style: TextStyle(
+                            fontSize: deviceWidth > 600
+                                ? constraints.maxWidth / 22
+                                : constraints.maxWidth / 20),
                       ),
                     ),
                     // Image.asset(
@@ -108,21 +112,22 @@ class _FilterOptionsState extends State<FilterOptions> {
                 child: Consumer<FilterOptionsProvider>(
                   builder: (context, filterProvider, child) {
                     return RangeSlider(
-                      activeColor: Theme.of(context).primaryColor,
+                      activeColor: Color(int.parse(
+                          "0xff${layoutDesignProvider.primary.substring(1)}")),
                       min: 500.0,
                       max: 139080.0,
                       values: RangeValues(selectedMin, selectedMax),
-                      onChanged: (value)  {
+                      onChanged: (value) {
                         print("SELECTED VALUE $value");
                         // if (mounted) {
-                          setState(() {
-                            selectedMin = value.start;
-                            selectedMax = value.end;
-                          });
+                        setState(() {
+                          selectedMin = value.start;
+                          selectedMax = value.end;
+                        });
                         //}
                       },
                       onChangeEnd: (value) async {
-                       filterProvider.setSelectedSubOptionsdata({
+                        filterProvider.setSelectedSubOptionsdata({
                           "price_range": {
                             "min_price": value.start.toInt(),
                             "max_price": value.end.toInt()

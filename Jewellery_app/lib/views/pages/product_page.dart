@@ -83,7 +83,7 @@ class _ProductPageState extends State<ProductPage> {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
         print("REACHED END OF LIST");
-        //  _downloadNextCollectionsFile();
+          _downloadNextCollectionsFile();
         //loadMoreData();
       }
     });
@@ -739,7 +739,7 @@ class _ProductPageState extends State<ProductPage> {
                                 child: Center(
                                   child: CircularProgressIndicator(
                                     color: Color(int.parse(
-                                  "0xff${layoutDesignProvider.primary.substring(1)}")),
+                                        "0xff${layoutDesignProvider.primary.substring(1)}")),
                                   ),
                                 ))
                             : SizedBox(
@@ -821,58 +821,69 @@ class _ProductPageState extends State<ProductPage> {
                           width: deviceWidth,
                           height: deviceHeight - 104,
                           child: Scrollbar(
-                            child: GridView.builder(
-                              controller: _scrollController,
-                              itemCount: ProductPage.listOfCollections.length,
-                              // ProductPage.listOfCollections.length +
-                              // (isLoading || !isThereMoreProducts ? 1 : 0),
-                              gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                      childAspectRatio: 0.64,
-                                      crossAxisCount:
-                                          deviceWidth > 600 ? 3 : 2),
-                              itemBuilder: (context, index) {
-                                print("reduceSize $reduceSize");
-                                print(
-                                    "ProductPage.listOfCollections.length ${ProductPage.listOfCollections.length}");
-                                if (index <
-                                    ProductPage.listOfCollections.length) {
-                                  AllProducts.ProductsModel collectionsModel =
-                                      ProductPage.listOfCollections[index];
-                                  print(" productIndex: $index");
-                                  return ProductItem(
-                                    productIndex: index,
-                                    productsModel: collectionsModel,
-                                    forCollections: true,
-                                  );
-                                } else if (!isThereMoreProducts ||
-                                    cacheProvider.isProductListEmpty) {
-                                  return Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        vertical: 15.0, horizontal: 10.0),
-                                    child: Center(
-                                        child: Text(
-                                      "There are no more products",
-                                      style: TextStyle(
-                                          fontSize: deviceWidth / 33,
-                                          fontWeight: FontWeight.bold),
-                                    )),
-                                  );
-                                } else {
-                                  return Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        vertical: 15.0, horizontal: 10.0),
-                                    child: Center(
-                                        child: CircularProgressIndicator(
-                                      color: Color(int.parse(
-                                  "0xff${layoutDesignProvider.primary.substring(1)}")),
-                                    )),
-                                  );
-                                }
+                            child: Consumer<CacheProvider>(
+                              builder: (context, value, child) {
+                                return GridView.builder(
+                                  controller: _scrollController,
+                                  itemCount: //ProductPage.listOfCollections.length,
+                                      // ProductPage.listOfCollections.length +
+                                      // (isLoading || !isThereMoreProducts ? 1 : 0),
+                                      ProductPage.listOfCollections.length +
+                                          //(isLoading ||!isThereMoreProducts? 1: 0),
+                                          (value.isMoreProductLoading ||
+                                                  value.isProductListEmpty
+                                              ? 1
+                                              : 0),
+                                  gridDelegate:
+                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                          childAspectRatio: 0.64,
+                                          crossAxisCount:
+                                              deviceWidth > 600 ? 3 : 2),
+                                  itemBuilder: (context, index) {
+                                    print("reduceSize $reduceSize");
+                                    print(
+                                        "ProductPage.listOfCollections.length ${ProductPage.listOfCollections.length}");
+                                    if (index <
+                                        ProductPage.listOfCollections.length) {
+                                      AllProducts.ProductsModel
+                                          collectionsModel =
+                                          ProductPage.listOfCollections[index];
+                                      print(" productIndex: $index");
+                                      return ProductItem(
+                                        productIndex: index,
+                                        productsModel: collectionsModel,
+                                        forCollections: true,
+                                      );
+                                    } else if (!isThereMoreProducts ||
+                                        cacheProvider.isProductListEmpty) {
+                                      return Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: 15.0, horizontal: 10.0),
+                                        child: Center(
+                                            child: Text(
+                                          "There are no more products",
+                                          style: TextStyle(
+                                              fontSize: deviceWidth / 33,
+                                              fontWeight: FontWeight.bold),
+                                        )),
+                                      );
+                                    } else {
+                                      return Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: 15.0, horizontal: 10.0),
+                                        child: Center(
+                                            child: CircularProgressIndicator(
+                                          color: Color(int.parse(
+                                              "0xff${layoutDesignProvider.primary.substring(1)}")),
+                                        )),
+                                      );
+                                    }
+                                  },
+                                );
                               },
+                              //  child:                            ),
                             ),
-                          ),
-                        )
+                          ))
                       : Consumer<CacheProvider>(
                           builder: (context, value, child) {
                           print("reduceSize $reduceSize");
@@ -883,7 +894,7 @@ class _ProductPageState extends State<ProductPage> {
                                   child: Center(
                                     child: CircularProgressIndicator(
                                       color: Color(int.parse(
-                                  "0xff${layoutDesignProvider.primary.substring(1)}")),
+                                          "0xff${layoutDesignProvider.primary.substring(1)}")),
                                     ),
                                   ))
                               : Container(
@@ -940,7 +951,7 @@ class _ProductPageState extends State<ProductPage> {
                                                 child:
                                                     CircularProgressIndicator(
                                               color: Color(int.parse(
-                                  "0xff${layoutDesignProvider.primary.substring(1)}")),
+                                                  "0xff${layoutDesignProvider.primary.substring(1)}")),
                                             )),
                                           );
                                         }

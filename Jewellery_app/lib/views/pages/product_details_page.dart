@@ -3,6 +3,7 @@ import 'package:Tiara_by_TJ/constants/fontsizes.dart';
 import 'package:Tiara_by_TJ/model/reviews_model.dart';
 import 'package:Tiara_by_TJ/providers/customer_provider.dart';
 import 'package:Tiara_by_TJ/providers/customize_options_provider.dart';
+import 'package:Tiara_by_TJ/providers/layoutdesign_provider.dart';
 import 'package:Tiara_by_TJ/views/pages/login_page.dart';
 import 'package:Tiara_by_TJ/views/pages/reviews_page.dart';
 
@@ -322,7 +323,8 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
   @override
   Widget build(BuildContext context) {
     final cartProvider = Provider.of<CartProvider>(context, listen: false);
-
+    LayoutDesignProvider layoutDesignProvider =
+        Provider.of<LayoutDesignProvider>(context, listen: false);
     final customerProvider =
         Provider.of<CustomerProvider>(context, listen: false);
 
@@ -667,7 +669,8 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                 // margin: const EdgeInsets.symmetric(horizontal: 10.0),
                                 decoration: BoxDecoration(
                                   border: Border.all(
-                                      color: Theme.of(context).primaryColor),
+                                      color: Color(int.parse(
+                                          "0xff${layoutDesignProvider.primary.substring(1)}"))),
                                   shape: BoxShape.rectangle,
                                   borderRadius: BorderRadius.circular(10.0),
                                 ),
@@ -676,7 +679,8 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                   style: TextStyle(
                                       fontSize:
                                           deviceWidth > 600 ? 25.sp : 15.sp,
-                                      color: Theme.of(context).primaryColor),
+                                      color: Color(int.parse(
+                                          "0xff${layoutDesignProvider.primary.substring(1)}"))),
                                 ),
                               ),
                             ),
@@ -696,7 +700,8 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                 width: MediaQuery.of(context).size.width,
                                 child: Center(
                                   child: CircularProgressIndicator(
-                                    color: Theme.of(context).primaryColor,
+                                    color: Color(int.parse(
+                                        "0xff${layoutDesignProvider.primary.substring(1)}")),
                                   ),
                                 ),
                               )
@@ -794,8 +799,8 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                                                             : ""
                                                                         : "",
                                                                     style: TextStyle(
-                                                                        color: Theme.of(context)
-                                                                            .primaryColor,
+                                                                        color: Color(int.parse(
+                                                                            "0xff${layoutDesignProvider.primary.substring(1)}")),
                                                                         fontWeight:
                                                                             FontWeight
                                                                                 .bold,
@@ -887,7 +892,8 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                 child: Text(
                                   "Read all ${ApiService.reviewsList.length} Reviews",
                                   style: TextStyle(
-                                      color: Theme.of(context).primaryColor,
+                                      color: Color(int.parse(
+                                          "0xff${layoutDesignProvider.primary.substring(1)}")),
                                       fontSize: deviceWidth > 600 ? 26.0 : 16.0,
                                       fontWeight: FontWeight.normal,
                                       decoration: TextDecoration.underline),
@@ -988,9 +994,9 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         size: 5,
                         deliveryDate: DateHelper.getCurrentDateInWords(),
                         imageUrl: productsModel.images.isEmpty
-                            ? Constants.defaultImageUrl
+                            ? layoutDesignProvider.placeHolder
                             : productsModel.images[0].src ??
-                                Constants.defaultImageUrl,
+                                layoutDesignProvider.placeHolder,
                         sku: productsModel.sku ?? "ABC",
                         imageId: productsModel.images.isNotEmpty
                             ? productsModel.images[0].id
@@ -1010,7 +1016,8 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                     decoration: BoxDecoration(
                         shape: BoxShape.rectangle,
                         borderRadius: BorderRadius.circular(10.0),
-                        color: Theme.of(context).primaryColor),
+                        color: Color(int.parse(
+                            "0xff${layoutDesignProvider.primary.substring(1)}"))),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [

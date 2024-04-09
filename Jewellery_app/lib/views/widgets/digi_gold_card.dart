@@ -5,6 +5,7 @@ import 'package:Tiara_by_TJ/model/digi_gold_plan_model.dart' as DigiGoldPlan;
 import 'package:Tiara_by_TJ/model/order_model.dart';
 import 'package:Tiara_by_TJ/providers/customer_provider.dart';
 import 'package:Tiara_by_TJ/providers/digigold_provider.dart';
+import 'package:Tiara_by_TJ/providers/layoutdesign_provider.dart';
 import 'package:Tiara_by_TJ/views/pages/digigold_plan_bill.dart';
 import 'package:Tiara_by_TJ/views/pages/login_page.dart';
 import 'package:Tiara_by_TJ/views/widgets/digi_gold_plan_subcard.dart';
@@ -99,11 +100,11 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                 });
               }
             } else {
-              // if (mounted) {
+               if (mounted) {
               setState(() {
                 planPurchasedChecking = false;
               });
-              //}
+              }
             }
           }
         }
@@ -143,6 +144,8 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
     double deviceWidth = MediaQuery.of(context).size.width;
     final customerProvider =
         Provider.of<CustomerProvider>(context, listen: true);
+        LayoutDesignProvider layoutDesignProvider =
+        Provider.of<LayoutDesignProvider>(context, listen: true);
     final digiGoldProvider =
         Provider.of<DigiGoldProvider>(context, listen: true);
     bool isCustomerDataEmpty = customerProvider.customerData.isEmpty;
@@ -171,7 +174,8 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                           540,
                       child: Center(
                         child: CircularProgressIndicator(color: //Colors.red
-                            Theme.of(context).primaryColor,
+                           Color(int.parse(
+                              "0xff${layoutDesignProvider.primary.substring(1)}")),
                             ),
                       ),
                     )
@@ -201,7 +205,8 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                               right: 1.0,
                               child: Container(
                                 width: MediaQuery.of(context).size.width,
-                                color: Theme.of(context).primaryColor,
+                                color: Color(int.parse(
+                              "0xff${layoutDesignProvider.primary.substring(1)}")),
                                 padding: EdgeInsets.symmetric(vertical: 5.0),
                                 child: Text(
                                   "You have already purchased this plan",
@@ -346,7 +351,8 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                               Transform.scale(
                                 scale: 1.4,
                                 child: Checkbox(
-                                  activeColor: Theme.of(context).primaryColor,
+                                  activeColor: Color(int.parse(
+                              "0xff${layoutDesignProvider.primary.substring(1)}")),
                                   checkColor: Colors.white,
                                   value: checkBoxChecked,
                                   onChanged: (value) {
@@ -420,7 +426,8 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                                 decoration:
                                     // checkBoxChecked
                                     //     ? BoxDecoration(
-                                    //         color: Theme.of(context).primaryColor,
+                                    //         color: Color(int.parse(
+                            //  "0xff${layoutDesignProvider.primary.substring(1)}")),
                                     //         borderRadius:
                                     //             BorderRadius.circular(5.0))
                                     //     :
@@ -430,8 +437,8 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                                             color: isPlanAlreadyPurchased
                                                 ? Color.fromARGB(
                                                     255, 213, 167, 170)
-                                                : Theme.of(context)
-                                                    .primaryColor,
+                                                : Color(int.parse(
+                              "0xff${layoutDesignProvider.primary.substring(1)}")),
                                             style: BorderStyle.solid),
                                         borderRadius:
                                             BorderRadius.circular(5.0)),
@@ -458,7 +465,8 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                                                   167,
                                                   170,
                                                 )
-                                              : Theme.of(context).primaryColor,
+                                              : Color(int.parse(
+                              "0xff${layoutDesignProvider.primary.substring(1)}")),
                                           fontWeight: FontWeight.bold,
                                           fontSize:
                                               deviceWidth > 600 ? 22.sp : 17.sp
@@ -489,7 +497,8 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                                     EdgeInsets.only(left: 15.0, bottom: 5.0),
                                 decoration: checkBoxChecked
                                     ? BoxDecoration(
-                                        color: Theme.of(context).primaryColor,
+                                        color: Color(int.parse(
+                              "0xff${layoutDesignProvider.primary.substring(1)}")),
                                         borderRadius:
                                             BorderRadius.circular(5.0))
                                     : BoxDecoration(
@@ -498,8 +507,8 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                                             color: isPlanAlreadyPurchased
                                                 ? Color.fromARGB(
                                                     255, 213, 167, 170)
-                                                : Theme.of(context)
-                                                    .primaryColor,
+                                                :Color(int.parse(
+                              "0xff${layoutDesignProvider.primary.substring(1)}")),
                                             style: BorderStyle.solid),
                                         borderRadius:
                                             BorderRadius.circular(5.0)),
@@ -526,7 +535,8 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                                                   167,
                                                   170,
                                                 )
-                                              : Theme.of(context).primaryColor,
+                                              : Color(int.parse(
+                              "0xff${layoutDesignProvider.primary.substring(1)}")),
                                           fontWeight: FontWeight.bold,
                                           fontSize:
                                               deviceWidth > 600 ? 22.sp : 17.sp
