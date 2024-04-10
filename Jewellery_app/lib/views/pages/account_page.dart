@@ -185,7 +185,8 @@ LayoutDesignProvider layoutDesignProvider =
                   onTap: () {
                     print(
                         "customerProvider.customerData.isEmpty ${value.customerData.isEmpty}");
-                    value.customerData.isEmpty
+                   value.customerData.isEmpty
+                 //  true
                         ? Navigator.push(
                             context,
                             MaterialPageRoute(

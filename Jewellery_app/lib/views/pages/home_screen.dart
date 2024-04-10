@@ -754,7 +754,7 @@ class _HomeScreenState extends State<HomeScreen> {
     if (categoryProvider.fileInfoFetching != null) {
       categoryProvider.setFileInfoFetching(true);
       //  CacheMemory.listOfCategory.clear();
-      await CacheMemory.getCategoryFile(snapshot);
+     // await CacheMemory.getCategoryFile(snapshot);
       categoryProvider.setFileInfoFetching(null);
     }
   }

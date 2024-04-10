@@ -36,7 +36,23 @@ class _CategoryListState extends State<CategoryList> {
     if (categoryProvider.fileInfoFetching != null) {
       categoryProvider.setFileInfoFetching(true);
       //  CacheMemory.listOfCategory.clear();
-      await CacheMemory.getCategoryFile(snapshot);
+      await ApiService.getFilterOptions();
+      List<int> nonEmptyCategoryIds = <int>[];
+      if (ApiService.filterOptionsModel != null) {
+        ApiService.filterOptionsModel!.categories.forEach((category) {
+          if (category.count != null) {
+            if (category.count! > 0) {
+              if (category.id != null) {
+                nonEmptyCategoryIds.add(category.id!);
+              }
+            }
+          }
+        });
+      } else {
+        print("taxaomies error");
+      }
+
+      await CacheMemory.getCategoryFile(snapshot, nonEmptyCategoryIds);
       categoryProvider.setFileInfoFetching(null);
     }
   }

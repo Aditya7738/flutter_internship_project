@@ -14,7 +14,8 @@ import 'package:http/http.dart' as http;
 class CacheMemory {
   static List<CategoriesModel> listOfCategory = [];
 
-  static Future<void> getCategoryFile(AsyncSnapshot<Object?> snapshot) async {
+  static Future<void> getCategoryFile(
+      AsyncSnapshot<Object?> snapshot, List<int> nonEmptyCategoryIds) async {
     Object? data = snapshot.data;
     String result = "";
     print("data is FileInfo category ${data is FileInfo}");
@@ -28,19 +29,21 @@ class CacheMemory {
       print("getFile json $json");
       listOfCategory.clear();
       for (int i = 0; i < json.length; i++) {
-        listOfCategory.add(CategoriesModel(
-            id: json[i]['id'],
-            name: json[i]['name'],
-            slug: json[i]['slug'],
-            parent: json[i]['parent'],
-            description: json[i]['description'],
-            display: json[i]['display'],
-            image: json[i]["image"] == null
-                ? null
-                : CategoryImageModel.fromJson(json[i]["image"]),
-            menuOrder: json[i]['menuOrder'],
-            count: json[i]['count'],
-            links: json[i]['links']));
+        if (nonEmptyCategoryIds.contains(json[i]['id'])) {
+          listOfCategory.add(CategoriesModel(
+              id: json[i]['id'],
+              name: json[i]['name'],
+              slug: json[i]['slug'],
+              parent: json[i]['parent'],
+              description: json[i]['description'],
+              display: json[i]['display'],
+              image: json[i]["image"] == null
+                  ? null
+                  : CategoryImageModel.fromJson(json[i]["image"]),
+              menuOrder: json[i]['menuOrder'],
+              count: json[i]['count'],
+              links: json[i]['links']));
+        }
       }
 
       print("listOfCategory length ${listOfCategory.length}");
@@ -63,7 +66,7 @@ class CacheMemory {
     if (result.isNotEmpty) {
       final json = jsonDecode(http.Response(result, 200).body);
       print("getFile json $json");
-     // listOfProducts.clear();
+      // listOfProducts.clear();
       print("listOfProducts length ${listOfProducts.length}");
       for (int i = 0; i < json.length; i++) {
         listOfProducts.add(AllProducts.ProductsModel(

@@ -193,9 +193,7 @@ class _FetchHomeScreenState extends State<FetchHomeScreen> {
                             ),
                             CollectionGridList(
                                 collectionId: children[i].meta!.id!),
-                            SizedBox(
-                              height: 10.0,
-                            ),
+                          
                             Container(
                                 width: MediaQuery.of(context).size.width,
                                 alignment: Alignment.centerRight,

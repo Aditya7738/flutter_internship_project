@@ -72,17 +72,18 @@ class _SignupPageState extends State<SignupPage> {
     final deviceWidth = MediaQuery.of(context).size.width;
     return Scaffold(
         appBar: AppBar(
-          leading: GestureDetector(
-              child: Icon(Icons.arrow_back_outlined),
-              onTap: () {
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => LoginPage(
-                        isComeFromCart: false,
-                      ),
-                    ));
-              }),
+          // leading: GestureDetector(
+          //     child: Icon(Icons.arrow_back_outlined),
+          //     onTap: () {
+          //       // Navigator.pushReplacement(
+          //       //     context,
+          //       //     MaterialPageRoute(
+          //       //       builder: (context) => LoginPage(
+          //       //         isComeFromCart: false,
+          //       //       ),
+          //       //     ));
+          //       Navigator.pop(context);
+          //     }),
         ),
         body: SingleChildScrollView(
           child: Padding(
@@ -533,8 +534,9 @@ class _SignupPageState extends State<SignupPage> {
                           }
                         },
                         child: Container(
-                            width: deviceWidth,
-                          
+                            width: MediaQuery.of(context).size.width > 600
+                                ? 600.sp
+                                : MediaQuery.of(context).size.width,
                             decoration: BoxDecoration(
                                 color: const Color(0xffCC868A),
                                 borderRadius: BorderRadius.circular(15.0)),
@@ -546,7 +548,7 @@ class _SignupPageState extends State<SignupPage> {
                                       padding:
                                           EdgeInsets.symmetric(vertical: 5.0),
                                       width: (deviceWidth / 28) + 4,
-                                     height: (deviceWidth / 28) + 13,
+                                      height: (deviceWidth / 28) + 13,
                                       child: CircularProgressIndicator(
                                         color: Colors.white,
                                         strokeWidth: 2.0,
@@ -590,11 +592,12 @@ class _SignupPageState extends State<SignupPage> {
                                       "0xff${layoutDesignProvider.primary.substring(1)}"))),
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => const LoginPage(
-                                      isComeFromCart: false,
-                                    ),
-                                  ));
+                                  // Navigator.of(context).push(MaterialPageRoute(
+                                  //   builder: (context) => const LoginPage(
+                                  //     isComeFromCart: false,
+                                  //   ),
+                                  // ));
+                                  Navigator.pop(context);
                                 },
                             ),
                           ],

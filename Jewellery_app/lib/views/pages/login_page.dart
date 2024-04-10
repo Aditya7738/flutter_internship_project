@@ -432,7 +432,7 @@ class _LoginPageState extends State<LoginPage> {
                           },
                           child: Container(
                               //TODO: give height to button container after it start loading
-                              width: MediaQuery.of(context).size.width,
+                             
                               decoration: BoxDecoration(
                                   color: const Color(0xffCC868A),
                                   borderRadius: BorderRadius.circular(15.0)),

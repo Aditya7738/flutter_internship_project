@@ -4,6 +4,7 @@ import 'dart:typed_data';
 
 import 'package:Tiara_by_TJ/api/cache_memory.dart';
 import 'package:Tiara_by_TJ/constants/constants.dart';
+import 'package:Tiara_by_TJ/constants/fontsizes.dart';
 import 'package:Tiara_by_TJ/model/products_model.dart' as AllProducts;
 import 'package:Tiara_by_TJ/providers/cache_provider.dart';
 import 'package:Tiara_by_TJ/providers/cart_provider.dart';
@@ -12,6 +13,7 @@ import 'package:Tiara_by_TJ/providers/filteroptions_provider.dart';
 import 'package:Tiara_by_TJ/providers/layoutdesign_provider.dart';
 import 'package:Tiara_by_TJ/providers/wishlist_provider.dart';
 import 'package:Tiara_by_TJ/views/pages/cart_page.dart';
+import 'package:Tiara_by_TJ/views/pages/dashboard_page.dart';
 import 'package:Tiara_by_TJ/views/widgets/filter_modal.dart';
 import 'package:Tiara_by_TJ/views/pages/wishlist_page.dart';
 import 'package:Tiara_by_TJ/views/widgets/custom_searchbar.dart';
@@ -77,16 +79,19 @@ class _ProductPageState extends State<ProductPage> {
       }
     }
 
-    _scrollController.addListener(() async {
-      print(
-          "CONDITION ${_scrollController.position.pixels == _scrollController.position.maxScrollExtent}");
-      if (_scrollController.position.pixels ==
-          _scrollController.position.maxScrollExtent) {
-        print("REACHED END OF LIST");
+    print("widget.forCollections ${widget.forCollections}");
+    if (widget.forCollections) {
+      _scrollController.addListener(() async {
+        print(
+            "CONDITION ${_scrollController.position.pixels == _scrollController.position.maxScrollExtent}");
+        if (_scrollController.position.pixels ==
+            _scrollController.position.maxScrollExtent) {
+          print("REACHED END OF LIST");
           _downloadNextCollectionsFile();
-        //loadMoreData();
-      }
-    });
+          //loadMoreData();
+        }
+      });
+    }
   }
 
   int responseofCollectionPages = 1;
@@ -343,13 +348,19 @@ class _ProductPageState extends State<ProductPage> {
   //   }
   // }
 
+  bool isCategoryListEmpty = false;
+
   Future<void> getProducts() async {
     bool isThereInternet = await ApiService.checkInternetConnection(context);
     if (isThereInternet) {
+       categoryProvider.setIsCategoryListEmpty(false);
       categoryProvider.setIsCategoryProductFetching(true);
       ApiService.listOfProductsCategoryWise.clear();
+     
       print("categoryId ${widget.id}");
       await ApiService.fetchProductsCategoryWise(id: widget.id, pageNo: 1);
+      categoryProvider.setIsCategoryListEmpty(
+          ApiService.listOfProductsCategoryWise.isEmpty);
 
       categoryProvider.setIsCategoryProductFetching(false);
     }
@@ -729,90 +740,185 @@ class _ProductPageState extends State<ProductPage> {
                   //         ),
                   //       )
                   // :
-                  ? Consumer<CategoryProvider>(
-                      builder: (context, value, child) {
-                        print("search reduceSize $reduceSize");
-                        return value.isCategoryProductFetching
-                            ? SizedBox(
-                                width: deviceWidth,
-                                height: deviceHeight - reduceSize,
-                                child: Center(
-                                  child: CircularProgressIndicator(
-                                    color: Color(int.parse(
-                                        "0xff${layoutDesignProvider.primary.substring(1)}")),
-                                  ),
-                                ))
-                            : SizedBox(
-                                width: deviceWidth,
-                                height: deviceHeight - reduceSize,
-                                child: Scrollbar(
-                                  child: GridView.builder(
-                                      controller: _scrollController,
-                                      itemCount: ApiService
-                                              .listOfProductsCategoryWise
-                                              .length +
-                                          (isLoading || !isThereMoreProducts
-                                              ? 1
-                                              : 0),
-                                      gridDelegate:
-                                          SliverGridDelegateWithFixedCrossAxisCount(
-                                        childAspectRatio: 0.64,
-                                        crossAxisCount:
-                                            MediaQuery.of(context).size.width >
-                                                    600
-                                                ? 3
-                                                : 2,
-                                      ),
-                                      itemBuilder:
-                                          (BuildContext context, int index) {
-                                        if (index <
-                                            ApiService
-                                                .listOfProductsCategoryWise
-                                                .length) {
-                                          print(" productIndex: $index");
-                                          return ProductItem(
-                                            productIndex: index,
-                                            productsModel: ApiService
-                                                    .listOfProductsCategoryWise[
-                                                index],
-                                            forCollections:
-                                                widget.forCollections,
-                                          );
-                                        } else if (ApiService
-                                                .listOfProductsCategoryWise
-                                                .isEmpty
-                                            //value.isProductListEmpty
-                                            ) {
-                                          return Padding(
-                                            padding: EdgeInsets.symmetric(
-                                                vertical: 15.0,
-                                                horizontal: 10.0),
-                                            child: Center(
-                                                child: Text(
-                                              "There are no more products",
-                                              style: TextStyle(
-                                                  fontSize: deviceWidth / 33,
-                                                  fontWeight: FontWeight.bold),
-                                            )),
-                                          );
-                                        } else {
-                                          // return Padding(
-                                          //   padding: EdgeInsets.symmetric(
-                                          //       vertical: 15.0,
-                                          //       horizontal: 10.0),
-                                          //   child: Center(
-                                          //       child: CircularProgressIndicator(
-                                          //           color:
-                                          //               //Theme.of(context).primaryColor,
-                                          //               Colors.red)),
-                                          // );
-                                          return SizedBox();
-                                        }
-                                      }),
+                  ? categoryProvider.isCategoryListEmpty
+                      ? Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: SizedBox(
+                            height: MediaQuery.of(context).size.height - 200,
+                            width: MediaQuery.of(context).size.width,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Image.asset(
+                                    "assets/images/empty_jewelry_box.jpg",
+                                    width: deviceWidth > 600 ? 300.0 : 240.0,
+                                    height: deviceWidth > 600 ? 300.0 : 240.0,
+                                    // color: Color(int.parse(
+                                    //     "0xff${layoutDesignProvider.primary.substring(1)}"))
+                                        ),
+                                const SizedBox(
+                                  height: 40.0,
                                 ),
-                              );
-                      },
-                    )
+                                Text(
+                                  "Oops! It looks like there are no products available in this category at the moment.",
+                                  textAlign: TextAlign.center,
+                                  maxLines: 2,
+                                  style: TextStyle(
+                                      fontSize: deviceWidth > 600
+                                          ? Fontsizes.tabletHeadingSize
+                                          : Fontsizes.headingSize,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                SizedBox(
+                                  height: 20.0,
+                                ),
+                                Text(
+                                  "Our team is constantly updating our inventory, so please check back later or explore other categories for exciting products.",
+                                  maxLines: 3,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: deviceWidth > 600
+                                        ? Fontsizes.tabletTextFormInputFieldSize
+                                        : Fontsizes.textFormInputFieldSize,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 50.0,
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.of(context).pushReplacement(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const DashboardPage()));
+                                  },
+                                  child: Container(
+                                      decoration: BoxDecoration(
+                                          color: Color(int.parse(
+                                              "0xff${layoutDesignProvider.primary.substring(1)}")),
+                                          borderRadius:
+                                              BorderRadius.circular(5.0)),
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 10.0, horizontal: 40.0),
+                                      child: Text(
+                                        "Continue Shopping",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: deviceWidth > 600
+                                                ? Fontsizes.tabletButtonTextSize
+                                                : Fontsizes.buttonTextSize),
+                                      )),
+                                )
+                              ],
+                            ),
+                          ),
+                        )
+                      : Consumer<CategoryProvider>(
+                          builder: (context, value, child) {
+                            print("search reduceSize $reduceSize");
+                            return value.isCategoryProductFetching
+                                ? SizedBox(
+                                    width: deviceWidth,
+                                    height: deviceHeight - reduceSize,
+                                    child: Center(
+                                      child: CircularProgressIndicator(
+                                        color: Color(int.parse(
+                                            "0xff${layoutDesignProvider.primary.substring(1)}")),
+                                      ),
+                                    ))
+                                : SizedBox(
+                                    width: deviceWidth,
+                                    height: deviceHeight - reduceSize,
+                                    child: Scrollbar(
+                                      child: GridView.builder(
+                                          controller: _scrollController,
+                                          itemCount: ApiService
+                                                  .listOfProductsCategoryWise
+                                                  .length +
+                                              (isLoading || !isThereMoreProducts
+                                                  ? 1
+                                                  : 0),
+                                          gridDelegate:
+                                              SliverGridDelegateWithFixedCrossAxisCount(
+                                            childAspectRatio: 0.64,
+                                            crossAxisCount:
+                                                MediaQuery.of(context)
+                                                            .size
+                                                            .width >
+                                                        600
+                                                    ? 3
+                                                    : 2,
+                                          ),
+                                          itemBuilder: (BuildContext context,
+                                              int index) {
+                                            if (index <
+                                                ApiService
+                                                    .listOfProductsCategoryWise
+                                                    .length) {
+                                              print(" productIndex: $index");
+                                              return ProductItem(
+                                                productIndex: index,
+                                                productsModel: ApiService
+                                                        .listOfProductsCategoryWise[
+                                                    index],
+                                                forCollections:
+                                                    widget.forCollections,
+                                              );
+                                            }
+                                            // else if (ApiService
+                                            //         .listOfProductsCategoryWise
+                                            //         .isEmpty
+                                            //     //value.isProductListEmpty
+                                            //     ) {
+                                            //   return Padding(
+                                            //     padding: EdgeInsets.symmetric(
+                                            //         vertical: 15.0,
+                                            //         horizontal: 10.0),
+                                            //     child: Center(
+                                            //         child: Text(
+                                            //       "There are no more products",
+                                            //       style: TextStyle(
+                                            //           fontSize:
+                                            //               deviceWidth / 33,
+                                            //           fontWeight:
+                                            //               FontWeight.bold),
+                                            //     )),
+                                            //   );
+                                            // }
+                                            else {
+                                              // return Padding(
+                                              //   padding: EdgeInsets.symmetric(
+                                              //       vertical: 15.0,
+                                              //       horizontal: 10.0),
+                                              //   child: Center(
+                                              //       child: CircularProgressIndicator(
+                                              //           color:
+                                              //               //Theme.of(context).primaryColor,
+                                              //               Colors.red)),
+                                              // );
+                                              //  return SizedBox();
+                                               return Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                    vertical: 15.0,
+                                                    horizontal: 10.0),
+                                                child: Center(
+                                                    child: Text(
+                                                  "There are no more products",
+                                                  style: TextStyle(
+                                                      fontSize:
+                                                          deviceWidth / 33,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                )),
+                                              );
+                                            }
+                                          }),
+                                    ),
+                                  );
+                          },
+                        )
                   //     // child:
                   //   )
                   //:

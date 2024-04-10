@@ -24,6 +24,16 @@ class CategoryProvider with ChangeNotifier {
     });
   }
 
+  bool _isCategoryListEmpty = false;
+  bool get isCategoryListEmpty => _isCategoryListEmpty;
+
+  void setIsCategoryListEmpty(bool isCategoryListEmpty) {
+  //  WidgetsBinding.instance.addPostFrameCallback((_) {
+      _isCategoryListEmpty = isCategoryListEmpty;
+      notifyListeners();
+  //  });
+  }
+
   void setIsCategoryProductFetching(bool isCategoryProductFetching) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _isCategoryProductFetching = isCategoryProductFetching;

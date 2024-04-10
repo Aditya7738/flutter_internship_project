@@ -751,12 +751,8 @@ class _DigiGoldPageState extends State<DigiGoldPage> {
                                                     Text(
                                                       "Buy Gold By Grams",
                                                       style: TextStyle(
-                                                          fontSize: deviceWidth >
-                                                                  600
-                                                              ? ((constraints
-                                                                          .maxWidth /
-                                                                      30) +
-                                                                  0.99)
+                                                          fontSize: deviceWidth > 600
+                                                              ? ((constraints.maxWidth / 30) + 0.99)
                                                               : 16.sp,
                                                           color: Colors.white,
                                                           fontWeight:
