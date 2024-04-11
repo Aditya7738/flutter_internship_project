@@ -21,7 +21,9 @@ class CacheMemory {
     print("data is FileInfo category ${data is FileInfo}");
     if (data is FileInfo) {
       FileInfo fileInfo = data;
-      result = await fileInfo.file.readAsString();
+      if (await fileInfo.file.exists()) {
+        result = await fileInfo.file.readAsString();
+      }
     }
 
     if (result.isNotEmpty) {

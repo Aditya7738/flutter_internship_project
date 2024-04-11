@@ -1,6 +1,7 @@
 import 'package:Tiara_by_TJ/api/api_service.dart';
 import 'package:Tiara_by_TJ/helpers/db_helper.dart';
 import 'package:Tiara_by_TJ/model/layout_model.dart' as LayoutModel;
+
 import 'package:Tiara_by_TJ/providers/cache_provider.dart';
 import 'package:Tiara_by_TJ/providers/category_provider.dart';
 import 'package:Tiara_by_TJ/providers/customize_options_provider.dart';
@@ -53,7 +54,28 @@ void main() async {
           await dbHelper.insert(layoutModel);
         }
       }
+    } else {
+      LayoutModel.LayoutModel layoutModel = LayoutModel.LayoutModel(
+        success: Constants.defaultLayoutDesign["success"],
+        data: Constants.defaultLayoutDesign["data"] == null
+            ? null
+            : LayoutModel.Data.fromJson(Constants.defaultLayoutDesign["data"]),
+      );
+      if (layoutModel.data != null) {
+        await dbHelper.checkDataExist();
+
+        print("dbHelper.isDataExist ${dbHelper.isDataExist}");
+        // if (isDataExist == false) {
+        //   await dbHelper.insert(layoutModel);
+        // }
+        if (dbHelper.isDataExist) {
+          await dbHelper.updateTable(layoutModel);
+        } else {
+          await dbHelper.insert(layoutModel);
+        }
+      }
     }
+
     runApp(const MyApp());
   }
 }

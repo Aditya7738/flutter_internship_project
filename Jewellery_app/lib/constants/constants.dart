@@ -24,4 +24,63 @@ class Constants {
 
   static const String consumerKeySignup = "";
   static const String consumerSecretSignup = "";
+
+  static const Map<String, dynamic> defaultLayoutDesign = {
+    "success": true,
+    "data": {
+        "theme": {
+            "colors": {
+                "primary": "#CC868A",
+                "secondary": "#33FF57",
+                "background": "#FFFFFF"
+            },
+            "fontFamily": "Roboto"
+        },
+        "pages": [
+            {
+                "name": "HomePage",
+                "layout": "column",
+                "children": [
+                    {
+                        "type": "image_slider",
+                        "layout": {
+                            "item_per_row": 1
+                        }
+                    },
+                    {
+                        "type": "header",
+                        "text": "Tiarabytj",
+                        "style": {
+                            "color": "#333333",
+                            "fontSize": 24
+                        },
+                        "layout": {}
+                    },
+                    {
+                        "type": "categories",
+                        "layout": {
+                            "direction": "horizontal",
+                            "item_per_row": 1
+                        }
+                    },
+                    {
+                        "type": "collections",
+                        "meta": {
+                            "label": "Diamond Collection",
+                            "id": 12
+                        },
+                        "layout": {
+                            "direction": "horizontal",
+                            "item_per_row": 1
+                        }
+                    }
+                ]
+            }
+        ],
+        "placeholders": {
+            "product_image": "https://i0.wp.com/mikeyarce.com/wp-content/uploads/2021/09/woocommerce-placeholder.png"
+        }
+    }
+};
+
 }

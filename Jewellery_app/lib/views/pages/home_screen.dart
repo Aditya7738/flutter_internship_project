@@ -100,7 +100,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }
 
     // Fetch more data (e.g., using ApiService)
-    await ApiService.showNextPageOfCategories(context);
+    await ApiService.showNextPageOfCategories();
 
     if (mounted) {
       setState(() {
@@ -136,7 +136,7 @@ class _HomeScreenState extends State<HomeScreen> {
           isLoading = true;
         });
       }
-      await ApiService.fetchCategories(1, context);
+      await ApiService.fetchCategories(1);
 
       if (mounted) {
         setState(() {

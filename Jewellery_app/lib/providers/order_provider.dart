@@ -63,15 +63,25 @@ class OrderProvider with ChangeNotifier {
   }
 
   void addToMetaData(List<Map<String, dynamic>> paymentData) {
-   // WidgetsBinding.instance.addPostFrameCallback((_) {
-      _metaData.addAll(paymentData);
-      notifyListeners();
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    _metaData.addAll(paymentData);
+    notifyListeners();
     //});
   }
 
   void setIsOrderCreating(bool isOrderCreating) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _isOrderCreating = isOrderCreating;
+      notifyListeners();
+    });
+  }
+
+  bool _isOrderCancelling = false;
+  bool get isOrderCancelling => _isOrderCancelling;
+
+  void setIsOrderCancelling(bool isOrderCancelling) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _isOrderCancelling = isOrderCancelling;
       notifyListeners();
     });
   }

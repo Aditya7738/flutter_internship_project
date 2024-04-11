@@ -68,7 +68,7 @@ class _HomeScreen2State extends State<HomeScreen2> {
 
     // Fetch more data (e.g., using ApiService)
     ApiService.listOfCategory.clear();
-    await ApiService.showNextPageOfCategories(context);
+    await ApiService.showNextPageOfCategories();
 
     //categories = ApiService.listOfCategory;
     if (mounted) {
@@ -79,7 +79,7 @@ class _HomeScreen2State extends State<HomeScreen2> {
   }
 
   Future<void> getCategories() async {
-    await ApiService.fetchCategories(1, context);
+    await ApiService.fetchCategories(1);
 
     //categories = ApiService.listOfCategory;
 

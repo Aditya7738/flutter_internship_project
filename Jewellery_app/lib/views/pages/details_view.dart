@@ -128,9 +128,9 @@ class _DetailsViewState extends State<DetailsView> {
             productsModel: ApiService.listOfProductsCategoryWise[i]));
       }
     } else {
-      for (int i = 0; i < CacheMemory.listOfProducts.length; i++) {
+      for (int i = 0; i < ApiService.listOfProductsCategoryWise.length; i++) {
         listOfPageView.add(
-            ProductDetailsPage(productsModel: CacheMemory.listOfProducts[i]));
+            ProductDetailsPage(productsModel: ApiService.listOfProductsCategoryWise[i]));
       }
     }
 

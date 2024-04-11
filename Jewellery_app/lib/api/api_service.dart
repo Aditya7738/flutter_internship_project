@@ -36,16 +36,16 @@ class ApiService {
           MaterialPageRoute(
             builder: (context) => NoInternetConnectionPage(),
           ));
-     // return true;
+      // return true;
     } else {
       return true;
     }
   }
 
-  static Future<bool> showNextPageOfCategories(BuildContext context) async {
+  static Future<bool> showNextPageOfCategories() async {
     categoriesPageNo++;
     if (categoriesPageNo <= responseofCategoriesPages) {
-      await fetchCategories(categoriesPageNo, context);
+      await fetchCategories(categoriesPageNo);
       return true;
     }
 
@@ -55,8 +55,7 @@ class ApiService {
   static String categoryUri =
       "${Constants.baseUrl}/wp-json/wc/v3/products/categories?consumer_key=${Constants.consumerKey}&consumer_secret=${Constants.consumerSecret}&page=$pageNo&per_page=100";
 
-  static Future<List<CategoriesModel>> fetchCategories(
-      int pageNo, BuildContext context) async {
+  static Future<List<CategoriesModel>> fetchCategories(int pageNo) async {
     //${Constants.baseUrl}/wp-json/wc/v3/products/categories?consumer_key=ck_33882e17eeaff38b20ac7c781156024bc2d6af4a&consumer_secret=cs_df67b056d05606c05275b571ab39fa508fcdd7b9
     //checkInternetConnection(context);
 
@@ -88,6 +87,7 @@ class ApiService {
             links: json[i]['links']));
       }
 
+      print("listOfCategory length ${listOfCategory.length}");
       return listOfCategory;
     } else {
       return [];
@@ -102,6 +102,10 @@ class ApiService {
   static int responseofCategoryPages = 1;
   static Future<bool> showNextPagesCategoryProduct() async {
     categoryPageNo++;
+    print(
+        "categoryPageNo <= responseofCategoryPages ${categoryPageNo <= responseofCategoryPages}");
+
+    print("NextPage categoryId $categoryId");
     if (categoryPageNo <= responseofCategoryPages) {
       await fetchProductsCategoryWise(id: categoryId, pageNo: categoryPageNo);
       return true;
@@ -115,6 +119,8 @@ class ApiService {
   static Future<List<ProductsModel>> fetchProductsCategoryWise(
       {required int id, required int pageNo}) async {
     print("categoryId $id");
+
+    categoryId = id;
     //checkInternetConnection(context);
     //${Constants.baseUrl}/wp-json/wc/v3/products?consumer_key=ck_33882e17eeaff38b20ac7c781156024bc2d6af4a&consumer_secret=cs_df67b056d05606c05275b571ab39fa508fcdd7b9&category=230
     productsUri =
@@ -124,6 +130,9 @@ class ApiService {
 
     responseofCategoryPages = int.parse(response.headers['x-wp-totalpages']!);
 
+    print("category responseofCategoryPages $responseofCategoryPages");
+
+    print("category response.statusCode ${response.statusCode}");
     if (response.statusCode == 200) {
       print(response);
 
@@ -1291,8 +1300,7 @@ class ApiService {
   //   }
   // }
 
-  static Future<http.StreamedResponse?> getCustomerData(
-      String email) async {
+  static Future<http.StreamedResponse?> getCustomerData(String email) async {
     // checkInternetConnection(context);
     final endpoint =
         "${Constants.baseUrl}/wp-json/wc/v3/customers?consumer_key=${Constants.consumerKey}&consumer_secret=${Constants.consumerSecret}&search=$email";
@@ -1512,7 +1520,7 @@ class ApiService {
     print("CUSTOMERID $customerId");
 
     String endpoint =
-        "${Constants.baseUrl}/wp-json/wc/v3/orders?consumer_key=${Constants.consumerKey}&consumer_secret=${Constants.consumerSecret}&customer=$customerId&page=$pageNo&per_page=10";
+        "${Constants.baseUrl}/wp-json/wc/v3/orders?consumer_key=${Constants.consumerKey}&consumer_secret=${Constants.consumerSecret}&customer=$customerId&page=$pageNo&per_page=100";
 
     Uri uri = Uri.parse(endpoint);
 
@@ -1612,6 +1620,123 @@ class ApiService {
       return listOfOrders;
     } else {
       return [];
+    }
+  }
+
+  static Future<void> cancelOrder(int orderId) async {
+    String endpoint =
+        "${Constants.baseUrl}/wp-json/wc/v3/orders/$orderId?consumer_key=${Constants.consumerKey}&consumer_secret=${Constants.consumerSecret}";
+    Uri uri = Uri.parse(endpoint);
+
+    String basicAuth = "Basic " +
+        base64Encode(
+            utf8.encode('${Constants.userName}:${Constants.password}'));
+
+    final headers = {
+      'Content-Type': 'application/json',
+      'Authorization': basicAuth
+    };
+
+    final body = json.encode({"status": "cancelled"});
+
+    final response = await http.put(uri, headers: headers, body: body);
+
+    print("cancel response.statusCode ${response.statusCode}");
+
+    if (response.statusCode == 200) {
+      final body = response.body;
+
+      final json = jsonDecode(body);
+
+      print("cancel json $json");
+
+      // for (int i = 0; i < json.length; i++) {
+      //   listOfOrders.add(CustomersOrder.OrderModel(
+      //     id: json[i]["id"],
+      //     parentId: json[i]["parent_id"],
+      //     status: json[i]["status"],
+      //     currency: json[i]["currency"],
+      //     version: json[i]["version"],
+      //     pricesIncludeTax: json[i]["prices_include_tax"],
+      //     dateCreated: DateTime.tryParse(json[i]["date_created"] ?? ""),
+      //     dateModified: DateTime.tryParse(json[i]["date_modified"] ?? ""),
+      //     discountTotal: json[i]["discount_total"],
+      //     discountTax: json[i]["discount_tax"],
+      //     shippingTotal: json[i]["shipping_total"],
+      //     shippingTax: json[i]["shipping_tax"],
+      //     cartTax: json[i]["cart_tax"],
+      //     total: json[i]["total"],
+      //     totalTax: json[i]["total_tax"],
+      //     customerId: json[i]["customer_id"],
+      //     orderKey: json[i]["order_key"],
+      //     billing: json[i]["billing"] == null
+      //         ? null
+      //         : CustomersOrder.Ing.fromJson(json[i]["billing"]),
+      //     shipping: json[i]["shipping"] == null
+      //         ? null
+      //         : CustomersOrder.Ing.fromJson(json[i]["shipping"]),
+      //     paymentMethod: json[i]["payment_method"],
+      //     paymentMethodTitle: json[i]["payment_method_title"],
+      //     transactionId: json[i]["transaction_id"],
+      //     customerIpAddress: json[i]["customer_ip_address"],
+      //     customerUserAgent: json[i]["customer_user_agent"],
+      //     createdVia: json[i]["created_via"],
+      //     customerNote: json[i]["customer_note"],
+      //     dateCompleted: DateTime.tryParse(json[i]["date_completed"] ?? ""),
+      //     datePaid: DateTime.tryParse(json[i]["date_paid"] ?? ""),
+      //     cartHash: json[i]["cart_hash"],
+      //     number: json[i]["number"],
+      //     metaData: json[i]["meta_data"] == null
+      //         ? []
+      //         : List<CustomersOrder.OrderModelMetaDatum>.from(json[i]
+      //                 ["meta_data"]!
+      //             .map((x) => CustomersOrder.OrderModelMetaDatum.fromJson(x))),
+      //     lineItems: json[i]["line_items"] == null
+      //         ? []
+      //         : List<CustomersOrder.LineItem>.from(json[i]["line_items"]!
+      //             .map((x) => CustomersOrder.LineItem.fromJson(x))),
+      //     taxLines: json[i]["tax_lines"] == null
+      //         ? []
+      //         : List<CustomersOrder.TaxLine>.from(json[i]["tax_lines"]!
+      //             .map((x) => CustomersOrder.TaxLine.fromJson(x))),
+      //     shippingLines: json[i]["shipping_lines"] == null
+      //         ? []
+      //         : List<CustomersOrder.ShippingLine>.from(json[i]
+      //                 ["shipping_lines"]!
+      //             .map((x) => CustomersOrder.ShippingLine.fromJson(x))),
+      //     feeLines: json[i]["fee_lines"] == null
+      //         ? []
+      //         : List<dynamic>.from(json[i]["fee_lines"]!.map((x) => x)),
+      //     couponLines: json[i]["coupon_lines"] == null
+      //         ? []
+      //         : List<dynamic>.from(json[i]["coupon_lines"]!.map((x) => x)),
+      //     refunds: json[i]["refunds"] == null
+      //         ? []
+      //         : List<CustomersOrder.Refund>.from(json[i]["refunds"]!
+      //             .map((x) => CustomersOrder.Refund.fromJson(x))),
+      //     paymentUrl: json[i]["payment_url"],
+      //     isEditable: json[i]["is_editable"],
+      //     needsPayment: json[i]["needs_payment"],
+      //     needsProcessing: json[i]["needs_processing"],
+      //     dateCreatedGmt: DateTime.tryParse(json[i]["date_created_gmt"] ?? ""),
+      //     dateModifiedGmt:
+      //         DateTime.tryParse(json[i]["date_modified_gmt"] ?? ""),
+      //     dateCompletedGmt:
+      //         DateTime.tryParse(json[i]["date_completed_gmt"] ?? ""),
+      //     datePaidGmt: DateTime.tryParse(json[i]["date_paid_gmt"] ?? ""),
+      //     currencySymbol: json[i]["currency_symbol"],
+      //     links: json[i]["_links"] == null
+      //         ? null
+      //         : CustomersOrder.Links.fromJson(json[i]["_links"]),
+      //   ));
+      // }
+
+      // print("LENGTH OF ORDER: ${listOfOrders.length}");
+
+      // return listOfOrders;
+    } else {
+      // return [];
+      print("cancel response.reasonPhrase ${response.reasonPhrase}");
     }
   }
 
@@ -1854,6 +1979,8 @@ class ApiService {
     Uri uri = Uri.parse(url);
 
     final response = await http.get(uri);
+
+    print("REVIEW response.statusCode ${response.statusCode}");
 
     if (response.statusCode == 200) {
       final json = jsonDecode(response.body);
@@ -2329,10 +2456,12 @@ class ApiService {
     }
   }
 
+  static int homeLayoutStatusCode = 0;
+
   static Future<LayoutModel?> getHomeLayout() async {
     //final endpoint = "https://websockets.tanika.tech/frontend/mobile";
 
-     final endpoint = "http://192.168.1.6:8082/frontend/mobile";
+    final endpoint = "http://192.168.1.7:8082/frontend/mobile";
     String basicAuth = "Basic " +
         base64Encode(
             utf8.encode('${Constants.userName}:${Constants.password}'));
@@ -2346,22 +2475,28 @@ class ApiService {
 
     final uri = Uri.parse(endpoint);
 
-    final response = await http.post(uri,
-        headers: headers,
-        body: json.encode({"website": "${Constants.baseUrl}"}));
+    try {
+      final response = await http.post(uri,
+          headers: headers,
+          body: json.encode({"website": "${Constants.baseUrl}"}));
+      print("layout body ${response.body}");
 
-    print("layout body ${response.body}");
+      print("layout statusCode ${response.statusCode}");
 
-    print("layout statusCode ${response.statusCode}");
+      homeLayoutStatusCode = response.statusCode;
 
-    if (response.statusCode == 200) {
-      final json = jsonDecode(response.body);
+      if (response.statusCode == 200) {
+        final json = jsonDecode(response.body);
 
-      return LayoutModel(
-        success: json["success"],
-        data: json["data"] == null ? null : Data.fromJson(json["data"]),
-      );
-    } else {
+        return LayoutModel(
+          success: json["success"],
+          data: json["data"] == null ? null : Data.fromJson(json["data"]),
+        );
+      } else {
+        return null;
+      }
+    } catch (e) {
+      print("client exception layout design ${e.toString()}");
       return null;
     }
   }

@@ -28,10 +28,10 @@ class CategoryProvider with ChangeNotifier {
   bool get isCategoryListEmpty => _isCategoryListEmpty;
 
   void setIsCategoryListEmpty(bool isCategoryListEmpty) {
-  //  WidgetsBinding.instance.addPostFrameCallback((_) {
-      _isCategoryListEmpty = isCategoryListEmpty;
-      notifyListeners();
-  //  });
+     WidgetsBinding.instance.addPostFrameCallback((_) {
+    _isCategoryListEmpty = isCategoryListEmpty;
+    notifyListeners();
+    });
   }
 
   void setIsCategoryProductFetching(bool isCategoryProductFetching) {
@@ -45,8 +45,33 @@ class CategoryProvider with ChangeNotifier {
   bool? get fileInfoFetching => _fileInfoFetching;
 
   void setFileInfoFetching(bool? fileInfoFetching) {
+    // if (fileInfoFetching == null) {
+    //   _fileInfoFetching = fileInfoFetching;
+    //   notifyListeners();
+    // } else {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _fileInfoFetching = fileInfoFetching;
+      notifyListeners();
+    });
+    //}
+  }
+
+  bool _isMoreProductLoading = false;
+  bool get isMoreProductLoading => _isMoreProductLoading;
+
+  void setIsMoreProductLoading(bool isMoreProductLoading) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _isMoreProductLoading = isMoreProductLoading;
+      notifyListeners();
+    });
+  }
+
+  bool _isThereMoreCategoryProducts = false;
+  bool get isThereMoreCategoryProducts => _isThereMoreCategoryProducts;
+
+  void setIsThereMoreCategoryProducts(bool isThereMoreCategoryProducts) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _isThereMoreCategoryProducts = isThereMoreCategoryProducts;
       notifyListeners();
     });
   }

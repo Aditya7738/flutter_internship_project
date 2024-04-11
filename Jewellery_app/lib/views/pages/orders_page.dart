@@ -1,4 +1,5 @@
 import 'package:Tiara_by_TJ/providers/layoutdesign_provider.dart';
+import 'package:Tiara_by_TJ/views/widgets/cancelled_order_tab.dart';
 import 'package:flutter/material.dart';
 import 'package:Tiara_by_TJ/views/widgets/empty_list_widget.dart';
 import 'package:Tiara_by_TJ/views/widgets/my_order_tab.dart';
@@ -42,12 +43,12 @@ class OrderPage extends StatelessWidget {
           body: TabBarView(children: [
             //EmptyListWidget(imagePath: "assets/images/delivery_service.png", message: "Oops! You haven't placed an order yet!"),
             MyOrderTab(),
-
-            EmptyListWidget(
-              imagePath: "assets/images/cancel.png",
-              message: "You don't have any cancelled order.",
-              forCancelledOrder: true,
-            ),
+            CancelledOrderTab()
+            // EmptyListWidget(
+            //   imagePath: "assets/images/cancel.png",
+            //   message: "You don't have any cancelled order.",
+            //   forCancelledOrder: true,
+            // ),
           ])),
     );
   }

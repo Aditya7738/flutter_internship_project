@@ -54,6 +54,14 @@ class _CategoryListState extends State<CategoryList> {
 
       await CacheMemory.getCategoryFile(snapshot, nonEmptyCategoryIds);
       categoryProvider.setFileInfoFetching(null);
+
+      if (categoryProvider.fileInfoFetching == null) {
+        if (CacheMemory.listOfCategory.isNotEmpty) {
+          if (mounted) {
+            setState(() {});
+          }
+        }
+      }
     }
   }
 
