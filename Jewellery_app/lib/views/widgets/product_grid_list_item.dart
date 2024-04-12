@@ -1,5 +1,7 @@
+import 'package:Tiara_by_TJ/providers/layoutdesign_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:Tiara_by_TJ/model/products_of_category.dart';
+import 'package:provider/provider.dart';
 
 class ProductGridListItem extends StatefulWidget {
   final ProductOfCategoryModel productOfCategoryModel;
@@ -25,7 +27,8 @@ class _ProductGridListItemState extends State<ProductGridListItem> {
   @override
   Widget build(BuildContext context) {
     var icon = Icons.favorite_border_outlined;
-
+    LayoutDesignProvider layoutDesignProvider =
+        Provider.of<LayoutDesignProvider>(context);
     return Container(
         alignment: Alignment.topLeft,
         child: Column(
@@ -33,8 +36,8 @@ class _ProductGridListItemState extends State<ProductGridListItem> {
             Stack(
               children: [
                 Image.network(productOfCategoryModel.images.isEmpty
-                    ? defaultImageUrl
-                    : productOfCategoryModel.images[0].src ?? defaultImageUrl),
+                    ? layoutDesignProvider.placeHolder
+                    : productOfCategoryModel.images[0].src ?? layoutDesignProvider.placeHolder),
                 Container(
                   alignment: Alignment.topRight,
                   margin: const EdgeInsets.only(right: 5.0, top: 5.0),

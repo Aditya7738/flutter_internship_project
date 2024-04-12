@@ -34,49 +34,54 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final connectivityResult = await (Connectivity().checkConnectivity());
   if (connectivityResult == ConnectivityResult.none) {
+    
     runApp(NoInternetConnection());
   } else {
-    LayoutModel.LayoutModel? layoutModel = await ApiService.getHomeLayout();
-
-    DBHelper dbHelper = DBHelper();
-    dbHelper.initDatabase();
-    if (layoutModel != null) {
-      if (layoutModel.data != null) {
-        await dbHelper.checkDataExist();
-
-        print("dbHelper.isDataExist ${dbHelper.isDataExist}");
-        // if (isDataExist == false) {
-        //   await dbHelper.insert(layoutModel);
-        // }
-        if (dbHelper.isDataExist) {
-          await dbHelper.updateTable(layoutModel);
-        } else {
-          await dbHelper.insert(layoutModel);
-        }
-      }
-    } else {
-      LayoutModel.LayoutModel layoutModel = LayoutModel.LayoutModel(
-        success: Constants.defaultLayoutDesign["success"],
-        data: Constants.defaultLayoutDesign["data"] == null
-            ? null
-            : LayoutModel.Data.fromJson(Constants.defaultLayoutDesign["data"]),
-      );
-      if (layoutModel.data != null) {
-        await dbHelper.checkDataExist();
-
-        print("dbHelper.isDataExist ${dbHelper.isDataExist}");
-        // if (isDataExist == false) {
-        //   await dbHelper.insert(layoutModel);
-        // }
-        if (dbHelper.isDataExist) {
-          await dbHelper.updateTable(layoutModel);
-        } else {
-          await dbHelper.insert(layoutModel);
-        }
-      }
-    }
+    getLayoutDesign();
 
     runApp(const MyApp());
+  }
+}
+
+getLayoutDesign() async {
+  LayoutModel.LayoutModel? layoutModel = await ApiService.getHomeLayout();
+
+  DBHelper dbHelper = DBHelper();
+  dbHelper.initDatabase();
+  if (layoutModel != null) {
+    if (layoutModel.data != null) {
+      await dbHelper.checkDataExist();
+
+      print("dbHelper.isDataExist ${dbHelper.isDataExist}");
+      // if (isDataExist == false) {
+      //   await dbHelper.insert(layoutModel);
+      // }
+      if (dbHelper.isDataExist) {
+        await dbHelper.updateTable(layoutModel);
+      } else {
+        await dbHelper.insert(layoutModel);
+      }
+    }
+  } else {
+    LayoutModel.LayoutModel layoutModel = LayoutModel.LayoutModel(
+      success: Constants.defaultLayoutDesign["success"],
+      data: Constants.defaultLayoutDesign["data"] == null
+          ? null
+          : LayoutModel.Data.fromJson(Constants.defaultLayoutDesign["data"]),
+    );
+    if (layoutModel.data != null) {
+      await dbHelper.checkDataExist();
+
+      print("dbHelper.isDataExist ${dbHelper.isDataExist}");
+      // if (isDataExist == false) {
+      //   await dbHelper.insert(layoutModel);
+      // }
+      if (dbHelper.isDataExist) {
+        await dbHelper.updateTable(layoutModel);
+      } else {
+        await dbHelper.insert(layoutModel);
+      }
+    }
   }
 }
 

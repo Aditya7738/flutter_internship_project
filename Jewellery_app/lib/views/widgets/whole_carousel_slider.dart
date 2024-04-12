@@ -18,11 +18,6 @@ class _WholeCarouselSliderState extends State<WholeCarouselSlider> {
   CarouselController carouselController = CarouselController();
   late List<ProductImage> listOfProductImage;
 
-  List<String> urlList = [
-    "assets/images/image_placeholder.jpg",
-    "assets/images/image_placeholder.jpg",
-  ];
-
   @override
   void initState() {
     // TODO: implement initState
@@ -35,6 +30,7 @@ class _WholeCarouselSliderState extends State<WholeCarouselSlider> {
   Widget build(BuildContext context) {
     LayoutDesignProvider layoutDesignProvider =
         Provider.of(context, listen: false);
+    List<String> urlList = [layoutDesignProvider.placeHolder];
     return Column(children: [
       Stack(
         alignment: Alignment.center,
@@ -44,8 +40,19 @@ class _WholeCarouselSliderState extends State<WholeCarouselSlider> {
             items: listOfProductImage.isEmpty
                 ? urlList
                     .map(
-                      (image) => Image.asset(
-                        image,
+                      (image) => Image.network(
+                        layoutDesignProvider.placeHolder,
+                        fit: BoxFit.fill,
+                        loadingBuilder: (context, child, loadingProgress) {
+                          if (loadingProgress == null) {
+                            return child;
+                          } else {
+                            return CircularProgressIndicator(
+                              color: Color(int.parse(
+                                  "0xff${layoutDesignProvider.primary.substring(1)}")),
+                            );
+                          }
+                        },
                       ),
                     )
                     .toList()

@@ -275,8 +275,7 @@ class _ProductItemState extends State<ProductItem> {
                                                     ? layoutDesignProvider.placeHolder
                                                     : productsModel
                                                             .images[0].src ??
-                                                        Constants
-                                                            .defaultImageUrl,
+                                                        layoutDesignProvider.placeHolder,
                                                 sku: productsModel.sku,
                                                 imageId: productsModel
                                                         .images.isNotEmpty

@@ -20,6 +20,7 @@ import 'package:Tiara_by_TJ/views/widgets/custom_searchbar.dart';
 import 'package:Tiara_by_TJ/views/widgets/search_products_category.dart';
 import 'package:flutter/material.dart';
 import 'package:Tiara_by_TJ/api/api_service.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:http/http.dart' as http;
 import 'package:Tiara_by_TJ/views/widgets/product_item.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
@@ -431,66 +432,60 @@ class _ProductPageState extends State<ProductPage> {
     return Scaffold(
         appBar: AppBar(
             toolbarHeight: widget.forCollections
-                ? kToolbarHeight
-                : (kToolbarHeight + kToolbarHeight) - 40,
+                ? kToolbarHeight + 10
+                : (kToolbarHeight + kToolbarHeight) - 30,
             title: Text("Products"),
             actions: <Widget>[
-              Container(
-                width: (deviceWidth / 16) + 4,
-                child: badges.Badge(
-                  badgeStyle: badges.BadgeStyle(
-                      badgeColor:
-                          //    Colors.purple
-                          Color(int.parse(
-                              "0xff${layoutDesignProvider.primary.substring(1)}"))),
-                  badgeContent: Consumer<WishlistProvider>(
-                      builder: (context, value, child) {
-                    print("LENGTH OF FAV: ${value.favProductIds}");
-                    return Text(
-                      value.favProductIds.length.toString(),
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: (deviceWidth / 31) - 1),
-                    );
-                  }),
-                  child: IconButton(
-                    onPressed: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => const WishListPage()));
-                    },
-                    icon: const Icon(Icons.favorite_sharp, color: Colors.black),
-                  ),
+              badges.Badge(
+                position: badges.BadgePosition.topEnd(
+                    end: -10, top: deviceWidth > 600 ? -19 : -11),
+                badgeStyle: badges.BadgeStyle(
+                    badgeColor: Color(int.parse(
+                        "0xff${layoutDesignProvider.primary.substring(1)}"))),
+                badgeContent: Consumer<WishlistProvider>(
+                    builder: (context, value, child) {
+                  print("LENGTH OF FAV: ${value.favProductIds}");
+                  return Text(
+                    value.favProductIds.length.toString(),
+                    style: TextStyle(
+                        color: Colors.white, fontSize: ((deviceWidth / 31) - 1).sp),
+                  );
+                }),
+                child: InkWell(
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const WishListPage()));
+                  },
+                  child: const Icon(Icons.favorite_sharp, color: Colors.black),
                 ),
               ),
               const SizedBox(
                 width: 24,
               ),
-              Container(
-                width: (deviceWidth / 16) + 4,
-                child: badges.Badge(
-                  badgeStyle: badges.BadgeStyle(
-                      badgeColor: Color(int.parse(
-                          "0xff${layoutDesignProvider.primary.substring(1)}"))),
-                  badgeContent: Consumer<CartProvider>(
-                      builder: (context, value, child) => Text(
-                            value.cart.length.toString(),
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: (deviceWidth / 31) - 1),
-                          )),
-                  child: IconButton(
-                    onPressed: () {
-                      print("CART CLICKED");
-                      Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) => CartPage()));
-                    },
-                    icon: const Icon(Icons.shopping_cart),
-                    color: Colors.black,
-                  ),
+              badges.Badge(
+                position: badges.BadgePosition.topEnd(
+                    end: -10, top: deviceWidth > 600 ? -19.5 : -13),
+                badgeStyle: badges.BadgeStyle(
+                    badgeColor: Color(int.parse(
+                        "0xff${layoutDesignProvider.primary.substring(1)}"))),
+                badgeContent: Consumer<CartProvider>(
+                    builder: (context, value, child) => Text(
+                          value.cart.length.toString(),
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: ((deviceWidth / 31) - 1).sp),
+                        )),
+                child: InkWell(
+                  onTap: () {
+                    print("CART CLICKED");
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => CartPage()));
+                  },
+                  child: const Icon(Icons.shopping_cart),
                 ),
               ),
               const SizedBox(
-                width: 34,
+                width: 24,
               ),
             ],
             bottom: widget.forCollections
@@ -919,9 +914,8 @@ class _ProductPageState extends State<ProductPage> {
                                                     horizontal: 10.0),
                                                 child: Center(
                                                     child: CircularProgressIndicator(
-                                                        color:
-                                                           Color(int.parse(
-                                            "0xff${layoutDesignProvider.primary.substring(1)}")))),
+                                                        color: Color(int.parse(
+                                                            "0xff${layoutDesignProvider.primary.substring(1)}")))),
                                               );
                                             }
                                             // else if (ApiService

@@ -515,14 +515,14 @@ class _SearchPageState extends State<SearchPage> {
                                                                 productsModel
                                                                         .images
                                                                         .isEmpty
-                                                                    ? Constants
-                                                                        .defaultImageUrl
+                                                                    ? layoutDesignProvider
+                                                                        .placeHolder
                                                                     : productsModel
                                                                             .images[
                                                                                 0]
                                                                             .src ??
-                                                                        Constants
-                                                                            .defaultImageUrl,
+                                                                        layoutDesignProvider
+                                                                            .placeHolder,
                                                                 loadingBuilder:
                                                                     (context,
                                                                         child,

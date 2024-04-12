@@ -67,7 +67,7 @@ class MyProfilePage extends StatelessWidget {
             style: TextStyle(
                 fontWeight: FontWeight.normal,
                 // fontSize: (deviceWidth / 33) + 1.5,
-                fontSize: deviceWidth > 600 ? deviceWidth / 33 :  16.sp),
+                fontSize: deviceWidth > 600 ? deviceWidth / 33 : 16.sp),
           ),
           actions: [
             GestureDetector(
@@ -171,26 +171,26 @@ class MyProfilePage extends StatelessWidget {
             const SizedBox(
               width: 15,
             ),
-            Container(
-              width: (deviceWidth / 16) + 4,
-              child: badges.Badge(
-                badgeStyle:  badges.BadgeStyle(badgeColor:Color(int.parse("0xff${layoutDesignProvider.primary.substring(1)}"))),
-                badgeContent: Consumer<CartProvider>(
-                    builder: (context, value, child) => Text(
-                          value.cart.length.toString(),
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: (deviceWidth / 31) - 1),
-                        )),
-                child: IconButton(
-                  onPressed: () {
-                    print("CART CLICKED");
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => CartPage()));
-                  },
-                  icon: const Icon(Icons.shopping_cart),
-                  color: Colors.black,
-                ),
+            badges.Badge(
+              position: badges.BadgePosition.topEnd(
+                  end: -10, top: deviceWidth > 600 ? -19.5 : -13),
+              badgeStyle: badges.BadgeStyle(
+                  badgeColor: Color(int.parse(
+                      "0xff${layoutDesignProvider.primary.substring(1)}"))),
+              badgeContent: Consumer<CartProvider>(
+                  builder: (context, value, child) => Text(
+                        value.cart.length.toString(),
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: (deviceWidth / 31) - 1),
+                      )),
+              child: InkWell(
+                onTap: () {
+                  print("CART CLICKED");
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => CartPage()));
+                },
+                child: const Icon(Icons.shopping_cart),
               ),
             ),
             const SizedBox(

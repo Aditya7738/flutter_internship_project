@@ -518,7 +518,9 @@ class _DigiGoldPageState extends State<DigiGoldPage> {
                                     (kToolbarHeight + 110),
                                 child: Center(
                                     child: CircularProgressIndicator(
-                                  color: Color(int.parse(
+                                  color: 
+                                  //Colors.red
+                                   Color(int.parse(
                               "0xff${layoutDesignProvider.primary.substring(1)}")),
                                 )),
                               );
@@ -1199,7 +1201,7 @@ class _DigiGoldPageState extends State<DigiGoldPage> {
                                         child: Center(
                                           child: CircularProgressIndicator(
                                             color:
-                                                // Colors.red,
+                                              //  Colors.yellow,
                                                 Color(int.parse(
                               "0xff${layoutDesignProvider.primary.substring(1)}")),
                                           ),
@@ -1222,13 +1224,33 @@ class _DigiGoldPageState extends State<DigiGoldPage> {
                                                 200,
                                             child: Center(
                                               child: CircularProgressIndicator(
-                                                color: Color(int.parse(
+                                                color:
+                                                ///Colors.blue
+                                                Color(int.parse(
                               "0xff${layoutDesignProvider.primary.substring(1)}")),
                                                 // Colors.yellow,
                                               ),
                                             ));
                                       } else {
-                                        body = SizedBox();
+                                        body = SizedBox(
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width,
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height -
+                                                200,
+                                            child: Center(
+                                              child: CircularProgressIndicator(
+                                                color: 
+                                                //Colors.cyan
+                                                Color(int.parse(
+                              "0xff${layoutDesignProvider.primary.substring(1)}")),
+                                                // Colors.yellow,
+                                              ),
+                                            ));
+                                        
+                                        //SizedBox();
                                       }
                                     } else {
                                       body = Column(
@@ -1281,18 +1303,18 @@ class _DigiGoldPageState extends State<DigiGoldPage> {
                                   print(
                                       "snapshot error ${snapshot.error.toString()}");
                                   body = SizedBox();
-                                } else if (loading
-                                    // snapshot.connectionState == ConnectionState.waiting
+                                } else if (
+                                  //loading
+                                     snapshot.connectionState == ConnectionState.waiting
                                     ) {
                                   body = SizedBox(
                                       width: MediaQuery.of(context).size.width,
-                                      height:
-                                          MediaQuery.of(context).size.height /
-                                              2,
+                                      height: MediaQuery.of(context).size.height -
+                                    (kToolbarHeight + 110),
                                       child: Center(
                                         child: CircularProgressIndicator(
                                           color:
-                                              // Colors.red,
+                                           //   Colors.green,
                                               Color(int.parse(
                               "0xff${layoutDesignProvider.primary.substring(1)}")),
                                         ),
@@ -1308,17 +1330,34 @@ class _DigiGoldPageState extends State<DigiGoldPage> {
                                               MediaQuery.of(context).size.width,
                                           height: MediaQuery.of(context)
                                                   .size
-                                                  .height -
-                                              200,
+                                                  .height -(kToolbarHeight + 110),
                                           child: Center(
                                             child: CircularProgressIndicator(
-                                              color: Color(int.parse(
+                                              color:
+                                             // Colors.grey
+                                               Color(int.parse(
                               "0xff${layoutDesignProvider.primary.substring(1)}")),
                                               // Colors.yellow,
                                             ),
                                           ));
                                     } else {
-                                      body = SizedBox();
+                                      body = SizedBox(
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height -(kToolbarHeight + 110),
+                                          child: Center(
+                                            child: CircularProgressIndicator(
+                                              color:
+                                       //       Colors.pink
+                                               Color(int.parse(
+                              "0xff${layoutDesignProvider.primary.substring(1)}")),
+                                             // Colors.yellow,
+                                            ),
+                                          ));
+                                      
+                                      //SizedBox();
                                     }
                                   } else {
                                     body = Column(
@@ -1340,7 +1379,9 @@ class _DigiGoldPageState extends State<DigiGoldPage> {
                               height: MediaQuery.of(context).size.height / 6,
                               child: Center(
                                 child: CircularProgressIndicator(
-                                  color: Color(int.parse(
+                                  color: 
+                                  //Colors.black
+                                  Color(int.parse(
                               "0xff${layoutDesignProvider.primary.substring(1)}")),
                                 ),
                               ),

@@ -63,7 +63,7 @@ class _FetchHomeScreenState extends State<FetchHomeScreen> {
     // LayoutModel.LayoutModel? layoutModel = await ApiService.getHomeLayout();
 
     if (layoutModel.data != null) {
-     // LayoutModel.Theme? theme = layoutModel.data!.theme;
+      // LayoutModel.Theme? theme = layoutModel.data!.theme;
       final pages = layoutModel.data!.pages;
       LayoutModel.Placeholders? placeholders = layoutModel.data!.placeholders;
       print("pages.runtimeType ${pages.runtimeType}");
@@ -193,7 +193,6 @@ class _FetchHomeScreenState extends State<FetchHomeScreen> {
                             ),
                             CollectionGridList(
                                 collectionId: children[i].meta!.id!),
-                          
                             Container(
                                 width: MediaQuery.of(context).size.width,
                                 alignment: Alignment.centerRight,
@@ -272,57 +271,54 @@ class _FetchHomeScreenState extends State<FetchHomeScreen> {
               ),
               backgroundColor: Colors.white,
               actions: <Widget>[
-                Container(
-                  width: (deviceWidth / 16) + 4,
-                  child: badges.Badge(
-                    badgeStyle: badges.BadgeStyle(badgeColor: primaryColor),
-                    badgeContent: Consumer<WishlistProvider>(
-                        builder: (context, value, child) {
-                      print("LENGTH OF FAV: ${value.favProductIds}");
-                      return Text(
-                        value.favProductIds.length.toString(),
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: (deviceWidth / 31) - 1),
-                      );
-                    }),
-                    child: IconButton(
-                      onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => const WishListPage()));
-                      },
-                      icon:
-                          const Icon(Icons.favorite_sharp, color: Colors.black),
-                    ),
+                badges.Badge(
+                  position: badges.BadgePosition.topEnd(
+                      end: -10, top: deviceWidth > 600 ? -19 : -11),
+                  badgeStyle: badges.BadgeStyle(badgeColor: primaryColor),
+                  badgeContent: Consumer<WishlistProvider>(
+                      builder: (context, value, child) {
+                    print("LENGTH OF FAV: ${value.favProductIds}");
+                    return Text(
+                      value.favProductIds.length.toString(),
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: (deviceWidth / 31) - 1),
+                    );
+                  }),
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const WishListPage()));
+                    },
+                    child:
+                        const Icon(Icons.favorite_sharp, color: Colors.black),
                   ),
                 ),
                 const SizedBox(
                   width: 24,
                 ),
-                Container(
-                  width: (deviceWidth / 16) + 4,
-                  child: badges.Badge(
-                    badgeStyle: badges.BadgeStyle(badgeColor: primaryColor),
-                    badgeContent: Consumer<CartProvider>(
-                        builder: (context, value, child) => Text(
-                              value.cart.length.toString(),
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: (deviceWidth / 31) - 1),
-                            )),
-                    child: IconButton(
-                      onPressed: () {
-                        print("CART CLICKED");
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => CartPage()));
-                      },
-                      icon: const Icon(Icons.shopping_cart),
-                      color: Colors.black,
-                    ),
+                badges.Badge(
+                  position: badges.BadgePosition.topEnd(
+                      end: -10, top: deviceWidth > 600 ? -19.5 : -13),
+                  badgeStyle: badges.BadgeStyle(badgeColor: primaryColor),
+                  badgeContent: Consumer<CartProvider>(
+                      builder: (context, value, child) => Text(
+                            value.cart.length.toString(),
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: (deviceWidth / 31) - 1),
+                          )),
+                  child: InkWell(
+                    onTap: () {
+                      print("CART CLICKED");
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => CartPage()));
+                    },
+                    child: const Icon(Icons.shopping_cart),
                   ),
                 ),
                 const SizedBox(
-                  width: 34,
+                  width: 24,
                 ),
               ],
               bottom: CustomSearchBar(),

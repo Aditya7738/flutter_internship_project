@@ -1,3 +1,8 @@
+import 'package:Tiara_by_TJ/api/api_service.dart';
+import 'package:Tiara_by_TJ/constants/constants.dart';
+import 'package:Tiara_by_TJ/constants/fontsizes.dart';
+import 'package:Tiara_by_TJ/helpers/db_helper.dart';
+import 'package:Tiara_by_TJ/model/layout_model.dart' as LayoutModel;
 import 'package:Tiara_by_TJ/providers/layoutdesign_provider.dart';
 import 'package:Tiara_by_TJ/views/pages/dashboard_page.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -84,7 +89,8 @@ class _NoInternetConnectionPageState extends State<NoInternetConnectionPage> {
 
                   if (connectivityResult != ConnectivityResult.none) {
                     if (Navigator.canPop(context) == false) {
-                     
+                      await getLayoutDesign();
+
                       Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -93,10 +99,23 @@ class _NoInternetConnectionPageState extends State<NoInternetConnectionPage> {
                     } else {
                       Navigator.pop(context, true);
                     }
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        padding: EdgeInsets.all(15.0),
+                        backgroundColor: Color(0xffCC868A),
+                        content: Text(
+                          "You have not connected to internet yet",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: deviceWidth > 600
+                                  ? Fontsizes.tabletButtonTextSize
+                                  : Fontsizes.buttonTextSize),
+                        )));
                   }
                 },
                 child: Container(
-                  alignment: Alignment.center,
+                    alignment: Alignment.center,
                     width: deviceWidth > 600
                         ? deviceWidth / 3.9
                         : (deviceWidth / 2.5).sp,
@@ -113,16 +132,16 @@ class _NoInternetConnectionPageState extends State<NoInternetConnectionPage> {
                       children: [
                         isInternetChecking
                             ? SizedBox(
-                              height: 20.0,
-                              width: 20.0,
-                              child: CircularProgressIndicator(
+                                height: 20.0,
+                                width: 20.0,
+                                child: CircularProgressIndicator(
                                   color:
                                       // Color(int.parse(
                                       //     "0xff${layoutDesignProvider.primary.substring(1)}")),
                                       Color(0xffCC868A),
                                   strokeWidth: 2.0,
                                 ),
-                            )
+                              )
                             : Image.asset(
                                 "assets/images/reload.png",
                                 color: Color(0xffCC868A),
@@ -152,5 +171,47 @@ class _NoInternetConnectionPageState extends State<NoInternetConnectionPage> {
         ),
       ),
     );
+  }
+
+  getLayoutDesign() async {
+    LayoutModel.LayoutModel? layoutModel = await ApiService.getHomeLayout();
+
+    DBHelper dbHelper = DBHelper();
+    dbHelper.initDatabase();
+    if (layoutModel != null) {
+      if (layoutModel.data != null) {
+        await dbHelper.checkDataExist();
+
+        print("dbHelper.isDataExist ${dbHelper.isDataExist}");
+        // if (isDataExist == false) {
+        //   await dbHelper.insert(layoutModel);
+        // }
+        if (dbHelper.isDataExist) {
+          await dbHelper.updateTable(layoutModel);
+        } else {
+          await dbHelper.insert(layoutModel);
+        }
+      }
+    } else {
+      LayoutModel.LayoutModel layoutModel = LayoutModel.LayoutModel(
+        success: Constants.defaultLayoutDesign["success"],
+        data: Constants.defaultLayoutDesign["data"] == null
+            ? null
+            : LayoutModel.Data.fromJson(Constants.defaultLayoutDesign["data"]),
+      );
+      if (layoutModel.data != null) {
+        await dbHelper.checkDataExist();
+
+        print("dbHelper.isDataExist ${dbHelper.isDataExist}");
+        // if (isDataExist == false) {
+        //   await dbHelper.insert(layoutModel);
+        // }
+        if (dbHelper.isDataExist) {
+          await dbHelper.updateTable(layoutModel);
+        } else {
+          await dbHelper.insert(layoutModel);
+        }
+      }
+    }
   }
 }

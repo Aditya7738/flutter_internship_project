@@ -378,8 +378,7 @@ class _MyOrderTabState extends State<MyOrderTab> {
                                                         ? layoutDesignProvider
                                                             .placeHolder
                                                         : order.image!.src == ""
-                                                            ? Constants
-                                                                .defaultImageUrl
+                                                            ? layoutDesignProvider.placeHolder
                                                             : order.image!.src!,
                                                     width: 100.0,
                                                     height: 100.0,

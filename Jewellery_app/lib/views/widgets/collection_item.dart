@@ -71,30 +71,44 @@ class _CollectionItemState extends State<CollectionItem> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              collectionsModel.images.isEmpty ||
-                      collectionsModel.images[0].src == null
-                  ? CachedNetworkImage(
-                      imageUrl: layoutDesignProvider.placeHolder,
-                      width: (deviceWidth / 2) + 16.0,
-                      height: deviceWidth > 600
-                          ? (deviceWidth / 2) - 111
-                          : (deviceWidth / 2) - 10,
-                      placeholder: (context, url) {
-                        return SizedBox(
-                          width: (deviceWidth / 2) + 16.0,
-                          height: deviceWidth > 600
-                              ? (deviceWidth / 2) - 111
-                              : (deviceWidth / 2) - 10,
-                          child: Center(
-                            child: CircularProgressIndicator(
-                              color: Color(int.parse(
-                                  "0xff${layoutDesignProvider.primary.substring(1)}")),
+              Builder(
+                builder: (context) {
+                  if (collectionsModel.images.isEmpty ||
+                      collectionsModel.images[0].src == null) {
+                    if (layoutDesignProvider.placeHolder.contains('http://') ||
+                        layoutDesignProvider.placeHolder.contains('https://')) {
+                      return CachedNetworkImage(
+                        imageUrl: layoutDesignProvider.placeHolder,
+                        width: (deviceWidth / 2) + 16.0,
+                        height: deviceWidth > 600
+                            ? (deviceWidth / 2) - 111
+                            : (deviceWidth / 2) - 10,
+                        placeholder: (context, url) {
+                          return SizedBox(
+                            width: (deviceWidth / 2) + 16.0,
+                            height: deviceWidth > 600
+                                ? (deviceWidth / 2) - 111
+                                : (deviceWidth / 2) - 10,
+                            child: Center(
+                              child: CircularProgressIndicator(
+                                color: Color(int.parse(
+                                    "0xff${layoutDesignProvider.primary.substring(1)}")),
+                              ),
                             ),
-                          ),
-                        );
-                      },
-                    )
-                  : CachedNetworkImage(
+                          );
+                        },
+                      );
+                    } else {
+                      return Image.asset(
+                        "assets/images/placeholder.png",
+                        width: (deviceWidth / 2) + 16.0,
+                        height: deviceWidth > 600
+                            ? (deviceWidth / 2) - 111
+                            : (deviceWidth / 2) - 10,
+                      );
+                    }
+                  } else {
+                    return CachedNetworkImage(
                       imageUrl: collectionsModel.images.isEmpty
                           ? layoutDesignProvider.placeHolder
                           : collectionsModel.images[0].src ??
@@ -117,7 +131,10 @@ class _CollectionItemState extends State<CollectionItem> {
                           ),
                         );
                       },
-                    ),
+                    );
+                  }
+                },
+              ),
               Padding(
                 padding:
                     const EdgeInsets.only(right: 12.0, left: 5.0, bottom: 12.0),
@@ -125,7 +142,6 @@ class _CollectionItemState extends State<CollectionItem> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
-                      
                       padding: EdgeInsets.only(left: 15.0),
                       width: deviceWidth > 600
                           ? (deviceWidth / 3) - 75
@@ -254,7 +270,8 @@ class _CollectionItemState extends State<CollectionItem> {
                                                 .images.isEmpty
                                             ? layoutDesignProvider.placeHolder
                                             : collectionsModel.images[0].src ??
-                                                layoutDesignProvider.placeHolder,
+                                                layoutDesignProvider
+                                                    .placeHolder,
                                         sku: collectionsModel.sku,
                                         imageId:
                                             collectionsModel.images.isNotEmpty

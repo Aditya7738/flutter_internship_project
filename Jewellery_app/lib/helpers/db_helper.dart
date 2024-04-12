@@ -52,11 +52,22 @@ class DBHelper {
       String serializedData = jsonEncode(layoutModel);
 
       print("serializedData ${serializedData}");
-      int result = await client.rawInsert(
-          "INSERT INTO $tableName ($firstColumn, $secondColumn)"
-          " VALUES (?, ?)",
-          [1, serializedData]);
-      print("insert result $result");
+
+      List<Map<String, dynamic>> existingRows = await client.query(
+        tableName,
+        where: '$firstColumn = ?',
+        whereArgs: [1],
+      );
+
+      if (existingRows.isEmpty) {
+        int result = await client.rawInsert(
+            "INSERT INTO $tableName ($firstColumn, $secondColumn)"
+            " VALUES (?, ?)",
+            [1, serializedData]);
+        print("insert result $result");
+      } else {
+        updateTable(layoutModel);
+      }
 
       final List<Map<String, dynamic>> maps = await client.query(tableName);
 
@@ -137,9 +148,9 @@ class DBHelper {
       print("result $result");
       print("read result.isNotEmpty ${result.isNotEmpty}");
 
-      print(
-          "result[0][layout_model].runtimeType ${result[0]["layout_model"].runtimeType}");
       if (result.isNotEmpty) {
+        print(
+            "result[0][layout_model].runtimeType ${result[0]["layout_model"].runtimeType}");
         String layoutModelJson = result[0]["layout_model"] as String;
 
         var layoutModelData = jsonDecode(layoutModelJson);

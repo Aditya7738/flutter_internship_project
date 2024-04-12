@@ -218,8 +218,8 @@ class _CancelledOrderTabState extends State<CancelledOrderTab> {
                                                         ? layoutDesignProvider
                                                             .placeHolder
                                                         : order.image!.src == ""
-                                                            ? Constants
-                                                                .defaultImageUrl
+                                                            ? layoutDesignProvider
+                                                            .placeHolder
                                                             : order.image!.src!,
                                                     width: 100.0,
                                                     height: 100.0,

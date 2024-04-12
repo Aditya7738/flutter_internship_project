@@ -192,7 +192,8 @@ class _WishListPageState extends State<WishListPage> {
                                           wishListItem.images.isEmpty
                                               ? layoutDesignProvider.placeHolder
                                               : wishListItem.images[0].src ??
-                                                  layoutDesignProvider.placeHolder,
+                                                  layoutDesignProvider
+                                                      .placeHolder,
                                           fit: BoxFit.cover,
                                           loadingBuilder: (context, child,
                                               loadingProgress) {
@@ -351,13 +352,13 @@ class _WishListPageState extends State<WishListPage> {
                                                             .getCurrentDateInWords(),
                                                         imageUrl: wishListItem
                                                                 .images.isEmpty
-                                                            ? Constants
-                                                                .defaultImageUrl
+                                                            ? layoutDesignProvider
+                                                                .placeHolder
                                                             : wishListItem
                                                                     .images[0]
                                                                     .src ??
-                                                                Constants
-                                                                    .defaultImageUrl,
+                                                                layoutDesignProvider
+                                                                    .placeHolder,
                                                         sku: wishListItem.sku,
                                                         imageId: wishListItem
                                                                 .images

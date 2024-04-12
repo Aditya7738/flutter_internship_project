@@ -86,7 +86,7 @@ class AccountPage extends StatelessWidget {
     print("CUSTOMERDATA ${customerProvider.customerData.length}");
     double deviceWidth = MediaQuery.of(context).size.width;
     print("deviceWidth / 20 ${deviceWidth / 31}");
-LayoutDesignProvider layoutDesignProvider =
+    LayoutDesignProvider layoutDesignProvider =
         Provider.of(context, listen: false);
     return Scaffold(
       appBar: AppBar(
@@ -113,55 +113,56 @@ LayoutDesignProvider layoutDesignProvider =
             const SizedBox(
               width: 15,
             ),
-            Container(
-              width: (deviceWidth / 16) + 4,
-              child: badges.Badge(
-                badgeStyle:  badges.BadgeStyle(badgeColor:Color(int.parse("0xff${layoutDesignProvider.primary.substring(1)}"))),
-                badgeContent: Consumer<WishlistProvider>(
-                    builder: (context, value, child) {
-                  print("LENGTH OF FAV: ${value.favProductIds}");
-                  return Text(
-                    value.favProductIds.length.toString(),
-                    style: TextStyle(
-                        color: Colors.white, fontSize: (deviceWidth / 31) - 1),
-                  );
-                }),
-                child: IconButton(
-                  onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const WishListPage()));
-                  },
-                  icon: const Icon(Icons.favorite_sharp, color: Colors.black),
-                ),
+            badges.Badge(
+              position: badges.BadgePosition.topEnd(
+                  end: -10, top: deviceWidth > 600 ? -19 : -11),
+              badgeStyle: badges.BadgeStyle(
+                  badgeColor:
+                      Color(int.parse("0xff${layoutDesignProvider.primary.substring(1)}"))),
+              badgeContent:
+                  Consumer<WishlistProvider>(builder: (context, value, child) {
+                print("LENGTH OF FAV: ${value.favProductIds}");
+                return Text(
+                  value.favProductIds.length.toString(),
+                  style: TextStyle(
+                      color: Colors.white, fontSize: (deviceWidth / 31) - 1),
+                );
+              }),
+              child: InkWell(
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const WishListPage()));
+                },
+                child: const Icon(Icons.favorite_sharp, color: Colors.black),
               ),
             ),
             const SizedBox(
               width: 24,
             ),
-            Container(
-              width: (deviceWidth / 16) + 4,
-              child: badges.Badge(
-                badgeStyle:  badges.BadgeStyle(badgeColor:Color(int.parse("0xff${layoutDesignProvider.primary.substring(1)}"))),
-                badgeContent: Consumer<CartProvider>(
-                    builder: (context, value, child) => Text(
-                          value.cart.length.toString(),
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: (deviceWidth / 31) - 1),
-                        )),
-                child: IconButton(
-                  onPressed: () {
-                    print("CART CLICKED");
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => CartPage()));
-                  },
-                  icon: const Icon(Icons.shopping_cart),
-                  color: Colors.black,
-                ),
+            badges.Badge(
+              position: badges.BadgePosition.topEnd(
+                  end: -10, top: deviceWidth > 600 ? -19.5 : -13),
+              badgeStyle: badges.BadgeStyle(
+                  badgeColor:
+                      Color(int.parse("0xff${layoutDesignProvider.primary.substring(1)}"))),
+              badgeContent: Consumer<CartProvider>(
+                  builder: (context, value, child) => Text(
+                        value.cart.length.toString(),
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: (deviceWidth / 31) - 1),
+                      )),
+              child: InkWell(
+                onTap: () {
+                  print("CART CLICKED");
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => CartPage()));
+                },
+                child: const Icon(Icons.shopping_cart),
               ),
             ),
             const SizedBox(
-              width: 34,
+              width: 24,
             ),
           ]),
       body: SingleChildScrollView(
@@ -185,8 +186,8 @@ LayoutDesignProvider layoutDesignProvider =
                   onTap: () {
                     print(
                         "customerProvider.customerData.isEmpty ${value.customerData.isEmpty}");
-                   value.customerData.isEmpty
-                 //  true
+                    value.customerData.isEmpty
+                        //  true
                         ? Navigator.push(
                             context,
                             MaterialPageRoute(
