@@ -11,48 +11,52 @@ class PaymentSucessfulPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double deviceWidth = MediaQuery.of(context).size.width;
-    return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Lottie.asset("assets/animation/payment_successful.json",
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.width - 50,
-              repeat: false,
-              backgroundLoading: true),
-          const SizedBox(
-            height: 40.0,
-          ),
-          Text(
-            "Thank you for shopping with us. Your account has been charged and your transaction is suceessful. We will be processing your order soon.",
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                fontSize: deviceWidth > 600 ? 30.0 : 19.0,
-                fontWeight: FontWeight.bold,
-                color: Colors.green),
-          ),
-          const SizedBox(
-            height: 50.0,
-          ),
-          GestureDetector(
-            onTap: () {
-              Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (context) => DashboardPage()));
-            },
-            child: Container(
-                decoration: BoxDecoration(
-                    color: Colors.green,
-                    borderRadius: BorderRadius.circular(5.0)),
-                padding: const EdgeInsets.symmetric(
-                    vertical: 10.0, horizontal: 40.0),
-                child: Text("CONTINUE SHOPPING",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: deviceWidth > 600 ? 26.sp : 16.sp,
-                      color: Colors.white
-                    ))),
-          )
-        ],
+    return WillPopScope(
+      onWillPop: () async {
+        return false;
+      },
+      child: Scaffold(
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Lottie.asset("assets/animation/payment_successful.json",
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.width - 50,
+                repeat: false,
+                backgroundLoading: true),
+            const SizedBox(
+              height: 40.0,
+            ),
+            Text(
+              "Thank you for shopping with us. Your account has been charged and your transaction is suceessful. We will be processing your order soon.",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontSize: deviceWidth > 600 ? 30.0 : 19.0,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.green),
+            ),
+            const SizedBox(
+              height: 50.0,
+            ),
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (context) => DashboardPage()));
+              },
+              child: Container(
+                  decoration: BoxDecoration(
+                      color: Colors.green,
+                      borderRadius: BorderRadius.circular(5.0)),
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 10.0, horizontal: 40.0),
+                  child: Text("CONTINUE SHOPPING",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: deviceWidth > 600 ? 26.sp : 16.sp,
+                          color: Colors.white))),
+            )
+          ],
+        ),
       ),
     );
   }

@@ -47,10 +47,16 @@ class _WholeCarouselSliderState extends State<WholeCarouselSlider> {
                           if (loadingProgress == null) {
                             return child;
                           } else {
-                            return CircularProgressIndicator(
-                              color: Color(int.parse(
-                                  "0xff${layoutDesignProvider.primary.substring(1)}")),
-                            );
+                            return SizedBox(
+                            width: 46.0,
+                            height: 16.0,
+                            child: Center(
+                              child: CircularProgressIndicator(
+                                color: Color(int.parse(
+                                    "0xff${layoutDesignProvider.primary.substring(1)}")),
+                              ),
+                            ),
+                          );
                           }
                         },
                       ),

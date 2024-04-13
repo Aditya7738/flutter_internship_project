@@ -100,10 +100,10 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                 });
               }
             } else {
-               if (mounted) {
-              setState(() {
-                planPurchasedChecking = false;
-              });
+              if (mounted) {
+                setState(() {
+                  planPurchasedChecking = false;
+                });
               }
             }
           }
@@ -144,7 +144,7 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
     double deviceWidth = MediaQuery.of(context).size.width;
     final customerProvider =
         Provider.of<CustomerProvider>(context, listen: true);
-        LayoutDesignProvider layoutDesignProvider =
+    LayoutDesignProvider layoutDesignProvider =
         Provider.of<LayoutDesignProvider>(context, listen: true);
     final digiGoldProvider =
         Provider.of<DigiGoldProvider>(context, listen: true);
@@ -166,17 +166,17 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-            //true
+              //true
               planPurchasedChecking
                   ? SizedBox(
-                      width: MediaQuery.of(context).size.width - 32,
-                      height: //MediaQuery.of(context).size.width - 42,
-                          540,
+                      height: MediaQuery.of(context).size.height / 2.33,
+                      width: MediaQuery.of(context).size.width,
                       child: Center(
-                        child: CircularProgressIndicator(color: //Colors.red
-                           Color(int.parse(
-                              "0xff${layoutDesignProvider.primary.substring(1)}")),
-                            ),
+                        child: CircularProgressIndicator(
+                          color: //Colors.red
+                              Color(int.parse(
+                                  "0xff${layoutDesignProvider.primary.substring(1)}")),
+                        ),
                       ),
                     )
                   : isPlanAlreadyPurchased
@@ -184,10 +184,22 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                           children: [
                             widget.digiGoldPlan.images.isNotEmpty
                                 ? widget.digiGoldPlan.images[0].src != null
-                                    ? Image.network(
-                                        widget.digiGoldPlan.images[0].src!,
-                                        width:
-                                            MediaQuery.of(context).size.width,
+                                    ? Padding(
+                                        padding: const EdgeInsets.all(3.0),
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(13.0),
+                                          child: Image.network(
+                                            widget.digiGoldPlan.images[0].src!,
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height /
+                                                2.33,
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width,
+                                          ),
+                                        ),
                                       )
                                     : DigiGoldPlanSubCard(
                                         price: widget.digiGoldPlan.price ?? "0",
@@ -201,19 +213,20 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                                   ),
                             Positioned(
                               top: 20.0,
-                              left: 1.0,
-                              right: 1.0,
+                              left: 4.0,
+                              right: 4.0,
                               child: Container(
                                 width: MediaQuery.of(context).size.width,
                                 color: Color(int.parse(
-                              "0xff${layoutDesignProvider.primary.substring(1)}")),
+                                    "0xff${layoutDesignProvider.primary.substring(1)}")),
                                 padding: EdgeInsets.symmetric(vertical: 5.0),
                                 child: Text(
                                   "You have already purchased this plan",
                                   style: TextStyle(
                                       color: Colors.yellow,
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 16.0),
+                                      fontSize:
+                                          deviceWidth > 600 ? 25.sp : 15.sp),
                                   textAlign: TextAlign.center,
                                 ),
                               ),
@@ -222,10 +235,20 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                         )
                       : widget.digiGoldPlan.images.isNotEmpty
                           ? widget.digiGoldPlan.images[0].src != null
-                              ? Image.network(
-                                  //loadingBuilder
-                                  widget.digiGoldPlan.images[0].src!,
-                                  width: MediaQuery.of(context).size.width,
+                              ? Padding(
+                                  padding: const EdgeInsets.all(3.0),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(13.0),
+                                    child: Image.network(
+                                      fit: BoxFit.fill,
+                                      //loadingBuilder
+                                      height:
+                                          MediaQuery.of(context).size.height /
+                                              2.33,
+                                      widget.digiGoldPlan.images[0].src!,
+                                      width: MediaQuery.of(context).size.width,
+                                    ),
+                                  ),
                                 )
                               : DigiGoldPlanSubCard(
                                   price: widget.digiGoldPlan.price != null
@@ -352,7 +375,7 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                                 scale: 1.4,
                                 child: Checkbox(
                                   activeColor: Color(int.parse(
-                              "0xff${layoutDesignProvider.primary.substring(1)}")),
+                                      "0xff${layoutDesignProvider.primary.substring(1)}")),
                                   checkColor: Colors.white,
                                   value: checkBoxChecked,
                                   onChanged: (value) {
@@ -427,7 +450,7 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                                     // checkBoxChecked
                                     //     ? BoxDecoration(
                                     //         color: Color(int.parse(
-                            //  "0xff${layoutDesignProvider.primary.substring(1)}")),
+                                    //  "0xff${layoutDesignProvider.primary.substring(1)}")),
                                     //         borderRadius:
                                     //             BorderRadius.circular(5.0))
                                     //     :
@@ -438,7 +461,7 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                                                 ? Color.fromARGB(
                                                     255, 213, 167, 170)
                                                 : Color(int.parse(
-                              "0xff${layoutDesignProvider.primary.substring(1)}")),
+                                                    "0xff${layoutDesignProvider.primary.substring(1)}")),
                                             style: BorderStyle.solid),
                                         borderRadius:
                                             BorderRadius.circular(5.0)),
@@ -466,7 +489,7 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                                                   170,
                                                 )
                                               : Color(int.parse(
-                              "0xff${layoutDesignProvider.primary.substring(1)}")),
+                                                  "0xff${layoutDesignProvider.primary.substring(1)}")),
                                           fontWeight: FontWeight.bold,
                                           fontSize:
                                               deviceWidth > 600 ? 22.sp : 17.sp
@@ -498,7 +521,7 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                                 decoration: checkBoxChecked
                                     ? BoxDecoration(
                                         color: Color(int.parse(
-                              "0xff${layoutDesignProvider.primary.substring(1)}")),
+                                            "0xff${layoutDesignProvider.primary.substring(1)}")),
                                         borderRadius:
                                             BorderRadius.circular(5.0))
                                     : BoxDecoration(
@@ -507,8 +530,8 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                                             color: isPlanAlreadyPurchased
                                                 ? Color.fromARGB(
                                                     255, 213, 167, 170)
-                                                :Color(int.parse(
-                              "0xff${layoutDesignProvider.primary.substring(1)}")),
+                                                : Color(int.parse(
+                                                    "0xff${layoutDesignProvider.primary.substring(1)}")),
                                             style: BorderStyle.solid),
                                         borderRadius:
                                             BorderRadius.circular(5.0)),
@@ -536,7 +559,7 @@ class _DigiGoldCardState extends State<DigiGoldCard> {
                                                   170,
                                                 )
                                               : Color(int.parse(
-                              "0xff${layoutDesignProvider.primary.substring(1)}")),
+                                                  "0xff${layoutDesignProvider.primary.substring(1)}")),
                                           fontWeight: FontWeight.bold,
                                           fontSize:
                                               deviceWidth > 600 ? 22.sp : 17.sp

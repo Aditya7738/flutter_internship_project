@@ -6,6 +6,7 @@ import 'package:Tiara_by_TJ/views/pages/coupon_list.dart';
 import 'package:Tiara_by_TJ/views/pages/dashboard_page.dart';
 import 'package:Tiara_by_TJ/views/pages/login_page.dart';
 import 'package:Tiara_by_TJ/views/widgets/empty_list_widget.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
 import 'package:Tiara_by_TJ/constants/constants.dart';
 import 'package:Tiara_by_TJ/providers/cart_provider.dart';
@@ -16,6 +17,7 @@ import 'package:Tiara_by_TJ/views/widgets/button_widget.dart';
 import 'package:Tiara_by_TJ/views/widgets/cart_total_row.dart';
 import 'package:Tiara_by_TJ/views/widgets/label_widget.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import 'package:provider/provider.dart';
 
 //store totalafter applied coupon in  order provider
@@ -255,7 +257,7 @@ class _CartPageState extends State<CartPage> {
                                             textAlign: TextAlign.center,
                                           ),
                                           SizedBox(
-                                            height: 30.0,
+                                            height: 23.0,
                                           ),
                                           GestureDetector(
                                             onTap: () {
@@ -869,6 +871,13 @@ class _CartPageState extends State<CartPage> {
                         width: 150.0,
                         height: 150.0,
                       ),
+                      //  SvgPicture.asset("assets/images/add_to_cart.svg",
+                      //     // width: 200,
+                      //     height: deviceWidth > 600 ? 400 : 300,
+                      //     colorFilter: ColorFilter.mode(
+                      //         Color(int.parse(
+                      //             "0xff${layoutDesignProvider.primary.substring(1)}")),
+                      //         BlendMode.srcIn)),
                       const SizedBox(
                         height: 40.0,
                       ),

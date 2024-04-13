@@ -1,6 +1,7 @@
 import 'package:Tiara_by_TJ/model/order_model.dart';
 import 'package:Tiara_by_TJ/views/widgets/cart_total_row.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:intl/intl.dart';
 
@@ -234,7 +235,7 @@ class _GoldPlanDetailState extends State<GoldPlanDetail> {
         ),
         body: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.all(30.0),
+            padding: EdgeInsets.all(deviceWidth > 600 ? 30.0 : 20.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -255,46 +256,87 @@ class _GoldPlanDetailState extends State<GoldPlanDetail> {
                 //             fontWeight: FontWeight.normal)),
                 //   ],
                 // ),
-
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        Image.asset(
-                          "assets/images/gold_coin.png",
-                          width: deviceWidth > 600 ? 74.0 : 64.0,
-                          height: deviceWidth > 600 ? 74.0 : 64.0,
-                        ),
-                        SizedBox(
-                          width: 20.0,
-                        ),
-                        Text("${getPlaneName()}",
-                            style: TextStyle(
-                                fontSize: deviceWidth > 600 ? 32.0 : 17.0,
-                                fontWeight: FontWeight.bold)),
-                      ],
-                    ),
-                    Row(
-                     
-                      children: [
-                        Text(
-                          "Plan Type:",
-                          style: TextStyle(
-                              fontSize: deviceWidth > 600 ? 32.0 : 18.0,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(
-                          width: 5.0,
-                        ),
-                        Text(" ${getPlanType()}",
-                            style: TextStyle(
-                                fontSize: deviceWidth > 600 ? 32.0 : 17.0,
-                                fontWeight: FontWeight.normal)),
-                      ],
-                    ),
-                  ],
-                ),
+                deviceWidth > 600
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Image.asset(
+                                "assets/images/gold_coin.png",
+                                width: deviceWidth > 600 ? 74.0 : 34.0,
+                                height: deviceWidth > 600 ? 74.0 : 34.0,
+                              ),
+                              SizedBox(
+                                width: 20.0,
+                              ),
+                              Text("${getPlaneName()}",
+                                  style: TextStyle(
+                                      fontSize:
+                                          deviceWidth > 600 ? 32.sp : 17.sp,
+                                      fontWeight: FontWeight.bold)),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Text(
+                                "Plan Type:",
+                                style: TextStyle(
+                                    fontSize: deviceWidth > 600 ? 32.0 : 18.0,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              SizedBox(
+                                width: 5.0,
+                              ),
+                              Text(" ${getPlanType()}",
+                                  style: TextStyle(
+                                      fontSize: deviceWidth > 600 ? 32.0 : 17.0,
+                                      fontWeight: FontWeight.normal)),
+                            ],
+                          ),
+                        ],
+                      )
+                    : Column(
+                        children: [
+                          Row(
+                            children: [
+                              Image.asset(
+                                "assets/images/gold_coin.png",
+                                width: deviceWidth > 600 ? 74.0 : 34.0,
+                                height: deviceWidth > 600 ? 74.0 : 34.0,
+                              ),
+                              SizedBox(
+                                width: 20.0,
+                              ),
+                              Text("${getPlaneName()}",
+                                  style: TextStyle(
+                                      fontSize:
+                                          deviceWidth > 600 ? 32.sp : 17.sp,
+                                      fontWeight: FontWeight.bold)),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 10.0,
+                          ),
+                          Row(
+                            children: [
+                              Text(
+                                "Plan Type:",
+                                style: TextStyle(
+                                    fontSize: deviceWidth > 600 ? 32.0 : 18.0,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              SizedBox(
+                                width: 5.0,
+                              ),
+                              Text(" ${getPlanType()}",
+                                  style: TextStyle(
+                                      fontSize: deviceWidth > 600 ? 32.0 : 17.0,
+                                      fontWeight: FontWeight.normal)),
+                            ],
+                          ),
+                        ],
+                      ),
                 SizedBox(
                   height: 10.0,
                 ),
@@ -322,8 +364,8 @@ class _GoldPlanDetailState extends State<GoldPlanDetail> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(
-                            left: 36.0, top: 36.0, right: 36.0, bottom: 36.0),
+                        padding:
+                            EdgeInsets.all(deviceWidth > 600 ? 36.0 : 20.0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -347,7 +389,6 @@ class _GoldPlanDetailState extends State<GoldPlanDetail> {
                               ],
                             ),
                             Container(
-                          
                               child: Column(
                                 children: [
                                   Text(
@@ -376,8 +417,8 @@ class _GoldPlanDetailState extends State<GoldPlanDetail> {
                         height: 20.0,
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(
-                            left: 36.0, right: 36.0, bottom: 36.0),
+                        padding:
+                            EdgeInsets.all(deviceWidth > 600 ? 36.0 : 20.0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -427,8 +468,8 @@ class _GoldPlanDetailState extends State<GoldPlanDetail> {
                         height: 20.0,
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(
-                            left: 36.0, right: 36.0, bottom: 36.0),
+                        padding:
+                            EdgeInsets.all(deviceWidth > 600 ? 36.0 : 20.0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -453,27 +494,56 @@ class _GoldPlanDetailState extends State<GoldPlanDetail> {
                               ],
                             ),
                             isJewellerContributing
-                                ? Column(
-                                    children: [
-                                      Text(
-                                        "Jeweller contribution on last month:",
-                                        style: TextStyle(
-                                            fontSize:
-                                                deviceWidth > 600 ? 27.0 : 13.0,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.grey),
-                                      ),
-                                      SizedBox(
-                                        height: 5.0,
-                                      ),
-                                      Text("₹ $jewellerContribution",
-                                          style: TextStyle(
-                                              fontSize: deviceWidth > 600
-                                                  ? 30.0
-                                                  : 16.0,
-                                              fontWeight: FontWeight.bold)),
-                                    ],
-                                  )
+                                ? deviceWidth > 600
+                                    ? Column(
+                                        children: [
+                                          Text(
+                                            "Jeweller contribution on last month:",
+                                            style: TextStyle(
+                                                fontSize: deviceWidth > 600
+                                                    ? 27.0
+                                                    : 13.0,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.grey),
+                                          ),
+                                          SizedBox(
+                                            height: 5.0,
+                                          ),
+                                          Text("₹ $jewellerContribution",
+                                              style: TextStyle(
+                                                  fontSize: deviceWidth > 600
+                                                      ? 30.0
+                                                      : 16.0,
+                                                  fontWeight: FontWeight.bold)),
+                                        ],
+                                      )
+                                    : Container(
+                                      width: 180,
+                                      child: Column(
+                                          children: [
+                                            Text(
+                                              "Jeweller contribution on last month:",
+                                              textAlign: TextAlign.center,
+                                              maxLines: 2,
+                                              style: TextStyle(
+                                                  fontSize: deviceWidth > 600
+                                                      ? 27.0
+                                                      : 13.0,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.grey),
+                                            ),
+                                            SizedBox(
+                                              height: 5.0,
+                                            ),
+                                            Text("₹ $jewellerContribution",
+                                                style: TextStyle(
+                                                    fontSize: deviceWidth > 600
+                                                        ? 30.0
+                                                        : 16.0,
+                                                    fontWeight: FontWeight.bold)),
+                                          ],
+                                        ),
+                                    )
                                 : SizedBox()
                           ],
                         ),

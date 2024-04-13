@@ -223,6 +223,7 @@ class _CancelledOrderTabState extends State<CancelledOrderTab> {
                                                             : order.image!.src!,
                                                     width: 100.0,
                                                     height: 100.0,
+                                                      fit:BoxFit.fill,
                                                     loadingBuilder: (context,
                                                         child,
                                                         loadingProgress) {

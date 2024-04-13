@@ -489,7 +489,7 @@ class _DigiGoldPageState extends State<DigiGoldPage> {
     LayoutDesignProvider layoutDesignProvider =
         Provider.of<LayoutDesignProvider>(context, listen: false);
     final digiGoldProvider =
-        Provider.of<DigiGoldProvider>(context, listen: true);
+        Provider.of<DigiGoldProvider>(context, listen: false);
 
     double deviceWidth = MediaQuery.of(context).size.width;
 
@@ -506,7 +506,7 @@ class _DigiGoldPageState extends State<DigiGoldPage> {
             child: Column(
               children: [
                 isFlexiPlanEnabled
-                    //true
+                 //   true
                     ? Column(children: [
                         Consumer<DigiGoldProvider>(
                           builder: (context, value, child) {

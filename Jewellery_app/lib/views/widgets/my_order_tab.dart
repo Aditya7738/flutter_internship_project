@@ -196,9 +196,9 @@ class _MyOrderTabState extends State<MyOrderTab> {
               color: Colors.white,
             ),
           )
-        :
-        //   true
-        listOfCartOrders.isEmpty
+        : 
+        //true
+            listOfCartOrders.isEmpty
             ? Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: SizedBox(
@@ -242,6 +242,8 @@ class _MyOrderTabState extends State<MyOrderTab> {
                         maxLines: 2,
                         textAlign: TextAlign.center,
                         style: TextStyle(
+                          color: Color(int.parse(
+                              "0xff${layoutDesignProvider.primary.substring(1)}")),
                           fontSize: deviceWidth > 600
                               ? Fontsizes.tabletTextFormInputFieldSize
                               : Fontsizes.textFormInputFieldSize,
@@ -378,10 +380,12 @@ class _MyOrderTabState extends State<MyOrderTab> {
                                                         ? layoutDesignProvider
                                                             .placeHolder
                                                         : order.image!.src == ""
-                                                            ? layoutDesignProvider.placeHolder
+                                                            ? layoutDesignProvider
+                                                                .placeHolder
                                                             : order.image!.src!,
                                                     width: 100.0,
                                                     height: 100.0,
+                                                    fit:BoxFit.fill,
                                                     loadingBuilder: (context,
                                                         child,
                                                         loadingProgress) {

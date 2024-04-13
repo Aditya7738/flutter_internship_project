@@ -2459,9 +2459,9 @@ class ApiService {
   static int homeLayoutStatusCode = 0;
 
   static Future<LayoutModel?> getHomeLayout() async {
-    //final endpoint = "https://websockets.tanika.tech/frontend/mobile";
+    final endpoint = "https://websockets.tanika.tech/frontend/mobile";
 
-    final endpoint = "http://192.168.1.7:8082/frontend/mobile";
+    //final endpoint = "http://192.168.1.7:8082/frontend/mobile";
     String basicAuth = "Basic " +
         base64Encode(
             utf8.encode('${Constants.userName}:${Constants.password}'));

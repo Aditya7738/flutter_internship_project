@@ -19,6 +19,7 @@ import 'package:Tiara_by_TJ/providers/customer_provider.dart';
 import 'package:Tiara_by_TJ/providers/profile_provider.dart';
 import 'package:Tiara_by_TJ/providers/wishlist_provider.dart';
 import 'package:Tiara_by_TJ/views/pages/dashboard_page.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
@@ -27,6 +28,8 @@ import 'package:flutter/services.dart';
 
 import 'dart:async';
 
+import 'package:in_app_update/in_app_update.dart';
+
 //import OneSignal
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 
@@ -34,7 +37,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final connectivityResult = await (Connectivity().checkConnectivity());
   if (connectivityResult == ConnectivityResult.none) {
-    
     runApp(NoInternetConnection());
   } else {
     getLayoutDesign();
@@ -252,6 +254,12 @@ class _MyAppState extends State<MyApp> {
   // String? _language;
   // bool _enableConsentButton = false;
 
+  AppUpdateInfo? _updateInfo;
+
+  GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
+
+  bool _flexibleUpdateAvailable = false;
+
   // CHANGE THIS parameter to true if you want to test GDPR privacy consent
   bool _requireConsent = false;
 
@@ -260,6 +268,37 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     initPlatformState();
     requestPermissions();
+    checkForUpdate();
+  }
+
+  Future<void> checkForUpdate() async {
+    InAppUpdate.checkForUpdate().then((info) {
+      print("updateInfo $info");
+
+      print(
+          "info.updateAvailability == UpdateAvailability.updateAvailable ${info.updateAvailability == UpdateAvailability.updateAvailable}");
+     // info.updateAvailability == UpdateAvailability.updateAvailable
+       true
+          ? InAppUpdate.performImmediateUpdate().catchError((e) {
+              showSnackBarNow(e.toString());
+              print(
+                  "AppUpdateResult.inAppUpdateFailed ${AppUpdateResult.inAppUpdateFailed}");
+              return AppUpdateResult.inAppUpdateFailed;
+            })
+          : null;
+    }).catchError((e) {
+    print("checkForUpdate error $e");
+      showSnackBarNow(e.toString());
+    });
+  }
+
+  showSnackBarNow(String message) {
+    if (_scaffoldKey.currentContext != null) {
+      ScaffoldMessenger.of(_scaffoldKey.currentContext!)
+          .showSnackBar(SnackBar(content: Text(message.toString())));
+    }else{
+      print("checkForUpdate error $message");
+    }
   }
 
   Future<void> requestPermissions() async {
@@ -426,7 +465,6 @@ class _MyAppState extends State<MyApp> {
           ChangeNotifierProvider(create: (context) => LayoutDesignProvider())
         ],
         child: MaterialApp(
-          //  navigatorKey: navigatorKey,
           title: Constants.app_name,
           theme: ThemeData(
               appBarTheme: AppBarTheme(

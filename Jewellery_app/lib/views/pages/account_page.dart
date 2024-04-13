@@ -40,7 +40,7 @@ class AccountPage extends StatelessWidget {
     "Rate Us",
   ];
 
-  List<String> title3 = ["Return", "Exchange", "Repair", "Shipping", "FAQ"];
+  List<String> title3 = ["Return", "Privacy Policy", "Terms & Conditions"];
 
   void _launchGmailCompose(
       {required String to,
@@ -117,8 +117,8 @@ class AccountPage extends StatelessWidget {
               position: badges.BadgePosition.topEnd(
                   end: -10, top: deviceWidth > 600 ? -19 : -11),
               badgeStyle: badges.BadgeStyle(
-                  badgeColor:
-                      Color(int.parse("0xff${layoutDesignProvider.primary.substring(1)}"))),
+                  badgeColor: Color(int.parse(
+                      "0xff${layoutDesignProvider.primary.substring(1)}"))),
               badgeContent:
                   Consumer<WishlistProvider>(builder: (context, value, child) {
                 print("LENGTH OF FAV: ${value.favProductIds}");
@@ -143,8 +143,8 @@ class AccountPage extends StatelessWidget {
               position: badges.BadgePosition.topEnd(
                   end: -10, top: deviceWidth > 600 ? -19.5 : -13),
               badgeStyle: badges.BadgeStyle(
-                  badgeColor:
-                      Color(int.parse("0xff${layoutDesignProvider.primary.substring(1)}"))),
+                  badgeColor: Color(int.parse(
+                      "0xff${layoutDesignProvider.primary.substring(1)}"))),
               badgeContent: Consumer<CartProvider>(
                   builder: (context, value, child) => Text(
                         value.cart.length.toString(),
@@ -279,7 +279,7 @@ class AccountPage extends StatelessWidget {
                     children: [
                       GestureDetector(
                         onTap: () async {
-                          String url = 'tel:9833566117';
+                          String url = 'tel:${Constants.shopContactNo}';
                           Uri uri = Uri.parse(url);
 
                           if (await canLaunchUrl(uri)) {
@@ -316,7 +316,7 @@ class AccountPage extends StatelessWidget {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          onLinkClicked("https://tiarabytj.com/", context);
+                          onLinkClicked("${Constants.baseUrl}", context);
                         },
                         child: Container(
                           margin: const EdgeInsets.symmetric(vertical: 10.0),
@@ -390,7 +390,7 @@ class AccountPage extends StatelessWidget {
                       switch (index) {
                         case 0:
                           _launchGmailCompose(
-                              to: 'tiarabytj@gmail.com',
+                              to: '${Constants.shopEmailId}',
                               subject: 'Feedback',
                               body: 'Respected sir/mam',
                               context: context);
@@ -441,7 +441,7 @@ class AccountPage extends StatelessWidget {
                 )),
             SizedBox(
               width: MediaQuery.of(context).size.width,
-              height: deviceWidth > 600 ? 201.0 : 100.0,
+              height: deviceWidth > 600 ? 201.0 : 150.0,
               child: GridView.builder(
                 itemCount: title3.length,
                 physics: NeverScrollableScrollPhysics(),
@@ -451,7 +451,16 @@ class AccountPage extends StatelessWidget {
                       switch (index) {
                         case 0:
                           onLinkClicked(
-                              "https://tiarabytj.com/blog/quotations/return-policy/",
+                              "${Constants.baseUrl}/blog/quotations/return-policy/",
+                              context);
+                          break;
+                        case 1:
+                          onLinkClicked(
+                              "${Constants.baseUrl}/privacy-policy/", context);
+                          break;
+                        case 2:
+                          onLinkClicked(
+                              "${Constants.baseUrl}/terms-conditions/",
                               context);
                           break;
                         default:
@@ -475,7 +484,7 @@ class AccountPage extends StatelessWidget {
                 },
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     childAspectRatio: deviceWidth > 600 ? 3.3 : 2.9,
-                    crossAxisCount: 3,
+                    crossAxisCount: deviceWidth > 600 ? 3 : 2,
                     mainAxisSpacing: 0.0),
               ),
             ),

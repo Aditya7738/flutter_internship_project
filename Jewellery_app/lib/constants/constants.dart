@@ -25,6 +25,10 @@ class Constants {
   static const String consumerKeySignup = "";
   static const String consumerSecretSignup = "";
 
+  static const String shopContactNo = "9833566117";
+
+  static const String shopEmailId =  "tiarabytj@gmail.com";
+
   static const Map<String, dynamic> defaultLayoutDesign = {
     "success": true,
     "data": {

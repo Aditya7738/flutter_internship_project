@@ -455,7 +455,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                     fontSize: deviceWidth > 600 ? 26.sp : 16.sp,
                                   )),
                         const SizedBox(
-                          height: 20.0,
+                          height: 30.0,
                         ),
                         customizationOptionsProvider.customizeOptionsdata[
                                     "enable_everything"] ==
@@ -516,8 +516,9 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         HtmlWidget(
                           productsModel.description ??
                               Constants.product_description,
-                          textStyle: TextStyle(fontWeight: FontWeight.normal),
-                        ),
+                          textStyle: TextStyle(fontWeight: FontWeight.normal,
+                           fontSize: deviceWidth > 600 ? (deviceWidth / 36) + 2 : 15.sp,
+                        )),
                         const SizedBox(
                           height: 20.0,
                         ),
@@ -599,7 +600,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                     fontWeight: FontWeight.normal),
                               )
                             : SizedBox(
-                                height: deviceWidth > 600 ? 30.0 : 25.sp,
+                                height: deviceWidth > 600 ? 33.sp : 25.sp,
                                 width: MediaQuery.of(context).size.width,
                                 child: ListView.builder(
                                   itemCount: productsModel.tags?.length,

@@ -268,6 +268,7 @@ class _DashboardPageState extends State<DashboardPage> {
 
     print("isThereCustomerData $isThereCustomerData");
   }
+  GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -284,6 +285,7 @@ class _DashboardPageState extends State<DashboardPage> {
     print("deviceWidth ${deviceWidth / 40}");
 
     return Scaffold(
+      key: _scaffoldKey,
       body: tabs[_currentIndex],
       bottomNavigationBar: Consumer<LayoutDesignProvider>(
         builder: (context, value, child) {
