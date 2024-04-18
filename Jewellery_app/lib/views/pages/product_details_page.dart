@@ -49,7 +49,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
   void initState() {
     super.initState();
     productsModel = widget.productsModel;
-    backordersAllowed = productsModel.backordersAllowed ?? false;
+    backordersAllowed = widget.productsModel.backordersAllowed ?? false;
 
     getReviews();
 
@@ -439,21 +439,25 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         const SizedBox(
                           height: 10.0,
                         ),
-                        Container(
-                            color: const Color(0xfff1f7eb),
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10.0, vertical: 5.0),
-                            child: backordersAllowed
-                                ? LabelWidget(
-                                    label: "Available on backorder",
-                                    color: Color(0xff85BA60),
-                                    fontSize: deviceWidth > 600 ? 26.sp : 16.sp,
-                                  )
-                                : LabelWidget(
-                                    label: "Unavailable on backorder",
-                                    color: Color(0xff85BA60),
-                                    fontSize: deviceWidth > 600 ? 26.sp : 16.sp,
-                                  )),
+                        backordersAllowed
+                            ? Container(
+                                color: const Color(0xfff1f7eb),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10.0, vertical: 5.0),
+                                child: LabelWidget(
+                                  label: "Available on backorder",
+                                  color: Color(0xff85BA60),
+                                  fontSize: deviceWidth > 600 ? 26.sp : 16.sp,
+                                ))
+                            : Container(
+                                color: Color.fromARGB(255, 247, 235, 235),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10.0, vertical: 5.0),
+                                child: LabelWidget(
+                                  label: "Unavailable on backorder",
+                                  color: Color.fromARGB(255, 186, 96, 96),
+                                  fontSize: deviceWidth > 600 ? 26.sp : 16.sp,
+                                )),
                         const SizedBox(
                           height: 30.0,
                         ),
@@ -514,11 +518,14 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                               : 17.sp,
                         ),
                         HtmlWidget(
-                          productsModel.description ??
-                              Constants.product_description,
-                          textStyle: TextStyle(fontWeight: FontWeight.normal,
-                           fontSize: deviceWidth > 600 ? (deviceWidth / 36) + 2 : 15.sp,
-                        )),
+                            productsModel.description ??
+                                Constants.product_description,
+                            textStyle: TextStyle(
+                              fontWeight: FontWeight.normal,
+                              fontSize: deviceWidth > 600
+                                  ? (deviceWidth / 36) + 2
+                                  : 15.sp,
+                            )),
                         const SizedBox(
                           height: 20.0,
                         ),

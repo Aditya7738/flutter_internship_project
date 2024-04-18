@@ -5,17 +5,10 @@ import 'package:Tiara_by_TJ/providers/layoutdesign_provider.dart';
 import 'package:Tiara_by_TJ/views/pages/coupon_list.dart';
 import 'package:Tiara_by_TJ/views/pages/dashboard_page.dart';
 import 'package:Tiara_by_TJ/views/pages/login_page.dart';
-import 'package:Tiara_by_TJ/views/widgets/empty_list_widget.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
-import 'package:Tiara_by_TJ/constants/constants.dart';
 import 'package:Tiara_by_TJ/providers/cart_provider.dart';
-import 'package:Tiara_by_TJ/views/pages/search_page.dart';
 import 'package:Tiara_by_TJ/views/pages/shipping_page.dart';
-import 'package:Tiara_by_TJ/views/widgets/button_widget.dart';
 
-import 'package:Tiara_by_TJ/views/widgets/cart_total_row.dart';
-import 'package:Tiara_by_TJ/views/widgets/label_widget.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:provider/provider.dart';
@@ -161,6 +154,8 @@ class _CartPageState extends State<CartPage> {
                                 "selectedCouponData != null ${selectedCouponData != null}");
                             if ( //true
                                 selectedCouponData != null) {
+                              print(
+                                  "discountAmount ₹ ${((value.selectedCouponData!["discountAmount"] / 100) * value.calculateTotalPrice()).round()}");
                               showDialog(
                                 context: context,
                                 builder: (context) {

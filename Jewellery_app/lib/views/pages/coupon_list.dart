@@ -426,6 +426,7 @@ class _CouponListPageState extends State<CouponListPage> {
         discount = "${(double.parse(couponsModel.amount!)).toInt()}% OFF";
       }
 
+      print("discount $discount");
       widgets.add(Stack(
         children: [
           Container(
